@@ -628,15 +628,38 @@ export default function HomePage() {
           <div className="grid md:grid-cols-5 gap-12 items-start">
             {/* FOTO PENULIS - 2/5 width */}
             <div className="md:col-span-2">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-sm shadow-[0_8px_30px_-10px_rgba(0,0,0,0.2)]">
-                <img 
-                  src={FOTO_PENULIS} 
-                  alt="Wildan Ferdiansyah" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-              </div>
-              
+              <div className="relative group">
+
+  {/* Soft Background Glow */}
+  <div className="absolute -inset-4 bg-gradient-to-tr from-[#8b7355]/20 via-transparent to-[#8b7355]/10 blur-2xl opacity-60 group-hover:opacity-80 transition duration-700"></div>
+
+  {/* Frame */}
+  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl 
+                  shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] 
+                  group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]
+                  transition-all duration-700">
+
+    <img 
+      src={FOTO_PENULIS} 
+      alt="Wildan Ferdiansyah" 
+      className="w-full h-full object-cover 
+                 scale-[1.02] 
+                 group-hover:scale-[1.06] 
+                 transition-transform duration-[2000ms] ease-out"
+    />
+
+    {/* Cinematic Overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t 
+                    from-black/40 
+                    via-black/10 
+                    to-transparent 
+                    opacity-80"></div>
+
+    {/* Subtle Border */}
+    <div className="absolute inset-0 rounded-2xl border border-white/10"></div>
+
+  </div>
+</div>              
               {/* Social Links di bawah foto */}
               <div className="flex justify-center gap-4 mt-6">
                 <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
