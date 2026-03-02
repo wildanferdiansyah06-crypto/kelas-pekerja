@@ -28,7 +28,7 @@ import {
   Check,
   Wallet
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // Assets
 const HERO_BG = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2000&auto=format&fit=crop";
@@ -161,8 +161,8 @@ export default function HomePage() {
     { id: 5, text: "Setiap halaman kayak pelukan hangat yang nggak bikin sesak.", nama: "Sinta" },
     { id: 6, text: "Baru pertama kali ngerasa gak sendirian dalam kesendirian.", nama: "Reza" }
   ]);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-const [isPaused, setIsPaused] = useState(false);
+  const carouselRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const handleEscape = (e) => {
@@ -204,27 +204,27 @@ const [isPaused, setIsPaused] = useState(false);
     return () => clearInterval(interval);
   }, []);
 
-useEffect(() => {
-  const container = carouselRef.current;
-  if (!container) return;
+  useEffect(() => {
+    const container = carouselRef.current;
+    if (!container) return;
 
-  let animationFrame: number;
+    let animationFrame;
 
-  const scroll = () => {
-    if (!isPaused) {
-      container.scrollLeft += 0.5;
+    const scroll = () => {
+      if (!isPaused) {
+        container.scrollLeft += 0.5;
 
-      if (container.scrollLeft >= container.scrollWidth / 2) {
-        container.scrollLeft = 0;
+        if (container.scrollLeft >= container.scrollWidth / 2) {
+          container.scrollLeft = 0;
+        }
       }
-    }
+      animationFrame = requestAnimationFrame(scroll);
+    };
+
     animationFrame = requestAnimationFrame(scroll);
-  };
 
-  animationFrame = requestAnimationFrame(scroll);
-
-  return () => cancelAnimationFrame(animationFrame);
-}, [isPaused]);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isPaused]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -651,76 +651,76 @@ useEffect(() => {
 
           <div className="grid md:grid-cols-5 gap-12 items-start">
             {/* FOTO PENULIS - 2/5 width */}
-<div className="md:col-span-2">
+            <div className="md:col-span-2">
 
-  <div className="flex flex-col items-center relative group">
+              <div className="flex flex-col items-center relative group">
 
-    {/* Soft Glow Background */}
-    <div className="absolute w-72 h-72 bg-[#8b7355]/20 blur-3xl rounded-full opacity-60 group-hover:opacity-80 transition duration-700"></div>
+                {/* Soft Glow Background */}
+                <div className="absolute w-72 h-72 bg-[#8b7355]/20 blur-3xl rounded-full opacity-60 group-hover:opacity-80 transition duration-700"></div>
 
-    {/* Foto Bulat */}
-    <div className="relative w-56 h-56 rounded-full overflow-hidden 
-                    shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)]
-                    group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]
-                    transition-all duration-700">
+                {/* Foto Bulat */}
+                <div className="relative w-56 h-56 rounded-full overflow-hidden 
+                                shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)]
+                                group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]
+                                transition-all duration-700">
 
-      <img 
-        src={FOTO_PENULIS} 
-        alt="Wildan Ferdiansyah"
-        className="w-full h-full object-cover 
-                   scale-[1.02] 
-                   group-hover:scale-[1.06] 
-                   transition-transform duration-[2000ms] ease-out"
-      />
+                  <img 
+                    src={FOTO_PENULIS} 
+                    alt="Wildan Ferdiansyah"
+                    className="w-full h-full object-cover 
+                               scale-[1.02] 
+                               group-hover:scale-[1.06] 
+                               transition-transform duration-[2000ms] ease-out"
+                  />
 
-      <div className="absolute inset-0 rounded-full border border-white/20"></div>
-    </div>
+                  <div className="absolute inset-0 rounded-full border border-white/20"></div>
+                </div>
 
-    {/* Social Links */}
-    <div className="flex justify-center gap-4 mt-6">
+                {/* Social Links */}
+                <div className="flex justify-center gap-4 mt-6">
 
-      {/* WhatsApp */}
-      <a 
-        href="https://wa.me/6289636357091"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="p-3 rounded-full border border-[#8b7355]/20 
-                   hover:bg-[#8b7355]/10 
-                   transition-all duration-300 ease-out
-                   opacity-60 hover:opacity-100 hover:scale-110"
-      >
-        <Phone size={18} />
-      </a>
+                  {/* WhatsApp */}
+                  <a 
+                    href="https://wa.me/6289636357091"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-full border border-[#8b7355]/20 
+                               hover:bg-[#8b7355]/10 
+                               transition-all duration-300 ease-out
+                               opacity-60 hover:opacity-100 hover:scale-110"
+                  >
+                    <Phone size={18} />
+                  </a>
 
-      {/* Instagram */}
-      <a 
-        href="https://instagram.com/_iamwildan_"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="p-3 rounded-full border border-[#8b7355]/20 
-                   hover:bg-[#8b7355]/10 
-                   transition-all duration-300 ease-out
-                   opacity-60 hover:opacity-100 hover:scale-110"
-      >
-        <Instagram size={18} />
-      </a>
+                  {/* Instagram */}
+                  <a 
+                    href="https://instagram.com/_iamwildan_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-full border border-[#8b7355]/20 
+                               hover:bg-[#8b7355]/10 
+                               transition-all duration-300 ease-out
+                               opacity-60 hover:opacity-100 hover:scale-110"
+                  >
+                    <Instagram size={18} />
+                  </a>
 
-      {/* Email */}
-      <a 
-        href="mailto:wildanferdiansyah06@gmail.com"
-        className="p-3 rounded-full border border-[#8b7355]/20 
-                   hover:bg-[#8b7355]/10 
-                   transition-all duration-300 ease-out
-                   opacity-60 hover:opacity-100 hover:scale-110"
-      >
-        <Mail size={18} />
-      </a>
+                  {/* Email */}
+                  <a 
+                    href="mailto:wildanferdiansyah06@gmail.com"
+                    className="p-3 rounded-full border border-[#8b7355]/20 
+                               hover:bg-[#8b7355]/10 
+                               transition-all duration-300 ease-out
+                               opacity-60 hover:opacity-100 hover:scale-110"
+                  >
+                    <Mail size={18} />
+                  </a>
 
-    </div>
+                </div>
 
-  </div>
+              </div>
 
-</div>
+            </div>
             {/* KONTEN PENULIS - 3/5 width */}
             <div className="md:col-span-3 space-y-8">
               <div className="space-y-6 text-[15px] leading-[1.8] opacity-70 font-light">
@@ -769,62 +769,63 @@ useEffect(() => {
 
           <div className="relative">
 
-  <div className={`pointer-events-none absolute left-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-r from-[#1a1816]' : 'bg-gradient-to-r from-[#faf8f5]'} to-transparent z-10`} />
+            <div className={`pointer-events-none absolute left-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-r from-[#1a1816]' : 'bg-gradient-to-r from-[#faf8f5]'} to-transparent z-10`} />
 
-  <div className={`pointer-events-none absolute right-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-l from-[#1a1816]' : 'bg-gradient-to-l from-[#faf8f5]'} to-transparent z-10`} />
+            <div className={`pointer-events-none absolute right-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-l from-[#1a1816]' : 'bg-gradient-to-l from-[#faf8f5]'} to-transparent z-10`} />
 
-  <div
-    ref={carouselRef}
-    className="flex gap-8 overflow-x-scroll scrollbar-hide px-12 mb-16"
-    onMouseEnter={() => setIsPaused(true)}
-    onMouseLeave={() => setIsPaused(false)}
-    onTouchStart={() => setIsPaused(true)}
-    onTouchEnd={() => setIsPaused(false)}
-  >
-    {[...kataPembaca, ...kataPembaca].map((item, index) => (
-      <div
-        key={index}
-        className={`min-w-[320px] md:min-w-[420px] p-8 rounded-2xl
-          ${isDarkMode ? 'bg-[#2a2826]/40' : 'bg-white/60'}
-          backdrop-blur-lg
-          shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]
-          transition-all duration-500 hover:scale-[1.04]`}
-      >
-        <p className="font-serif italic text-lg md:text-xl leading-relaxed opacity-80">
-          "{item.text}"
-        </p>
-        <p className="mt-6 text-xs uppercase tracking-widest opacity-40">
-          — {item.nama}
-        </p>
-      </div>
-    ))}
-  </div>
+            <div
+              ref={carouselRef}
+              className="flex gap-8 overflow-x-scroll scrollbar-hide px-12 mb-16"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onTouchStart={() => setIsPaused(true)}
+              onTouchEnd={() => setIsPaused(false)}
+            >
+              {[...kataPembaca, ...kataPembaca].map((item, index) => (
+                <div
+                  key={index}
+                  className={`min-w-[320px] md:min-w-[420px] p-8 rounded-2xl
+                    ${isDarkMode ? 'bg-[#2a2826]/40' : 'bg-white/60'}
+                    backdrop-blur-lg
+                    shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]
+                    transition-all duration-500 hover:scale-[1.04]`}
+                >
+                  <p className="font-serif italic text-lg md:text-xl leading-relaxed opacity-80">
+                    "{item.text}"
+                  </p>
+                  <p className="mt-6 text-xs uppercase tracking-widest opacity-40">
+                    — {item.nama}
+                  </p>
+                </div>
+              ))}
+            </div>
 
-          <div className={`p-8 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/20' : 'bg-[#f5f0e8]/30'}`}>
-            <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6 text-center">Tinggalkan Jejak</p>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input type="text" 
-                       value={nama} 
-                       onChange={(e) => setNama(e.target.value)}
-                       placeholder="Nama (opsional)"
-                       className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm`} />
-              </div>
-              <div>
-                <textarea value={catatan} 
-                          onChange={(e) => setCatatan(e.target.value)}
-                          placeholder="Tulis sesuatu..."
-                          rows={4}
-                          className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm resize-none`} />
-              </div>
-              <button type="submit" 
-                      disabled={isSubmitting || !catatan.trim()}
-                      className="w-full py-4 bg-[#2b2b2b] text-white hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-2">
-                <Send size={14} />
-                {isSubmitting ? 'Mengirim...' : 'Kirim'}
-              </button>
-            </form>
+            <div className={`p-8 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/20' : 'bg-[#f5f0e8]/30'}`}>
+              <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6 text-center">Tinggalkan Jejak</p>
+              
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <input type="text" 
+                         value={nama} 
+                         onChange={(e) => setNama(e.target.value)}
+                         placeholder="Nama (opsional)"
+                         className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm`} />
+                </div>
+                <div>
+                  <textarea value={catatan} 
+                            onChange={(e) => setCatatan(e.target.value)}
+                            placeholder="Tulis sesuatu..."
+                            rows={4}
+                            className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm resize-none`} />
+                </div>
+                <button type="submit" 
+                        disabled={isSubmitting || !catatan.trim()}
+                        className="w-full py-4 bg-[#2b2b2b] text-white hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-2">
+                  <Send size={14} />
+                  {isSubmitting ? 'Mengirim...' : 'Kirim'}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
@@ -861,61 +862,61 @@ useEffect(() => {
           </div>
 
           {/* Share Section */}
-<div className="mt-16 text-center">
+          <div className="mt-16 text-center">
 
-  <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6">
-    Bagikan Halaman Ini
-  </p>
+            <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6">
+              Bagikan Halaman Ini
+            </p>
 
-  <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-4">
 
-    {/* WhatsApp */}
-    <button
-      onClick={() => handleShare('whatsapp')}
-      className="p-3 rounded-full border border-[#8b7355]/20 
-                 hover:bg-[#8b7355]/10 
-                 transition-all duration-300 ease-out
-                 opacity-60 hover:opacity-100 hover:scale-110"
-    >
-      <MessageCircle size={20} />
-    </button>
+              {/* WhatsApp */}
+              <button
+                onClick={() => handleShare('whatsapp')}
+                className="p-3 rounded-full border border-[#8b7355]/20 
+                           hover:bg-[#8b7355]/10 
+                           transition-all duration-300 ease-out
+                           opacity-60 hover:opacity-100 hover:scale-110"
+              >
+                <MessageCircle size={20} />
+              </button>
 
-    {/* Facebook */}
-    <button
-      onClick={() => handleShare('facebook')}
-      className="p-3 rounded-full border border-[#8b7355]/20 
-                 hover:bg-[#8b7355]/10 
-                 transition-all duration-300 ease-out
-                 opacity-60 hover:opacity-100 hover:scale-110"
-    >
-      <Facebook size={20} />
-    </button>
+              {/* Facebook */}
+              <button
+                onClick={() => handleShare('facebook')}
+                className="p-3 rounded-full border border-[#8b7355]/20 
+                           hover:bg-[#8b7355]/10 
+                           transition-all duration-300 ease-out
+                           opacity-60 hover:opacity-100 hover:scale-110"
+              >
+                <Facebook size={20} />
+              </button>
 
-    {/* Twitter / X */}
-    <button
-      onClick={() => handleShare('twitter')}
-      className="p-3 rounded-full border border-[#8b7355]/20 
-                 hover:bg-[#8b7355]/10 
-                 transition-all duration-300 ease-out
-                 opacity-60 hover:opacity-100 hover:scale-110"
-    >
-      <Twitter size={20} />
-    </button>
+              {/* Twitter / X */}
+              <button
+                onClick={() => handleShare('twitter')}
+                className="p-3 rounded-full border border-[#8b7355]/20 
+                           hover:bg-[#8b7355]/10 
+                           transition-all duration-300 ease-out
+                           opacity-60 hover:opacity-100 hover:scale-110"
+              >
+                <Twitter size={20} />
+              </button>
 
-    {/* Instagram (copy link) */}
-    <button
-      onClick={() => handleShare('instagram')}
-      className="p-3 rounded-full border border-[#8b7355]/20 
-                 hover:bg-[#8b7355]/10 
-                 transition-all duration-300 ease-out
-                 opacity-60 hover:opacity-100 hover:scale-110"
-    >
-      <Instagram size={20} />
-    </button>
+              {/* Instagram (copy link) */}
+              <button
+                onClick={() => handleShare('instagram')}
+                className="p-3 rounded-full border border-[#8b7355]/20 
+                           hover:bg-[#8b7355]/10 
+                           transition-all duration-300 ease-out
+                           opacity-60 hover:opacity-100 hover:scale-110"
+              >
+                <Instagram size={20} />
+              </button>
 
-  </div>
+            </div>
 
-</div>
+          </div>
         </div>
       </section>
 
