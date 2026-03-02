@@ -627,53 +627,76 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-5 gap-12 items-start">
             {/* FOTO PENULIS - 2/5 width */}
-            <div className="md:col-span-2">
-              <div className="relative group">
+<div className="md:col-span-2">
 
-  {/* Soft Background Glow */}
-  <div className="absolute -inset-4 bg-gradient-to-tr from-[#8b7355]/20 via-transparent to-[#8b7355]/10 blur-2xl opacity-60 group-hover:opacity-80 transition duration-700"></div>
+  <div className="flex flex-col items-center relative group">
 
-  {/* Frame */}
-  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl 
-                  shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)] 
-                  group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]
-                  transition-all duration-700">
+    {/* Soft Glow Background */}
+    <div className="absolute w-72 h-72 bg-[#8b7355]/20 blur-3xl rounded-full opacity-60 group-hover:opacity-80 transition duration-700"></div>
 
-    <img 
-      src={FOTO_PENULIS} 
-      alt="Wildan Ferdiansyah" 
-      className="w-full h-full object-cover 
-                 scale-[1.02] 
-                 group-hover:scale-[1.06] 
-                 transition-transform duration-[2000ms] ease-out"
-    />
+    {/* Foto Bulat */}
+    <div className="relative w-56 h-56 rounded-full overflow-hidden 
+                    shadow-[0_20px_60px_-20px_rgba(0,0,0,0.4)]
+                    group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]
+                    transition-all duration-700">
 
-    {/* Cinematic Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-t 
-                    from-black/40 
-                    via-black/10 
-                    to-transparent 
-                    opacity-80"></div>
+      <img 
+        src={FOTO_PENULIS} 
+        alt="Wildan Ferdiansyah"
+        className="w-full h-full object-cover 
+                   scale-[1.02] 
+                   group-hover:scale-[1.06] 
+                   transition-transform duration-[2000ms] ease-out"
+      />
 
-    {/* Subtle Border */}
-    <div className="absolute inset-0 rounded-2xl border border-white/10"></div>
+      <div className="absolute inset-0 rounded-full border border-white/20"></div>
+    </div>
+
+    {/* Social Links */}
+    <div className="flex justify-center gap-4 mt-6">
+
+      {/* WhatsApp */}
+      <a 
+        href="https://wa.me/6289636357091"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-3 rounded-full border border-[#8b7355]/20 
+                   hover:bg-[#8b7355]/10 
+                   transition-all duration-300 ease-out
+                   opacity-60 hover:opacity-100 hover:scale-110"
+      >
+        <Phone size={18} />
+      </a>
+
+      {/* Instagram */}
+      <a 
+        href="https://instagram.com/_iamwildan_"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-3 rounded-full border border-[#8b7355]/20 
+                   hover:bg-[#8b7355]/10 
+                   transition-all duration-300 ease-out
+                   opacity-60 hover:opacity-100 hover:scale-110"
+      >
+        <Instagram size={18} />
+      </a>
+
+      {/* Email */}
+      <a 
+        href="mailto:wildanferdiansyah06@gmail.com"
+        className="p-3 rounded-full border border-[#8b7355]/20 
+                   hover:bg-[#8b7355]/10 
+                   transition-all duration-300 ease-out
+                   opacity-60 hover:opacity-100 hover:scale-110"
+      >
+        <Mail size={18} />
+      </a>
+
+    </div>
 
   </div>
-</div>              
-              {/* Social Links di bawah foto */}
-              <div className="flex justify-center gap-4 mt-6">
-                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-                  <Instagram size={18} />
-                </a>
-                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-                  <Twitter size={18} />
-                </a>
-                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-                  <Mail size={18} />
-                </a>
-              </div>
-            </div>
 
+</div>
             {/* KONTEN PENULIS - 3/5 width */}
             <div className="md:col-span-3 space-y-8">
               <div className="space-y-6 text-[15px] leading-[1.8] opacity-70 font-light">
