@@ -812,20 +812,62 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="flex justify-center gap-4">
-            <button onClick={() => handleShare('whatsapp')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <MessageCircle size={20} />
-            </button>
-            <button onClick={() => handleShare('facebook')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Facebook size={20} />
-            </button>
-            <button onClick={() => handleShare('twitter')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Twitter size={20} />
-            </button>
-            <button onClick={() => handleShare('instagram')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Instagram size={20} />
-            </button>
-          </div>
+          {/* Share Section */}
+<div className="mt-16 text-center">
+
+  <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6">
+    Bagikan Halaman Ini
+  </p>
+
+  <div className="flex justify-center gap-4">
+
+    {/* WhatsApp */}
+    <button
+      onClick={() => handleShare('whatsapp')}
+      className="p-3 rounded-full border border-[#8b7355]/20 
+                 hover:bg-[#8b7355]/10 
+                 transition-all duration-300 ease-out
+                 opacity-60 hover:opacity-100 hover:scale-110"
+    >
+      <MessageCircle size={20} />
+    </button>
+
+    {/* Facebook */}
+    <button
+      onClick={() => handleShare('facebook')}
+      className="p-3 rounded-full border border-[#8b7355]/20 
+                 hover:bg-[#8b7355]/10 
+                 transition-all duration-300 ease-out
+                 opacity-60 hover:opacity-100 hover:scale-110"
+    >
+      <Facebook size={20} />
+    </button>
+
+    {/* Twitter / X */}
+    <button
+      onClick={() => handleShare('twitter')}
+      className="p-3 rounded-full border border-[#8b7355]/20 
+                 hover:bg-[#8b7355]/10 
+                 transition-all duration-300 ease-out
+                 opacity-60 hover:opacity-100 hover:scale-110"
+    >
+      <Twitter size={20} />
+    </button>
+
+    {/* Instagram (copy link) */}
+    <button
+      onClick={() => handleShare('instagram')}
+      className="p-3 rounded-full border border-[#8b7355]/20 
+                 hover:bg-[#8b7355]/10 
+                 transition-all duration-300 ease-out
+                 opacity-60 hover:opacity-100 hover:scale-110"
+    >
+      <Instagram size={20} />
+    </button>
+
+  </div>
+
+</div>
         </div>
       </section>
 
