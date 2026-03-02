@@ -27,7 +27,7 @@
     --input: 30 15% 85%;
     --ring: 30 10% 30%;
     --radius: 0.5rem;
-    
+
     /* Book-specific colors */
     --cream: 40 33% 96%;
     --warm-beige: 35 25% 90%;
@@ -56,7 +56,7 @@
     --border: 30 10% 20%;
     --input: 30 10% 22%;
     --ring: 35 12% 60%;
-    
+
     --cream: 30 10% 10%;
     --warm-beige: 30 12% 16%;
     --soft-brown: 35 15% 55%;
@@ -129,4 +129,14 @@
 ::selection {
   background-color: hsl(35 25% 85%);
   color: hsl(30 10% 15%);
+}
+
+/* Hide horizontal scrollbar (testimonial carousel) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
