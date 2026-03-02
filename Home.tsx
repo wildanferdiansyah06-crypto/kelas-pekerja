@@ -40,6 +40,9 @@ const BUKU_ILUSTRASI = {
   menulisPelan: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop"
 };
 
+// GANTI URL INI DENGAN FOTO KAMU
+const FOTO_PENULIS = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop";
+
 const GRAIN_TEXTURE = "https://www.transparenttextures.com/patterns/cream-paper.png";
 
 const BUKU_LIST = [
@@ -616,45 +619,70 @@ export default function HomePage() {
       </section>
 
       <section id="tentang-penulis" className={`py-32 px-6 ${isDarkMode ? 'bg-[#2a2826]/20' : 'bg-[#f5f0e8]/30'} transition-all duration-1000 ${visibleSections['tentang-penulis'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">Tentang Penulis</p>
             <h3 className="font-serif text-3xl md:text-4xl opacity-90">Wildan Ferdiansyah</h3>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 text-[15px] leading-[1.8] opacity-70 font-light">
-              <p>
-                Bukan penulis profesional. Bukan motivator. Hanya seseorang yang mencoba memahami hidupnya melalui kata-kata.
-              </p>
-              <p>
-                Pernah menjadi barista. Pernah menjadi mural artist. Sekarang menulis di sela-sela waktu—bukan untuk menjadi terkenal, tapi untuk tetap waras.
-              </p>
-              <p className="font-serif italic text-[#8b7355]">
-                "Aku menulis untuk hadir, bukan untuk memukau."
-              </p>
+          <div className="grid md:grid-cols-5 gap-12 items-start">
+            {/* FOTO PENULIS - 2/5 width */}
+            <div className="md:col-span-2">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm shadow-[0_8px_30px_-10px_rgba(0,0,0,0.2)]">
+                <img 
+                  src={FOTO_PENULIS} 
+                  alt="Wildan Ferdiansyah" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+              </div>
+              
+              {/* Social Links di bawah foto */}
+              <div className="flex justify-center gap-4 mt-6">
+                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
+                  <Instagram size={18} />
+                </a>
+                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
+                  <Twitter size={18} />
+                </a>
+                <a href="#" className="p-2 rounded-full border border-[#8b7355]/20 hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
+                  <Mail size={18} />
+                </a>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 rounded-lg border border-[#8b7355]/20">
-                <Coffee size={20} className="opacity-40" />
-                <div>
-                  <p className="text-xs uppercase tracking-wider opacity-40">Pekerjaan</p>
-                  <p className="text-sm">Barista</p>
-                </div>
+            {/* KONTEN PENULIS - 3/5 width */}
+            <div className="md:col-span-3 space-y-8">
+              <div className="space-y-6 text-[15px] leading-[1.8] opacity-70 font-light">
+                <p className="first-letter:text-5xl first-letter:font-serif first-letter:float-left first-letter:mr-3 first-letter:mt-[-4px] first-letter:text-[#8b7355] first-letter:opacity-60">
+                  Bukan penulis profesional. Bukan motivator. Hanya seseorang yang mencoba memahami hidupnya melalui kata-kata.
+                </p>
+                <p>
+                  Pernah menjadi barista. Pernah menjadi mural artist. Sekarang menulis di sela-sela waktu—bukan untuk menjadi terkenal, tapi untuk tetap waras.
+                </p>
               </div>
-              <div className="flex items-center gap-4 p-4 rounded-lg border border-[#8b7355]/20">
-                <Feather size={20} className="opacity-40" />
-                <div>
-                  <p className="text-xs uppercase tracking-wider opacity-40">Profesi</p>
-                  <p className="text-sm">Mural Artist</p>
-                </div>
+
+              <div className={`p-6 rounded-lg ${isDarkMode ? 'bg-[#1a1816]/50' : 'bg-white/50'} border ${borderColor}`}>
+                <p className="font-serif italic text-lg text-[#8b7355] opacity-80">
+                  "Aku menulis untuk hadir, bukan untuk memukau."
+                </p>
               </div>
-              <div className="flex items-center gap-4 p-4 rounded-lg border border-[#8b7355]/20">
-                <BookOpen size={20} className="opacity-40" />
-                <div>
-                  <p className="text-xs uppercase tracking-wider opacity-40">Sekarang</p>
-                  <p className="text-sm">Penulis</p>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/50' : 'bg-[#f5f0e8]/50'} text-center`}>
+                  <Coffee size={24} className="mx-auto mb-2 opacity-40" />
+                  <p className="text-[10px] uppercase tracking-wider opacity-40 mb-1">Dulu</p>
+                  <p className="text-sm font-medium">Barista</p>
+                </div>
+                <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/50' : 'bg-[#f5f0e8]/50'} text-center`}>
+                  <Feather size={24} className="mx-auto mb-2 opacity-40" />
+                  <p className="text-[10px] uppercase tracking-wider opacity-40 mb-1">Juga</p>
+                  <p className="text-sm font-medium">Mural Artist</p>
+                </div>
+                <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/50' : 'bg-[#f5f0e8]/50'} text-center`}>
+                  <BookOpen size={24} className="mx-auto mb-2 opacity-40" />
+                  <p className="text-[10px] uppercase tracking-wider opacity-40 mb-1">Sekarang</p>
+                  <p className="text-sm font-medium">Penulis</p>
                 </div>
               </div>
             </div>
@@ -734,41 +762,3 @@ export default function HomePage() {
                         className="p-2 rounded-full hover:bg-[#8b7355]/10 transition-colors">
                   {copiedBank === rek.bank ? <Check size={18} className="text-green-600" /> : <Copy size={18} className="opacity-60" />}
                 </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-center gap-4">
-            <button onClick={() => handleShare('whatsapp')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <MessageCircle size={20} />
-            </button>
-            <button onClick={() => handleShare('facebook')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Facebook size={20} />
-            </button>
-            <button onClick={() => handleShare('twitter')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Twitter size={20} />
-            </button>
-            <button onClick={() => handleShare('instagram')} className="p-3 rounded-full hover:bg-[#8b7355]/10 transition-colors opacity-60 hover:opacity-100">
-              <Instagram size={20} />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <footer className={`py-12 px-6 border-t ${borderColor}`}>
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="font-serif text-lg tracking-wider opacity-80 mb-4">Sepucuk Surat</p>
-          <p className="text-xs opacity-40 mb-8">
-            Dari hati ke hati. Dari malam ke malam.
-          </p>
-          
-          <div className="flex justify-center gap-6 text-xs opacity-40">
-            <span>© 2024 Wildan Ferdiansyah</span>
-            <span>•</span>
-            <span>Dibuat dengan lelah dan kopi</span>
-          </div>
-        </div>
-      </footer>
-    </main>
-  );
-}
