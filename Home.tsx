@@ -41,7 +41,7 @@ const BUKU_ILUSTRASI = {
 };
 
 // GANTI URL INI DENGAN FOTO KAMU
-const FOTO_PENULIS = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop";
+const FOTO_PENULIS = "/wildan.png";
 
 const GRAIN_TEXTURE = "https://www.transparenttextures.com/patterns/cream-paper.png";
 
