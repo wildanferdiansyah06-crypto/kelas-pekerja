@@ -82,7 +82,7 @@ const BUKU_LIST = [
     id: 4,
     judul: "Kami Menulis Pelan",
     link: "https://drive.google.com/file/d/1Mc6pOQ5z2xSn8Wmhf65kdgTrv5T5EzPm/view?usp=drivesdk",
-    deskripsi: "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses dan kekuatan kata-kata yang diucapkan dengan lirih.",
+    deskripsi: "K "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses dan kekuatan kata-kata yang diucapkan dengan lirih.",
     halaman: "41",
     readTime: "22 menit",
     ilustrasi: BUKU_ILUSTRASI.menulisPelan,
@@ -202,7 +202,7 @@ export default function HomePage() {
 
   // Effect untuk mendapatkan lokasi user
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           try {
@@ -257,9 +257,11 @@ export default function HomePage() {
       { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
 
-    document.querySelectorAll("section[id]").forEach((section) => {
-      observer.observe(section);
-    });
+    if (typeof document !== "undefined") {
+      document.querySelectorAll("section[id]").forEach((section) => {
+        observer.observe(section);
+      });
+    }
 
     return () => observer.disconnect();
   }, []);
