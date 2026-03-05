@@ -8,7 +8,6 @@ import {
   Moon, 
   Heart,
   ArrowUpRight,
-  Send,
   Sparkles,
   Clock,
   Music,
@@ -138,8 +137,6 @@ const REKENING = [
   }
 ];
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3RbaT1I0ItdqJKSTCJdJ5kc105vi6pqmeFRAUkZxCneBY4UcmWE7np47uHPGCE/exec";
-
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -151,20 +148,8 @@ export default function HomePage() {
   const [visibleSections, setVisibleSections] = useState({});
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [copiedBank, setCopiedBank] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const [nama, setNama] = useState("");
-  const [catatan, setCatatan] = useState("");
-  const [kataPembaca, setKataPembaca] = useState([
-    { id: 1, text: "Aku biasanya susah selesain buku, tapi yang ini beda. Bukan karena cepat—tapi karena aku nggak pengen buru-buru.", nama: "Rizky" },
-    { id: 2, text: "Simple. Nggak ribet. Kayak ngobrol sama diri sendiri yang lebih jujur.", nama: "Anisa" },
-    { id: 3, text: "Baca ini sambil ngopi sore, rasanya kayak ada yang ngerti tanpa perlu jelasin apa-apa.", nama: "Dian" },
-    { id: 4, text: "Tidak mencoba menggurui, hanya berbagi. Itu yang bikin nyaman.", nama: "Bagas" },
-    { id: 5, text: "Setiap halaman kayak pelukan hangat yang nggak bikin sesak.", nama: "Sinta" },
-    { id: 6, text: "Baru pertama kali ngerasa gak sendirian dalam kesendirian.", nama: "Reza" }
-  ]);
   const carouselRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const handleEscape = (e) => {
@@ -206,28 +191,6 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const container = carouselRef.current;
-    if (!container) return;
-
-    let animationFrame;
-
-    const scroll = () => {
-      if (!isPaused) {
-        container.scrollLeft += 0.5;
-
-        if (container.scrollLeft >= container.scrollWidth / 2) {
-          container.scrollLeft = 0;
-        }
-      }
-      animationFrame = requestAnimationFrame(scroll);
-    };
-
-    animationFrame = requestAnimationFrame(scroll);
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isPaused]);
-
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -257,44 +220,6 @@ export default function HomePage() {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!catatan.trim() || isSubmitting) return;
-
-  setIsSubmitting(true);
-
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        nama: nama.trim() || "Anonim",
-        text: catatan,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      const newComment = {
-        id: Date.now(),
-        text: catatan,
-        nama: nama.trim() || "Anonim",
-      };
-
-      setKataPembaca((prev) => [newComment, ...prev]);
-      setNama("");
-      setCatatan("");
-    } else {
-      alert("Gagal mengirim.");
-    }
-  } catch (error) {
-    console.error(error);
-    alert("Terjadi kesalahan.");
-  }
-
-  setIsSubmitting(false);
-};
 
   const handleShare = (platform) => {
     const url = encodeURIComponent(window.location.href);
@@ -415,7 +340,7 @@ export default function HomePage() {
         {isMenuOpen && (
           <div className={`absolute top-full left-0 right-0 ${isDarkMode ? 'bg-[#1a1816]/95' : 'bg-[#faf8f5]/95'} backdrop-blur-md border-b ${borderColor} py-6 px-6`}>
             <div className="max-w-4xl mx-auto flex flex-col gap-4 text-center">
-              {['tentang', 'sekilas-isi', 'koleksi', 'catatan-kecil', 'tentang-penulis', 'testimonial'].map((item) => (
+              {['tentang', 'sekilas-isi', 'koleksi', 'catatan-kecil', 'tentang-penulis'].map((item) => (
                 <button key={item} onClick={() => scrollToSection(item)} 
                         className="py-2 text-sm tracking-[0.2em] uppercase opacity-60 hover:opacity-100 transition-opacity">
                   {item.replace(/-/g, ' ')}
@@ -782,77 +707,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="testimonial" className={`py-32 px-6 transition-all duration-1000 ${visibleSections['testimonial'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">Kata Pembaca</p>
-            <h3 className="font-serif text-3xl md:text-4xl opacity-90">Yang Mereka Katakan</h3>
-          </div>
-
-          <div className="relative">
-
-            <div className={`pointer-events-none absolute left-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-r from-[#1a1816]' : 'bg-gradient-to-r from-[#faf8f5]'} to-transparent z-10`} />
-
-            <div className={`pointer-events-none absolute right-0 top-0 h-full w-24 ${isDarkMode ? 'bg-gradient-to-l from-[#1a1816]' : 'bg-gradient-to-l from-[#faf8f5]'} to-transparent z-10`} />
-
-            <div
-              ref={carouselRef}
-              className="flex gap-8 overflow-x-scroll scrollbar-hide px-12 mb-16"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-              onTouchStart={() => setIsPaused(true)}
-              onTouchEnd={() => setIsPaused(false)}
-            >
-              {[...kataPembaca, ...kataPembaca].map((item, index) => (
-                <div
-                  key={index}
-                  className={`min-w-[320px] md:min-w-[420px] p-8 rounded-2xl
-                    ${isDarkMode ? 'bg-[#2a2826]/40' : 'bg-white/60'}
-                    backdrop-blur-lg
-                    shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)]
-                    transition-all duration-500 hover:scale-[1.04]`}
-                >
-                  <p className="font-serif italic text-lg md:text-xl leading-relaxed opacity-80">
-                    "{item.text}"
-                  </p>
-                  <p className="mt-6 text-xs uppercase tracking-widest opacity-40">
-                    — {item.nama}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className={`p-8 rounded-lg ${isDarkMode ? 'bg-[#2a2826]/20' : 'bg-[#f5f0e8]/30'}`}>
-              <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-6 text-center">Tinggalkan Jejak</p>
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <input type="text" 
-                         value={nama} 
-                         onChange={(e) => setNama(e.target.value)}
-                         placeholder="Nama (opsional)"
-                         className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm`} />
-                </div>
-                <div>
-                  <textarea value={catatan} 
-                            onChange={(e) => setCatatan(e.target.value)}
-                            placeholder="Tulis sesuatu..."
-                            rows={4}
-                            className={`w-full p-4 rounded-lg ${inputBg} border ${borderColor} placeholder:opacity-40 focus:outline-none focus:border-[#8b7355]/50 transition-colors text-sm resize-none`} />
-                </div>
-                <button type="submit" 
-                        disabled={isSubmitting || !catatan.trim()}
-                        className="w-full py-4 bg-[#2b2b2b] text-white hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-2">
-                  <Send size={14} />
-                  {isSubmitting ? 'Mengirim...' : 'Kirim'}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={`py-32 px-6 ${isDarkMode ? 'bg-[#2a2826]/30' : 'bg-[#f5f0e8]/20'} transition-all duration-1000 ${visibleSections['testimonial'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <section className={`py-32 px-6 ${isDarkMode ? 'bg-[#2a2826]/30' : 'bg-[#f5f0e8]/20'} transition-all duration-1000 ${visibleSections['tentang-penulis'] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-2xl mx-auto text-center">
           <div className="w-12 h-px bg-[#8b7355]/30 mx-auto mb-12"></div>
           
