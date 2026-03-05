@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./Home";
 import Rak from "./Rak";
 
@@ -7,10 +7,10 @@ return (
 <Router>
 <Routes>
 
-    {/* Halaman Utama */}
+    {/* Halaman utama */}
     <Route path="/" element={<HomePage />} />
 
-    {/* Halaman Rak Buku */}
+    {/* Halaman rak buku */}
     <Route path="/rak" element={<Rak />} />
 
   </Routes>
