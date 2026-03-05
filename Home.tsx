@@ -235,17 +235,6 @@ export default function HomePage() {
     });
   };
 
-  // Format tanggal
-  const formatDate = (date) => {
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    return date.toLocaleDateString('id-ID', options);
-  };
-
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') closeModal();
@@ -410,6 +399,7 @@ export default function HomePage() {
       <div className="fixed top-0 left-0 h-[2px] bg-[#8b7355] z-[60] transition-all duration-500" 
            style={{ width: `${(Object.keys(readingProgress).length / BUKU_LIST.length) * 100}%` }}></div>
 
+      {/* Navbar dengan jam di sebelah kanan atas */}
       <nav className={`fixed top-0 left-0 right-0 z-50 ${isDarkMode ? 'bg-[#1a1816]/90' : 'bg-[#faf8f5]/90'} backdrop-blur-sm border-b ${borderColor} transition-all duration-500`}>
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
@@ -417,11 +407,13 @@ export default function HomePage() {
             Sepucuk Surat
           </button>
           
-          <div className="flex items-center gap-4">
-            {/* Widget Jam */}
-            <div className={`hidden md:flex flex-col items-end text-xs ${isDarkMode ? 'text-[#e8e0d5]/60' : 'text-[#2b2b2b]/60'}`}>
-              <span className="font-mono text-sm tracking-wider">{formatTime(currentTime)}</span>
-              <span className="text-[10px] uppercase tracking-wider">{userLocation}</span>
+          <div className="flex items-center gap-3">
+            {/* Widget Jam - Desktop & Mobile sama */}
+            <div className={`flex items-center gap-2 text-xs ${isDarkMode ? 'text-[#e8e0d5]/70' : 'text-[#2b2b2b]/70'}`}>
+              <Clock size={14} className="opacity-50" />
+              <span className="font-mono tracking-wider">{formatTime(currentTime)}</span>
+              <span className="opacity-50">•</span>
+              <span className="text-[10px] uppercase tracking-wider hidden sm:inline">{userLocation}</span>
             </div>
             
             <button onClick={toggleDarkMode} 
@@ -433,12 +425,6 @@ export default function HomePage() {
               <Menu size={20} />
             </button>
           </div>
-        </div>
-
-        {/* Widget Jam Mobile */}
-        <div className={`md:hidden px-6 pb-3 text-center ${isDarkMode ? 'text-[#e8e0d5]/60' : 'text-[#2b2b2b]/60'}`}>
-          <span className="font-mono text-sm tracking-wider">{formatTime(currentTime)}</span>
-          <span className="text-[10px] uppercase tracking-wider ml-2">• {userLocation}</span>
         </div>
 
         {isMenuOpen && (
@@ -462,19 +448,6 @@ export default function HomePage() {
         </div>
         
         <div className="relative z-10 text-center px-6 max-w-3xl mx-auto pt-20">
-          {/* Jam di Hero Section */}
-          <div className={`mb-8 p-4 rounded-lg ${isDarkMode ? 'bg-[#1a1816]/30' : 'bg-white/30'} backdrop-blur-sm inline-block`}>
-            <div className={`text-xs uppercase tracking-[0.3em] mb-1 ${isDarkMode ? 'text-[#e8e0d5]/60' : 'text-[#2b2b2b]/60'}`}>
-              {formatDate(currentTime)}
-            </div>
-            <div className="font-mono text-3xl md:text-4xl tracking-wider opacity-90">
-              {formatTime(currentTime)}
-            </div>
-            <div className={`text-xs mt-1 ${isDarkMode ? 'text-[#e8e0d5]/40' : 'text-[#2b2b2b]/40'}`}>
-              {userLocation}
-            </div>
-          </div>
-
           <p className="text-[10px] tracking-[0.5em] uppercase mb-8 animate-fade-in-slow"
              style={{ color: isDarkMode ? '#e8e0d5' : '#2b2b2b', opacity: 0.6 }}>
             Sebuah Buku Oleh
