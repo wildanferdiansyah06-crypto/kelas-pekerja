@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { BUKU } from "./rak-data";
+import { BUKU } from "./buku-data";
 
 export default function Reader() {
 
