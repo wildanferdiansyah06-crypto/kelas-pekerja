@@ -45,49 +45,52 @@ const FOTO_PENULIS = "/wildan.png";
 const GRAIN_TEXTURE = "https://www.transparenttextures.com/patterns/cream-paper.png";
 
 const BUKU_LIST = [
-  {
-    id: 1,
-    judul: "Seni Menyeduh Kehidupan",
-    link: "https://drive.google.com/file/d/17Zd1FKFK4X_vmKhITFU5lXihOmMEkezI/view?usp=drivesdk",
-    deskripsi: "Catatan tentang bagaimana kita menyikapi hidup dengan cara yang lebih gentle dan penuh makna, seperti menyeduh kopi yang sempurna.",
-    halaman: "45",
-    readTime: "25 menit",
-    ilustrasi: BUKU_ILUSTRASI.seniMenyeduh,
-    tema: "Kehidupan",
-    preview: "Di dalamnya kamu akan menemukan catatan-catatan personal yang jujur tentang bagaimana kita bisa menyikapi hari-hari berat dengan lebih lembut. Bukan panduan, hanya berbagi."
-  },
-  {
-    id: 2,
-    judul: "Di Balik Bar",
-    link: "https://drive.google.com/file/d/1N1zwGLqkbVQOzFV_fpRXJxQdawbgZGAl/view?usp=drivesdk",
-    deskripsi: "Cerita-cerita dari balik meja bar, tempat di mana setiap cangkir memiliki kisahnya sendiri dan setiap penumpang membawa dunia mereka.",
-    halaman: "38",
-    readTime: "20 menit",
-    ilustrasi: BUKU_ILUSTRASI.diBalikBar,
-    tema: "Cerita",
-    preview: "Kumpulan cerita pendek dari sudut pandang seorang barista. Tentang orang-orang yang datang dan pergi, tentang percakapan yang tertinggal di uap kopi."
-  },
-  {
-    id: 3,
-    judul: "Di Atas Cangkir Yang Sama",
-    link: "https://drive.google.com/file/d/1cqRI8rfb7_0MIUXLekZJtV0xTFKXr-CD/view?usp=drivesdk",
-    deskripsi: "Renungan tentang konsistensi, kehadiran, dan menemukan keindahan dalam pengulangan yang tampak monoton.",
-    halaman: "52",
-    readTime: "30 menit",
-    ilustrasi: BUKU_ILUSTRASI.diAtasCangkir,
-    tema: "Renungan",
-    preview: "Tentang menemukan makna dalam hal-hal yang kita ulang setiap hari. Tentang cangkir yang sama, rasa yang familiar, dan ketenangan yang ditemukan dalam rutinitas."
-  },
-  {
- id: 4,
- judul: "Kami Menulis Pelan",
- link: "https://drive.google.com/file/d/1Mc6pOQ5z2xSn8Wmhf65kdgTrv5T5EzPm/view?usp=drivesdk",
- deskripsi: "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses dan kekuatan kata-kata yang diucapkan dengan lirih.",
- halaman: "41",
- readTime: "22 menit",
- ilustrasi: BUKU_ILUSTRASI.menulisPelan,
- tema: "Proses",
- preview: "Tulisan-tulisan yang tidak buru-buru. Yang mengalir seperti air, yang hadir seperti napas. Untuk mereka yang percaya bahwa yang pelan juga bisa sampai."
+{
+id: 1,
+judul: "Seni Menyeduh Kehidupan",
+link: "/buku/1",
+deskripsi: "Catatan tentang bagaimana kita menyikapi hidup dengan cara yang lebih gentle dan penuh makna, seperti menyeduh kopi yang sempurna.",
+halaman: "45",
+readTime: "25 menit",
+ilustrasi: BUKU_ILUSTRASI.seniMenyeduh,
+tema: "Kehidupan",
+preview: "Di dalamnya kamu akan menemukan catatan-catatan personal yang jujur tentang bagaimana kita bisa menyikapi hari-hari berat dengan lebih lembut. Bukan panduan, hanya berbagi."
+},
+
+{
+id: 2,
+judul: "Di Balik Bar",
+link: "/buku/2",
+deskripsi: "Cerita-cerita dari balik meja bar, tempat di mana setiap cangkir memiliki kisahnya sendiri dan setiap penumpang membawa dunia mereka.",
+halaman: "38",
+readTime: "20 menit",
+ilustrasi: BUKU_ILUSTRASI.diBalikBar,
+tema: "Cerita",
+preview: "Kumpulan cerita pendek dari sudut pandang seorang barista. Tentang orang-orang yang datang dan pergi, tentang percakapan yang tertinggal di uap kopi."
+},
+
+{
+id: 3,
+judul: "Di Atas Cangkir Yang Sama",
+link: "/buku/3",
+deskripsi: "Renungan tentang konsistensi, kehadiran, dan menemukan keindahan dalam pengulangan yang tampak monoton.",
+halaman: "52",
+readTime: "30 menit",
+ilustrasi: BUKU_ILUSTRASI.diAtasCangkir,
+tema: "Renungan",
+preview: "Tentang menemukan makna dalam hal-hal yang kita ulang setiap hari. Tentang cangkir yang sama, rasa yang familiar, dan ketenangan yang ditemukan dalam rutinitas."
+},
+
+{
+id: 4,
+judul: "Kami Menulis Pelan",
+link: "/buku/4",
+deskripsi: "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses dan kekuatan kata-kata yang diucapkan dengan lirih.",
+halaman: "41",
+readTime: "22 menit",
+ilustrasi: BUKU_ILUSTRASI.menulisPelan,
+tema: "Proses",
+preview: "Tulisan-tulisan yang tidak buru-buru. Yang mengalir seperti air, yang hadir seperti napas. Untuk mereka yang percaya bahwa yang pelan juga bisa sampai."
 }
 ];
 
