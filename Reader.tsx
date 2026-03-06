@@ -1,37 +1,11 @@
 import { useParams, Link } from "react-router-dom";
-
-const BUKU = [
-{
-id: "1",
-judul: "Seni Menyeduh Kehidupan",
-penulis: "Wildan Ferdiansyah",
-file: "/buku/seni-menyeduh-kehidupan.pdf"
-},
-{
-id: "2",
-judul: "Di Balik Bar",
-penulis: "Wildan Ferdiansyah",
-file: "/buku/di-balik-bar.pdf"
-},
-{
-id: "3",
-judul: "Di Atas Cangkir Yang Sama",
-penulis: "Wildan Ferdiansyah",
-file: "/buku/di-atas-cangkir.pdf"
-},
-{
-id: "4",
-judul: "Kami Menulis Pelan",
-penulis: "Wildan Ferdiansyah",
-file: "/buku/kami-menulis-pelan.pdf"
-}
-];
+import { BUKU } from "./rak-data";
 
 export default function Reader() {
 
 const { id } = useParams();
 
-const buku = BUKU.find((b) => b.id === id);
+const buku = BUKU.find((b) => String(b.id) === id);
 
 if (!buku) {
 return (
@@ -46,7 +20,6 @@ return (
 
   <div className="max-w-5xl mx-auto px-6 py-8">
 
-    {/* BACK BUTTON */}
     <Link
       to="/rak"
       className="text-sm opacity-70 hover:opacity-100"
@@ -54,7 +27,6 @@ return (
       ← Kembali ke Rak
     </Link>
 
-    {/* TITLE */}
     <h1 className="text-3xl md:text-4xl font-serif mt-4">
       {buku.judul}
     </h1>
@@ -63,7 +35,6 @@ return (
       oleh {buku.penulis}
     </p>
 
-    {/* PDF VIEWER */}
     <div className="mt-6 rounded-xl overflow-hidden shadow-lg">
 
       <iframe
