@@ -1,63 +1,36 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Plus } from "lucide-react";
-
-const BUKU = [
-{
-id: 1,
-judul: "Seni Menyeduh Kehidupan",
-penulis: "Wildan Ferdiansyah",
-cover: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800"
-},
-{
-id: 2,
-judul: "Di Balik Bar",
-penulis: "Wildan Ferdiansyah",
-cover: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800"
-},
-{
-id: 3,
-judul: "Di Atas Cangkir Yang Sama",
-penulis: "Wildan Ferdiansyah",
-cover: "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=800"
-},
-{
-id: 4,
-judul: "Kami Menulis Pelan",
-penulis: "Wildan Ferdiansyah",
-cover: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800"
-}
-];
+import { ArrowLeft, BookOpen, X } from "lucide-react";
+import { BUKU } from "./rak-data";
 
 export default function Rak() {
+
+const [selectedBook, setSelectedBook] = useState<any>(null);
+
+const closeModal = () => {
+setSelectedBook(null);
+};
 
 return (
 <div className="min-h-screen bg-[#f6f4ef] dark:bg-[#1c1c1c] text-black dark:text-white">
 
   <div className="max-w-5xl mx-auto px-5 py-8">
 
-    {/* HEADER BUTTONS */}
-    <div className="flex items-center gap-3 mb-8 flex-wrap">
+    {/* HEADER */}
+    <div className="flex items-center justify-between mb-8">
 
       <Link
         to="/"
-        className="flex items-center gap-2 px-3 py-1.5 text-xs md:text-sm rounded-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 transition"
+        className="flex items-center gap-2 text-sm opacity-70 hover:opacity-100"
       >
-        <ArrowLeft size={14} />
+        <ArrowLeft size={16} />
         Beranda
       </Link>
-
-      <a
-        href="mailto:wildanferdiansyah06@gmail.com"
-        className="flex items-center gap-2 px-3 py-1.5 text-xs md:text-sm rounded-full border border-current hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition"
-      >
-        <Plus size={14} />
-        Tambahkan Buku
-      </a>
 
     </div>
 
     {/* TITLE */}
-    <div className="mb-8">
+    <div className="mb-10">
 
       <h1 className="text-3xl md:text-4xl font-serif">
         Rak Buku
@@ -70,15 +43,15 @@ return (
 
     </div>
 
-    {/* GRID BUKU */}
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+    {/* GRID */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
       {BUKU.map((buku) => (
 
-        <Link
+        <button
           key={buku.id}
-          to={`/buku/${buku.id}`}
-          className="group"
+          onClick={() => setSelectedBook(buku)}
+          className="text-left group"
         >
 
           <div className="bg-white dark:bg-[#2a2a2a] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition flex flex-col">
@@ -108,18 +81,77 @@ return (
 
           </div>
 
-        </Link>
+        </button>
 
       ))}
 
     </div>
 
-    {/* FOOTER */}
-    <div className="text-center mt-14 text-xs opacity-40">
-      Kelas Pekerja — Arsip Sunyi Orang-Orang yang Tetap Bekerja
+  </div>
+
+  {/* MODAL */}
+  {selectedBook && (
+
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
+
+      <div className="bg-white dark:bg-[#1f1f1f] max-w-lg w-full rounded-xl overflow-hidden shadow-xl">
+
+        {/* IMAGE */}
+        <div className="h-48 overflow-hidden">
+
+          <img
+            src={selectedBook.cover}
+            className="w-full h-full object-cover"
+          />
+
+        </div>
+
+        {/* CONTENT */}
+        <div className="p-6">
+
+          <div className="flex justify-between items-start mb-3">
+
+            <h2 className="text-xl font-serif">
+              {selectedBook.judul}
+            </h2>
+
+            <button onClick={closeModal}>
+              <X size={18} />
+            </button>
+
+          </div>
+
+          <p className="text-sm opacity-60 mb-4">
+            oleh {selectedBook.penulis}
+          </p>
+
+          <p className="text-sm leading-relaxed opacity-80 mb-4">
+            {selectedBook.preview}
+          </p>
+
+          <div className="flex items-center gap-4 text-xs opacity-60 mb-6">
+
+            <span>{selectedBook.halaman} halaman</span>
+            <span>•</span>
+            <span>{selectedBook.readTime}</span>
+
+          </div>
+
+          <Link
+            to={`/buku/${selectedBook.id}`}
+            className="flex items-center justify-center gap-2 bg-black text-white dark:bg-white dark:text-black py-2 rounded-lg text-sm hover:opacity-90 transition"
+          >
+            <BookOpen size={16} />
+            Baca Buku
+          </Link>
+
+        </div>
+
+      </div>
+
     </div>
 
-  </div>
+  )}
 
 </div>
 
