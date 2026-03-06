@@ -1,165 +1,81 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Plus, X } from "lucide-react";
-import { BUKU } from "./buku-data";
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
-export default function Rak() {
+const BUKU = [
+{
+id: "1",
+judul: "Seni Menyeduh Kehidupan",
+penulis: "Wildan Ferdiansyah",
+file: "/buku/seni-menyeduh-kehidupan.pdf"
+},
+{
+id: "2",
+judul: "Di Balik Bar",
+penulis: "Wildan Ferdiansyah",
+file: "/buku/di-balik-bar.pdf"
+},
+{
+id: "3",
+judul: "Di Atas Cangkir Yang Sama",
+penulis: "Wildan Ferdiansyah",
+file: "/buku/di-atas-cangkir.pdf"
+},
+{
+id: "4",
+judul: "Kami Menulis Pelan",
+penulis: "Wildan Ferdiansyah",
+file: "/buku/kami-menulis-pelan.pdf"
+}
+];
 
-const [selectedBook, setSelectedBook] = useState<any>(null);
+export default function Reader() {
 
-const closeModal = () => {
-setSelectedBook(null);
-};
+const { id } = useParams();
+const buku = BUKU.find((b) => b.id === id);
+
+if (!buku) {
+return (
+<div className="min-h-screen flex items-center justify-center">
+Buku tidak ditemukan
+</div>
+);
+}
 
 return (
 <div className="min-h-screen bg-[#f6f4ef] dark:bg-[#1c1c1c] text-black dark:text-white">
 
-  <div className="max-w-5xl mx-auto px-5 py-8">
+  <div className="max-w-6xl mx-auto px-5 py-8">
 
-    {/* HEADER BUTTONS */}
-    <div className="flex items-center gap-3 mb-8">
-
-      <Link
-        to="/"
-        className="flex items-center gap-2 px-4 py-2 text-sm rounded-full bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition"
-      >
-        <ArrowLeft size={14}/>
-        Kembali ke Beranda
-      </Link>
-
-      <a
-        href="mailto:wildanferdiansyah06@gmail.com?subject=Tambah Buku Kelas Pekerja"
-        className="flex items-center gap-2 px-4 py-2 text-sm rounded-full border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition"
-      >
-        <Plus size={14}/>
-        Tambahkan Bukumu
-      </a>
-
-    </div>
+    {/* HEADER */}
+    <Link
+      to="/rak"
+      className="flex items-center gap-2 text-sm opacity-70 hover:opacity-100 mb-6"
+    >
+      <ArrowLeft size={16}/>
+      Kembali ke Rak
+    </Link>
 
     {/* TITLE */}
-    <div className="mb-10">
+    <h1 className="text-3xl md:text-4xl font-serif">
+      {buku.judul}
+    </h1>
 
-      <h1 className="text-3xl md:text-4xl font-serif">
-        Rak Buku
-      </h1>
+    <p className="opacity-60 mt-2 mb-6">
+      oleh {buku.penulis}
+    </p>
 
-      <p className="opacity-60 mt-2 text-sm max-w-md">
-        Tempat buku-buku kecil yang lahir dari malam panjang,
-        kopi hangat, dan mereka yang tetap menulis meski lelah bekerja.
-      </p>
+    {/* PDF */}
+    <div className="w-full h-[90vh] rounded-xl overflow-hidden shadow-lg bg-white">
 
-    </div>
-
-    {/* GRID */}
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-
-      {BUKU.map((buku) => (
-
-        <button
-          key={buku.id}
-          onClick={() => setSelectedBook(buku)}
-          className="text-left group"
-        >
-
-          <div className="bg-white dark:bg-[#2a2a2a] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition flex flex-col">
-
-            {/* COVER */}
-            <div className="aspect-[3/4] overflow-hidden">
-
-              <img
-                src={buku.cover}
-                className="w-full h-full object-cover group-hover:scale-105 transition"
-              />
-
-            </div>
-
-            {/* INFO */}
-            <div className="p-3">
-
-              <h3 className="text-sm font-medium leading-snug">
-                {buku.judul}
-              </h3>
-
-              <p className="text-xs opacity-60 mt-1">
-                {buku.penulis}
-              </p>
-
-            </div>
-
-          </div>
-
-        </button>
-
-      ))}
+      <embed
+        src={buku.file}
+        type="application/pdf"
+        className="w-full h-full"
+      />
 
     </div>
 
   </div>
-
-  {/* MODAL */}
-  {selectedBook && (
-
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
-
-      <div className="bg-white dark:bg-[#1f1f1f] max-w-lg w-full rounded-xl overflow-hidden shadow-xl">
-
-        {/* IMAGE */}
-        <div className="h-48 overflow-hidden">
-
-          <img
-            src={selectedBook.cover}
-            className="w-full h-full object-cover"
-          />
-
-        </div>
-
-        {/* CONTENT */}
-        <div className="p-6">
-
-          <div className="flex justify-between items-start mb-3">
-
-            <h2 className="text-xl font-serif">
-              {selectedBook.judul}
-            </h2>
-
-            <button onClick={closeModal}>
-              <X size={18}/>
-            </button>
-
-          </div>
-
-          <p className="text-sm opacity-60 mb-4">
-            oleh {selectedBook.penulis}
-          </p>
-
-          <p className="text-sm leading-relaxed opacity-80 mb-4">
-            {selectedBook.preview}
-          </p>
-
-          <div className="flex items-center gap-4 text-xs opacity-60 mb-6">
-
-            <span>{selectedBook.halaman} halaman</span>
-            <span>•</span>
-            <span>{selectedBook.readTime}</span>
-
-          </div>
-
-          <Link
-            to={`/buku/${selectedBook.id}`}
-            className="flex items-center justify-center gap-2 bg-black text-white dark:bg-white dark:text-black py-2 rounded-lg text-sm hover:opacity-90 transition"
-          >
-            <BookOpen size={16}/>
-            Baca Buku
-          </Link>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  )}
 
 </div>
 
