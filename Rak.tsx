@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, X } from "lucide-react";
-import { BUKU } from "./rak-data";
+import { BUKU } from "./buku-data";
 
 export default function Rak() {
 
