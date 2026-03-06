@@ -12,13 +12,10 @@ return (
 
   <Routes>
 
-    {/* Halaman utama */}
     <Route path="/" element={<HomePage />} />
 
-    {/* Halaman rak buku */}
     <Route path="/rak" element={<Rak />} />
 
-    {/* Halaman membaca buku */}
     <Route path="/buku/:id" element={<Reader />} />
 
   </Routes>
