@@ -86,29 +86,27 @@ className="text-left group"
 
 «»
 
-<div className="bg-white dark:bg-[#2a2a2a] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition flex flex-col">{/* COVER */}
-
-<div className="aspect-[3/4] overflow-hidden"><img
+<div className="bg-white dark:bg-[#2a2a2a] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition flex flex-col"><div className="aspect-[3/4] overflow-hidden">
+<img
 src={buku.cover}
 className="w-full h-full object-cover group-hover:scale-105 transition"
 />
-
-</div>{/* INFO */}
-
-<div className="p-3"><h3 className="text-sm font-medium leading-snug">
+</div><div className="p-3">
+<h3 className="text-sm font-medium leading-snug">
 {buku.judul}
 </h3><p className="text-xs opacity-60 mt-1">
 {buku.penulis}
-</p></div></div></button>))}
+</p>
+</div></div></button>))}
 
-</div></div>{/* MODAL BUKU */}
+</div></div>{/* MODAL PREVIEW BUKU */}
 {selectedBook && (
 
-<div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50"><div className="bg-white dark:bg-[#1f1f1f] max-w-lg w-full rounded-xl overflow-hidden shadow-xl"><div className="h-48 overflow-hidden"><img
+<div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50"><div className="bg-white dark:bg-[#1f1f1f] max-w-lg w-full rounded-xl overflow-hidden shadow-xl"><div className="h-48 overflow-hidden">
+<img
 src={selectedBook.cover}
 className="w-full h-full object-cover"
 />
-
 </div><div className="p-6"><div className="flex justify-between items-start mb-3"><h2 className="text-xl font-serif">
 {selectedBook.judul}
 </h2><button onClick={closeModal}>
@@ -117,10 +115,10 @@ className="w-full h-full object-cover"
 oleh {selectedBook.penulis}
 </p><p className="text-sm leading-relaxed opacity-80 mb-4">
 {selectedBook.preview}
-</p><div className="flex items-center gap-4 text-xs opacity-60 mb-6"><span>{selectedBook.halaman} halaman</span>
+</p><div className="flex items-center gap-4 text-xs opacity-60 mb-6">
+<span>{selectedBook.halaman} halaman</span>
 <span>•</span>
 <span>{selectedBook.readTime}</span>
-
 </div><Link
 to={`/buku/${selectedBook.id}`}
 className="flex items-center justify-center gap-2 bg-black text-white dark:bg-white dark:text-black py-2 rounded-lg text-sm hover:opacity-90 transition"
@@ -170,6 +168,5 @@ className="border rounded-lg px-4 py-2 text-sm hover:bg-black/5 dark:hover:bg-wh
 
 </div></div></div>)}
 
-</div>
-);
+</div>);
 }
