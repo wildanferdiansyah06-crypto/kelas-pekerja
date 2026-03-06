@@ -31,6 +31,7 @@ file: "/buku/kami-menulis-pelan.pdf"
 export default function Reader() {
 
 const { id } = useParams();
+
 const buku = BUKU.find((b) => b.id === id);
 
 if (!buku) {
@@ -41,10 +42,12 @@ Buku tidak ditemukan
 );
 }
 
+const viewerUrl = "https://docs.google.com/gview?embedded=1&url=${window.location.origin}${buku.file}";
+
 return (
 <div className="min-h-screen bg-[#f6f4ef] dark:bg-[#1c1c1c] text-black dark:text-white">
 
-  <div className="max-w-6xl mx-auto px-5 py-8">
+  <div className="max-w-7xl mx-auto px-5 py-8">
 
     {/* HEADER */}
     <div className="flex items-center justify-between mb-6">
@@ -82,10 +85,10 @@ return (
     </div>
 
     {/* PDF VIEWER */}
-    <div className="rounded-xl overflow-hidden shadow-lg border border-black/10 dark:border-white/10">
+    <div className="rounded-xl overflow-hidden shadow-lg border border-black/10 dark:border-white/10 bg-white">
 
       <iframe
-        src={`${buku.file}#toolbar=0&navpanes=0&scrollbar=0`}
+        src={viewerUrl}
         className="w-full h-[85vh] md:h-[90vh]"
       />
 
