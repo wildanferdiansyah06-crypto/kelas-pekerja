@@ -1,64 +1,92 @@
-import { Book, Quote, SiteConfig } from '@/src/types';
+import { Book, Quote, SiteConfig } from "@/src/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+import booksData from "@/public/data/books.json";
+import quotesData from "@/public/data/quotes.json";
+import configData from "@/public/data/config.json";
 
-// Error handling wrapper
-async function fetchWithError<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, options);
+/* =========================
+   BOOKS
+========================= */
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-}
-
-// Books API
-export async function getBooks(filters?: { 
-  category?: string; 
-  featured?: boolean; 
+export async function getBooks(filters?: {
+  category?: string;
+  featured?: boolean;
   search?: string;
   limit?: number;
 }) {
-  const params = new URLSearchParams();
+  let books: Book[] = booksData.books || [];
 
-  if (filters?.category) params.set('category', filters.category);
-  if (filters?.featured) params.set('featured', 'true');
-  if (filters?.search) params.set('search', filters.search);
-  if (filters?.limit) params.set('limit', filters.limit.toString());
+  // Filter category
+  if (filters?.category && filters.category !== "all") {
+    books = books.filter((b) => b.category === filters.category);
+  }
 
-  const url = `${API_BASE}/api/books?${params}`;
+  // Filter featured
+  if (filters?.featured) {
+    books = books.filter((b) => b.featured);
+  }
 
-  return fetchWithError<{ books: Book[]; total: number }>(url, {
-    next: { 
-      revalidate: 3600, // Revalidate setiap jam
-      tags: ['books']
-    }
-  });
+  // Search
+  if (filters?.search) {
+    const search = filters.search.toLowerCase();
+
+    books = books.filter(
+      (b) =>
+        b.title.toLowerCase().includes(search) ||
+        b.excerpt?.toLowerCase().includes(search) ||
+        b.tags?.some((tag) => tag.toLowerCase().includes(search))
+    );
+  }
+
+  // Sort newest
+  books = books.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() -
+      new Date(a.publishedAt).getTime()
+  );
+
+  // Limit
+  if (filters?.limit) {
+    books = books.slice(0, filters.limit);
+  }
+
+  return {
+    books,
+    total: books.length,
+  };
 }
 
 export async function getBook(slug: string) {
-  const url = `${API_BASE}/api/books/${slug}`;
+  const book = booksData.books.find((b) => b.slug === slug);
 
-  return fetchWithError<{ book: Book }>(url, {
-    next: { 
-      revalidate: 3600,
-      tags: [`book-${slug}`]
-    }
-  });
+  if (!book) {
+    throw new Error("Book not found");
+  }
+
+  return { book };
 }
 
 export async function getFeaturedBooks(limit = 3) {
-  return getBooks({ featured: true, limit });
+  return getBooks({
+    featured: true,
+    limit,
+  });
 }
 
-// Quotes API
-export async function getRandomQuote() {
-  const url = `${API_BASE}/api/quotes/random`;
+/* =========================
+   QUOTES
+========================= */
 
-  return fetchWithError<{ quote: Quote; total: number }>(url, {
-    cache: 'no-store' // Selalu fresh untuk random
-  });
+export async function getRandomQuote() {
+  const quotes: Quote[] = quotesData.quotes || [];
+
+  const random =
+    quotes[Math.floor(Math.random() * quotes.length)];
+
+  return {
+    quote: random,
+    total: quotes.length,
+  };
 }
 
 export async function getQuotes(filters?: {
@@ -66,44 +94,56 @@ export async function getQuotes(filters?: {
   mood?: string;
   limit?: number;
 }) {
-  const params = new URLSearchParams();
+  let quotes: Quote[] = quotesData.quotes || [];
 
-  if (filters?.category) params.set('category', filters.category);
-  if (filters?.mood) params.set('mood', filters.mood);
-  if (filters?.limit) params.set('limit', filters.limit.toString());
+  if (filters?.category) {
+    quotes = quotes.filter(
+      (q) => q.category === filters.category
+    );
+  }
 
-  const url = `${API_BASE}/api/quotes?${params}`;
+  if (filters?.mood) {
+    quotes = quotes.filter((q) => q.mood === filters.mood);
+  }
 
-  return fetchWithError<{ quotes: Quote[]; total: number }>(url, {
-    next: { revalidate: 3600 }
-  });
+  if (filters?.limit) {
+    quotes = quotes.slice(0, filters.limit);
+  }
+
+  return {
+    quotes,
+    total: quotes.length,
+  };
 }
 
-// Config API
-export async function getConfig() {
-  const url = `${API_BASE}/api/config`;
+/* =========================
+   CONFIG
+========================= */
 
-  return fetchWithError<SiteConfig>(url, {
-    next: { revalidate: 86400 } // Revalidate setiap hari
-  });
+export async function getConfig(): Promise<SiteConfig> {
+  return configData;
 }
 
-// Categories
+/* =========================
+   CATEGORIES
+========================= */
+
 export const categories = [
-  { id: 'all', label: 'Semua', count: 4 },
-  { id: 'kehidupan', label: 'Kehidupan', count: 1 },
-  { id: 'cerita', label: 'Cerita', count: 1 },
-  { id: 'renungan', label: 'Renungan', count: 1 },
-  { id: 'proses', label: 'Proses', count: 1 },
-  { id: 'kopi', label: 'Kopi', count: 0 },
-  { id: 'pekerja', label: 'Pekerja', count: 0 },
-  { id: 'filosofi', label: 'Filosofi', count: 0 },
-  { id: 'catatan-malam', label: 'Catatan Malam', count: 0 }
+  { id: "all", label: "Semua", count: 4 },
+  { id: "kehidupan", label: "Kehidupan", count: 1 },
+  { id: "cerita", label: "Cerita", count: 1 },
+  { id: "renungan", label: "Renungan", count: 1 },
+  { id: "proses", label: "Proses", count: 1 },
+  { id: "kopi", label: "Kopi", count: 0 },
+  { id: "pekerja", label: "Pekerja", count: 0 },
+  { id: "filosofi", label: "Filosofi", count: 0 },
+  { id: "catatan-malam", label: "Catatan Malam", count: 0 },
 ] as const;
 
-// Stats API (untuk view counter sederhana)
+/* =========================
+   VIEW COUNTER (placeholder)
+========================= */
+
 export async function incrementView(slug: string) {
-  // Ini placeholder - nanti bisa integrate dengan database atau KV storage
   console.log(`View incremented for: ${slug}`);
 }
-
