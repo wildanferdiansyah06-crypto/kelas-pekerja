@@ -1,0 +1,23 @@
+✅ quotes.json created with 44 quotes
+
+{
+  "quotes": [
+    {
+      "id": 1,
+      "text": "Hari ini kopi lebih pahit dari biasanya. Mungkin bukan kopinya.",
+      "category": "kopi",
+      "mood": "melancholic"
+    },
+    {
+      "id": 2,
+      "text": "Ada yang bilang diam itu emas. Aku bilang diam itu napas.",
+      "category": "refleksi",
+      "mood": "peaceful"
+    },
+    {
+      "id": 3,
+      "text": "Menulis bukan untuk diingat. Menulis untuk tidak melupakan.",
+      "category": "menulis",
+      "mood": "hopeful"
+    },
+    ...
