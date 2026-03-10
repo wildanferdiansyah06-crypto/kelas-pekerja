@@ -1,6 +1,3 @@
-✅ ShareButtons component created
-
-// src/components/ShareButtons.tsx
 'use client';
 
 import { useState } from 'react';
