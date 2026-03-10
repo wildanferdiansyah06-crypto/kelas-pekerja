@@ -1,6 +1,3 @@
-✅ RandomCoffeeThought component created
-
-// src/components/RandomCoffeeThought.tsx
 'use client';
 
 import { useState } from 'react';
