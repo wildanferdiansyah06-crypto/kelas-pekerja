@@ -53,7 +53,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="font-serif italic text-lg md:text-xl max-w-md mx-auto mb-12 leading-relaxed opacity-60 animate-fade-in-slowest">
-            "{config.site.tagline}"
+            "{(config as any).site.tagline}"
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-slowest">
@@ -203,5 +203,6 @@ export default async function HomePage() {
     </main>
   );
 }
+
 
 
