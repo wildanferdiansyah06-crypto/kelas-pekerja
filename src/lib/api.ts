@@ -5,12 +5,12 @@ import quotesData from "@/public/data/quotes.json";
 import configData from "@/public/data/config.json";
 
 /* =========================
-   LOCAL DATA CAST
+   LOCAL DATA
 ========================= */
 
 const books = (booksData.books || []) as Book[];
 const quotes = (quotesData.quotes || []) as Quote[];
-const config = configData as SiteConfig;
+const config = configData as unknown as SiteConfig;
 
 /* =========================
    BOOKS
@@ -145,7 +145,7 @@ export const categories = [
 ] as const;
 
 /* =========================
-   VIEW COUNTER (placeholder)
+   VIEW COUNTER
 ========================= */
 
 export async function incrementView(slug: string) {
