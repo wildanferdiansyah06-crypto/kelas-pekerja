@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
 import booksData from "@/public/data/books.json";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: Request, context: any) {
   try {
-    const slug = params.slug;
+    const slug = context.params.slug;
 
-    const book = booksData.books.find((b) => b.slug === slug);
+    const book = booksData.books.find((b: any) => b.slug === slug);
 
     if (!book) {
       return NextResponse.json(
@@ -17,15 +14,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(
-      { book },
-      {
-        headers: {
-          "Cache-Control":
-            "public, s-maxage=3600, stale-while-revalidate=86400",
-        },
-      }
-    );
+    return NextResponse.json({ book });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch book" },
