@@ -1,0 +1,69 @@
+✅ config.json created
+
+{
+  "site": {
+    "title": "Kelas Pekerja",
+    "description": "Arsip sunyi orang-orang yang tetap bekerja. Catatan tentang malam, kopi, dan kehidupan.",
+    "tagline": "Kita semua pernah lelah. Tapi kita masih di sini.",
+    "url": "https://kelaspekerja.id",
+    "language": "id",
+    "locale": "id_ID"
+  },
+  "author": {
+    "name": "Wildan Ferdiansyah",
+    "bio": "Bukan penulis profesional. Bukan motivator. Hanya seseorang yang mencoba memahami hidupnya melalui kata-kata. Pernah menjadi barista. Pernah menjadi mural artist. Sekarang menulis di sela-sela waktu—bukan untuk menjadi terkenal, tapi untuk tetap waras.",
+    "photo": "/wildan.png",
+    "roles": {
+      "past": ["Barista", "Mural Artist"],
+      "current": "Penulis"
+    },
+    "social": {
+      "whatsapp": "6289636357091",
+      "instagram": "_iamwildan_",
+      "email": "wildanferdiansyah06@gmail.com",
+      "twitter": ""
+    },
+    "manifesto": "Aku menulis untuk hadir, bukan untuk memukau."
+  },
+  "navigation": [
+    { "label": "Beranda", "href": "/" },
+    { "label": "Tulisan", "href": "/tulisan" },
+    { "label": "Buku", "href": "/buku" },
+    { "label": "Tentang", "href": "/tentang" },
+    { "label": "Kontak", "href": "/kontak" }
+  ],
+  "accounts": [
+    {
+      "bank": "BRI",
+      "number": "356701025106533",
+      "holder": "WILDAN FERDIANSYAH MUCHTAR",
+      "logo": "/icons/bri.svg"
+    },
+    {
+      "bank": "Mandiri",
+      "number": "1430034741809",
+      "holder": "WILDAN FERDIANSYAH M",
+      "logo": "/icons/mandiri.svg"
+    },
+    {
+      "bank": "DANA",
+      "number": "089636357091",
+      "holder": "Wildan Ferdiansyah",
+      "logo": "/icons/dana.svg"
+    }
+  ],
+  "features": {
+    "darkMode": true,
+    "search": true,
+    "bookmarks": true,
+    "randomQuote": true,
+    "readingTime": true,
+    "comments": false,
+    "newsletter": false
+  },
+  "seo": {
+    "defaultImage": "/og-image.jpg",
+    "twitterHandle": "@_iamwildan_",
+    "keywords": ["kelas pekerja", "catatan malam", "kopi", "tulisan", "refleksi", "barista", "pekerja"]
+  }
+}
