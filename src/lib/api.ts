@@ -5,6 +5,14 @@ import quotesData from "@/public/data/quotes.json";
 import configData from "@/public/data/config.json";
 
 /* =========================
+   LOCAL DATA CAST
+========================= */
+
+const books = (booksData.books || []) as Book[];
+const quotes = (quotesData.quotes || []) as Quote[];
+const config = configData as SiteConfig;
+
+/* =========================
    BOOKS
 ========================= */
 
@@ -14,23 +22,23 @@ export async function getBooks(filters?: {
   search?: string;
   limit?: number;
 }) {
-  let books: Book[] = booksData.books || [];
+  let result = [...books];
 
   // Filter category
   if (filters?.category && filters.category !== "all") {
-    books = books.filter((b) => b.category === filters.category);
+    result = result.filter((b) => b.category === filters.category);
   }
 
   // Filter featured
   if (filters?.featured) {
-    books = books.filter((b) => b.featured);
+    result = result.filter((b) => b.featured);
   }
 
   // Search
   if (filters?.search) {
     const search = filters.search.toLowerCase();
 
-    books = books.filter(
+    result = result.filter(
       (b) =>
         b.title.toLowerCase().includes(search) ||
         b.excerpt?.toLowerCase().includes(search) ||
@@ -39,7 +47,7 @@ export async function getBooks(filters?: {
   }
 
   // Sort newest
-  books = books.sort(
+  result = result.sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() -
       new Date(a.publishedAt).getTime()
@@ -47,17 +55,17 @@ export async function getBooks(filters?: {
 
   // Limit
   if (filters?.limit) {
-    books = books.slice(0, filters.limit);
+    result = result.slice(0, filters.limit);
   }
 
   return {
-    books,
-    total: books.length,
+    books: result,
+    total: result.length,
   };
 }
 
 export async function getBook(slug: string) {
-  const book = booksData.books.find((b) => b.slug === slug);
+  const book = books.find((b) => b.slug === slug);
 
   if (!book) {
     throw new Error("Book not found");
@@ -78,8 +86,6 @@ export async function getFeaturedBooks(limit = 3) {
 ========================= */
 
 export async function getRandomQuote() {
-  const quotes: Quote[] = quotesData.quotes || [];
-
   const random =
     quotes[Math.floor(Math.random() * quotes.length)];
 
@@ -94,25 +100,23 @@ export async function getQuotes(filters?: {
   mood?: string;
   limit?: number;
 }) {
-  let quotes: Quote[] = quotesData.quotes || [];
+  let result = [...quotes];
 
   if (filters?.category) {
-    quotes = quotes.filter(
-      (q) => q.category === filters.category
-    );
+    result = result.filter((q) => q.category === filters.category);
   }
 
   if (filters?.mood) {
-    quotes = quotes.filter((q) => q.mood === filters.mood);
+    result = result.filter((q) => q.mood === filters.mood);
   }
 
   if (filters?.limit) {
-    quotes = quotes.slice(0, filters.limit);
+    result = result.slice(0, filters.limit);
   }
 
   return {
-    quotes,
-    total: quotes.length,
+    quotes: result,
+    total: result.length,
   };
 }
 
@@ -121,7 +125,7 @@ export async function getQuotes(filters?: {
 ========================= */
 
 export async function getConfig(): Promise<SiteConfig> {
-  return configData;
+  return config;
 }
 
 /* =========================
