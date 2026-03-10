@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+
 import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 import { ThemeProvider } from "@/src/components/ThemeProvider";
@@ -25,8 +26,17 @@ export const metadata: Metadata = {
     default: "Kelas Pekerja — Arsip Sunyi Orang-Orang yang Tetap Bekerja",
     template: "%s | Kelas Pekerja",
   },
-  description: "Catatan tentang malam, kopi, dan kehidupan. Ditulis perlahan, untuk dibaca perlahan.",
-  keywords: ["kelas pekerja", "catatan malam", "kopi", "tulisan", "refleksi", "barista", "pekerja"],
+  description:
+    "Catatan tentang malam, kopi, dan kehidupan. Ditulis perlahan, untuk dibaca perlahan.",
+  keywords: [
+    "kelas pekerja",
+    "catatan malam",
+    "kopi",
+    "tulisan",
+    "refleksi",
+    "barista",
+    "pekerja",
+  ],
   authors: [{ name: "Wildan Ferdiansyah" }],
   creator: "Wildan Ferdiansyah",
   metadataBase: new URL("https://kelaspekerja.id"),
@@ -39,13 +49,16 @@ export const metadata: Metadata = {
     url: "https://kelaspekerja.id",
     siteName: "Kelas Pekerja",
     title: "Kelas Pekerja — Arsip Sunyi Orang-Orang yang Tetap Bekerja",
-    description: "Catatan tentang malam, kopi, dan kehidupan. Ditulis perlahan, untuk dibaca perlahan.",
-    images: [{
-      url: "/og-image.jpg",
-      width: 1200,
-      height: 630,
-      alt: "Kelas Pekerja",
-    }],
+    description:
+      "Catatan tentang malam, kopi, dan kehidupan. Ditulis perlahan, untuk dibaca perlahan.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Kelas Pekerja",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -55,35 +68,40 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: "your-google-verification-code",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="id" suppressHydrationWarning className="scroll-smooth">
-      <body className={`${playfair.variable} ${inter.variable} font-sans antialiased`}>
+    <html
+      lang="id"
+      suppressHydrationWarning
+      className="scroll-smooth"
+    >
+      <body
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased`}
+      >
         <ErrorBoundary>
-          <ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             <ReadingProgress />
+
             <Navbar />
+
             <main className="min-h-screen">
               {children}
             </main>
+
             <Footer />
+
             <ScrollToTop />
           </ThemeProvider>
         </ErrorBoundary>
