@@ -6,7 +6,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default function Page({ params }: any) {
   const post = (postsData.posts as any[]).find(
     (p) => p.slug === params.slug
   );
