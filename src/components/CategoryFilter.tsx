@@ -1,6 +1,3 @@
-✅ CategoryFilter component created
-
-// src/components/CategoryFilter.tsx
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
