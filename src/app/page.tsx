@@ -1,5 +1,3 @@
-✅ Home page (page.tsx) completed
-
 // src/app/page.tsx
 import { Suspense } from 'react';
 import { Metadata } from 'next';
