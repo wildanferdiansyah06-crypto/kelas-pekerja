@@ -1,6 +1,3 @@
-✅ BookmarkButton component created
-
-// src/components/BookmarkButton.tsx
 'use client';
 
 import { Bookmark, Check } from 'lucide-react';
