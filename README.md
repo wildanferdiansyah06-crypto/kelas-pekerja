@@ -1,5 +1,3 @@
-✅ README.md created
-
 # Kelas Pekerja — Static Frontend + JSON API
 
 Arsitektur modern untuk website literasi dengan Next.js 15, App Router, dan Static Site Generation (SSG).
