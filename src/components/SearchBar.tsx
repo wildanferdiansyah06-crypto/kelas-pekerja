@@ -1,6 +1,3 @@
-✅ SearchBar component created
-
-// src/components/SearchBar.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
