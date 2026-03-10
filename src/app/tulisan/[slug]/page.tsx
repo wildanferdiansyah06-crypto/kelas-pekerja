@@ -3,7 +3,9 @@ import postsData from "@/public/data/posts.json";
 export default function Page({ params }: any) {
   const slug = params.slug;
 
-  const post = postsData.posts?.find((p: any) => p.slug === slug);
+  const post = (postsData.posts as any[]).find(
+    (p) => p.slug === slug
+  );
 
   if (!post) {
     return (
