@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search");
     const limit = searchParams.get("limit");
 
-    let books: Book[] = booksData.books;
+    // Cast JSON data ke Book[]
+    let books = booksData.books as Book[];
 
     // Filter category
     if (category && category !== "all") {
@@ -26,6 +27,7 @@ export async function GET(request: NextRequest) {
     // Search
     if (search) {
       const searchLower = search.toLowerCase();
+
       books = books.filter(
         (book) =>
           book.title.toLowerCase().includes(searchLower) ||
