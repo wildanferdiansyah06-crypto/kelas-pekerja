@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -204,3 +203,4 @@ export default async function HomePage() {
     </main>
   );
 }
+
