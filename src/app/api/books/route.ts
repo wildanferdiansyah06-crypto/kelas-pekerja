@@ -62,10 +62,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-
-==================================================
-
-
 // src/app/api/books/[slug]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import booksData from '@/public/data/books.json';
@@ -98,4 +94,5 @@ export async function GET(
     );
   }
   }
+
 
