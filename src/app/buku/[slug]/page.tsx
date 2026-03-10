@@ -1,4 +1,3 @@
-// src/app/buku/[slug]/page.tsx
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
