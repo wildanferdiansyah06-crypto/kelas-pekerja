@@ -3,10 +3,10 @@ import booksData from "@/public/data/books.json";
 
 export async function GET(
   request: Request,
-  context: { params: { slug: string } }
+  { params }: { params: { slug: string } }
 ) {
   try {
-    const { slug } = context.params;
+    const slug = params.slug;
 
     const book = booksData.books.find((b) => b.slug === slug);
 
@@ -26,7 +26,6 @@ export async function GET(
         },
       }
     );
-
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch book" },
