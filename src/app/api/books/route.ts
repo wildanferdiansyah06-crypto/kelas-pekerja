@@ -1,6 +1,3 @@
-✅ Books API routes created
-
-// src/app/api/books/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import booksData from '@/public/data/books.json';
 import { Book } from '@/src/types';
@@ -101,3 +98,4 @@ export async function GET(
     );
   }
   }
+
