@@ -2,9 +2,10 @@ import { MetadataRoute } from "next";
 import booksData from "@/public/data/books.json";
 
 export const dynamic = "force-static";
+export const revalidate = false;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://kelaspekerja.id";
+  const baseUrl = "https://kelaspekerja.site";
 
   const staticPages = [
     "",
