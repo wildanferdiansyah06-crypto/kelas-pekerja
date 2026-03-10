@@ -1,6 +1,3 @@
-✅ Footer component created
-
-// src/components/Footer.tsx
 import Link from 'next/link';
 import { Coffee, Heart, Instagram, Mail, MessageCircle } from 'lucide-react';
 import { getConfig } from '@/src/lib/api';
