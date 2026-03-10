@@ -1,0 +1,82 @@
+✅ books.json created
+
+{
+  "books": [
+    {
+      "id": "1",
+      "slug": "seni-menyeduh-kehidupan",
+      "title": "Seni Menyeduh Kehidupan",
+      "subtitle": "Catatan tentang bagaimana kita menyikapi hidup dengan cara yang lebih gentle dan penuh makna, seperti menyeduh kopi yang sempurna.",
+      "excerpt": "Catatan tentang bagaimana kita menyikapi hidup dengan cara yang lebih gentle dan penuh makna.",
+      "preview": "Di dalamnya kamu akan menemukan catatan-catatan personal yang jujur tentang bagaimana kita bisa menyikapi hari-hari berat dengan lebih lembut. Bukan panduan, hanya berbagi.",
+      "category": "kehidupan",
+      "pages": 45,
+      "readTime": "25 menit",
+      "cover": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-01-15",
+      "featured": true,
+      "stats": {
+        "views": 1240,
+        "downloads": 89
+      },
+      "tags": ["kehidupan", "kopi", "mindfulness", "gentle"]
+    },
+    {
+      "id": "2",
+      "slug": "di-balik-bar",
+      "title": "Di Balik Bar",
+      "subtitle": "Cerita-cerita dari balik meja bar, tempat di mana setiap cangkir memiliki kisahnya sendiri.",
+      "excerpt": "Cerita-cerita dari balik meja bar, tempat di mana setiap cangkir memiliki kisahnya sendiri dan setiap penumpang membawa dunia mereka.",
+      "preview": "Kumpulan cerita pendek dari sudut pandang seorang barista. Tentang orang-orang yang datang dan pergi, tentang percakapan yang tertinggal di uap kopi.",
+      "category": "cerita",
+      "pages": 38,
+      "readTime": "20 menit",
+      "cover": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-01-20",
+      "featured": false,
+      "stats": {
+        "views": 892,
+        "downloads": 56
+      },
+      "tags": ["cerita", "barista", "kopi", "pelanggan", "kehidupan"]
+    },
+    {
+      "id": "3",
+      "slug": "di-atas-cangkir-yang-sama",
+      "title": "Di Atas Cangkir Yang Sama",
+      "subtitle": "Renungan tentang konsistensi, kehadiran, dan menemukan keindahan dalam pengulangan yang tampak monoton.",
+      "excerpt": "Renungan tentang konsistensi, kehadiran, dan menemukan keindahan dalam pengulangan yang tampak monoton.",
+      "preview": "Tentang menemukan makna dalam hal-hal yang kita ulang setiap hari. Tentang cangkir yang sama, rasa yang familiar, dan ketenangan yang ditemukan dalam rutinitas.",
+      "category": "renungan",
+      "pages": 52,
+      "readTime": "30 menit",
+      "cover": "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-02-01",
+      "featured": true,
+      "stats": {
+        "views": 2103,
+        "downloads": 145
+      },
+      "tags": ["renungan", "rutinitas", "konsistensi", "kehadiran"]
+    },
+    {
+      "id": "4",
+      "slug": "kami-menulis-pelan",
+      "title": "Kami Menulis Pelan",
+      "subtitle": "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses.",
+      "excerpt": "Kumpulan tulisan yang lahir dari kesabaran, untuk mereka yang percaya pada proses dan kekuatan kata-kata yang diucapkan dengan lirih.",
+      "preview": "Tulisan-tulisan yang tidak buru-buru. Yang mengalir seperti air, yang hadir seperti napas. Untuk mereka yang percaya bahwa yang pelan juga bisa sampai.",
+      "category": "proses",
+      "pages": 41,
+      "readTime": "22 menit",
+      "cover": "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-02-10",
+      "featured": false,
+      "stats": {
+        "views": 756,
+        "downloads": 43
+      },
+      "tags": ["proses", "kesabaran", "menulis", "perlahan"]
+    }
+  ]
+}
