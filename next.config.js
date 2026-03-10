@@ -1,5 +1,3 @@
-✅ next.config.js created
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Static export configuration
@@ -47,3 +45,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
