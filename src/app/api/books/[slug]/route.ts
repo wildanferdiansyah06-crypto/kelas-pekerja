@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import booksData from "@/public/data/books.json";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+  request: Request,
+  context: { params: { slug: string } }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = context.params;
 
     const book = booksData.books.find((b) => b.slug === slug);
 
@@ -26,6 +26,7 @@ export async function GET(
         },
       }
     );
+
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch book" },
