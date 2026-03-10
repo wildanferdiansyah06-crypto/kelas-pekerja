@@ -1,6 +1,3 @@
-✅ Books page (buku/page.tsx) created
-
-// src/app/buku/page.tsx
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { getBooks, getConfig } from '@/src/lib/api';
@@ -95,3 +92,4 @@ export default async function BooksPage({ searchParams }: BooksPageProps) {
     </main>
   );
 }
+
