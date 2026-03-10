@@ -1,6 +1,3 @@
-✅ ThemeProvider component created
-
-// src/components/ThemeProvider.tsx
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
