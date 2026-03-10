@@ -1,7 +1,3 @@
-✅ API helpers created
-
-// src/lib/api.ts
-
 import { Book, Quote, SiteConfig } from '@/src/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
@@ -110,3 +106,4 @@ export async function incrementView(slug: string) {
   // Ini placeholder - nanti bisa integrate dengan database atau KV storage
   console.log(`View incremented for: ${slug}`);
 }
+
