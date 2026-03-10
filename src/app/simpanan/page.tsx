@@ -1,6 +1,3 @@
-✅ Bookmarks page (simpanan/page.tsx) created
-
-// src/app/simpanan/page.tsx
 'use client';
 
 import Link from 'next/link';
