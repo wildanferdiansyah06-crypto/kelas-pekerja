@@ -1,11 +1,9 @@
 import postsData from "@/public/data/posts.json";
 
-export default function TulisanDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = postsData.posts?.find((p: any) => p.slug === params.slug);
+export default function Page({ params }: any) {
+  const slug = params.slug;
+
+  const post = postsData.posts?.find((p: any) => p.slug === slug);
 
   if (!post) {
     return (
