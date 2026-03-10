@@ -1,5 +1,7 @@
 import postsData from "@/public/data/posts.json";
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return (postsData.posts as any[]).map((post) => ({
     slug: post.slug,
