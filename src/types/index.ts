@@ -1,7 +1,3 @@
-✅ TypeScript interfaces defined
-
-// src/types/index.ts
-
 export interface Book {
   id: string;
   slug: string;
@@ -80,3 +76,4 @@ export interface SiteConfig {
     href: string;
   }[];
 }
+
