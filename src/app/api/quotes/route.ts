@@ -64,10 +64,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-
-==================================================
-
-
 // src/app/api/config/route.ts
 import { NextResponse } from 'next/server';
 import configData from '@/public/data/config.json';
@@ -86,5 +82,6 @@ export async function GET() {
     );
   }
 }
+
 
 
