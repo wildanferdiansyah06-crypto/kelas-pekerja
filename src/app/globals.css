@@ -1,0 +1,156 @@
+✅ globals.css created
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#faf8f5] text-[#2b2b2b] dark:bg-[#1a1816] dark:text-[#e8e0d5];
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  ::selection {
+    @apply bg-[#8b7355]/30;
+  }
+}
+
+@layer components {
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  /* Animations */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1.05); }
+    50% { transform: scale(1.08); }
+  }
+
+  @keyframes fade-in-up {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-in-right {
+    from { 
+      opacity: 0; 
+      transform: translateX(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  .animate-breathe {
+    animation: breathe 20s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+
+  .animate-fade-in-slow {
+    animation: fade-in-up 1s ease-out 0.2s both;
+  }
+
+  .animate-fade-in-slower {
+    animation: fade-in-up 1s ease-out 0.4s both;
+  }
+
+  .animate-fade-in-slowest {
+    animation: fade-in-up 1s ease-out 0.6s both;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.5s ease-out forwards;
+  }
+
+  /* Hide scrollbar */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Grain texture overlay */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.03;
+    background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+  }
+
+  /* Typography improvements */
+  .prose-custom {
+    @apply text-base leading-relaxed;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .prose-custom p {
+    @apply mb-6;
+  }
+
+  .prose-custom h2 {
+    @apply font-serif text-2xl mt-12 mb-6 opacity-90;
+  }
+
+  .prose-custom h3 {
+    @apply font-serif text-xl mt-8 mb-4 opacity-80;
+  }
+
+  /* Focus styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[#8b7355]/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-[#8b7355]/50;
+}
