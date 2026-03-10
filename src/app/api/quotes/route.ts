@@ -24,10 +24,6 @@ export async function GET() {
   }
 }
 
-
-==================================================
-
-
 // src/app/api/quotes/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import quotesData from '@/public/data/quotes.json';
@@ -90,4 +86,5 @@ export async function GET() {
     );
   }
 }
+
 
