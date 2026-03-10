@@ -1,16 +1,14 @@
 import postsData from "@/public/data/posts.json";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return (postsData.posts as any[]).map((post) => ({
     slug: post.slug,
   }));
 }
 
-export default function Page({ params }: any) {
-  const slug = params.slug;
-
+export default function Page({ params }: { params: { slug: string } }) {
   const post = (postsData.posts as any[]).find(
-    (p) => p.slug === slug
+    (p) => p.slug === params.slug
   );
 
   if (!post) {
