@@ -1,6 +1,3 @@
-✅ Quotes & Config API routes created
-
-// src/app/api/quotes/random/route.ts
 import { NextResponse } from 'next/server';
 import quotesData from '@/public/data/quotes.json';
 
@@ -93,3 +90,4 @@ export async function GET() {
     );
   }
 }
+
