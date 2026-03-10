@@ -1,6 +1,3 @@
-✅ BookCard component created
-
-// src/components/BookCard.tsx
 'use client';
 
 import { useState } from 'react';
