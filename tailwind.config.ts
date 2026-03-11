@@ -9,6 +9,15 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
 
+  safelist: [
+    "bg-blue-500",
+    "bg-amber-500",
+    "bg-red-500",
+    "bg-purple-500",
+    "bg-neutral-800",
+    "bg-neutral-900",
+  ],
+
   theme: {
     extend: {
       animation: {
@@ -17,8 +26,14 @@ const config: Config = {
 
       keyframes: {
         fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
         },
       },
     },
