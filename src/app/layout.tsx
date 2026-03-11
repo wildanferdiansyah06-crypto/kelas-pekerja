@@ -7,6 +7,7 @@ import Footer from "@/src/components/Footer";
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { ErrorBoundary } from "@/src/components/ErrorBoundary";
 import ReadingProgress from "@/src/components/ReadingProgress";
+import LayoutWrapper from "@/src/components/LayoutWrapper";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -87,19 +88,12 @@ export default function RootLayout({
         <ErrorBoundary>
           <ThemeProvider>
 
-            {/* progress bar atas */}
+            {/* progress membaca */}
             <ReadingProgress />
 
-            {/* navbar global */}
-            <Navbar />
-
-            {/* halaman */}
-            <main className="min-h-screen">
+            <LayoutWrapper>
               {children}
-            </main>
-
-            {/* footer */}
-            <Footer />
+            </LayoutWrapper>
 
           </ThemeProvider>
         </ErrorBoundary>
