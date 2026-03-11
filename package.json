@@ -2,6 +2,7 @@
   "name": "kelas-pekerja",
   "version": "2.0.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,14 +12,17 @@
     "serve": "npx serve dist",
     "analyze": "cross-env ANALYZE=true next build"
   },
+
   "dependencies": {
     "next": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "lucide-react": "^0.460.0",
     "clsx": "^2.1.0",
-    "tailwind-merge": "^2.2.0"
+    "tailwind-merge": "^2.2.0",
+    "framer-motion": "^11.0.0"
   },
+
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
