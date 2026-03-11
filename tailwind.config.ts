@@ -1,16 +1,20 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
+
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     extend: {
       animation: {
         "fade-in": "fadeIn 1s ease-out",
       },
+
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "translateY(10px)" },
@@ -19,6 +23,7 @@ const config: Config = {
       },
     },
   },
+
   plugins: [],
 };
 
