@@ -462,7 +462,7 @@ export default function CoffeeBookPage() {
                   </p>
                 </div>
                 <div className={`p-5 rounded-lg border ${theme.border}`}>
-                  <h4 className={`font-semibold ${theme.accent} mb-2`}>Karamelisasi (>160°C)</h4>
+                  <h4 className={`font-semibold ${theme.accent} mb-2`}>Karamelisasi (&gt;160°C)</h4>
                   <p className={`text-sm ${theme.text}`}>
                     Gula terurai pada suhu tinggi menghasilkan rasa manis, caramel, toffee, dan burnt sugar.
                   </p>
