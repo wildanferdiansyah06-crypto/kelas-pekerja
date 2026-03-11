@@ -11,16 +11,19 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
 
-  const isBookPage = pathname.startsWith("/buku");
+  const isBookPage = pathname?.startsWith("/buku");
 
   return (
     <>
+      {/* Navbar hanya untuk halaman normal */}
       {!isBookPage && <Navbar />}
 
-      <main className="min-h-screen">
+      {/* halaman buku tidak butuh padding karena tidak ada navbar */}
+      <main className={`${!isBookPage ? "pt-16" : ""} min-h-screen`}>
         {children}
       </main>
 
+      {/* Footer juga hanya halaman normal */}
       {!isBookPage && <Footer />}
     </>
   );
