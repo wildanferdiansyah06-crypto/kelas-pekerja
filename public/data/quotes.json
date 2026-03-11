@@ -17,6 +17,48 @@
       "text": "Menulis bukan untuk diingat. Menulis untuk tidak melupakan.",
       "category": "menulis",
       "mood": "hopeful"
+    },
+    {
+      "id": 4,
+      "text": "Kopi mengajarkan satu hal: pahit pun bisa dinikmati jika kita pelan.",
+      "category": "kopi",
+      "mood": "calm"
+    },
+    {
+      "id": 5,
+      "text": "Hidup sering terasa biasa saja. Tapi mungkin memang di situlah maknanya.",
+      "category": "refleksi",
+      "mood": "contemplative"
+    },
+    {
+      "id": 6,
+      "text": "Beberapa tulisan tidak dibuat untuk dunia. Hanya untuk menyelamatkan diri sendiri.",
+      "category": "menulis",
+      "mood": "deep"
+    },
+    {
+      "id": 7,
+      "text": "Ada percakapan yang tidak pernah terjadi, tapi tetap kita ingat.",
+      "category": "kehidupan",
+      "mood": "melancholic"
+    },
+    {
+      "id": 8,
+      "text": "Kopi dingin mengajarkan kesabaran pada mereka yang terlalu terburu-buru.",
+      "category": "kopi",
+      "mood": "calm"
+    },
+    {
+      "id": 9,
+      "text": "Tidak semua perjalanan harus cepat. Beberapa hanya perlu jujur.",
+      "category": "kehidupan",
+      "mood": "hopeful"
+    },
+    {
+      "id": 10,
+      "text": "Kadang kita tidak mencari jawaban. Kita hanya ingin didengar.",
+      "category": "refleksi",
+      "mood": "quiet"
     }
   ]
 }
