@@ -148,7 +148,7 @@ export default function KamiMenulisPelanPage() {
       </AnimatePresence>
 
       {/* Header - Brutalist */}
-      <header className={`fixed top-2 left-0 right-0 z-40 px-4 py-3 ${theme.code} border-b ${theme.border}`}>
+      <header className={`fixed top-0 left-0 right-0 z-40 px-4 py-3 ${theme.code} border-b ${theme.border}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className={`w-3 h-3 ${theme.accent.replace('text-', 'bg-')}`} />
@@ -214,7 +214,7 @@ export default function KamiMenulisPelanPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className={`relative z-20 pt-24 pb-32 px-4 transition-all duration-300 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-56'} mx-auto`}>
+      <main className={`relative z-20 pt-32 pb-32 px-4 transition-all duration-300 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-56'} mx-auto`}>
         
         {/* Title Section - Brutalist */}
         <section className="mb-20 border-b-2 border-current pb-8">
