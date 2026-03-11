@@ -11,27 +11,27 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
 
-  // cek apakah halaman buku
-  const isBookPage = pathname?.startsWith("/buku");
+  // reader mode hanya untuk halaman buku slug
+  const isBookReader =
+    pathname?.startsWith("/buku/") && pathname.split("/").length > 2;
 
   return (
     <>
-      {/* Navbar hanya muncul di halaman normal */}
-      {!isBookPage && <Navbar />}
+      {/* Navbar hanya untuk halaman normal */}
+      {!isBookReader && <Navbar />}
 
-      {/* Main content */}
       <main
         className={`min-h-screen ${
-          isBookPage
-            ? "pt-24 md:pt-28 px-4"
+          isBookReader
+            ? "pt-28 md:pt-32 px-4"
             : "pt-16"
         }`}
       >
         {children}
       </main>
 
-      {/* Footer hanya muncul di halaman normal */}
-      {!isBookPage && <Footer />}
+      {/* Footer hanya untuk halaman normal */}
+      {!isBookReader && <Footer />}
     </>
   );
 }
