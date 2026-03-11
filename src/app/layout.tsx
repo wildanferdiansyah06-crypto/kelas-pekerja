@@ -39,14 +39,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Wildan Ferdiansyah" }],
   creator: "Wildan Ferdiansyah",
-  metadataBase: new URL("https://kelaspekerja.id"),
+  metadataBase: new URL("https://kelaspekerja.site"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "id_ID",
-    url: "https://kelaspekerja.id",
+    url: "https://kelaspekerja.site",
     siteName: "Kelas Pekerja",
     title: "Kelas Pekerja — Arsip Sunyi Orang-Orang yang Tetap Bekerja",
     description:
@@ -83,10 +83,15 @@ export default function RootLayout({
       className="scroll-smooth"
     >
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-white dark:bg-[#0c0c0c] text-neutral-900 dark:text-neutral-200 transition-colors duration-500`}
       >
         <ErrorBoundary>
-          <ThemeProvider>
+
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+          >
             <ReadingProgress />
 
             <Navbar />
@@ -98,7 +103,9 @@ export default function RootLayout({
             <Footer />
 
             <ScrollToTop />
+
           </ThemeProvider>
+
         </ErrorBoundary>
       </body>
     </html>
