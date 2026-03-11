@@ -6,7 +6,6 @@ import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { ErrorBoundary } from "@/src/components/ErrorBoundary";
-import ScrollToTop from "@/src/components/ScrollToTop";
 import ReadingProgress from "@/src/components/ReadingProgress";
 
 const playfair = Playfair_Display({
@@ -86,23 +85,23 @@ export default function RootLayout({
         className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-white dark:bg-[#0c0c0c] text-neutral-900 dark:text-neutral-200 transition-colors duration-500`}
       >
         <ErrorBoundary>
-
           <ThemeProvider>
 
+            {/* progress bar atas */}
             <ReadingProgress />
 
+            {/* navbar global */}
             <Navbar />
 
+            {/* halaman */}
             <main className="min-h-screen">
               {children}
             </main>
 
+            {/* footer */}
             <Footer />
 
-            <ScrollToTop />
-
           </ThemeProvider>
-
         </ErrorBoundary>
       </body>
     </html>
