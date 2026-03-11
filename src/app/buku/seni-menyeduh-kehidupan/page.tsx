@@ -32,7 +32,7 @@ export default function SeniMenyeduhiKehidupanPage() {
       const sections = document.querySelectorAll('section[id]');
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
-        if (rect.top <= 100 && rect.bottom >= 100) {
+        if (rect.top <= 150 && rect.bottom >= 150) {
           setActiveSection(section.id);
         }
       });
@@ -56,12 +56,13 @@ export default function SeniMenyeduhiKehidupanPage() {
     accentGlow: 'shadow-amber-500/20',
     secondary: 'text-orange-400',
     border: 'border-stone-800',
-    card: 'bg-stone-900/40',
+    card: 'bg-stone-900/80',
     highlight: 'bg-amber-500/5',
     quoteBorder: 'border-l-amber-500',
     noise: 'opacity-[0.03]',
     navBg: 'bg-[#0c0a09]/95',
-    navBorder: 'border-stone-800'
+    navBorder: 'border-stone-800',
+    tocBg: 'bg-stone-900/95'
   } : {
     bg: 'bg-[#fafaf9]',
     bgGradient: 'from-amber-100/50 via-[#fafaf9] to-[#fafaf9]',
@@ -74,12 +75,13 @@ export default function SeniMenyeduhiKehidupanPage() {
     accentGlow: 'shadow-amber-700/10',
     secondary: 'text-orange-600',
     border: 'border-stone-200',
-    card: 'bg-white/60',
+    card: 'bg-white/80',
     highlight: 'bg-amber-50/50',
     quoteBorder: 'border-l-amber-600',
     noise: 'opacity-[0.015]',
     navBg: 'bg-[#fafaf9]/95',
-    navBorder: 'border-stone-200'
+    navBorder: 'border-stone-200',
+    tocBg: 'bg-white/95'
   };
 
   const fadeInUp = {
@@ -127,39 +129,14 @@ export default function SeniMenyeduhiKehidupanPage() {
   return (
     <div ref={containerRef} className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-700 overflow-x-hidden`}>
       
-      {/* Animated Background Gradient */}
+      {/* Background */}
       <motion.div 
         className={`fixed inset-0 bg-gradient-to-b ${theme.bgGradient} pointer-events-none z-0`}
         style={{ y: backgroundY }}
       />
-
-      {/* Noise Texture Overlay */}
       <div className={`fixed inset-0 pointer-events-none z-10 ${theme.noise}`}
         style={{backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`}}
       />
-
-      {/* Floating Coffee Particles */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`absolute w-2 h-2 rounded-full ${darkMode ? 'bg-amber-500/20' : 'bg-amber-600/10'}`}
-            initial={{ 
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800)
-            }}
-            animate={{ 
-              y: [null, -100],
-              opacity: [0, 1, 0]
-            }}
-            transition={{ 
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 5
-            }}
-          />
-        ))}
-      </div>
 
       {/* Progress Bar */}
       <motion.div 
@@ -167,51 +144,45 @@ export default function SeniMenyeduhiKehidupanPage() {
         style={{ scaleX: smoothProgress }}
       />
 
-      {/* Global Navbar */}
+      {/* Navbar */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: 0.6 }}
         className={`fixed top-0 left-0 right-0 z-40 ${theme.navBg} backdrop-blur-md border-b ${theme.navBorder}`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
             
-            {/* Logo / Brand */}
-            <motion.a 
-              href="#"
-              className="flex items-center gap-2 group"
-              whileHover={{ scale: 1.02 }}
-            >
+            {/* Brand */}
+            <a href="#" className="flex items-center gap-2">
               <div className={`w-8 h-8 rounded-full ${theme.accentBg} border ${theme.accentBorder} flex items-center justify-center`}>
                 <Coffee size={16} className={theme.accent} />
               </div>
               <span className={`font-serif text-lg ${theme.textHeading} hidden sm:block`}>
                 Kelas Pekerja
               </span>
-            </motion.a>
+            </a>
 
-            {/* Center: Reading Progress */}
-            <div className="flex-1 max-w-md mx-4 hidden md:flex items-center justify-center gap-3">
+            {/* Progress - Desktop */}
+            <div className="flex-1 max-w-xs mx-4 hidden md:flex items-center gap-3">
               <BookOpen size={14} className={theme.accent} />
               <div className={`flex-1 h-1.5 rounded-full ${darkMode ? 'bg-stone-800' : 'bg-stone-200'} overflow-hidden`}>
                 <motion.div 
-                  className={`h-full rounded-full ${theme.accent.replace('text-', 'bg-')}`}
+                  className={`h-full rounded-full ${darkMode ? 'bg-amber-600' : 'bg-amber-700'}`}
                   style={{ width: `${readingProgress}%` }}
                 />
               </div>
-              <span className={`text-xs font-medium ${theme.textMuted} w-10 text-right`}>
+              <span className={`text-xs font-medium ${theme.textMuted}`}>
                 {Math.round(readingProgress)}%
               </span>
             </div>
 
-            {/* Right: Dark Mode & TOC Toggle */}
+            {/* Controls */}
             <div className="flex items-center gap-2">
-              {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
-                className={`p-2.5 rounded-xl transition-all duration-300 ${darkMode ? 'hover:bg-stone-800' : 'hover:bg-stone-100'} group`}
-                aria-label="Toggle dark mode"
+                className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-stone-800' : 'hover:bg-stone-100'}`}
               >
                 <AnimatePresence mode="wait">
                   {darkMode ? (
@@ -222,7 +193,7 @@ export default function SeniMenyeduhiKehidupanPage() {
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <Sun size={18} className={`${theme.accent} group-hover:scale-110 transition-transform`} />
+                      <Sun size={18} className={theme.accent} />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -232,111 +203,112 @@ export default function SeniMenyeduhiKehidupanPage() {
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <Moon size={18} className={`${theme.accent} group-hover:scale-110 transition-transform`} />
+                      <Moon size={18} className={theme.accent} />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </button>
 
-              {/* TOC Toggle Button */}
+              {/* TOC Toggle */}
               <button
                 onClick={() => setIsTocOpen(!isTocOpen)}
-                className={`p-2.5 rounded-xl transition-all duration-300 ${isTocOpen ? theme.accentBg : ''} ${darkMode ? 'hover:bg-stone-800' : 'hover:bg-stone-100'} group md:hidden`}
-                aria-label="Toggle table of contents"
+                className={`p-2 rounded-lg transition-colors flex items-center gap-2 ${isTocOpen ? theme.accentBg : ''} ${darkMode ? 'hover:bg-stone-800' : 'hover:bg-stone-100'}`}
               >
-                {isTocOpen ? (
-                  <X size={18} className={theme.accent} />
-                ) : (
-                  <Menu size={18} className={theme.accent} />
-                )}
+                <Menu size={18} className={theme.accent} />
+                <span className={`text-sm ${theme.accent} hidden sm:inline`}>Bab</span>
               </button>
             </div>
           </div>
         </div>
-
-        {/* Mobile TOC Dropdown */}
-        <AnimatePresence>
-          {isTocOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`md:hidden border-t ${theme.navBorder} overflow-hidden`}
-            >
-              <div className={`max-h-[60vh] overflow-y-auto p-4 ${theme.card}`}>
-                <p className={`text-[10px] uppercase tracking-widest ${theme.textMuted} mb-3`}>Daftar Isi</p>
-                <nav className="space-y-1">
-                  {chapters.map((chapter) => (
-                    <a
-                      key={chapter.id}
-                      href={`#${chapter.id}`}
-                      onClick={() => setIsTocOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                        activeSection === chapter.id 
-                          ? `${theme.accentBg} ${theme.accent} font-medium` 
-                          : `${theme.textMuted} hover:${darkMode ? 'bg-stone-800' : 'bg-stone-100'}`
-                      }`}
-                    >
-                      <span className="w-5 text-center">{chapter.icon}</span>
-                      <span className="truncate">{chapter.title}</span>
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.nav>
 
-      {/* Desktop Sidebar TOC - Fixed Left */}
+      {/* TOC Sidebar - Desktop (Fixed Left) */}
       <motion.aside
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
-        className={`fixed left-4 top-24 z-30 w-64 hidden lg:block`}
+        className={`fixed left-4 top-20 z-30 w-64 hidden xl:block`}
       >
-        <div className={`${theme.card} backdrop-blur-md p-5 rounded-2xl border ${theme.border} shadow-lg max-h-[calc(100vh-8rem)] overflow-y-auto`}>
-          <div className="flex items-center gap-2 mb-4 pb-3 border-b ${theme.border}">
-            <BookOpen size={16} className={theme.accent} />
+        <div className={`${theme.tocBg} backdrop-blur-md p-4 rounded-xl border ${theme.border} shadow-lg max-h-[calc(100vh-6rem)] overflow-y-auto`}>
+          <div className="flex items-center gap-2 mb-3 pb-2 border-b ${theme.border}">
+            <BookOpen size={14} className={theme.accent} />
             <p className={`text-xs uppercase tracking-widest ${theme.textMuted} font-semibold`}>Daftar Isi</p>
           </div>
           
           <nav className="space-y-1">
-            {chapters.map((chapter, idx) => (
-              <motion.a
+            {chapters.map((chapter) => (
+              <a
                 key={chapter.id}
                 href={`#${chapter.id}`}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + idx * 0.05 }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
+                className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-all ${
                   activeSection === chapter.id 
                     ? `${theme.accentBg} ${theme.accent} font-medium` 
-                    : `${theme.textMuted} hover:${darkMode ? 'bg-stone-800/50' : 'bg-stone-100/50'}`
+                    : `${theme.textMuted} hover:${darkMode ? 'bg-stone-800' : 'bg-stone-100'}`
                 }`}
               >
-                <span className="w-5 text-center text-xs">{chapter.icon}</span>
-                <span className="truncate leading-tight">{chapter.title}</span>
-              </motion.a>
+                <span>{chapter.icon}</span>
+                <span className="truncate">{chapter.title}</span>
+              </a>
             ))}
           </nav>
-
-          {/* Mini Progress in Sidebar */}
-          <div className={`mt-4 pt-4 border-t ${theme.border}`}>
-            <div className="flex items-center justify-between text-xs mb-2">
-              <span className={theme.textMuted}>Progress</span>
-              <span className={theme.accent}>{Math.round(readingProgress)}%</span>
-            </div>
-            <div className={`h-1 rounded-full ${darkMode ? 'bg-stone-800' : 'bg-stone-200'}`}>
-              <motion.div 
-                className={`h-full rounded-full ${theme.accent.replace('text-', 'bg-')}`}
-                style={{ width: `${readingProgress}%` }}
-              />
-            </div>
-          </div>
         </div>
       </motion.aside>
+
+      {/* TOC Dropdown - Mobile/Tablet */}
+      <AnimatePresence>
+        {isTocOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className={`fixed top-14 left-0 right-0 z-35 ${theme.tocBg} backdrop-blur-md border-b ${theme.border} xl:hidden`}
+          >
+            <div className="max-w-6xl mx-auto px-4 py-4 max-h-[60vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-3">
+                <p className={`text-xs uppercase tracking-widest ${theme.textMuted} font-semibold`}>Daftar Isi</p>
+                <button 
+                  onClick={() => setIsTocOpen(false)}
+                  className={`p-1 rounded ${darkMode ? 'hover:bg-stone-800' : 'hover:bg-stone-100'}`}
+                >
+                  <X size={16} className={theme.textMuted} />
+                </button>
+              </div>
+              
+              <nav className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                {chapters.map((chapter) => (
+                  <a
+                    key={chapter.id}
+                    href={`#${chapter.id}`}
+                    onClick={() => setIsTocOpen(false)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
+                      activeSection === chapter.id 
+                        ? `${theme.accentBg} ${theme.accent} font-medium` 
+                        : `${theme.textMuted} hover:${darkMode ? 'bg-stone-800' : 'bg-stone-100'}`
+                    }`}
+                  >
+                    <span className="w-5 text-center">{chapter.icon}</span>
+                    <span className="truncate">{chapter.title}</span>
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Overlay for mobile TOC */}
+      <AnimatePresence>
+        {isTocOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsTocOpen(false)}
+            className="fixed inset-0 bg-black/20 z-30 xl:hidden"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Scroll to Top */}
       <AnimatePresence>
@@ -353,9 +325,10 @@ export default function SeniMenyeduhiKehidupanPage() {
         )}
       </AnimatePresence>
 
-      <main className={`relative z-20 max-w-2xl mx-auto px-6 pt-24 pb-20 lg:ml-72 lg:mr-auto xl:mx-auto`}>
+      {/* Main Content */}
+      <main className={`relative z-20 max-w-2xl mx-auto px-6 pt-20 pb-20 xl:ml-72 xl:mr-auto`}>
         
-        {/* Hero Section */}
+        {/* Hero */}
         <motion.section 
           style={{ opacity: opacityHero, y: textY }}
           className="text-center mb-32 md:mb-40 pt-16"
@@ -425,7 +398,7 @@ export default function SeniMenyeduhiKehidupanPage() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mb-28 md:mb-36 scroll-mt-28"
+          className="mb-28 md:mb-36 scroll-mt-24"
         >
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-12`}>
             <span className={`w-12 h-px ${darkMode ? 'bg-amber-700/50' : 'bg-amber-500'}`} />
@@ -464,7 +437,7 @@ export default function SeniMenyeduhiKehidupanPage() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mb-28 md:mb-36 scroll-mt-28"
+          className="mb-28 md:mb-36 scroll-mt-24"
         >
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-12`}>
             <span className={`w-12 h-px ${darkMode ? 'bg-amber-700/50' : 'bg-amber-500'}`} />
@@ -504,68 +477,37 @@ export default function SeniMenyeduhiKehidupanPage() {
           </motion.div>
         </motion.section>
 
-        {/* Section Title */}
-        <motion.section 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={scaleIn}
-          className={`text-center py-16 md:py-24 border-y ${theme.border} my-16`}
-        >
-          <motion.h2 
-            className={`font-serif text-3xl md:text-5xl ${theme.textHeading} italic mb-4`}
-            whileInView={{ opacity: [0.5, 1], scale: [0.98, 1] }}
-            transition={{ duration: 0.8 }}
-          >
-            Seni Menyeduh Kehidupan
-          </motion.h2>
-          <motion.div 
-            className="flex items-center justify-center gap-3 mt-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <span className={`w-8 h-px ${darkMode ? 'bg-amber-800' : 'bg-amber-300'}`} />
-            <span className={`${theme.accent} text-xl`}>✦</span>
-            <span className={`w-8 h-px ${darkMode ? 'bg-amber-800' : 'bg-amber-300'}`} />
-          </motion.div>
-        </motion.section>
-
-        {/* Daftar Isi - Mobile Only (Desktop moved to sidebar) */}
+        {/* Daftar Isi Mobile */}
         <motion.section 
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className={`mb-28 md:mb-36 ${theme.card} p-8 md:p-12 rounded-2xl border ${theme.border} backdrop-blur-sm lg:hidden`}
+          className={`mb-28 md:mb-36 ${theme.card} p-6 rounded-2xl border ${theme.border} backdrop-blur-sm xl:hidden`}
         >
-          <motion.h3 variants={fadeInUp} className={`text-center font-serif text-2xl ${theme.accent} mb-10`}>
+          <motion.h3 variants={fadeInUp} className={`text-center font-serif text-xl ${theme.accent} mb-6`}>
             ✨ Daftar Isi ✨
           </motion.h3>
           
-          <motion.nav variants={staggerContainer} className="space-y-3 max-w-lg mx-auto">
-            {chapters.slice(2).map((chapter, idx) => (
+          <motion.nav variants={staggerContainer} className="grid grid-cols-1 gap-1">
+            {chapters.slice(2).map((chapter) => (
               <motion.a 
                 key={chapter.id}
                 variants={fadeInUp}
                 href={`#${chapter.id}`}
-                whileHover={{ x: 8 }}
-                className={`group flex items-center justify-between py-3 border-b ${theme.border} last:border-0 transition-colors`}
+                className={`flex items-center justify-between py-2 px-3 rounded-lg transition-colors ${
+                  activeSection === chapter.id 
+                    ? `${theme.accentBg} ${theme.accent}` 
+                    : `${theme.textMuted} hover:${darkMode ? 'bg-stone-800' : 'bg-stone-100'}`
+                }`}
               >
-                <span className={`${theme.text} group-hover:${theme.accent} transition-colors font-light`}>
-                  <span className="mr-3">{chapter.icon}</span>
+                <span className="flex items-center gap-2 text-sm">
+                  <span>{chapter.icon}</span>
                   {chapter.title}
-                </span>
-                <span className={`${theme.textMuted} font-serif italic text-sm group-hover:${theme.accent} transition-colors`}>
-                  {5 + idx * 6}
                 </span>
               </motion.a>
             ))}
           </motion.nav>
-
-          <motion.p variants={fadeInUp} className={`text-center ${theme.textMuted} text-sm mt-8 italic`}>
-            — Diseduh dengan hati oleh Wildan F —
-          </motion.p>
         </motion.section>
 
         {/* Bab 1 */}
@@ -575,7 +517,7 @@ export default function SeniMenyeduhiKehidupanPage() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mb-28 md:mb-36 scroll-mt-28"
+          className="mb-28 md:mb-36 scroll-mt-24"
         >
           <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.accent} text-sm font-medium tracking-widest`}>BAB 01</span>
@@ -612,7 +554,7 @@ export default function SeniMenyeduhiKehidupanPage() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mb-28 md:mb-36 scroll-mt-28"
+          className="mb-28 md:mb-36 scroll-mt-24"
         >
           <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.secondary} text-sm font-medium tracking-widest`}>BAB 02</span>
@@ -654,7 +596,7 @@ export default function SeniMenyeduhiKehidupanPage() {
           </motion.blockquote>
         </motion.section>
 
-        {/* Bab 3-9 Placeholders */}
+        {/* Bab 3-9 */}
         {[3, 4, 5, 6, 7, 8, 9].map((babNum) => {
           const titles = [
             "Suhu, Tekanan, dan Ketahanan",
@@ -676,7 +618,7 @@ export default function SeniMenyeduhiKehidupanPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               variants={staggerContainer}
-              className="mb-28 md:mb-36 scroll-mt-28"
+              className="mb-28 md:mb-36 scroll-mt-24"
             >
               <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
                 <span className={`${colors[babNum-3]} text-sm font-medium tracking-widest`}>BAB 0{babNum}</span>
@@ -694,14 +636,14 @@ export default function SeniMenyeduhiKehidupanPage() {
           );
         })}
 
-        {/* Bab 10 - Penutup */}
+        {/* Bab 10 */}
         <motion.section 
           id="bab-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="mb-28 md:mb-36 scroll-mt-28"
+          className="mb-28 md:mb-36 scroll-mt-24"
         >
           <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.accent} text-sm font-medium tracking-widest`}>BAB 10</span>
