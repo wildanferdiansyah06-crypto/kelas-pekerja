@@ -80,18 +80,15 @@ export default function RootLayout({
     <html
       lang="id"
       suppressHydrationWarning
-      className="scroll-smooth"
+      className="dark scroll-smooth"
     >
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-white dark:bg-[#0c0c0c] text-neutral-900 dark:text-neutral-200 transition-colors duration-500`}
       >
         <ErrorBoundary>
 
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-          >
+          <ThemeProvider>
+
             <ReadingProgress />
 
             <Navbar />
