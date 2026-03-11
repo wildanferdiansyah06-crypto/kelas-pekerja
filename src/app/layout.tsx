@@ -79,8 +79,8 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      suppressHydrationWarning
       className="dark scroll-smooth"
+      suppressHydrationWarning
     >
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-white dark:bg-[#0c0c0c] text-neutral-900 dark:text-neutral-200 transition-colors duration-500`}
