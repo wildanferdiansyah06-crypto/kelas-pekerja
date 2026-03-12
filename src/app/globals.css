@@ -33,20 +33,24 @@
 }
 
 @layer utilities {
+
+  /* ============================= */
   /* Animations */
+  /* ============================= */
+
   @keyframes breathe {
     0%, 100% { transform: scale(1.05); }
     50% { transform: scale(1.08); }
   }
 
   @keyframes fade-in-up {
-    from { 
-      opacity: 0; 
-      transform: translateY(20px); 
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
-    to { 
-      opacity: 1; 
-      transform: translateY(0); 
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
@@ -56,13 +60,13 @@
   }
 
   @keyframes slide-in-right {
-    from { 
-      opacity: 0; 
-      transform: translateX(20px); 
+    from {
+      opacity: 0;
+      transform: translateX(20px);
     }
-    to { 
-      opacity: 1; 
-      transform: translateX(0); 
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
@@ -90,7 +94,11 @@
     animation: slide-in-right 0.5s ease-out forwards;
   }
 
-  /* Hide scrollbar */
+
+  /* ============================= */
+  /* Hide Scrollbar */
+  /* ============================= */
+
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -100,21 +108,29 @@
     scrollbar-width: none;
   }
 
+
+  /* ============================= */
   /* Grain texture overlay */
+  /* ============================= */
+
   .grain-overlay {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 50;
-    opacity: 0.03;
+    z-index: 1;
+    opacity: 0.015;
+    mix-blend-mode: multiply;
     background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
   }
 
+
+  /* ============================= */
   /* Typography improvements */
+  /* ============================= */
+
   .prose-custom {
-    @apply text-base leading-relaxed;
     font-size: 18px;
-    line-height: 1.7;
+    line-height: 1.85;
   }
 
   .prose-custom p {
@@ -129,13 +145,22 @@
     @apply font-serif text-xl mt-8 mb-4 opacity-80;
   }
 
+
+  /* ============================= */
   /* Focus styles */
+  /* ============================= */
+
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
   }
+
 }
 
-/* Custom scrollbar for webkit browsers */
+
+/* ============================= */
+/* Custom Scrollbar */
+/* ============================= */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
