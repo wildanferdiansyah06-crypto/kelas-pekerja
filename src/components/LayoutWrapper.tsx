@@ -11,29 +11,26 @@ export default function LayoutWrapper({
 }) {
   const pathname = usePathname();
 
+  // pecah path jadi segment
+  const segments = pathname.split("/").filter(Boolean);
+
   /**
-   * Reader mode hanya aktif di halaman buku:
-   * /buku/slug
-   * tapi tidak di:
-   * /buku
+   * Reader mode hanya untuk:
+   * /buku/[slug]
    */
   const isBookReader =
-    pathname?.startsWith("/buku/") && pathname !== "/buku";
+    segments.length === 2 && segments[0] === "buku";
 
   return (
     <>
-      {/* Navbar hanya muncul di halaman normal */}
+      {/* Navbar */}
       {!isBookReader && <Navbar />}
 
-      <main
-        className={`min-h-screen ${
-          !isBookReader ? "pt-16" : ""
-        }`}
-      >
+      <main className={`min-h-screen ${!isBookReader ? "pt-16" : ""}`}>
         {children}
       </main>
 
-      {/* Footer hanya muncul di halaman normal */}
+      {/* Footer */}
       {!isBookReader && <Footer />}
     </>
   );
