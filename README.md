@@ -266,4 +266,4 @@ MIT © 2026 Wildan Ferdiansyah
 
 ---
 
-**Kelas Pekerja** — Dibuat dengan ☕ dan ❤️ di malam yang sunyii.
+**Kelas Pekerja** — Dibuat dengan ☕ dan ❤️ di malam yang sunyi.
