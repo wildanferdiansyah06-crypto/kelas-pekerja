@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
-import Navbar from "@/src/components/Navbar";
-import Footer from "@/src/components/Footer";
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { ErrorBoundary } from "@/src/components/ErrorBoundary";
 import ReadingProgress from "@/src/components/ReadingProgress";
@@ -83,7 +81,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-white dark:bg-[#0c0c0c] text-neutral-900 dark:text-neutral-200 transition-colors duration-500`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500`}
       >
         <ErrorBoundary>
           <ThemeProvider>
