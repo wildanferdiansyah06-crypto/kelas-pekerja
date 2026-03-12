@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -8,20 +8,24 @@ interface ScrollRevealProps {
 }
 
 const ScrollReveal = ({ children, delay = 0 }: ScrollRevealProps) => {
-  const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
+          setTimeout(() => {
+            el.classList.add("opacity-100", "translate-y-0");
+          }, delay);
         }
       },
       { threshold: 0.1 }
     );
 
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(el);
 
     return () => observer.disconnect();
   }, [delay]);
@@ -29,9 +33,7 @@ const ScrollReveal = ({ children, delay = 0 }: ScrollRevealProps) => {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      }`}
+      className="opacity-100 translate-y-0 transition-all duration-1000 ease-out"
     >
       {children}
     </div>
@@ -105,6 +107,7 @@ export default function TentangPage() {
             </p>
           </ScrollReveal>
 
+          {/* Quote */}
           <ScrollReveal delay={400}>
             <blockquote className="border-l-2 border-[#8b7355] pl-6 italic font-serif text-xl text-[#c7b299] leading-relaxed">
               Karena terkadang, yang paling sederhana justru yang paling dekat
