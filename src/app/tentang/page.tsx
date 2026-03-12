@@ -22,6 +22,7 @@ const ScrollReveal = ({ children, delay = 0 }: ScrollRevealProps) => {
     );
 
     if (ref.current) observer.observe(ref.current);
+
     return () => observer.disconnect();
   }, [delay]);
 
@@ -38,14 +39,6 @@ const ScrollReveal = ({ children, delay = 0 }: ScrollRevealProps) => {
 };
 
 export default function TentangPage() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <main className="min-h-screen bg-[#0c0c0c] text-neutral-200 selection:bg-neutral-700 selection:text-white">
 
@@ -112,7 +105,6 @@ export default function TentangPage() {
             </p>
           </ScrollReveal>
 
-          {/* Quote */}
           <ScrollReveal delay={400}>
             <blockquote className="border-l-2 border-[#8b7355] pl-6 italic font-serif text-xl text-[#c7b299] leading-relaxed">
               Karena terkadang, yang paling sederhana justru yang paling dekat
