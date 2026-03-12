@@ -20,9 +20,10 @@ export default async function BooksPage() {
   return (
     <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700">
 
+
       {/* HEADER */}
       <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-screen-lg mx-auto text-center">
 
           <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">
             Perpustakaan Mini
@@ -42,7 +43,7 @@ export default async function BooksPage() {
 
       {/* FILTER */}
       <section className="px-6 pb-12">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-screen-xl mx-auto">
 
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
 
@@ -70,11 +71,11 @@ export default async function BooksPage() {
 
       {/* GRID BUKU */}
       <section className="px-6 pb-24">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-screen-xl mx-auto">
 
           {books.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-14 lg:gap-20">
 
                 {books.map((book, index) => (
                   <BookCard key={book.id} book={book} index={index} />
@@ -82,7 +83,7 @@ export default async function BooksPage() {
 
               </div>
 
-              <div className="mt-20 text-center text-xs opacity-40">
+              <div className="mt-24 text-center text-xs opacity-40">
                 Menampilkan {books.length} dari {total} buku
               </div>
             </>
