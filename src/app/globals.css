@@ -7,6 +7,10 @@
   --font-sans: 'Inter', sans-serif;
 }
 
+/* ============================= */
+/* BASE */
+/* ============================= */
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -22,6 +26,10 @@
   }
 }
 
+/* ============================= */
+/* COMPONENTS */
+/* ============================= */
+
 @layer components {
   .font-serif {
     font-family: var(--font-serif);
@@ -31,6 +39,10 @@
     font-family: var(--font-sans);
   }
 }
+
+/* ============================= */
+/* UTILITIES */
+/* ============================= */
 
 @layer utilities {
 
@@ -70,28 +82,41 @@
     }
   }
 
+
+  /* Animation Classes */
+
   .animate-breathe {
     animation: breathe 20s ease-in-out infinite;
   }
 
   .animate-fade-in {
-    animation: fade-in 0.5s ease-out forwards;
+    opacity: 0;
+    animation: fade-in 0.6s ease-out forwards;
+    will-change: opacity;
   }
 
   .animate-fade-in-slow {
-    animation: fade-in-up 1s ease-out 0.2s both;
+    opacity: 0;
+    animation: fade-in-up 1s ease-out 0.2s forwards;
+    will-change: transform, opacity;
   }
 
   .animate-fade-in-slower {
-    animation: fade-in-up 1s ease-out 0.4s both;
+    opacity: 0;
+    animation: fade-in-up 1s ease-out 0.4s forwards;
+    will-change: transform, opacity;
   }
 
   .animate-fade-in-slowest {
-    animation: fade-in-up 1s ease-out 0.6s both;
+    opacity: 0;
+    animation: fade-in-up 1s ease-out 0.6s forwards;
+    will-change: transform, opacity;
   }
 
   .animate-slide-in-right {
+    opacity: 0;
     animation: slide-in-right 0.5s ease-out forwards;
+    will-change: transform, opacity;
   }
 
 
@@ -156,9 +181,8 @@
 
 }
 
-
 /* ============================= */
-/* Custom Scrollbar */
+/* Scrollbar */
 /* ============================= */
 
 ::-webkit-scrollbar {
