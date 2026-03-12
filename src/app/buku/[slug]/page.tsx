@@ -71,8 +71,8 @@ export default async function BookPage({ params }: BookPageProps) {
     <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700">
 
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 backdrop-blur-sm border-b border-[#8b7355]/10">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 backdrop-blur-sm border-b border-[#8b7355]/10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
 
           <Link
             href="/buku"
@@ -98,8 +98,8 @@ export default async function BookPage({ params }: BookPageProps) {
       </nav>
 
       {/* HERO */}
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
+      <section className="pt-24 pb-16 px-6">
+        <div className="max-w-6xl mx-auto">
 
           <div className="grid md:grid-cols-2 gap-12 items-start">
 
