@@ -21,8 +21,8 @@ export default async function BooksPage() {
     <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700">
 
       {/* HEADER */}
-      <section className="pt-32 pb-16 px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
 
           <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">
             Perpustakaan Mini
@@ -39,9 +39,10 @@ export default async function BooksPage() {
         </div>
       </section>
 
+
       {/* FILTER */}
-      <section className="px-6 pb-8">
-        <div className="max-w-6xl mx-auto">
+      <section className="px-6 pb-12">
+        <div className="max-w-7xl mx-auto">
 
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
 
@@ -66,13 +67,14 @@ export default async function BooksPage() {
         </div>
       </section>
 
+
       {/* GRID BUKU */}
-      <section className="px-6 py-16">
+      <section className="px-6 pb-24">
         <div className="max-w-7xl mx-auto">
 
           {books.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12">
 
                 {books.map((book, index) => (
                   <BookCard key={book.id} book={book} index={index} />
@@ -104,4 +106,3 @@ export default async function BooksPage() {
     </main>
   );
 }
-
