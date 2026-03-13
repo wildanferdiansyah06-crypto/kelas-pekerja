@@ -20,10 +20,6 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  /* =========================
-  HYDRATION SAFE
-  ========================= */
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -31,19 +27,15 @@ export default function Navbar() {
   if (!mounted) return null;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur bg-[#faf8f5]/80 dark:bg-[#1a1816]/80 border-b border-[#8b7355]/10">
-
+    <nav className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-
-        {/* Logo */}
         <Link
           href="/"
-          className="font-serif text-lg tracking-wider opacity-80 hover:opacity-100"
+          className="font-serif text-lg tracking-wider opacity-80 hover:opacity-100 transition-opacity"
         >
           Kelas Pekerja
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           {navigation.map((item) => (
             <Link
@@ -60,49 +52,43 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right Section */}
         <div className="flex items-center gap-3">
-
-          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-[#8b7355]/10 transition"
+            className="p-2 rounded-full hover:bg-[#8b7355]/10 transition-colors"
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-full hover:bg-[#8b7355]/10"
+            className="md:hidden p-2 rounded-full hover:bg-[#8b7355]/10 transition-colors"
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden border-t border-[#8b7355]/10 bg-[#faf8f5] dark:bg-[#1a1816]">
-
           <div className="px-6 py-6 flex flex-col gap-4">
             {navigation.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-sm ${
+                className={`text-sm transition-opacity ${
                   pathname === item.href
                     ? "opacity-100"
-                    : "opacity-60"
+                    : "opacity-60 hover:opacity-100"
                 }`}
               >
                 {item.label}
               </Link>
             ))}
           </div>
-
         </div>
       )}
     </nav>
