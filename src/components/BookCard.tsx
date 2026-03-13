@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Eye, ArrowUpRight, Clock, BookOpen } from 'lucide-react';
-import { Book } from '@/src/types';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Eye, ArrowUpRight, Clock, BookOpen } from "lucide-react";
+import { Book } from "@/src/types";
 
 interface BookCardProps {
   book: Book;
@@ -12,7 +12,6 @@ interface BookCardProps {
 }
 
 export default function BookCard({ book, index = 0 }: BookCardProps) {
-
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -22,8 +21,6 @@ export default function BookCard({ book, index = 0 }: BookCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-
-      {/* COVER */}
       <div
         className="relative aspect-[3/2] w-full mb-6 overflow-hidden rounded-sm
                    shadow-[0_4px_20px_-10px_rgba(0,0,0,0.15)]
@@ -32,7 +29,6 @@ export default function BookCard({ book, index = 0 }: BookCardProps) {
                    transition-all duration-500 ease-out"
         style={{ animationDelay: `${index * 100}ms` }}
       >
-
         <Image
           src={book.cover}
           alt={book.title}
@@ -45,28 +41,21 @@ export default function BookCard({ book, index = 0 }: BookCardProps) {
                  25vw"
         />
 
-        {/* Gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70" />
 
-        {/* Side line */}
         <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
 
-
-        {/* View indicator */}
         <div
           className={`absolute top-4 right-4 w-10 h-10 rounded-full
                      bg-white/10 backdrop-blur-sm
                      flex items-center justify-center
                      transition-all duration-300
-                     ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+                     ${isHovered ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}
         >
           <Eye size={18} className="text-white/80" />
         </div>
 
-
-        {/* Bottom hint */}
         <div className="absolute bottom-4 left-4 right-4 flex items-center gap-2">
-
           <span className="w-6 h-px bg-white/40"></span>
 
           <p className="text-white/70 text-xs tracking-wider flex items-center gap-1">
@@ -74,22 +63,15 @@ export default function BookCard({ book, index = 0 }: BookCardProps) {
             <ArrowUpRight
               size={12}
               className={`transition-transform duration-300 ${
-                isHovered ? 'translate-x-1 -translate-y-1' : ''
+                isHovered ? "translate-x-1 -translate-y-1" : ""
               }`}
             />
           </p>
-
         </div>
-
       </div>
 
-
-      {/* CONTENT */}
       <div className="space-y-3 group-hover:translate-y-1 transition-transform duration-300">
-
-        {/* Meta */}
         <div className="flex items-center gap-3 text-[10px] tracking-[0.2em] uppercase opacity-40">
-
           <span className="px-2 py-1 rounded-full bg-[#8b7355]/10 text-[#8b7355]">
             {book.category}
           </span>
@@ -107,41 +89,23 @@ export default function BookCard({ book, index = 0 }: BookCardProps) {
             <Clock size={10} />
             {book.readTime}
           </span>
-
         </div>
 
-
-        {/* Title */}
         <h3 className="font-serif text-xl md:text-2xl opacity-80 group-hover:opacity-100 transition-opacity leading-tight">
           {book.title}
         </h3>
 
-
-        {/* Excerpt */}
         <p className="text-sm leading-relaxed opacity-60 line-clamp-2">
           {book.excerpt}
         </p>
 
-
-        {/* Stats */}
         {book.stats && (
-
           <div className="flex items-center gap-4 text-xs opacity-40 pt-2">
-
-            <span>
-              {book.stats.views.toLocaleString('id-ID')} dibaca
-            </span>
-
-            <span>
-              {book.stats.downloads} diunduh
-            </span>
-
+            <span>{book.stats.views.toLocaleString("id-ID")} dibaca</span>
+            <span>{book.stats.downloads} diunduh</span>
           </div>
-
         )}
-
       </div>
-
     </Link>
   );
 }
