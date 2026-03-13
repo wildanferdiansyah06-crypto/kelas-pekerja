@@ -7,17 +7,12 @@
   --font-sans: 'Inter', sans-serif;
 }
 
-/* ============================= */
-/* BASE */
-/* ============================= */
-
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-[#faf8f5] text-[#2b2b2b] dark:bg-[#1a1816] dark:text-[#e8e0d5];
     font-feature-settings: "liga" 1, "calt" 1;
   }
 
@@ -25,10 +20,6 @@
     @apply bg-[#8b7355]/30;
   }
 }
-
-/* ============================= */
-/* COMPONENTS */
-/* ============================= */
 
 @layer components {
   .font-serif {
@@ -40,16 +31,7 @@
   }
 }
 
-/* ============================= */
-/* UTILITIES */
-/* ============================= */
-
 @layer utilities {
-
-  /* ============================= */
-  /* Animations */
-  /* ============================= */
-
   @keyframes breathe {
     0%, 100% { transform: scale(1.05); }
     50% { transform: scale(1.08); }
@@ -81,9 +63,6 @@
       transform: translateX(0);
     }
   }
-
-
-  /* Animation Classes */
 
   .animate-breathe {
     animation: breathe 20s ease-in-out infinite;
@@ -119,11 +98,6 @@
     will-change: transform, opacity;
   }
 
-
-  /* ============================= */
-  /* Hide Scrollbar */
-  /* ============================= */
-
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -132,11 +106,6 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-
-  /* ============================= */
-  /* Grain texture overlay */
-  /* ============================= */
 
   .grain-overlay {
     position: fixed;
@@ -147,11 +116,6 @@
     mix-blend-mode: multiply;
     background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
   }
-
-
-  /* ============================= */
-  /* Typography improvements */
-  /* ============================= */
 
   .prose-custom {
     font-size: 18px;
@@ -170,20 +134,10 @@
     @apply font-serif text-xl mt-8 mb-4 opacity-80;
   }
 
-
-  /* ============================= */
-  /* Focus styles */
-  /* ============================= */
-
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
   }
-
 }
-
-/* ============================= */
-/* Scrollbar */
-/* ============================= */
 
 ::-webkit-scrollbar {
   width: 8px;
