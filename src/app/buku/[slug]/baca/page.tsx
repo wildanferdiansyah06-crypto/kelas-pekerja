@@ -24,6 +24,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
+
   const { slug } = await params
 
   const book = books.find((b) => b.slug === slug)
@@ -52,6 +53,7 @@ interface BookPageProps {
 }
 
 export default async function BookPage({ params }: BookPageProps) {
+
   const { slug } = await params
 
   let book: Book | undefined
@@ -72,6 +74,7 @@ export default async function BookPage({ params }: BookPageProps) {
 
       {/* NAVBAR */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 backdrop-blur-sm border-b border-[#8b7355]/10 shadow-sm">
+
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
 
           <Link
@@ -83,7 +86,9 @@ export default async function BookPage({ params }: BookPageProps) {
           </Link>
 
           <div className="flex items-center gap-2">
+
             <ShareButtons title={book.title} />
+
             <BookmarkButton
               item={{
                 id: book.id,
@@ -92,19 +97,23 @@ export default async function BookPage({ params }: BookPageProps) {
                 slug: book.slug,
               }}
             />
+
           </div>
 
         </div>
+
       </nav>
 
       {/* HERO */}
       <section className="pt-24 pb-16 px-6">
+
         <div className="max-w-6xl mx-auto">
 
           <div className="grid md:grid-cols-2 gap-12 items-start">
 
             {/* COVER */}
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
+
               <Image
                 src={book.cover}
                 alt={book.title}
@@ -112,6 +121,7 @@ export default async function BookPage({ params }: BookPageProps) {
                 className="object-cover"
                 priority
               />
+
             </div>
 
             {/* CONTENT */}
@@ -151,56 +161,83 @@ export default async function BookPage({ params }: BookPageProps) {
 
               {book.stats && (
                 <div className="flex items-center gap-6 text-xs opacity-40 py-4 border-y border-[#8b7355]/10">
-                  <span>{book.stats.views.toLocaleString("id-ID")} kali dibaca</span>
-                  <span>{book.stats.downloads} kali diunduh</span>
+
+                  <span>
+                    {book.stats.views.toLocaleString("id-ID")} kali dibaca
+                  </span>
+
+                  <span>
+                    {book.stats.downloads} kali diunduh
+                  </span>
+
                 </div>
               )}
 
               <div className="p-6 rounded-lg bg-[#8b7355]/5 border-l-2 border-[#8b7355]/30">
+
                 <p className="font-serif italic text-sm opacity-60">
                   "{book.preview}"
                 </p>
+
               </div>
 
               {/* BUTTONS */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
 
                 {book.downloadUrl && (
+
                   <a
                     href={book.downloadUrl}
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-[#2b2b2b] dark:bg-[#e8e0d5] text-white dark:text-[#1a1816] rounded-lg hover:opacity-90 transition-opacity text-sm tracking-wider"
                   >
+
                     <Download size={18} />
                     Unduh Buku
+
                   </a>
+
                 )}
 
-                <button
+                {/* FIXED BUTTON */}
+                <Link
+                  href={`/buku/${book.slug}/baca`}
                   className="flex items-center justify-center gap-2 px-6 py-3 border border-[#8b7355]/30 rounded-lg hover:bg-[#8b7355]/5 transition-colors text-sm tracking-wider opacity-80"
                 >
+
                   <BookOpen size={18} />
                   Baca Online
-                </button>
+
+                </Link>
 
               </div>
 
               {book.tags && (
+
                 <div className="flex flex-wrap gap-2 pt-4">
+
                   {book.tags.map((tag) => (
+
                     <span
                       key={tag}
                       className="px-3 py-1 text-xs rounded-full bg-black/5 dark:bg-white/5 opacity-60"
                     >
+
                       #{tag}
+
                     </span>
+
                   ))}
+
                 </div>
+
               )}
 
             </div>
 
           </div>
+
         </div>
+
       </section>
 
     </main>
