@@ -1,3 +1,6 @@
+import { ThemeProvider } from "@/src/components/ThemeProvider";
+import LayoutWrapper from "@/src/components/LayoutWrapper";
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        <ThemeProvider>
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
