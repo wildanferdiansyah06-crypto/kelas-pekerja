@@ -3,7 +3,6 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/src/components/ThemeProvider";
-import { ErrorBoundary } from "@/src/components/ErrorBoundary";
 import ReadingProgress from "@/src/components/ReadingProgress";
 import LayoutWrapper from "@/src/components/LayoutWrapper";
 
@@ -75,26 +74,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="id"
-      className="dark scroll-smooth"
-      suppressHydrationWarning
-    >
+    <html lang="id" className="dark scroll-smooth" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500`}
       >
-        <ErrorBoundary>
-          <ThemeProvider>
+        <ThemeProvider>
+          {/* progress membaca */}
+          <ReadingProgress />
 
-            {/* progress membaca */}
-            <ReadingProgress />
-
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
-
-          </ThemeProvider>
-        </ErrorBoundary>
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );
