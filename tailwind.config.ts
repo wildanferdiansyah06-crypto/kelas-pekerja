@@ -2,13 +2,11 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: "class",
-
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-
   safelist: [
     "bg-blue-500",
     "bg-amber-500",
@@ -17,13 +15,11 @@ const config: Config = {
     "bg-neutral-800",
     "bg-neutral-900",
   ],
-
   theme: {
     extend: {
       animation: {
         "fade-in": "fadeIn 1s ease-out",
       },
-
       keyframes: {
         fadeIn: {
           "0%": {
@@ -38,7 +34,6 @@ const config: Config = {
       },
     },
   },
-
   plugins: [],
 };
 
