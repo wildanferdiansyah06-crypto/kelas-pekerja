@@ -14,7 +14,6 @@ export default function RandomCoffeeThought() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
 
-  // fetch quotes dari public/data/quotes.json
   useEffect(() => {
     const loadQuotes = async () => {
       try {
@@ -38,14 +37,13 @@ export default function RandomCoffeeThought() {
   const randomThought = () => {
     if (quotes.length === 0) return;
 
-    const random = quotes[Math.floor(Math.random() * quotes.length)];
+    const random = quotes[Math.floor(Math.random() * quotes.quotes.length)];
     setCurrentQuote(random);
   };
 
   return (
-    <section className="py-32 px-6 text-center">
+    <section className="py-32 px-6 text-center relative z-10">
       <div className="max-w-xl mx-auto">
-
         <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">
           Butuh teman ngopi?
         </p>
@@ -58,16 +56,14 @@ export default function RandomCoffeeThought() {
           Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.
         </p>
 
-        {/* Quote */}
         <div className="min-h-[80px] flex items-center justify-center mb-10">
           {currentQuote && (
             <p className="text-lg font-serif italic text-[#8b7355] leading-relaxed animate-fade-in">
-              "{currentQuote.text}"
+              &ldquo;{currentQuote.text}&rdquo;
             </p>
           )}
         </div>
 
-        {/* Button */}
         <button
           onClick={randomThought}
           className="inline-flex items-center gap-2 px-8 py-4 
@@ -77,7 +73,6 @@ export default function RandomCoffeeThought() {
           <RefreshCcw size={16} />
           Random Thought
         </button>
-
       </div>
     </section>
   );
