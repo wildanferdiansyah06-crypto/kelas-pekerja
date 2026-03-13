@@ -14,11 +14,15 @@ description:
 export const revalidate = 3600;
 
 export default async function HomePage() {
-const [featuredBooks, config, allBooks] = await Promise.all([
+
+const [featuredBooks, configData, allBooks] = await Promise.all([
 getFeaturedBooks(2),
 getConfig(),
 getBooks({ limit: 4 }),
 ]);
+
+// Fix TypeScript type
+const config: any = configData;
 
 return (
 <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700">
@@ -129,7 +133,7 @@ return (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-        {featuredBooks.books.map((book, index) => (
+        {featuredBooks.books.map((book: any, index: number) => (
           <BookCard key={book.id} book={book} index={index} />
         ))}
       </div>
