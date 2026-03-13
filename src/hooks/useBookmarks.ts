@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Book } from '@/src/types';
 
 interface BookmarkedItem {
   id: string;
@@ -11,34 +10,66 @@ interface BookmarkedItem {
   savedAt: string;
 }
 
+const STORAGE_KEY = 'kelas-pekerja-bookmarks';
+
 export function useBookmarks() {
   const [bookmarks, setBookmarks] = useState<BookmarkedItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from localStorage on mount
+  /* =========================
+     LOAD BOOKMARKS
+  ========================= */
+
   useEffect(() => {
-    const saved = localStorage.getItem('kelas-pekerja-bookmarks');
-    if (saved) {
-      try {
-        setBookmarks(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse bookmarks:', e);
+    if (typeof window === "undefined") return;
+
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed)) {
+          setBookmarks(parsed);
+        }
       }
+    } catch (error) {
+      console.error("Failed to load bookmarks:", error);
     }
+
     setIsLoaded(true);
   }, []);
 
-  // Save to localStorage whenever bookmarks change
+  /* =========================
+     SAVE BOOKMARKS
+  ========================= */
+
   useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem('kelas-pekerja-bookmarks', JSON.stringify(bookmarks));
+    if (!isLoaded) return;
+    if (typeof window === "undefined") return;
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+    } catch (error) {
+      console.error("Failed to save bookmarks:", error);
     }
   }, [bookmarks, isLoaded]);
+
+  /* =========================
+     ACTIONS
+  ========================= */
 
   const addBookmark = useCallback((item: Omit<BookmarkedItem, 'savedAt'>) => {
     setBookmarks(prev => {
       if (prev.some(b => b.id === item.id)) return prev;
-      return [...prev, { ...item, savedAt: new Date().toISOString() }];
+
+      return [
+        ...prev,
+        {
+          ...item,
+          savedAt: new Date().toISOString()
+        }
+      ];
     });
   }, []);
 
@@ -46,26 +77,31 @@ export function useBookmarks() {
     setBookmarks(prev => prev.filter(b => b.id !== id));
   }, []);
 
-  const isBookmarked = useCallback((id: string) => {
-    return bookmarks.some(b => b.id === id);
-  }, [bookmarks]);
+  const isBookmarked = useCallback(
+    (id: string) => bookmarks.some(b => b.id === id),
+    [bookmarks]
+  );
 
-  const toggleBookmark = useCallback((item: Omit<BookmarkedItem, 'savedAt'>) => {
-    if (isBookmarked(item.id)) {
-      removeBookmark(item.id);
-    } else {
-      addBookmark(item);
-    }
-  }, [isBookmarked, addBookmark, removeBookmark]);
+  const toggleBookmark = useCallback(
+    (item: Omit<BookmarkedItem, 'savedAt'>) => {
+      if (isBookmarked(item.id)) {
+        removeBookmark(item.id);
+      } else {
+        addBookmark(item);
+      }
+    },
+    [isBookmarked, removeBookmark, addBookmark]
+  );
 
   const clearAll = useCallback(() => {
     setBookmarks([]);
   }, []);
 
-  // Get only book bookmarks
-  const bookBookmarks = bookmarks.filter(b => b.type === 'book');
+  /* =========================
+     DERIVED DATA
+  ========================= */
 
-  // Get only post bookmarks
+  const bookBookmarks = bookmarks.filter(b => b.type === 'book');
   const postBookmarks = bookmarks.filter(b => b.type === 'post');
 
   return {
