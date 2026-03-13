@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Coffee, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Coffee } from "lucide-react";
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
 import BookCard from "@/src/components/BookCard";
 import RandomCoffeeThought from "@/src/components/RandomCoffeeThought";
@@ -25,32 +25,39 @@ export default async function HomePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative py-32 px-6 text-center">
-        {/* Background Image - Fixed position di belakang */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
+      <section className="relative py-32 md:py-40 px-6 text-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
             style={{
               backgroundImage: `url('https://images.pexels.com/photos/30266551/pexels-photo-30266551/free-photo-of-cozy-autumn-coffee-with-old-books-and-music.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920')`,
             }}
           />
-          {/* Gradient overlay halus */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf9]/80 via-transparent to-[#fafaf9] dark:from-[#1a1816]/80 dark:via-transparent dark:to-[#1a1816]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf9]/90 via-[#fafaf9]/70 to-[#fafaf9] dark:from-[#1a1816]/90 dark:via-[#1a1816]/70 dark:to-[#1a1816]" />
         </div>
 
         <div className="max-w-4xl mx-auto relative z-10">
-          <p className="text-[10px] tracking-[0.5em] uppercase mb-8 opacity-60">
+          <p className="text-[10px] tracking-[0.5em] uppercase mb-10 opacity-50 font-medium">
             Sebuah Buku Oleh
           </p>
 
-          <h1 className="font-serif text-5xl md:text-7xl leading-[0.9] mb-6">
-            <span className="block opacity-90">Kelas Pekerja</span>
-            <span className="block italic text-[#8b7355] text-4xl md:text-6xl mt-2">
-              Arsip Sunyi Orang-Orang yang Tetap Bekerja
-            </span>
-          </h1>
+          {/* Typography yang lebih aesthetic */}
+          <div className="mb-10 space-y-4">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl tracking-tight text-[#1a1816] dark:text-[#e8e0d5]">
+              Kelas Pekerja
+            </h1>
+            
+            <div className="flex items-center justify-center gap-4">
+              <div className="h-px w-12 bg-[#8b7355]/40" />
+              <p className="font-serif italic text-xl md:text-2xl text-[#6b5a45] dark:text-[#a08060] tracking-wide">
+                Arsip Sunyi Orang-Orang yang Tetap Bekerja
+              </p>
+              <div className="h-px w-12 bg-[#8b7355]/40" />
+            </div>
+          </div>
 
-          <p className="font-serif italic text-lg md:text-xl max-w-md mx-auto mb-12 leading-relaxed opacity-60">
+          <p className="font-serif italic text-base md:text-lg max-w-md mx-auto mb-12 leading-relaxed opacity-60">
             &ldquo;{config?.site?.tagline || "Catatan tentang malam, kopi, dan kehidupan"}&rdquo;
           </p>
 
