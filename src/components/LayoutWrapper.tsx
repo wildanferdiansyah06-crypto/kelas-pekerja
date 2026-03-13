@@ -10,10 +10,7 @@ export default function LayoutWrapper({
   return (
     <>
       <Navbar />
-
-      <main className="min-h-screen pt-16">
-        {children}
-      </main>
+      <main className="min-h-screen pt-16 relative z-0">{children}</main>
     </>
   );
 }
