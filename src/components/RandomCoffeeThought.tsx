@@ -37,7 +37,7 @@ export default function RandomCoffeeThought() {
   const randomThought = () => {
     if (quotes.length === 0) return;
 
-    const random = quotes[Math.floor(Math.random() * quotes.quotes.length)];
+    const random = quotes[Math.floor(Math.random() * quotes.length)];
     setCurrentQuote(random);
   };
 
