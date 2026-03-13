@@ -23,10 +23,10 @@ export default async function HomePage() {
   const config: any = configData;
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Hero Section dengan Background Image */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-6">
-        {/* Background Image dengan Overlay */}
+    <div className="relative overflow-hidden bg-[#0a0909]">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-6">
+        {/* Background Image Layer - Paling bawah */}
         <div className="absolute inset-0 z-0">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-slow-zoom"
@@ -34,15 +34,24 @@ export default async function HomePage() {
               backgroundImage: `url('https://images.pexels.com/photos/30266551/pexels-photo-30266551/free-photo-of-cozy-autumn-coffee-with-old-books-and-music.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920')`,
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1a1816]/80 via-[#1a1816]/60 to-[#1a1816]/90 backdrop-blur-[2px]" />
         </div>
 
-        {/* Floating Particles Effect */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Gradient Overlay Layer - Di atas foto, di bawah konten */}
+        <div className="absolute inset-0 z-[1]">
+          {/* Gradient atas: gelap ke bawah */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0909] via-[#0a0909]/70 to-transparent h-[60%]" />
+          {/* Gradient tengah: transparan */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0909]/40 to-transparent h-full" />
+          {/* Gradient bawah: transparan ke gelap */}
+          <div className="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-[#0a0909] via-[#0a0909]/80 to-transparent" />
+        </div>
+
+        {/* Floating Particles - Di atas overlay */}
+        <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-[#8b7355]/20 rounded-full animate-float"
+              className="absolute w-2 h-2 bg-[#8b7355]/30 rounded-full animate-float"
               style={{
                 left: `${15 + i * 15}%`,
                 top: `${20 + (i % 3) * 25}%`,
@@ -53,45 +62,46 @@ export default async function HomePage() {
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Badge dengan animasi fade in */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-[#8b7355]/30 bg-[#1a1816]/50 backdrop-blur-sm opacity-0 animate-fade-in-up" style={{ animationDelay: "0s" }}>
+        {/* Konten - Paling atas */}
+        <div className="max-w-4xl mx-auto text-center relative z-10 pt-20">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-[#8b7355]/30 bg-[#0a0909]/60 backdrop-blur-sm opacity-0 animate-fade-in-up" style={{ animationDelay: "0s" }}>
             <Sparkles size={14} className="text-[#8b7355] animate-pulse-slow" />
             <p className="text-[10px] tracking-[0.4em] uppercase text-[#e8e0d5]/80">
               Sebuah Buku Oleh
             </p>
           </div>
 
-          {/* Judul dengan animasi stagger */}
+          {/* Judul */}
           <div className="space-y-2 mb-8 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             <h1 className="font-serif text-6xl md:text-8xl leading-[0.95] tracking-tight">
-              <span className="block text-[#e8e0d5] drop-shadow-2xl">
+              <span className="block text-[#e8e0d5] drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
                 Kelas Pekerja
               </span>
-              <span className="block italic text-[#c4a77d] text-3xl md:text-5xl mt-4 font-light tracking-wide">
+              <span className="block italic text-[#c4a77d] text-3xl md:text-5xl mt-4 font-light tracking-wide drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)]">
                 Arsip Sunyi Orang-Orang 
                 <span className="block mt-1">yang Tetap Bekerja</span>
               </span>
             </h1>
           </div>
 
-          {/* Quote dengan animasi */}
+          {/* Quote */}
           <div className="relative max-w-lg mx-auto mb-12 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-6xl text-[#8b7355]/20 font-serif">"</div>
-            <p className="font-serif italic text-lg md:text-xl text-[#e8e0d5]/80 leading-relaxed pt-4">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-6xl text-[#8b7355]/30 font-serif">"</div>
+            <p className="font-serif italic text-lg md:text-xl text-[#e8e0d5]/90 leading-relaxed pt-4 drop-shadow-lg">
               {config?.site?.tagline || "Catatan tentang malam, kopi, dan kehidupan"}
             </p>
             <div className="w-16 h-px bg-gradient-to-r from-transparent via-[#8b7355]/50 to-transparent mx-auto mt-6" />
           </div>
 
-          {/* Buttons dengan hover effects */}
+          {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
             <Link
               href="/buku"
               className="group inline-flex items-center gap-3 px-8 py-4 
               bg-[#8b7355] text-white rounded-full 
               hover:bg-[#a08060] hover:scale-105 hover:shadow-lg hover:shadow-[#8b7355]/20
-              transition-all duration-500 ease-out text-sm tracking-wider font-medium"
+              transition-all duration-500 ease-out text-sm tracking-wider font-medium shadow-2xl"
             >
               <BookOpen size={18} className="group-hover:rotate-12 transition-transform duration-300" />
               Jelajahi Buku
@@ -101,9 +111,9 @@ export default async function HomePage() {
             <Link
               href="/tentang"
               className="group inline-flex items-center gap-3 px-8 py-4 
-              border border-[#e8e0d5]/30 text-[#e8e0d5] rounded-full
+              border border-[#e8e0d5]/30 text-[#e8e0d5] rounded-full bg-[#0a0909]/40
               hover:bg-[#e8e0d5]/10 hover:border-[#e8e0d5]/50 hover:scale-105
-              transition-all duration-500 ease-out text-sm tracking-wider backdrop-blur-sm"
+              transition-all duration-500 ease-out text-sm tracking-wider backdrop-blur-sm shadow-lg"
             >
               Tentang Kami
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -112,18 +122,17 @@ export default async function HomePage() {
 
           {/* Scroll Indicator */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow">
-            <div className="w-6 h-10 border-2 border-[#8b7355]/30 rounded-full flex justify-center pt-2">
-              <div className="w-1 h-2 bg-[#8b7355]/60 rounded-full animate-scroll-indicator" />
+            <div className="w-6 h-10 border-2 border-[#8b7355]/40 rounded-full flex justify-center pt-2 bg-[#0a0909]/30 backdrop-blur-sm">
+              <div className="w-1 h-2 bg-[#8b7355]/80 rounded-full animate-scroll-indicator" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section dengan layout lebih rapi */}
-      <section className="py-32 px-6 relative bg-[#0f0e0d]">
+      {/* About Section */}
+      <section className="py-32 px-6 relative bg-[#0a0909]">
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-12 gap-12 items-center">
-            {/* Left decorative line */}
             <div className="hidden md:block md:col-span-2">
               <div className="w-px h-32 bg-gradient-to-b from-transparent via-[#8b7355]/40 to-transparent mx-auto" />
             </div>
@@ -162,7 +171,7 @@ export default async function HomePage() {
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full h-px bg-gradient-to-r from-transparent via-[#8b7355]/20 to-transparent" />
                 </div>
-                <p className="relative inline-block font-serif italic text-[#8b7355] text-xl px-8 bg-[#0f0e0d]">
+                <p className="relative inline-block font-serif italic text-[#8b7355] text-xl px-8 bg-[#0a0909]">
                   &ldquo;{config?.author?.manifesto || "Tetap hadir, tetap bekerja, tetap hidup."}&rdquo;
                 </p>
               </div>
@@ -175,10 +184,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Books Section dengan card layout yang lebih premium */}
-      <section className="py-32 px-6 relative bg-[#141312]">
+      {/* Featured Books Section */}
+      <section className="py-32 px-6 relative bg-[#0f0d0c]">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header yang lebih rapi */}
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-20 gap-8">
             <div className="max-w-lg">
               <div className="flex items-center gap-3 mb-4">
@@ -205,7 +213,6 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Book Grid dengan gap yang lebih besar */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
             {featuredBooks?.books?.map((book: any, index: number) => (
               <div 
@@ -223,8 +230,8 @@ export default async function HomePage() {
 
       <RandomCoffeeThought />
 
-      {/* Stats Section dengan design lebih modern */}
-      <section className="py-24 px-6 relative bg-[#0f0e0d] border-y border-[#8b7355]/10">
+      {/* Stats Section */}
+      <section className="py-24 px-6 relative bg-[#0a0909] border-y border-[#8b7355]/10">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
@@ -250,14 +257,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section dengan gradient background */}
-      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-b from-[#141312] to-[#0f0e0d]">
-        {/* Decorative elements */}
+      {/* CTA Section */}
+      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-b from-[#0f0d0c] to-[#0a0909]">
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-[#8b7355]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#8b7355]/5 rounded-full blur-3xl" />
         
         <div className="max-w-3xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#8b7355]/10 mb-8 group-hover:scale-110 transition-transform duration-500">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#8b7355]/10 mb-8">
             <Coffee className="w-8 h-8 text-[#8b7355]" />
           </div>
 
