@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -192,7 +194,7 @@ export default function KamiMenulisPelanPage() {
             animate={{ x: 0, opacity: 1 }}
             className={`fixed left-4 top-20 bottom-20 w-48 ${theme.code} border ${theme.border} z-30 hidden lg:block overflow-y-auto`}
           >
-            <div className="p-4 border-b ${theme.border}">
+            <div className={`p-4 border-b ${theme.border}`}>
               <p className={`text-[10px] uppercase tracking-widest ${theme.textMuted}`}>/// SECTIONS</p>
             </div>
             {sections.map((section) => (
@@ -649,11 +651,11 @@ function TypewriterParagraph({
   );
 
   if (!typingEnabled) {
-    return <p ref={ref} className={className}>{text}</p>;
+    return <p ref={ref as any} className={className}>{text}</p>;
   }
 
   return (
-    <p ref={ref} className={className}>
+    <p ref={ref as any} className={className}>
       {isVisible ? displayText : ''}
       {!isComplete && isVisible && (
         <span className={`inline-block w-2 h-4 ml-1 ${theme.cursor} cursor-blink`} />
