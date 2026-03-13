@@ -1,5 +1,7 @@
 "use client";
 
+import Navbar from "@/src/components/Navbar";
+
 export default function LayoutWrapper({
   children,
 }: {
@@ -7,7 +9,11 @@ export default function LayoutWrapper({
 }) {
   return (
     <>
-      {children}
+      <Navbar />
+
+      <main className="min-h-screen pt-16">
+        {children}
+      </main>
     </>
   );
 }
