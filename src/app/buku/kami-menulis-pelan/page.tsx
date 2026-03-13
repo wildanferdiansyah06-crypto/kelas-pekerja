@@ -2,82 +2,199 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Type, Eye, EyeOff, ArrowUp, Clock, AlertCircle } from 'lucide-react';
+import { Moon, Sun, Type, Eye, EyeOff, ArrowUp, Clock } from 'lucide-react';
 
-// Typewriter hook
+// ==========================================
+// PERBAIKAN 1: Typewriter hook yang aman
+// ==========================================
 function useTypewriter(text: string, speed: number = 50, start: boolean = true) {
   const [displayText, setDisplayText] = useState('');
   const [isComplete, setIsComplete] = useState(false);
+  
+  // Refs untuk menghindari stale closures dan memory leak
+  const indexRef = useRef(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const textRef = useRef(text);
+  const startRef = useRef(start);
+
+  // Update refs saat props berubah
+  useEffect(() => {
+    textRef.current = text;
+    startRef.current = start;
+  }, [text, start]);
 
   useEffect(() => {
-    if (!start) return;
-    
-    let index = 0;
+    // Cleanup timer yang ada
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    // PERBAIKAN: Jangan start jika speed <= 0 atau tidak start
+    if (!start || speed <= 0 || !text) {
+      setDisplayText(text);
+      setIsComplete(true);
+      return;
+    }
+
+    // Reset state
+    indexRef.current = 0;
     setDisplayText('');
     setIsComplete(false);
-    
-    const timer = setInterval(() => {
-      if (index < text.length) {
-        setDisplayText(text.slice(0, index + 1));
-        index++;
+
+    // PERBAIKAN: Minimal speed 16ms (1 frame) untuk menghindari blocking
+    const safeSpeed = Math.max(speed, 16);
+
+    timerRef.current = setInterval(() => {
+      const currentText = textRef.current;
+      const currentIndex = indexRef.current;
+
+      if (currentIndex < currentText.length) {
+        setDisplayText(currentText.slice(0, currentIndex + 1));
+        indexRef.current = currentIndex + 1;
       } else {
         setIsComplete(true);
-        clearInterval(timer);
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
       }
-    }, speed);
+    }, safeSpeed);
 
-    return () => clearInterval(timer);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
   }, [text, speed, start]);
 
   return { displayText, isComplete };
+}
+
+// ==========================================
+// PERBAIKAN 2: Hook untuk deteksi client-side
+// ==========================================
+function useIsClient() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient;
+}
+
+// ==========================================
+// PERBAIKAN 3: Hook untuk scroll tracking yang aman
+// ==========================================
+function useScrollTracking(sectionIds: string[]) {
+  const [activeSection, setActiveSection] = useState('');
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const rafRef = useRef<number | null>(null);
+  const isClient = useIsClient();
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    let lastScrollY = 0;
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        rafRef.current = requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // Update scroll top button
+          setShowScrollTop(currentScrollY > 300);
+          
+          // Update active section dengan throttling
+          if (Math.abs(currentScrollY - lastScrollY) > 50) {
+            lastScrollY = currentScrollY;
+            
+            // Gunakan approach yang lebih performant
+            const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+            const scrollPosition = currentScrollY + 200;
+
+            for (const section of sections) {
+              if (section) {
+                const offsetTop = section.offsetTop;
+                const offsetHeight = section.offsetHeight;
+                
+                if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+                  setActiveSection(section.id);
+                  break;
+                }
+              }
+            }
+          }
+          
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [isClient, sectionIds]);
+
+  return { activeSection, showScrollTop };
 }
 
 export default function KamiMenulisPelanPage() {
   const [darkMode, setDarkMode] = useState(true);
   const [focusMode, setFocusMode] = useState(false);
   const [glitchActive, setGlitchActive] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [typingEnabled, setTypingEnabled] = useState(true);
+  
+  const isClient = useIsClient();
 
   const { scrollYProgress } = useScroll();
   const progressBar = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
-  // Track scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-      
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 200 && rect.bottom >= 200) {
-          setActiveSection(section.id);
-        }
-      });
-    };
+  // Sections data
+  const sections = useMemo(() => [
+    { id: 'pembuka', title: 'Pembuka', subtitle: 'Lewat Begitu Saja' },
+    { id: 'kelas-pekerja', title: 'Tentang Kelas Pekerja', subtitle: 'Menulis dari Sisa' },
+    { id: 'tentang-karya', title: 'Tentang Karya', subtitle: 'Bekal Dingin' },
+    { id: 'orang-terdekat', title: 'Tentang Orang Terdekat', subtitle: 'Yang Paling Sunyi' },
+    { id: 'dunia-sibuk', title: 'Tentang Dunia yang Sibuk', subtitle: 'Tidak Berhenti' },
+    { id: 'bertahan-menulis', title: 'Tentang Bertahan Menulis', subtitle: 'Meski Lewat' },
+    { id: 'penutup', title: 'Penutup', subtitle: 'Tetap Ditulis' },
+  ], []);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const sectionIds = useMemo(() => sections.map(s => s.id), [sections]);
+  const { activeSection, showScrollTop } = useScrollTracking(sectionIds);
 
-  // Random glitch effect
+  // Random glitch effect dengan cleanup yang aman
   useEffect(() => {
+    if (!isClient) return;
+
     const interval = setInterval(() => {
       if (Math.random() > 0.95) {
         setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 150);
+        const timeout = setTimeout(() => setGlitchActive(false), 150);
+        return () => clearTimeout(timeout);
       }
     }, 3000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [isClient]);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleDarkMode = useCallback(() => setDarkMode(prev => !prev), []);
 
-  // Theme - Very high contrast brutalist
-  const theme = darkMode ? {
+  // Theme configuration
+  const theme = useMemo(() => darkMode ? {
     bg: 'bg-[#050505]',
     text: 'text-neutral-400',
     textMuted: 'text-neutral-600',
@@ -103,17 +220,16 @@ export default function KamiMenulisPelanPage() {
     code: 'bg-white',
     cursor: 'bg-red-600',
     noise: 'opacity-[0.02]'
-  };
+  }, [darkMode]);
 
-  const sections = [
-    { id: 'pembuka', title: 'Pembuka', subtitle: 'Lewat Begitu Saja' },
-    { id: 'kelas-pekerja', title: 'Tentang Kelas Pekerja', subtitle: 'Menulis dari Sisa' },
-    { id: 'tentang-karya', title: 'Tentang Karya', subtitle: 'Bekal Dingin' },
-    { id: 'orang-terdekat', title: 'Tentang Orang Terdekat', subtitle: 'Yang Paling Sunyi' },
-    { id: 'dunia-sibuk', title: 'Tentang Dunia yang Sibuk', subtitle: 'Tidak Berhenti' },
-    { id: 'bertahan-menulis', title: 'Tentang Bertahan Menulis', subtitle: 'Meski Lewat' },
-    { id: 'penutup', title: 'Penutup', subtitle: 'Tetap Ditulis' },
-  ];
+  // Jangan render konten yang bergantung pada client sampai hydrated
+  if (!isClient) {
+    return (
+      <div className={`min-h-screen ${darkMode ? 'bg-[#050505]' : 'bg-[#f5f5f5]'} flex items-center justify-center`}>
+        <div className="animate-pulse text-neutral-500 font-mono text-sm">LOADING...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-300 font-mono selection:bg-red-500/30`}>
@@ -128,7 +244,7 @@ export default function KamiMenulisPelanPage() {
         <div className="w-full h-2 bg-white animate-scanline" />
       </div>
 
-      {/* Progress Bar - Thick brutalist style */}
+      {/* Progress Bar */}
       <div className={`fixed top-0 left-0 right-0 h-2 ${theme.code} z-50 border-b ${theme.border}`}>
         <motion.div 
           className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
@@ -149,7 +265,7 @@ export default function KamiMenulisPelanPage() {
         )}
       </AnimatePresence>
 
-      {/* Header - Brutalist */}
+      {/* Header */}
       <header className={`fixed top-16 left-0 right-0 z-40 px-4 py-3 ${theme.code} border-b ${theme.border}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -186,7 +302,7 @@ export default function KamiMenulisPelanPage() {
         </div>
       </header>
 
-      {/* Sidebar Navigation - Raw brutalist */}
+      {/* Sidebar Navigation */}
       <AnimatePresence>
         {!focusMode && (
           <motion.nav
@@ -218,7 +334,7 @@ export default function KamiMenulisPelanPage() {
       {/* Main Content */}
       <main className={`relative z-20 pt-40 pb-32 px-4 transition-all duration-300 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-56'} mx-auto`}>
         
-        {/* Title Section - Brutalist */}
+        {/* Title Section */}
         <section className="mb-20 border-b-2 border-current pb-8">
           <div className={`inline-block px-2 py-1 text-[10px] uppercase tracking-widest ${theme.accentBg} ${theme.accent} border ${theme.borderAccent} mb-4`}>
             [PEMBUKA]
@@ -458,7 +574,6 @@ export default function KamiMenulisPelanPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className={`p-6 ${theme.code} border ${theme.border}`}>
-              <AlertCircle size={24} className={theme.accent} />
               <p className={`mt-4 text-lg ${theme.textHeading}`}>Dunia tidak kejam.</p>
               <p className={`mt-2 ${theme.text}`}>Ia hanya tidak berhenti.</p>
             </div>
@@ -561,7 +676,7 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* Footer - Raw terminal style */}
+        {/* Footer */}
         <footer className={`mt-20 pt-8 border-t-2 ${theme.border} text-xs ${theme.textMuted}`}>
           <div className="flex items-center justify-between">
             <span>FILE: KAMI_MENULIS_PELAN.TXT</span>
@@ -593,7 +708,7 @@ export default function KamiMenulisPelanPage() {
         )}
       </AnimatePresence>
 
-      {/* Global Styles for animations */}
+      {/* Global Styles */}
       <style jsx global>{`
         @keyframes scanline {
           0% { transform: translateY(-100%); }
@@ -613,7 +728,9 @@ export default function KamiMenulisPelanPage() {
   );
 }
 
-// Typewriter Component
+// ==========================================
+// PERBAIKAN 4: Typewriter Component yang aman
+// ==========================================
 function TypewriterParagraph({ 
   text, 
   theme, 
@@ -629,37 +746,60 @@ function TypewriterParagraph({
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const isClient = useIsClient();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    if (!isClient || !ref.current) return;
+
+    const element = ref.current;
+    
+    // PERBAIKAN: Simpan instance observer di ref untuk cleanup yang aman
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
+          // PERBAIKAN: Gunakan setTimeout untuk delay, bukan di render
+          const timer = setTimeout(() => {
+            setIsVisible(true);
+          }, delay);
+          
+          // Cleanup timeout jika component unmount
+          return () => clearTimeout(timer);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.1, rootMargin: '50px' }
     );
 
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [delay]);
+    observerRef.current.observe(element);
 
+    // PERBAIKAN: Cleanup yang benar - unobserve dulu, baru disconnect
+    return () => {
+      if (observerRef.current && element) {
+        observerRef.current.unobserve(element);
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
+  }, [isClient, delay]);
+
+  // PERBAIKAN: Jika typing disabled, langsung tampilkan full text
   const { displayText, isComplete } = useTypewriter(
     text, 
     typingEnabled ? 30 : 0, 
     isVisible && typingEnabled
   );
 
-  if (!typingEnabled) {
-    return <p ref={ref as any} className={className}>{text}</p>;
+  // SSR fallback
+  if (!isClient) {
+    return <div ref={ref} className={className}>{text}</div>;
   }
 
   return (
-    <p ref={ref as any} className={className}>
-      {isVisible ? displayText : ''}
-      {!isComplete && isVisible && (
+    <div ref={ref} className={className}>
+      {typingEnabled ? displayText : text}
+      {typingEnabled && !isComplete && isVisible && (
         <span className={`inline-block w-2 h-4 ml-1 ${theme.cursor} cursor-blink`} />
       )}
-    </p>
+    </div>
   );
 }
