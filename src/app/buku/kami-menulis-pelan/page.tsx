@@ -4,47 +4,41 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Type, Eye, EyeOff, ArrowUp, Clock } from 'lucide-react';
+import { Coffee, Sun, Moon, BookOpen, Eye, EyeOff, ArrowUp, Clock, Quote } from 'lucide-react';
 
 // ==========================================
-// PERBAIKAN 1: Typewriter hook yang aman
+// HOOK: Typewriter yang aman
 // ==========================================
 function useTypewriter(text: string, speed: number = 50, start: boolean = true) {
   const [displayText, setDisplayText] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   
-  // Refs untuk menghindari stale closures dan memory leak
   const indexRef = useRef(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const textRef = useRef(text);
   const startRef = useRef(start);
 
-  // Update refs saat props berubah
   useEffect(() => {
     textRef.current = text;
     startRef.current = start;
   }, [text, start]);
 
   useEffect(() => {
-    // Cleanup timer yang ada
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
 
-    // PERBAIKAN: Jangan start jika speed <= 0 atau tidak start
     if (!start || speed <= 0 || !text) {
       setDisplayText(text);
       setIsComplete(true);
       return;
     }
 
-    // Reset state
     indexRef.current = 0;
     setDisplayText('');
     setIsComplete(false);
 
-    // PERBAIKAN: Minimal speed 16ms (1 frame) untuk menghindari blocking
     const safeSpeed = Math.max(speed, 16);
 
     timerRef.current = setInterval(() => {
@@ -75,7 +69,7 @@ function useTypewriter(text: string, speed: number = 50, start: boolean = true) 
 }
 
 // ==========================================
-// PERBAIKAN 2: Hook untuk deteksi client-side
+// HOOK: Client-side detection
 // ==========================================
 function useIsClient() {
   const [isClient, setIsClient] = useState(false);
@@ -88,7 +82,7 @@ function useIsClient() {
 }
 
 // ==========================================
-// PERBAIKAN 3: Hook untuk scroll tracking yang aman
+// HOOK: Scroll tracking yang aman
 // ==========================================
 function useScrollTracking(sectionIds: string[]) {
   const [activeSection, setActiveSection] = useState('');
@@ -107,14 +101,11 @@ function useScrollTracking(sectionIds: string[]) {
         rafRef.current = requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
           
-          // Update scroll top button
           setShowScrollTop(currentScrollY > 300);
           
-          // Update active section dengan throttling
           if (Math.abs(currentScrollY - lastScrollY) > 50) {
             lastScrollY = currentScrollY;
             
-            // Gunakan approach yang lebih performant
             const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
             const scrollPosition = currentScrollY + 200;
 
@@ -138,7 +129,7 @@ function useScrollTracking(sectionIds: string[]) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -152,15 +143,27 @@ function useScrollTracking(sectionIds: string[]) {
 }
 
 export default function KamiMenulisPelanPage() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false); // Default light mode untuk aesthetic kopi
   const [focusMode, setFocusMode] = useState(false);
-  const [glitchActive, setGlitchActive] = useState(false);
+  const [steamParticles, setSteamParticles] = useState<Array<{id: number, left: number, delay: number}>>([]);
   const [typingEnabled, setTypingEnabled] = useState(true);
   
   const isClient = useIsClient();
 
   const { scrollYProgress } = useScroll();
   const progressBar = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
+  // Steam particles effect
+  useEffect(() => {
+    if (!isClient) return;
+    
+    const particles = Array.from({ length: 5 }, (_, i) => ({
+      id: i,
+      left: 20 + Math.random() * 60,
+      delay: i * 0.5
+    }));
+    setSteamParticles(particles);
+  }, [isClient]);
 
   // Sections data
   const sections = useMemo(() => [
@@ -176,125 +179,125 @@ export default function KamiMenulisPelanPage() {
   const sectionIds = useMemo(() => sections.map(s => s.id), [sections]);
   const { activeSection, showScrollTop } = useScrollTracking(sectionIds);
 
-  // Random glitch effect dengan cleanup yang aman
-  useEffect(() => {
-    if (!isClient) return;
-
-    const interval = setInterval(() => {
-      if (Math.random() > 0.95) {
-        setGlitchActive(true);
-        const timeout = setTimeout(() => setGlitchActive(false), 150);
-        return () => clearTimeout(timeout);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [isClient]);
-
   const toggleDarkMode = useCallback(() => setDarkMode(prev => !prev), []);
 
-  // Theme configuration
+  // Aesthetic Coffee & Philosophy Theme
   const theme = useMemo(() => darkMode ? {
-    bg: 'bg-[#050505]',
-    text: 'text-neutral-400',
-    textMuted: 'text-neutral-600',
-    textHeading: 'text-white',
-    accent: 'text-red-500',
-    accentBg: 'bg-red-500/10',
-    border: 'border-neutral-800',
-    borderAccent: 'border-red-900/50',
-    highlight: 'bg-neutral-900',
-    code: 'bg-black',
-    cursor: 'bg-red-500',
-    noise: 'opacity-[0.05]'
+    // Dark mode: Deep espresso night
+    bg: 'bg-[#1a1512]', // Dark coffee bean
+    text: 'text-[#d4c4b0]', // Cream foam
+    textMuted: 'text-[#8b7355]', // Old paper
+    textHeading: 'text-[#f5e6d3]', // Warm milk
+    accent: 'text-[#c9a86c]', // Golden crema
+    accentBg: 'bg-[#c9a86c]/10',
+    accentSoft: 'bg-[#4a3f35]', // Coffee grounds
+    border: 'border-[#3d3229]', // Dark roast
+    borderAccent: 'border-[#c9a86c]/30',
+    highlight: 'bg-[#2a211c]', // Wet coffee grounds
+    card: 'bg-[#231c17]', // Espresso cup
+    cursor: 'bg-[#c9a86c]',
+    paperTexture: 'opacity-[0.03]'
   } : {
-    bg: 'bg-[#f5f5f5]',
-    text: 'text-neutral-600',
-    textMuted: 'text-neutral-400',
-    textHeading: 'text-black',
-    accent: 'text-red-600',
-    accentBg: 'bg-red-100',
-    border: 'border-neutral-300',
-    borderAccent: 'border-red-300',
-    highlight: 'bg-neutral-100',
-    code: 'bg-white',
-    cursor: 'bg-red-600',
-    noise: 'opacity-[0.02]'
+    // Light mode: Warm coffee shop morning
+    bg: 'bg-[#faf8f5]', // Warm white paper
+    text: 'text-[#4a4036]', // Coffee stain text
+    textMuted: 'text-[#8b7355]', // Aged paper
+    textHeading: 'text-[#2c2416]', // Dark roast
+    accent: 'text-[#8b6914]', // Amber coffee
+    accentBg: 'bg-[#f5e6c8]', // Light cream
+    accentSoft: 'bg-[#e8dcc8]', // Foam
+    border: 'border-[#d4c4b0]', // Coffee with milk
+    borderAccent: 'border-[#c9a86c]',
+    highlight: 'bg-[#f5f0e8]', // Paper texture
+    card: 'bg-[#ffffff]', // Clean cup
+    cursor: 'bg-[#8b6914]',
+    paperTexture: 'opacity-[0.04]'
   }, [darkMode]);
 
-  // Jangan render konten yang bergantung pada client sampai hydrated
   if (!isClient) {
     return (
-      <div className={`min-h-screen ${darkMode ? 'bg-[#050505]' : 'bg-[#f5f5f5]'} flex items-center justify-center`}>
-        <div className="animate-pulse text-neutral-500 font-mono text-sm">LOADING...</div>
+      <div className={`min-h-screen ${darkMode ? 'bg-[#1a1512]' : 'bg-[#faf8f5]'} flex items-center justify-center`}>
+        <div className="flex items-center gap-3 text-[#8b7355]">
+          <Coffee className="animate-pulse" size={20} />
+          <span className="font-serif italic text-sm">Menyeduh...</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-300 font-mono selection:bg-red-500/30`}>
+    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500 font-serif selection:bg-[#c9a86c]/30`}>
       
-      {/* Heavy Noise Texture */}
-      <div className={`fixed inset-0 pointer-events-none z-50 mix-blend-overlay ${theme.noise}`}
-        style={{backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`}}
+      {/* Paper Texture Overlay */}
+      <div className={`fixed inset-0 pointer-events-none z-50 ${theme.paperTexture}`}
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          mixBlendMode: 'multiply'
+        }}
       />
 
-      {/* Scanline Effect */}
-      <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden opacity-[0.03]">
-        <div className="w-full h-2 bg-white animate-scanline" />
+      {/* Coffee Steam Animation */}
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 pointer-events-none z-40 hidden md:block">
+        {steamParticles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className={`absolute w-1 h-8 rounded-full ${darkMode ? 'bg-[#d4c4b0]/20' : 'bg-[#8b7355]/10'}`}
+            style={{ left: `${particle.left}%` }}
+            animate={{
+              y: [-20, -100],
+              opacity: [0, 0.6, 0],
+              scale: [1, 1.5, 2],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "easeOut"
+            }}
+          />
+        ))}
       </div>
 
-      {/* Progress Bar */}
-      <div className={`fixed top-0 left-0 right-0 h-2 ${theme.code} z-50 border-b ${theme.border}`}>
+      {/* Progress Bar - Coffee drip style */}
+      <div className={`fixed top-0 left-0 right-0 h-1 ${theme.bg} z-50`}>
         <motion.div 
           className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
           style={{ width: progressBar }}
         />
       </div>
 
-      {/* Glitch Overlay */}
-      <AnimatePresence>
-        {glitchActive && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.8, 0, 0.4, 0] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 bg-red-500/20 z-30 pointer-events-none mix-blend-multiply"
-          />
-        )}
-      </AnimatePresence>
-
       {/* Header */}
-      <header className={`fixed top-16 left-0 right-0 z-40 px-4 py-3 ${theme.code} border-b ${theme.border}`}>
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className={`w-3 h-3 ${theme.accent.replace('text-', 'bg-')}`} />
-            <span className={`text-xs uppercase tracking-widest ${theme.textMuted}`}>
-              KAMI_MENULIS_PELAN.txt
+      <header className={`fixed top-0 left-0 right-0 z-40 px-6 py-4 ${theme.bg}/90 backdrop-blur-sm border-b ${theme.border}`}>
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Coffee className={theme.accent} size={18} />
+            <span className={`text-xs uppercase tracking-[0.2em] ${theme.textMuted} font-medium`}>
+              Kopi & Catatan
             </span>
             {typingEnabled && (
-              <span className={`text-[10px] ${theme.accent} animate-pulse`}>● REC</span>
+              <span className={`text-[10px] ${theme.accent} animate-pulse`}>● mengetik</span>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setTypingEnabled(!typingEnabled)}
-              className={`p-2 border ${theme.border} hover:${theme.accentBg} transition-colors`}
+              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
               title="Toggle typewriter"
             >
-              <Type size={14} className={typingEnabled ? theme.accent : theme.textMuted} />
+              <span className="text-xs font-serif italic">
+                {typingEnabled ? 'A' : 'a'}
+              </span>
             </button>
             <button
               onClick={() => setFocusMode(!focusMode)}
-              className={`p-2 border ${theme.border} hover:${theme.accentBg} transition-colors`}
+              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
             >
               {focusMode ? <EyeOff size={14} /> : <Eye size={14} />}
             </button>
             <button
               onClick={toggleDarkMode}
-              className={`p-2 border ${theme.border} hover:${theme.accentBg} transition-colors`}
+              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
             >
               {darkMode ? <Sun size={14} /> : <Moon size={14} />}
             </button>
@@ -302,29 +305,29 @@ export default function KamiMenulisPelanPage() {
         </div>
       </header>
 
-      {/* Sidebar Navigation */}
+      {/* Sidebar Navigation - Book style */}
       <AnimatePresence>
         {!focusMode && (
           <motion.nav
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className={`fixed left-4 top-20 bottom-20 w-48 ${theme.code} border ${theme.border} z-30 hidden lg:block overflow-y-auto`}
+            className={`fixed left-6 top-32 bottom-20 w-56 ${theme.card} border ${theme.border} z-30 hidden lg:block overflow-y-auto rounded-lg shadow-lg`}
           >
-            <div className={`p-4 border-b ${theme.border}`}>
-              <p className={`text-[10px] uppercase tracking-widest ${theme.textMuted}`}>/// SECTIONS</p>
+            <div className={`p-4 border-b ${theme.border} ${theme.accentSoft}`}>
+              <p className={`text-[10px] uppercase tracking-widest ${theme.accent} font-semibold`}>Daftar Isi</p>
             </div>
-            {sections.map((section) => (
+            {sections.map((section, index) => (
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className={`block p-3 text-xs border-b ${theme.border} last:border-0 transition-all ${
+                className={`block p-4 text-sm border-b ${theme.border} last:border-0 transition-all duration-300 ${
                   activeSection === section.id 
-                    ? `${theme.accentBg} ${theme.accent} border-l-2 ${theme.borderAccent}` 
-                    : `hover:${theme.highlight} ${theme.textMuted}`
+                    ? `${theme.accentBg} ${theme.accent} border-l-4 ${theme.borderAccent} pl-6` 
+                    : `hover:${theme.highlight} ${theme.textMuted} hover:pl-6`
                 }`}
               >
-                <span className="block truncate">{section.title}</span>
-                <span className={`block text-[10px] mt-1 ${theme.textMuted}`}>{section.subtitle}</span>
+                <span className="block font-serif">{section.title}</span>
+                <span className={`block text-[11px] mt-1 italic ${theme.textMuted}`}>{section.subtitle}</span>
               </a>
             ))}
           </motion.nav>
@@ -332,38 +335,49 @@ export default function KamiMenulisPelanPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className={`relative z-20 pt-40 pb-32 px-4 transition-all duration-300 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-56'} mx-auto`}>
+      <main className={`relative z-20 pt-32 pb-32 px-6 transition-all duration-500 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-72'} mx-auto`}>
         
         {/* Title Section */}
-        <section className="mb-20 border-b-2 border-current pb-8">
-          <div className={`inline-block px-2 py-1 text-[10px] uppercase tracking-widest ${theme.accentBg} ${theme.accent} border ${theme.borderAccent} mb-4`}>
-            [PEMBUKA]
-          </div>
+        <section className="mb-20 text-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`inline-block px-4 py-2 text-[10px] uppercase tracking-[0.3em] ${theme.accentBg} ${theme.accent} border ${theme.borderAccent} mb-8 rounded-full`}
+          >
+            [Essai]
+          </motion.div>
           
-          <h1 className={`text-4xl md:text-6xl font-bold ${theme.textHeading} mb-4 tracking-tighter leading-none`}>
-            KAMI MENULIS
+          <h1 className={`text-4xl md:text-6xl font-serif font-bold ${theme.textHeading} mb-6 tracking-tight leading-tight`}>
+            Kami Menulis
             <br />
-            <span className={theme.accent}>PELAN</span>
+            <span className={`${theme.accent} italic font-light`}>Pelan</span>
           </h1>
           
-          <div className={`flex items-center gap-2 text-xs ${theme.textMuted} mt-6`}>
-            <Clock size={12} />
-            <span>EST_READ_TIME: 8_MIN</span>
-            <span className="mx-2">|</span>
-            <span>WORD_COUNT: 1,247</span>
+          <div className={`flex items-center justify-center gap-4 text-xs ${theme.textMuted} mt-8 font-serif italic`}>
+            <span className="flex items-center gap-1">
+              <Clock size={12} />
+              8 menit membaca
+            </span>
+            <span>•</span>
+            <span>1,247 kata</span>
+          </div>
+
+          {/* Decorative coffee ring */}
+          <div className={`mt-12 w-32 h-32 mx-auto rounded-full border-2 ${theme.border} opacity-20 relative`}>
+            <div className={`absolute inset-2 rounded-full border ${theme.border} opacity-40`} />
           </div>
         </section>
 
         {/* Pembuka */}
-        <section id="pembuka" className="mb-24 scroll-mt-24">
+        <section id="pembuka" className="mb-24 scroll-mt-32">
           <TypewriterParagraph 
             text="Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="text-lg md:text-xl leading-relaxed mb-6"
+            className="text-xl md:text-2xl leading-relaxed mb-8 font-serif text-center italic"
           />
           
-          <div className={`space-y-4 ${theme.textMuted} text-sm leading-relaxed mb-8 pl-4 border-l-2 ${theme.border}`}>
+          <div className={`space-y-4 ${theme.textMuted} text-base leading-loose mb-12 pl-6 border-l-2 ${theme.borderAccent}`}>
             <TypewriterParagraph 
               text="Alarm pagi belum sempat dilupakan."
               theme={theme}
@@ -394,21 +408,22 @@ export default function KamiMenulisPelanPage() {
             text="Aku mengirimkannya sebagai tautan."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="mb-4"
+            className="mb-6 text-lg"
             delay={1300}
           />
           
-          <div className={`p-4 ${theme.highlight} border ${theme.border} my-8`}>
+          <div className={`p-6 ${theme.highlight} border ${theme.border} my-10 rounded-lg shadow-sm`}>
             <TypewriterParagraph 
               text="Kadang hanya satu kalimat."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="mb-2"
+              className="mb-3 text-lg italic"
             />
             <TypewriterParagraph 
               text="Kadang tanpa pesan apa-apa."
               theme={theme}
               typingEnabled={typingEnabled}
+              className="text-lg italic"
             />
           </div>
 
@@ -416,133 +431,141 @@ export default function KamiMenulisPelanPage() {
             text="Lalu aku menunggu."
             theme={theme}
             typingEnabled={typingEnabled}
-            className={`text-lg ${theme.textHeading} mt-8`}
+            className={`text-2xl ${theme.textHeading} mt-12 text-center font-serif`}
             delay={1500}
           />
           
-          <p className={`mt-4 text-sm ${theme.textMuted} italic`}>
+          <p className={`mt-6 text-sm ${theme.textMuted} italic text-center max-w-md mx-auto leading-relaxed`}>
             Bukan dengan harapan besar. Cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.
           </p>
         </section>
 
         {/* Tentang Kelas Pekerja */}
-        <section id="kelas-pekerja" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// SECTION_01</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>TENTANG KELAS PEKERJA</h2>
+        <section id="kelas-pekerja" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab I</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Kelas Pekerja</h2>
+            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Menulis dari Sisa</p>
           </div>
 
           <TypewriterParagraph 
             text="Kelas pekerja menulis dari sisa."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="text-lg leading-relaxed mb-8"
+            className="text-xl leading-relaxed mb-10 font-serif"
           />
 
-          <div className={`grid gap-4 mb-8`}>
+          <div className={`grid gap-4 mb-10`}>
             {['Sisa tenaga.', 'Sisa waktu.', 'Sisa pikiran yang belum habis dipakai bekerja.'].map((item, i) => (
-              <div 
+              <motion.div 
                 key={i} 
-                className={`p-4 ${theme.code} border ${theme.border} flex items-center gap-4`}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className={`p-5 ${theme.card} border ${theme.border} rounded-lg flex items-center gap-4 shadow-sm`}
               >
-                <span className={`text-xs ${theme.accent}`}>[{String(i + 1).padStart(2, '0')}]</span>
+                <span className={`text-sm ${theme.accent} font-serif italic`}>{String(i + 1).padStart(2, '0')}.</span>
                 <TypewriterParagraph 
                   text={item}
                   theme={theme}
                   typingEnabled={typingEnabled}
                   delay={i * 200}
+                  className="font-serif text-lg"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          <div className={`p-6 ${theme.highlight} border-l-4 ${theme.borderAccent}`}>
+          <div className={`p-8 ${theme.accentSoft} border-l-4 ${theme.borderAccent} rounded-r-lg`}>
+            <Quote className={`${theme.accent} mb-4 opacity-50`} size={24} />
             <TypewriterParagraph 
               text="Kami menulis bukan karena yakin. Tapi karena diam-diam tahu kalau tidak ditulis, hari ini akan hilang."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="leading-relaxed mb-4"
+              className="leading-relaxed mb-4 text-lg font-serif"
             />
             <TypewriterParagraph 
               text="Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="leading-relaxed"
+              className="leading-relaxed italic"
             />
           </div>
 
-          <p className={`mt-6 text-sm ${theme.textMuted} border-t ${theme.border} pt-4`}>
+          <p className={`mt-8 text-sm ${theme.textMuted} border-t ${theme.border} pt-6 italic text-center`}>
             Karena itu, ia tidak pandai meminta perhatian.
           </p>
         </section>
 
         {/* Tentang Karya */}
-        <section id="tentang-karya" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// SECTION_02</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>TENTANG KARYA</h2>
+        <section id="tentang-karya" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab II</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Karya</h2>
+            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Bekal Dingin</p>
           </div>
 
-          <div className={`p-6 ${theme.code} border-2 ${theme.border} relative overflow-hidden mb-8`}>
-            <div className={`absolute top-0 right-0 px-2 py-1 text-[10px] ${theme.accentBg} ${theme.accent} border-l ${theme.border}`}>
-              FILE: BEKAL.DINGIN
+          <div className={`p-8 ${theme.card} border-2 ${theme.border} relative overflow-hidden mb-10 rounded-lg shadow-lg`}>
+            <div className={`absolute top-0 right-0 px-4 py-2 text-[10px] ${theme.accentBg} ${theme.accent} border-l border-b ${theme.border} rounded-bl-lg font-semibold uppercase tracking-wider`}>
+              Catatan Pinggir
             </div>
             
             <TypewriterParagraph 
               text="Karya itu seperti bekal yang dimakan dingin di sela jam kerja."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="text-lg leading-relaxed mb-6 mt-4"
+              className="text-xl leading-relaxed mb-8 mt-4 font-serif"
             />
             
-            <div className={`space-y-2 text-sm ${theme.textMuted} mb-6`}>
-              <p>Tidak mewah.</p>
-              <p>Tidak istimewa.</p>
+            <div className={`space-y-3 text-base ${theme.textMuted} mb-8 pl-4`}>
+              <p className="italic">Tidak mewah.</p>
+              <p className="italic">Tidak istimewa.</p>
             </div>
 
             <TypewriterParagraph 
               text="Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="leading-relaxed"
+              className="leading-relaxed font-serif text-lg"
             />
           </div>
 
-          <div className={`p-4 ${theme.accentBg} border ${theme.borderAccent} text-sm`}>
-            <p className={theme.accent}>
-              Dan ketika tidak dibuka, ia tidak marah. Hanya diam lebih lama.
+          <div className={`p-6 ${theme.accentBg} border ${theme.borderAccent} rounded-lg text-center`}>
+            <p className={`${theme.accent} font-serif italic text-lg`}>
+              "Dan ketika tidak dibuka, ia tidak marah. Hanya diam lebih lama."
             </p>
           </div>
 
-          <p className={`mt-6 text-sm ${theme.textMuted} italic text-center`}>
+          <p className={`mt-10 text-sm ${theme.textMuted} italic text-center font-serif`}>
             Kadang, ketika dunia luar melewatinya begitu saja, rasanya masih bisa diterima.
           </p>
         </section>
 
         {/* Tentang Orang Terdekat */}
-        <section id="orang-terdekat" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// SECTION_03</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>TENTANG ORANG TERDEKAT</h2>
+        <section id="orang-terdekat" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab III</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Orang Terdekat</h2>
+            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Yang Paling Sunyi</p>
           </div>
 
           <TypewriterParagraph 
             text="Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="leading-relaxed mb-8"
+            className="leading-relaxed mb-10 text-lg font-serif"
           />
 
-          <div className={`py-12 text-center border-y-2 ${theme.border} my-8`}>
+          <div className={`py-16 text-center border-y-2 ${theme.border} my-12 ${theme.highlight}`}>
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
             >
-              <p className={`text-3xl md:text-4xl font-bold ${theme.textHeading} tracking-tight`}>
-                BUKU ITU ADA.
+              <p className={`text-3xl md:text-5xl font-serif font-bold ${theme.textHeading} tracking-tight italic`}>
+                Buku itu ada.
               </p>
-              <p className={`text-xs ${theme.accent} mt-4 tracking-[0.5em]`}>BERBULAN-BULAN.</p>
+              <p className={`text-xs ${theme.accent} mt-6 tracking-[0.5em] uppercase font-semibold`}>Berbulan-bulan.</p>
             </motion.div>
           </div>
 
@@ -550,144 +573,147 @@ export default function KamiMenulisPelanPage() {
             text="Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="leading-relaxed mb-8"
+            className="leading-relaxed mb-10 text-lg font-serif"
           />
 
-          <div className={`p-6 ${theme.highlight} border-l-4 ${theme.borderAccent}`}>
-            <p className={`${theme.accent} italic mb-4`}>Kadang, yang paling sunyi bukan tidak dibaca,</p>
-            <p className={`${theme.textHeading} text-lg`}>
+          <div className={`p-8 ${theme.accentSoft} border-l-4 ${theme.borderAccent} rounded-r-lg`}>
+            <p className={`${theme.accent} italic mb-4 text-lg font-serif`}>Kadang, yang paling sunyi bukan tidak dibaca,</p>
+            <p className={`${theme.textHeading} text-xl font-serif font-bold`}>
               tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
             </p>
           </div>
 
-          <p className={`mt-8 text-sm ${theme.textMuted} border-t ${theme.border} pt-4`}>
+          <p className={`mt-10 text-sm ${theme.textMuted} border-t ${theme.border} pt-6 italic text-center font-serif`}>
             Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing.
           </p>
         </section>
 
         {/* Tentang Dunia yang Sibuk */}
-        <section id="dunia-sibuk" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// SECTION_04</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>TENTANG DUNIA YANG SIBUK</h2>
+        <section id="dunia-sibuk" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab IV</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Dunia yang Sibuk</h2>
+            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Tidak Berhenti</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <div className={`p-6 ${theme.code} border ${theme.border}`}>
-              <p className={`mt-4 text-lg ${theme.textHeading}`}>Dunia tidak kejam.</p>
-              <p className={`mt-2 ${theme.text}`}>Ia hanya tidak berhenti.</p>
+            <div className={`p-8 ${theme.card} border ${theme.border} rounded-lg shadow-sm`}>
+              <p className={`mt-4 text-2xl ${theme.textHeading} font-serif italic`}>Dunia tidak kejam.</p>
+              <p className={`mt-4 ${theme.text} font-serif`}>Ia hanya tidak berhenti.</p>
             </div>
             
-            <div className={`p-6 ${theme.highlight} border ${theme.border}`}>
-              <p className={`text-sm ${theme.textMuted} leading-relaxed`}>
+            <div className={`p-8 ${theme.highlight} border ${theme.border} rounded-lg`}>
+              <p className={`text-base ${theme.textMuted} leading-relaxed font-serif italic`}>
                 Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
               </p>
-              <p className={`mt-4 text-sm ${theme.text}`}>
+              <p className={`mt-6 text-base ${theme.text} font-serif`}>
                 Karya seperti ini tidak cocok dengan ritme itu.
               </p>
             </div>
           </div>
 
-          <div className={`mt-6 p-4 border ${theme.border} ${theme.accentBg}`}>
-            <p className={`${theme.accent} text-sm`}>
+          <div className={`mt-8 p-6 border ${theme.border} ${theme.accentBg} rounded-lg text-center`}>
+            <p className={`${theme.accent} text-base font-serif italic`}>
               Ia berdiri di pinggir, menyadari bahwa tidak semua yang dibuat dengan sungguh-sungguh akan diberi waktu.
             </p>
           </div>
         </section>
 
         {/* Tentang Bertahan Menulis */}
-        <section id="bertahan-menulis" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// SECTION_05</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>TENTANG BERTAHAN MENULIS</h2>
+        <section id="bertahan-menulis" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab V</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Bertahan Menulis</h2>
+            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Meski Lewat</p>
           </div>
 
           <TypewriterParagraph 
             text="Aku tetap menulis bukan karena yakin akan dibaca."
             theme={theme}
             typingEnabled={typingEnabled}
-            className="text-xl leading-relaxed mb-6"
+            className="text-2xl leading-relaxed mb-8 font-serif text-center"
           />
 
-          <div className={`p-8 ${theme.code} border-2 ${theme.borderAccent} relative`}>
-            <div className={`absolute -top-3 left-4 px-2 ${theme.bg} text-xs ${theme.accent}`}>
-              CORE_MEMORY
+          <div className={`p-10 ${theme.card} border-2 ${theme.borderAccent} relative rounded-lg shadow-lg`}>
+            <div className={`absolute -top-4 left-8 px-4 py-1 ${theme.bg} text-xs ${theme.accent} border ${theme.border} rounded-full font-semibold uppercase tracking-wider`}>
+              Inti
             </div>
             <TypewriterParagraph 
               text="Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="text-lg leading-relaxed"
+              className="text-xl leading-relaxed font-serif italic text-center mt-4"
             />
           </div>
 
-          <div className={`mt-8 py-8 text-center border-y ${theme.border}`}>
-            <p className={`${theme.textMuted} italic text-sm mb-2`}>Menulis adalah caraku mengatakan pada diri sendiri bahwa</p>
-            <p className={`text-2xl ${theme.textHeading} font-bold`}>AKU PERNAH ADA</p>
-            <p className={`${theme.accent} text-sm mt-2`}>DI HARI INI.</p>
+          <div className={`mt-10 py-12 text-center border-y ${theme.border} ${theme.highlight}`}>
+            <p className={`${theme.textMuted} italic text-sm mb-4 font-serif`}>Menulis adalah caraku mengatakan pada diri sendiri bahwa</p>
+            <p className={`text-3xl ${theme.textHeading} font-serif font-bold italic`}>Aku Pernah Ada</p>
+            <p className={`${theme.accent} text-sm mt-4 tracking-[0.3em] uppercase font-semibold`}>Di Hari Ini.</p>
           </div>
 
-          <p className={`mt-8 text-right text-sm ${theme.textMuted} tracking-widest`}>
-            MESKI LEWAT.
+          <p className={`mt-10 text-right text-sm ${theme.textMuted} tracking-widest uppercase font-semibold`}>
+            Meski Lewat.
           </p>
         </section>
 
         {/* Penutup */}
-        <section id="penutup" className="mb-24 scroll-mt-24">
-          <div className={`mb-8 pb-4 border-b-2 ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-widest ${theme.accent}`}>/// END_OF_FILE</span>
-            <h2 className={`text-2xl font-bold ${theme.textHeading} mt-2`}>PENUTUP: TETAP DITULIS</h2>
+        <section id="penutup" className="mb-24 scroll-mt-32">
+          <div className={`mb-10 pb-4 border-b-2 ${theme.border}`}>
+            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Penutup</span>
+            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tetap Ditulis</h2>
           </div>
 
-          <div className={`space-y-6`}>
+          <div className={`space-y-8`}>
             <TypewriterParagraph 
               text="Buku ini tidak meminta perhatian. Ia juga tidak ingin dipahami."
               theme={theme}
               typingEnabled={typingEnabled}
-              className="leading-relaxed"
+              className="leading-relaxed text-lg font-serif"
             />
             
             <TypewriterParagraph 
               text="Ia hanya ingin jujur."
               theme={theme}
               typingEnabled={typingEnabled}
-              className={`text-xl ${theme.textHeading} font-bold`}
+              className={`text-2xl ${theme.textHeading} font-serif font-bold text-center italic`}
             />
 
-            <div className={`p-6 ${theme.highlight} border ${theme.border} my-8`}>
-              <p className={`text-sm ${theme.textMuted} leading-relaxed`}>
+            <div className={`p-8 ${theme.highlight} border ${theme.border} my-10 rounded-lg text-center`}>
+              <p className={`text-base ${theme.textMuted} leading-relaxed font-serif italic mb-6`}>
                 Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi,
               </p>
-              <p className={`text-lg ${theme.accent} mt-4 font-bold`}>
+              <p className={`text-2xl ${theme.accent} font-serif font-bold tracking-wide`}>
                 ITU SUDAH CUKUP.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className={`p-4 ${theme.code} border ${theme.border} text-center`}>
-                <p className={`text-xs ${theme.textMuted}`}>IF_NOT_READ</p>
-                <p className={`text-sm ${theme.text} mt-2`}>Tidak apa-apa.</p>
+            <div className="grid grid-cols-2 gap-6">
+              <div className={`p-6 ${theme.card} border ${theme.border} text-center rounded-lg`}>
+                <p className={`text-xs ${theme.textMuted} uppercase tracking-wider font-semibold mb-2`}>Jika Tidak Dibaca</p>
+                <p className={`text-base ${theme.text} font-serif italic`}>Tidak apa-apa.</p>
               </div>
-              <div className={`p-4 ${theme.accentBg} border ${theme.borderAccent} text-center`}>
-                <p className={`text-xs ${theme.accent}`}>FINAL_STATE</p>
-                <p className={`text-sm ${theme.textHeading} mt-2 font-bold`}>Ia tetap ditulis.</p>
+              <div className={`p-6 ${theme.accentBg} border ${theme.borderAccent} text-center rounded-lg`}>
+                <p className={`text-xs ${theme.accent} uppercase tracking-wider font-semibold mb-2`}>Keadaan Akhir</p>
+                <p className={`text-base ${theme.textHeading} font-serif font-bold italic`}>Ia tetap ditulis.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className={`mt-20 pt-8 border-t-2 ${theme.border} text-xs ${theme.textMuted}`}>
-          <div className="flex items-center justify-between">
-            <span>FILE: KAMI_MENULIS_PELAN.TXT</span>
-            <span>SIZE: 1,247_BYTES</span>
+        <footer className={`mt-24 pt-10 border-t-2 ${theme.border} text-xs ${theme.textMuted}`}>
+          <div className="flex items-center justify-between font-serif">
+            <span className="italic">Kami Menulis Pelan</span>
+            <span>1,247 kata</span>
           </div>
-          <div className="flex items-center justify-between mt-2">
-            <span>AUTHOR: UNKNOWN_WORKER</span>
-            <span>STATUS: COMPLETE</span>
+          <div className="flex items-center justify-between mt-3 font-serif">
+            <span className="italic">Oleh: Seorang Pekerja</span>
+            <span>Selesai.</span>
           </div>
-          <div className={`mt-4 pt-4 border-t ${theme.border} text-center`}>
-            <span className={theme.accent}>EOF_</span>
+          <div className={`mt-8 pt-8 border-t ${theme.border} text-center`}>
+            <Coffee className={`${theme.accent} mx-auto mb-4`} size={24} />
+            <span className={`${theme.accent} font-serif italic text-sm`}>Sampai kopi berikutnya.</span>
           </div>
         </footer>
 
@@ -701,27 +727,43 @@ export default function KamiMenulisPelanPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`fixed bottom-4 right-4 z-50 p-3 ${theme.code} border ${theme.border} ${theme.accent} hover:${theme.accentBg} transition-colors`}
+            className={`fixed bottom-6 right-6 z-50 p-4 ${theme.card} border ${theme.border} ${theme.accent} hover:${theme.accentBg} transition-all duration-300 rounded-full shadow-lg`}
           >
-            <ArrowUp size={16} />
+            <ArrowUp size={18} />
           </motion.button>
         )}
       </AnimatePresence>
 
       {/* Global Styles */}
       <style jsx global>{`
-        @keyframes scanline {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
         }
-        .animate-scanline {
-          animation: scanline 8s linear infinite;
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
         }
         .cursor-blink {
-          animation: blink 1s step-end infinite;
+          animation: blink 1.5s ease-in-out infinite;
         }
         @keyframes blink {
-          50% { opacity: 0; }
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: ${darkMode ? '#1a1512' : '#faf8f5'};
+        }
+        ::-webkit-scrollbar-thumb {
+          background: ${darkMode ? '#3d3229' : '#d4c4b0'};
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: ${darkMode ? '#c9a86c' : '#8b6914'};
         }
       `}</style>
     </div>
@@ -729,7 +771,7 @@ export default function KamiMenulisPelanPage() {
 }
 
 // ==========================================
-// PERBAIKAN 4: Typewriter Component yang aman
+// COMPONENT: Typewriter Paragraph
 // ==========================================
 function TypewriterParagraph({ 
   text, 
@@ -754,16 +796,13 @@ function TypewriterParagraph({
 
     const element = ref.current;
     
-    // PERBAIKAN: Simpan instance observer di ref untuk cleanup yang aman
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // PERBAIKAN: Gunakan setTimeout untuk delay, bukan di render
           const timer = setTimeout(() => {
             setIsVisible(true);
           }, delay);
           
-          // Cleanup timeout jika component unmount
           return () => clearTimeout(timer);
         }
       },
@@ -772,7 +811,6 @@ function TypewriterParagraph({
 
     observerRef.current.observe(element);
 
-    // PERBAIKAN: Cleanup yang benar - unobserve dulu, baru disconnect
     return () => {
       if (observerRef.current && element) {
         observerRef.current.unobserve(element);
@@ -782,14 +820,12 @@ function TypewriterParagraph({
     };
   }, [isClient, delay]);
 
-  // PERBAIKAN: Jika typing disabled, langsung tampilkan full text
   const { displayText, isComplete } = useTypewriter(
     text, 
-    typingEnabled ? 30 : 0, 
+    typingEnabled ? 40 : 0, 
     isVisible && typingEnabled
   );
 
-  // SSR fallback
   if (!isClient) {
     return <div ref={ref} className={className}>{text}</div>;
   }
@@ -798,7 +834,7 @@ function TypewriterParagraph({
     <div ref={ref} className={className}>
       {typingEnabled ? displayText : text}
       {typingEnabled && !isComplete && isVisible && (
-        <span className={`inline-block w-2 h-4 ml-1 ${theme.cursor} cursor-blink`} />
+        <span className={`inline-block w-0.5 h-5 ml-1 ${theme.cursor} cursor-blink align-middle`} />
       )}
     </div>
   );
