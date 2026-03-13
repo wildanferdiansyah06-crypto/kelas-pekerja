@@ -78,7 +78,7 @@ export default function TulisanSection() {
   return (
     <section 
       ref={containerRef}
-      className="min-h-screen bg-[#0a0908] text-[#e7e5e4] relative overflow-hidden"
+      className="min-h-screen bg-[#0a0908] text-[#e7e5e4] relative overflow-hidden pt-20"
     >
       {/* Subtle grain texture overlay */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]"></div>
@@ -111,15 +111,15 @@ export default function TulisanSection() {
         ))}
       </motion.div>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION - FIXED */}
       <motion.div 
-        className="relative z-10 pt-32 pb-20 px-6"
+        className="relative z-10 min-h-[80vh] flex flex-col justify-center items-center px-6 py-32"
         style={{ opacity: opacityHero }}
       >
         <div className="max-w-3xl mx-auto text-center">
           {/* Decorative line */}
           <motion.div 
-            className="flex items-center justify-center gap-4 mb-12"
+            className="flex items-center justify-center gap-4 mb-8"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
@@ -143,7 +143,7 @@ export default function TulisanSection() {
 
           {/* ruang bagi */}
           <motion.p
-            className="font-serif italic text-[#8b7355] text-lg mb-4 opacity-80"
+            className="font-serif italic text-[#8b7355] text-xl mb-6 opacity-80"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 0.8, y: 0 } : {}}
             transition={{ delay: 0.3, duration: 1 }}
@@ -175,7 +175,7 @@ export default function TulisanSection() {
 
           {/* Typing subtitle */}
           <motion.div 
-            className="max-w-2xl mx-auto"
+            className="max-w-2xl mx-auto mt-8"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ delay: 1.5, duration: 1 }}
