@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
@@ -178,3 +178,4 @@ export default function TulisanPage() {
     </main>
   );
 }
+
