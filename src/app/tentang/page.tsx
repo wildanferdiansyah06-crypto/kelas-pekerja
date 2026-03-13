@@ -1,3 +1,5 @@
+"use client";
+
 import postsData from "@/public/data/posts.json";
 
 export default function TulisanPage() {
@@ -183,3 +185,4 @@ export default function TulisanPage() {
     </main>
   );
 }
+
