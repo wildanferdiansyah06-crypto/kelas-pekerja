@@ -34,8 +34,7 @@ export default async function BooksPage() {
   }));
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700">
-
+    <>
       {/* HEADER */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-screen-lg mx-auto text-center">
@@ -160,8 +159,6 @@ export default async function BooksPage() {
 
         </div>
       </section>
-
-    </main>
-
+    </>
   );
 }
