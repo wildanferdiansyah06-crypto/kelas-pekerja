@@ -2,7 +2,7 @@
 
 import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
-import { useTheme } from "@/components/theme-provider"; // Asumsi context tema global
+import { useTheme } from "@/components/ThemeProvider"; // Perbaikan: huruf kapital T dan P
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -24,10 +24,10 @@ const stagger = {
 
 export default function TulisanPage() {
   const posts = postsData.posts || [];
-  const { theme, resolvedTheme } = useTheme(); // Ambil tema dari navbar/global
+  const { theme } = useTheme(); // Ambil theme dari context global
   
-  // Tentukan mode aktif (fallback ke dark jika belum resolved)
-  const isDark = resolvedTheme === "dark" || theme === "dark";
+  // ThemeProvider Anda hanya return "light" | "dark", tidak ada resolvedTheme
+  const isDark = theme === "dark";
   
   // Warna tema yang adaptif
   const colors = {
@@ -44,12 +44,14 @@ export default function TulisanPage() {
     selectionBg: isDark ? "selection:bg-[#c7b299]" : "selection:bg-[#8b7355]",
     selectionText: isDark ? "selection:text-[#0a0a0a]" : "selection:text-white",
     grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
+    footerBorder: isDark ? "border-neutral-900" : "border-neutral-200",
+    footerText: isDark ? "text-neutral-500" : "text-neutral-400",
   };
 
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} ${colors.selectionBg} ${colors.selectionText} transition-colors duration-500`}>
 
-      {/* Grain texture - adaptif opacity */}
+      {/* Grain texture */}
       <div
         className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0 transition-opacity duration-500`}
         style={{
@@ -68,15 +70,15 @@ export default function TulisanPage() {
             className="mb-32 text-center"
           >
             <div className={`flex items-center justify-center gap-4 mb-8 ${colors.textSubtle}`}>
-              <div className={`h-px w-16 bg-gradient-to-r from-transparent via-[${colors.accent}] to-transparent`}></div>
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
               <span className="text-[10px] tracking-[0.5em] uppercase font-light">
                 Arsip Pikiran
               </span>
-              <div className={`h-px w-16 bg-gradient-to-r from-transparent via-[${colors.accent}] to-transparent`}></div>
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
             </div>
 
             <h1 className={`font-serif text-5xl md:text-7xl mb-8 ${colors.heading} tracking-tight transition-colors duration-500`}>
-              <span className={`block text-[${colors.accent}] text-2xl md:text-3xl mb-4 italic font-light opacity-80`}>
+              <span className="block text-[#c7b299] text-2xl md:text-3xl mb-4 italic font-light opacity-80">
                 ruang bagi
               </span>
               Tulisan
@@ -95,21 +97,21 @@ export default function TulisanPage() {
             animate="show"
             className="mb-32 relative"
           >
-            <div className={`absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[${colors.accentSecondary}] to-transparent opacity-30`}></div>
+            <div className="absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#8b7355] to-transparent opacity-30"></div>
 
             <div className={`pl-8 space-y-8 text-lg leading-[2.2] ${colors.textMuted} transition-opacity duration-500`}>
-              <p className={`first-letter:text-6xl first-letter:font-serif first-letter:float-left first-letter:mr-4 first-letter:mt-[-8px] first-letter:text-[${colors.accent}]`}>
+              <p className="first-letter:text-6xl first-letter:font-serif first-letter:float-left first-letter:mr-4 first-letter:mt-[-8px] first-letter:text-[#c7b299]">
                 Kita hidup di era yang terobsesi pada kecepatan. Segala sesuatu
                 harus instan, terukur, menghasilkan.
               </p>
 
               <p>
                 Setiap tulisan di sini adalah{" "}
-                <span className={`text-[${colors.accent}]`}>jejak</span>—bukan petunjuk arah,
+                <span className="text-[#c7b299]">jejak</span>—bukan petunjuk arah,
                 melainkan bekas tapak kaki di pasir yang segera terhapus ombak.
               </p>
 
-              <blockquote className={`border-l-2 border-[${colors.accentSecondary}] pl-8 py-4 my-12 italic font-serif text-2xl text-[${colors.accent}]`}>
+              <blockquote className="border-l-2 border-[#8b7355] pl-8 py-4 my-12 italic font-serif text-2xl text-[#c7b299]">
                 Menulis adalah cara kita memberi makna pada kekosongan.
               </blockquote>
             </div>
@@ -117,9 +119,9 @@ export default function TulisanPage() {
 
           {/* DIVIDER */}
           <div className={`flex items-center justify-center gap-6 mb-24 ${colors.textSubtle}`}>
-            <div className={`h-px w-24 bg-gradient-to-r from-transparent to-[${colors.accent}]`}></div>
-            <div className={`w-2 h-2 rotate-45 border border-[${colors.accent}]`}></div>
-            <div className={`h-px w-24 bg-gradient-to-l from-transparent to-[${colors.accent}]`}></div>
+            <div className="h-px w-24 bg-gradient-to-r from-transparent to-[#c7b299]"></div>
+            <div className="w-2 h-2 rotate-45 border border-[#c7b299]"></div>
+            <div className="h-px w-24 bg-gradient-to-l from-transparent to-[#c7b299]"></div>
           </div>
 
           {/* LIST ARTIKEL */}
@@ -168,7 +170,7 @@ export default function TulisanPage() {
                         <span>{post.date || "Waktu tak tercatat"}</span>
                       </div>
 
-                      <h3 className={`font-serif text-2xl md:text-3xl mb-4 ${colors.heading} group-hover:text-[${colors.accent}] transition-colors duration-500`}>
+                      <h3 className={`font-serif text-2xl md:text-3xl mb-4 ${colors.heading} group-hover:text-[#c7b299] transition-colors duration-500`}>
                         {post.title}
                       </h3>
 
@@ -188,9 +190,9 @@ export default function TulisanPage() {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className={`pt-16 border-t ${isDark ? "border-neutral-900" : "border-neutral-200"} text-center transition-colors duration-500`}
+            className={`pt-16 border-t ${colors.footerBorder} text-center transition-colors duration-500`}
           >
-            <p className={`font-serif italic ${isDark ? "text-neutral-500" : "text-neutral-400"} text-lg mb-4 transition-colors duration-500`}>
+            <p className={`font-serif italic ${colors.footerText} text-lg mb-4 transition-colors duration-500`}>
               Ditulis perlahan, seperti menyeduh kopi.
             </p>
           </motion.footer>
