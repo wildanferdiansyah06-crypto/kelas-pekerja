@@ -6,15 +6,32 @@ export default function ReadingProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const updateProgress = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrolled = window.scrollY;
-      const progress = scrollHeight > 0 ? (scrolled / scrollHeight) * 100 : 0;
-      setProgress(progress);
+      const doc = document.documentElement;
+
+      if (!doc) return;
+
+      const scrollHeight = doc.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY || window.pageYOffset;
+
+      if (scrollHeight <= 0) {
+        setProgress(0);
+        return;
+      }
+
+      const value = (scrolled / scrollHeight) * 100;
+      setProgress(value);
     };
 
-    window.addEventListener('scroll', updateProgress);
-    return () => window.removeEventListener('scroll', updateProgress);
+    updateProgress();
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', updateProgress);
+    };
   }, []);
 
   return (
