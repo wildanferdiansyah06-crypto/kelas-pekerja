@@ -2,7 +2,7 @@
 
 import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
-import { useTheme } from "@/components/ThemeProvider"; // Perbaikan: huruf kapital T dan P
+import { useTheme } from "@/src/components/ThemeProvider";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -24,12 +24,10 @@ const stagger = {
 
 export default function TulisanPage() {
   const posts = postsData.posts || [];
-  const { theme } = useTheme(); // Ambil theme dari context global
+  const { theme } = useTheme();
   
-  // ThemeProvider Anda hanya return "light" | "dark", tidak ada resolvedTheme
   const isDark = theme === "dark";
   
-  // Warna tema yang adaptif
   const colors = {
     bg: isDark ? "bg-[#0a0a0a]" : "bg-[#fafafa]",
     text: isDark ? "text-neutral-300" : "text-neutral-700",
@@ -51,7 +49,6 @@ export default function TulisanPage() {
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} ${colors.selectionBg} ${colors.selectionText} transition-colors duration-500`}>
 
-      {/* Grain texture */}
       <div
         className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0 transition-opacity duration-500`}
         style={{
@@ -62,7 +59,6 @@ export default function TulisanPage() {
       <div className="relative z-10 py-32 px-6">
         <div className="max-w-4xl mx-auto">
 
-          {/* HEADER */}
           <motion.header
             variants={fadeUp}
             initial="hidden"
@@ -90,7 +86,6 @@ export default function TulisanPage() {
             </p>
           </motion.header>
 
-          {/* MANIFESTO */}
           <motion.section
             variants={fadeUp}
             initial="hidden"
@@ -117,14 +112,12 @@ export default function TulisanPage() {
             </div>
           </motion.section>
 
-          {/* DIVIDER */}
           <div className={`flex items-center justify-center gap-6 mb-24 ${colors.textSubtle}`}>
             <div className="h-px w-24 bg-gradient-to-r from-transparent to-[#c7b299]"></div>
             <div className="w-2 h-2 rotate-45 border border-[#c7b299]"></div>
             <div className="h-px w-24 bg-gradient-to-l from-transparent to-[#c7b299]"></div>
           </div>
 
-          {/* LIST ARTIKEL */}
           <section className="mb-32">
 
             <div className={`flex items-baseline justify-between mb-16 border-b ${colors.border} pb-4 transition-colors duration-500`}>
@@ -185,7 +178,6 @@ export default function TulisanPage() {
             </motion.div>
           </section>
 
-          {/* FOOTER */}
           <motion.footer
             variants={fadeUp}
             initial="hidden"
