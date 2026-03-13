@@ -1,196 +1,403 @@
 "use client";
 
-import postsData from "@/public/data/posts.json";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8 },
-  },
-};
+export default function TentangPage() {
+  const containerRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isHeroInView = useInView(heroRef, { once: true });
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
 
-const stagger = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-export default function TulisanPage() {
-  const posts = postsData.posts || [];
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  
+  const [subtitleText, setSubtitleText] = useState("");
+  const fullSubtitle = "Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan. Bukan untuk diterima, bukan untuk dipahami—hanya untuk ada.";
+  
   const { theme } = useTheme();
-  
   const isDark = theme === "dark";
-  
+
+  useEffect(() => {
+    if (isHeroInView) {
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i <= fullSubtitle.length) {
+          setSubtitleText(fullSubtitle.slice(0, i));
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 30);
+      return () => clearInterval(timer);
+    }
+  }, [isHeroInView]);
+
   const colors = {
-    bg: isDark ? "bg-[#0a0a0a]" : "bg-[#fafafa]",
-    text: isDark ? "text-neutral-300" : "text-neutral-700",
-    textMuted: isDark ? "opacity-60" : "opacity-70",
-    textSubtle: isDark ? "opacity-40" : "opacity-50",
-    heading: isDark ? "text-white" : "text-neutral-900",
-    accent: "#c7b299",
-    accentSecondary: "#8b7355",
-    border: isDark ? "border-neutral-800" : "border-neutral-200",
-    borderHover: isDark ? "group-hover:border-[#8b7355]" : "group-hover:border-[#c7b299]",
-    number: isDark ? "text-neutral-800" : "text-neutral-200",
-    selectionBg: isDark ? "selection:bg-[#c7b299]" : "selection:bg-[#8b7355]",
-    selectionText: isDark ? "selection:text-[#0a0a0a]" : "selection:text-white",
-    grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
-    footerBorder: isDark ? "border-neutral-900" : "border-neutral-200",
-    footerText: isDark ? "text-neutral-500" : "text-neutral-400",
+    bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
+    text: isDark ? "text-[#e7e5e4]" : "text-[#1c1917]",
+    textMuted: isDark ? "text-[#a8a29e]" : "text-[#78716c]",
+    textSecondary: isDark ? "text-[#d6d3d1]" : "text-[#57534e]",
+    accent: isDark ? "text-[#8b7355]" : "text-[#a16207]",
+    accentMuted: isDark ? "text-[#8b7355]/60" : "text-[#a16207]/60",
+    accentLight: isDark ? "text-[#8b7355]/30" : "text-[#a16207]/30",
+    accentBorder: isDark ? "border-[#8b7355]/30" : "border-[#a16207]/30",
+    accentBg: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
+    accentBgLight: isDark ? "bg-[#8b7355]/10" : "bg-[#a16207]/10",
+    divider: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
+    subtleText: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
+    emptyState: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
   };
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 60, filter: "blur(10px)" },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        delay: i * 0.15,
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    })
+  };
+
+  const letterAnimation = {
+    hidden: { opacity: 0, y: 100, rotateX: -90 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      transition: {
+        delay: 0.5 + (i * 0.08),
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    })
+  };
+
+  const lineExpand = {
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: {
+      scaleX: 1,
+      opacity: 1,
+      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const words = ["Tentang"];
+  const letters = words[0].split("");
+
   return (
-    <main className={`min-h-screen ${colors.bg} ${colors.text} ${colors.selectionBg} ${colors.selectionText} transition-colors duration-500`}>
+    <section 
+      ref={containerRef}
+      className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}
+    >
+      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]`}></div>
 
-      <div
-        className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0 transition-opacity duration-500`}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        }}
-      />
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: backgroundY }}
+      >
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute w-[1px] h-[1px] ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'} rounded-full`}
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${15 + (i % 4) * 20}%`,
+            }}
+            animate={{
+              y: [0, -40, 0],
+              opacity: isDark ? [0.1, 0.4, 0.1] : [0.05, 0.2, 0.05],
+              scale: [1, 2, 1]
+            }}
+            transition={{
+              duration: 5 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3
+            }}
+          />
+        ))}
+      </motion.div>
 
-      <div className="relative z-10 py-32 px-6">
-        <div className="max-w-4xl mx-auto">
-
-          <motion.header
-            variants={fadeUp}
+      <div 
+        ref={heroRef}
+        className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12"
+      >
+        <motion.div 
+          className="max-w-3xl mx-auto text-center"
+          initial={{ opacity: 0 }}
+          animate={isHeroInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="flex items-center justify-center gap-4 mb-8"
             initial="hidden"
-            animate="show"
-            className="mb-32 text-center"
+            animate={isHeroInView ? "visible" : "hidden"}
           >
-            <div className={`flex items-center justify-center gap-4 mb-8 ${colors.textSubtle}`}>
-              <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
-              <span className="text-[10px] tracking-[0.5em] uppercase font-light">
-                Arsip Pikiran
-              </span>
-              <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
-            </div>
+            <motion.div 
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-right`}
+              variants={lineExpand}
+            />
+            <motion.span 
+              className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}
+              initial={{ opacity: 0 }}
+              animate={isHeroInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.8, duration: 1 }}
+            >
+              Arsip Pikiran
+            </motion.span>
+            <motion.div 
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-left`}
+              variants={lineExpand}
+            />
+          </motion.div>
 
-            <h1 className={`font-serif text-5xl md:text-7xl mb-8 ${colors.heading} tracking-tight transition-colors duration-500`}>
-              <span className="block text-[#c7b299] text-2xl md:text-3xl mb-4 italic font-light opacity-80">
-                ruang bagi
-              </span>
-              Tulisan
+          <motion.p
+            className={`font-serif italic ${colors.accent} text-xl mb-6 opacity-80`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            ruang bagi
+          </motion.p>
+
+          <div className="overflow-hidden mb-8">
+            <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl ${colors.text} flex justify-center perspective-1000`}>
+              {letters.map((letter, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={letterAnimation}
+                  initial="hidden"
+                  animate={isHeroInView ? "visible" : "hidden"}
+                  className="inline-block"
+                  style={{ 
+                    transformStyle: "preserve-3d",
+                    textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
             </h1>
-
-            <p className={`text-lg md:text-xl ${colors.textMuted} leading-[2] max-w-2xl mx-auto font-light transition-opacity duration-500`}>
-              Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika
-              kata-kata menjadi satu-satunya tempat perlindungan.
-            </p>
-          </motion.header>
-
-          <motion.section
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="mb-32 relative"
-          >
-            <div className="absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#8b7355] to-transparent opacity-30"></div>
-
-            <div className={`pl-8 space-y-8 text-lg leading-[2.2] ${colors.textMuted} transition-opacity duration-500`}>
-              <p className="first-letter:text-6xl first-letter:font-serif first-letter:float-left first-letter:mr-4 first-letter:mt-[-8px] first-letter:text-[#c7b299]">
-                Kita hidup di era yang terobsesi pada kecepatan. Segala sesuatu
-                harus instan, terukur, menghasilkan.
-              </p>
-
-              <p>
-                Setiap tulisan di sini adalah{" "}
-                <span className="text-[#c7b299]">jejak</span>—bukan petunjuk arah,
-                melainkan bekas tapak kaki di pasir yang segera terhapus ombak.
-              </p>
-
-              <blockquote className="border-l-2 border-[#8b7355] pl-8 py-4 my-12 italic font-serif text-2xl text-[#c7b299]">
-                Menulis adalah cara kita memberi makna pada kekosongan.
-              </blockquote>
-            </div>
-          </motion.section>
-
-          <div className={`flex items-center justify-center gap-6 mb-24 ${colors.textSubtle}`}>
-            <div className="h-px w-24 bg-gradient-to-r from-transparent to-[#c7b299]"></div>
-            <div className="w-2 h-2 rotate-45 border border-[#c7b299]"></div>
-            <div className="h-px w-24 bg-gradient-to-l from-transparent to-[#c7b299]"></div>
           </div>
 
-          <section className="mb-32">
-
-            <div className={`flex items-baseline justify-between mb-16 border-b ${colors.border} pb-4 transition-colors duration-500`}>
-              <h2 className={`font-serif text-2xl ${colors.heading} italic transition-colors duration-500`}>
-                Catatan-catatan
-              </h2>
-              <span className={`text-xs tracking-widest uppercase ${colors.textSubtle}`}>
-                {posts.length > 0 ? `${posts.length} tulisan` : "Kosong"}
-              </span>
-            </div>
-
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              animate="show"
-              className="space-y-20"
-            >
-              {posts.length === 0 ? (
-                <motion.div
-                  variants={fadeUp}
-                  className={`text-center py-24 ${colors.textSubtle}`}
-                >
-                  <p className="font-serif text-xl italic mb-4">
-                    Keheningan yang menunggu
-                  </p>
-                  <p className="text-sm">Belum ada kata yang berani keluar.</p>
-                </motion.div>
-              ) : (
-                posts.map((post: any, index: number) => (
-                  <motion.article
-                    key={post.slug}
-                    variants={fadeUp}
-                    className="group relative"
-                  >
-                    <span className={`absolute -left-12 top-0 text-6xl font-serif ${colors.number} hidden md:block transition-colors duration-500`}>
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <div className={`border-l ${colors.border} pl-8 md:pl-12 pb-16 ${colors.borderHover} transition-colors duration-500`}>
-
-                      <div className={`flex items-center gap-3 mb-4 text-xs tracking-widest uppercase ${colors.textSubtle}`}>
-                        <span className="w-8 h-px bg-current"></span>
-                        <span>{post.date || "Waktu tak tercatat"}</span>
-                      </div>
-
-                      <h3 className={`font-serif text-2xl md:text-3xl mb-4 ${colors.heading} group-hover:text-[#c7b299] transition-colors duration-500`}>
-                        {post.title}
-                      </h3>
-
-                      <p className={`text-base md:text-lg ${colors.textMuted} leading-[1.9] mb-6 group-hover:opacity-80 transition-opacity duration-500`}>
-                        {post.excerpt}
-                      </p>
-
-                    </div>
-                  </motion.article>
-                ))
-              )}
-            </motion.div>
-          </section>
-
-          <motion.footer
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className={`pt-16 border-t ${colors.footerBorder} text-center transition-colors duration-500`}
+          <motion.div 
+            className="max-w-2xl mx-auto mt-8"
+            initial={{ opacity: 0 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ delay: 1.5, duration: 1 }}
           >
-            <p className={`font-serif italic ${colors.footerText} text-lg mb-4 transition-colors duration-500`}>
-              Ditulis perlahan, seperti menyeduh kopi.
+            <p className={`text-[15px] md:text-base leading-[1.8] ${colors.textMuted} font-light`}>
+              {subtitleText}
+              <motion.span
+                className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+              />
             </p>
-          </motion.footer>
-
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </main>
+
+      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
+        <motion.div
+          custom={0}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-12"
+        >
+          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
+            <motion.span 
+              className={`float-left text-7xl font-serif ${colors.accent} mr-4 mt-2 leading-none`}
+              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              K
+            </motion.span>
+            ita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Namun di sudut terdalam kesadaran, kita tahu: yang benar-benar berarti justru datang dari proses yang lambat, menyakitkan, dan seringkali tanpa tujuan jelas.
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.p 
+            custom={1}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Mereka tidak mengklaim kebenaran. Mereka hanya mengakui keberadaan: bahwa seseorang, di suatu tempat, pernah merasa sesuatu yang terlalu kompleks untuk diungkapkan dalam percakapan sehari-hari.
+          </motion.p>
+
+          <motion.p 
+            custom={2}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Tentang kopi yang bukan sekadar minuman, melainkan ritual penundaan— cara kita memberontak terhadap waktu. Tentang kerja yang memakan hari-hari kita, lalu kita bertanya: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya?</em> Tentang keheningan yang mengganggu, karena di dalamnya kita terpaksa berhadapan dengan diri sendiri.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          className={`my-16 pl-6 border-l-2 ${colors.accentBorder}`}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <motion.blockquote 
+            className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.6]`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.9 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            &ldquo;Menulis adalah cara kita memberi makna pada kekosongan. Bukan untuk mengisinya, tetapi untuk mengenalinya. Seperti menatap ke dalam sumur yang gelap dan akhirnya melihat bayangan diri sendiri.&rdquo;
+          </motion.blockquote>
+        </motion.div>
+
+        <motion.p 
+          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          Mungkin ini semua hanya monolog yang tak pernah dimaksudkan untuk didengar. Tapi jika kamu menemukan dirimu di sini, di antara kata-kata yang tercecer—selamat datang. Kita adalah orang-orang yang sama: yang mencari arti di tempat-tempat yang orang lain lewati begitu saja.
+        </motion.p>
+
+        <motion.div 
+          className="flex items-center justify-center gap-4 py-12"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <motion.div 
+            className={`h-px ${colors.divider} w-24`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+          <motion.div 
+            className={`w-2 h-2 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#a16207]/40'} rotate-45`}
+            animate={{ rotate: [45, 225, 45] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div 
+            className={`h-px ${colors.divider} w-24`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+        </motion.div>
+
+        <motion.div
+          className="mt-20"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
+            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Catatan-catatan</h3>
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Kosong</span>
+          </div>
+
+          <motion.div 
+            className="text-center py-20"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            <motion.p 
+              className={`font-serif italic text-xl ${colors.accentMuted} mb-3`}
+              animate={{ 
+                opacity: [0.4, 0.8, 0.4],
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+            >
+              Keheningan yang menunggu
+            </motion.p>
+            <p className={`text-sm ${colors.emptyState}`}>Belum ada kata yang berani keluar.</p>
+          </motion.div>
+        </motion.div>
+
+        <motion.div 
+          className="mt-24 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+        >
+          <motion.div
+            className={`w-12 h-px ${colors.divider} mx-auto mb-8`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5 }}
+          />
+          <p className={`font-serif italic text-lg md:text-xl ${colors.accentMuted} max-w-2xl mx-auto leading-[1.7] mb-4`}>
+            &ldquo;Tulisan yang paling jujur adalah yang ditulis tanpa penonton, hanya untuk meyakinkan diri sendiri bahwa kita pernah merasa.&rdquo;
+          </p>
+          <p className={`text-[10px] tracking-[0.3em] uppercase ${colors.subtleText}`}>
+            — Dari ruang yang sunyi
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="mt-24 text-center pb-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+        >
+          <motion.p 
+            className={`font-serif italic ${colors.accentMuted} text-sm`}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Ditulis perlahan, seperti menyeduh kopi<br />
+            di pagi yang belum yakin ingin dimulai.
+          </motion.p>
+          
+          <motion.div 
+            className="mt-8 flex items-center justify-center gap-3"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1, duration: 1 }}
+          >
+            <div className={`h-px ${colors.accentBg} w-8`}></div>
+            <span className={`text-[9px] tracking-[0.4em] uppercase ${isDark ? 'text-[#44403c]' : 'text-[#d6d3d1]'}`}>Akhir dari arsip</span>
+            <div className={`h-px ${colors.accentBg} w-8`}></div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
