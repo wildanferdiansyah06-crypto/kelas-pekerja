@@ -8,7 +8,7 @@ const fadeUp = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: "easeOut" },
+    transition: { duration: 0.8 },
   },
 };
 
@@ -16,7 +16,7 @@ const stagger = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -43,7 +43,7 @@ export default function TulisanPage() {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="mb-32 text-center relative"
+            className="mb-32 text-center"
           >
             <div className="flex items-center justify-center gap-4 mb-8 opacity-30">
               <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
@@ -53,7 +53,7 @@ export default function TulisanPage() {
               <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c7b299] to-transparent"></div>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl mb-8 text-white tracking-tight leading-none">
+            <h1 className="font-serif text-5xl md:text-7xl mb-8 text-white tracking-tight">
               <span className="block text-[#c7b299] text-2xl md:text-3xl mb-4 italic font-light opacity-80">
                 ruang bagi
               </span>
@@ -62,8 +62,7 @@ export default function TulisanPage() {
 
             <p className="text-lg md:text-xl opacity-60 leading-[2] max-w-2xl mx-auto font-light">
               Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika
-              kata-kata menjadi satu-satunya tempat perlindungan. Bukan untuk
-              diterima, bukan untuk dipahami—hanya untuk <em>ada</em>.
+              kata-kata menjadi satu-satunya tempat perlindungan.
             </p>
           </motion.header>
 
@@ -71,8 +70,7 @@ export default function TulisanPage() {
           <motion.section
             variants={fadeUp}
             initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
+            animate="show"
             className="mb-32 relative"
           >
             <div className="absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#8b7355] to-transparent opacity-30"></div>
@@ -89,7 +87,7 @@ export default function TulisanPage() {
                 melainkan bekas tapak kaki di pasir yang segera terhapus ombak.
               </p>
 
-              <blockquote className="border-l-2 border-[#8b7355] pl-8 py-4 my-12 italic font-serif text-2xl text-[#c7b299] leading-relaxed">
+              <blockquote className="border-l-2 border-[#8b7355] pl-8 py-4 my-12 italic font-serif text-2xl text-[#c7b299]">
                 Menulis adalah cara kita memberi makna pada kekosongan.
               </blockquote>
             </div>
@@ -117,8 +115,7 @@ export default function TulisanPage() {
             <motion.div
               variants={stagger}
               initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
+              animate="show"
               className="space-y-20"
             >
               {posts.length === 0 ? (
@@ -138,11 +135,11 @@ export default function TulisanPage() {
                     variants={fadeUp}
                     className="group relative"
                   >
-                    <span className="absolute -left-12 top-0 text-6xl font-serif text-neutral-800 select-none hidden md:block">
+                    <span className="absolute -left-12 top-0 text-6xl font-serif text-neutral-800 hidden md:block">
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
-                    <div className="relative border-l border-neutral-800 pl-8 md:pl-12 pb-16 group-hover:border-[#8b7355] transition-colors duration-500">
+                    <div className="border-l border-neutral-800 pl-8 md:pl-12 pb-16 group-hover:border-[#8b7355] transition-colors duration-500">
 
                       <div className="flex items-center gap-3 mb-4 text-xs tracking-widest uppercase opacity-40">
                         <span className="w-8 h-px bg-current"></span>
@@ -168,8 +165,7 @@ export default function TulisanPage() {
           <motion.footer
             variants={fadeUp}
             initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
+            animate="show"
             className="pt-16 border-t border-neutral-900 text-center"
           >
             <p className="font-serif italic text-neutral-500 text-lg mb-4">
