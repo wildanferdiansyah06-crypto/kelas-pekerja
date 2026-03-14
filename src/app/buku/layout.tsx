@@ -1,6 +1,5 @@
 import ReadingProgress from "@/src/components/ReadingProgress";
 import ScrollToTop from "@/src/components/ScrollToTop";
-import Footer from "@/src/components/Footer";
 
 export default function BukuLayout({
   children,
@@ -9,19 +8,16 @@ export default function BukuLayout({
 }) {
   return (
     <>
-      {/* progress bar membaca */}
+      {/* Progress bar membaca */}
       <ReadingProgress />
 
-      {/* konten buku */}
+      {/* Konten halaman buku */}
       <main className="min-h-screen max-w-3xl mx-auto px-6 pt-24 pb-32">
         {children}
       </main>
 
-      {/* tombol scroll */}
+      {/* Tombol scroll ke atas */}
       <ScrollToTop />
-
-      {/* footer global */}
-      <Footer />
     </>
   );
 }
