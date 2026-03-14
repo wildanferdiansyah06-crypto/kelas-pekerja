@@ -6,7 +6,7 @@ import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } fro
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function CoffeeBookPage() {
-  // Ambil tema global dari navbar
+  // PERBAIKAN: Ambil tema global dari navbar
   const { theme: globalTheme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
@@ -48,10 +48,10 @@ export default function CoffeeBookPage() {
 
   if (!mounted) return null;
 
-  // Derive darkMode dari global theme
+  // PERBAIKAN: Derive darkMode dari global theme
   const darkMode = globalTheme === 'dark';
 
-  // Theme classes - original colors
+  // Theme classes - original colors (teman yang warna oren di atas)
   const theme = darkMode ? {
     bg: 'bg-[#0a0a0a]',
     text: 'text-neutral-300',
@@ -161,7 +161,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.button>
 
-            {/* Secondary Actions - PERBAIKAN: Toggle theme pakai global theme */}
+            {/* Secondary Actions - PERBAIKAN: Toggle theme pakai global */}
             <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -187,7 +187,7 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar Navigation - PERTAHANKAN POSISI */}
+      {/* Sidebar Navigation - PERTAHANKAN POSISI (sudah bagus) */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -263,9 +263,9 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - PERBAIKAN: Hapus gap hitam, naikkan buku */}
+      {/* Main Content - PERBAIKAN: Buku NAIK KE ATAS, hapus gap hitam */}
       <main className="min-h-screen pt-0 pb-20">
-        {/* Hero Section - PERBAIKAN: Hapus min-h dan gap */}
+        {/* Hero Section - PERBAIKAN: Hapus min-h dan gap hitam */}
         <motion.section 
           initial="hidden"
           animate="visible"
@@ -856,7 +856,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* DIHAPUS: Quick Navigation (bagian coklat yang berasa double footer) */}
+            {/* DIHAPUS: Quick Navigation (bagian coklat/oren yang berasa double footer) */}
 
             {/* Sample chapters */}
             {[
