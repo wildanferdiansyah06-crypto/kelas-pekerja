@@ -8,9 +8,16 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+      
+      {/* Navbar */}
       <Navbar />
-      <main className="min-h-screen pt-16 relative z-0">{children}</main>
-    </>
+
+      {/* Main Content */}
+      <main className="flex-1 pt-16 relative z-0">
+        {children}
+      </main>
+
+    </div>
   );
 }
