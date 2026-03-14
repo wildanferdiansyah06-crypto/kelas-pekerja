@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 
@@ -9,12 +8,6 @@ export default function LayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-
-  const pathname = usePathname();
-
-  // semua halaman yang dimulai dengan /buku
-  const hideFooter = pathname.startsWith("/buku");
-
   return (
     <div className="flex flex-col min-h-screen">
 
@@ -26,8 +19,8 @@ export default function LayoutWrapper({
         {children}
       </main>
 
-      {/* Footer hanya muncul jika bukan halaman buku */}
-      {!hideFooter && <Footer />}
+      {/* Footer */}
+      <Footer />
 
     </div>
   );
