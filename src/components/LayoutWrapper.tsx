@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 
 export default function LayoutWrapper({
   children,
@@ -9,14 +10,17 @@ export default function LayoutWrapper({
 }) {
   return (
     <div className="flex flex-col min-h-screen">
-      
+
       {/* Navbar */}
       <Navbar />
 
       {/* Main Content */}
-      <main className="flex-1 pt-16 relative z-0">
+      <main className="flex-1 pt-16">
         {children}
       </main>
+
+      {/* Footer */}
+      <Footer />
 
     </div>
   );
