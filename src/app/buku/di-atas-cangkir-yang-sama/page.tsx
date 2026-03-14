@@ -5,13 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } from 'lucide-react';
 
 export default function CoffeeBookPage() {
+  // Dark mode state - akan disinkronkan dengan navbar global
   const [darkMode, setDarkMode] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChapter, setActiveChapter] = useState(1);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
 
-  // Toggle dark mode
+  // Toggle dark mode - bisa dihubungkan dengan context/global state
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   // Handle scroll and responsive detection
@@ -27,7 +28,8 @@ export default function CoffeeBookPage() {
       const chapters = document.querySelectorAll('[data-chapter]');
       chapters.forEach((chapter) => {
         const rect = chapter.getBoundingClientRect();
-        if (rect.top <= 150 && rect.bottom >= 150) {
+        // Adjusted for global navbar height (assume 80px)
+        if (rect.top <= 100 && rect.bottom >= 100) {
           setActiveChapter(Number(chapter.getAttribute('data-chapter')));
         }
       });
@@ -41,7 +43,7 @@ export default function CoffeeBookPage() {
     };
   }, []);
 
-  // Theme classes
+  // Theme classes - compatible with global dark mode
   const theme = darkMode ? {
     bg: 'bg-[#0a0a0a]',
     text: 'text-neutral-300',
@@ -117,8 +119,8 @@ export default function CoffeeBookPage() {
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
       
-      {/* Reading Progress Bar - Top */}
-      <div className={`fixed top-0 left-0 right-0 h-1 z-50 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
+      {/* Reading Progress Bar - Top (below global navbar) */}
+      <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
         <motion.div 
           className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
           style={{ width: `${readingProgress}%` }}
@@ -132,7 +134,7 @@ export default function CoffeeBookPage() {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
-            className={`fixed bottom-6 left-6 z-50 flex flex-col gap-3`}
+            className={`fixed bottom-6 left-6 z-40 flex flex-col gap-3`}
           >
             {/* Main Menu Button */}
             <motion.button
@@ -195,7 +197,8 @@ export default function CoffeeBookPage() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed left-0 top-0 bottom-0 w-full sm:w-[480px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              <div className="p-6 sm:p-8">
+              {/* Added padding top for global navbar */}
+              <div className="pt-20 sm:pt-24 p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
                     <div className={`p-3 rounded-xl ${theme.accentBg} border ${theme.accentBorder}`}>
@@ -214,7 +217,7 @@ export default function CoffeeBookPage() {
                   </button>
                 </div>
 
-                <nav className="space-y-2">
+                <nav className="space-y-2 pb-20">
                   {chapters.map((chapter, idx) => (
                     <motion.a
                       key={chapter.num}
@@ -252,14 +255,14 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - FULL WIDTH */}
-      <main className="min-h-screen pb-20">
+      {/* Main Content - FULL WIDTH with top padding for global navbar */}
+      <main className="min-h-screen pb-20 pt-20 sm:pt-24">
         {/* Hero Section - Full Bleed */}
         <motion.section 
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`relative min-h-screen flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.highlight} border-b ${theme.border}`}
+          className={`relative min-h-[calc(100vh-5rem)] flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.highlight} border-b ${theme.border}`}
         >
           <div className="max-w-7xl mx-auto w-full py-20">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -932,6 +935,9 @@ export default function CoffeeBookPage() {
           </div>
         </div>
       </main>
+      
+      {/* REMOVED: Footer section karena sudah ada footer global */}
+      {/* Jika ada content di bawah ini yang terkait footer, sudah dihapus */}
     </div>
   );
 }
