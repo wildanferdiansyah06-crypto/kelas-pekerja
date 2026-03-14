@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, BookOpen, Coffee, ChevronRight, Menu, X, BookMarked, Compass } from 'lucide-react';
+import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } from 'lucide-react';
 
 export default function CoffeeBookPage() {
   const [darkMode, setDarkMode] = useState(true);
@@ -10,7 +10,6 @@ export default function CoffeeBookPage() {
   const [activeChapter, setActiveChapter] = useState(1);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   // Toggle dark mode
   const toggleDarkMode = () => setDarkMode(!darkMode);
@@ -34,20 +33,11 @@ export default function CoffeeBookPage() {
       });
     };
 
-    const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1280);
-      if (window.innerWidth >= 1280) {
-        setSidebarOpen(true);
-      }
-    };
-
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    handleResize();
+    handleScroll();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -263,7 +253,7 @@ export default function CoffeeBookPage() {
       </AnimatePresence>
 
       {/* Main Content - FULL WIDTH */}
-      <main className="min-h-screen">
+      <main className="min-h-screen pb-20">
         {/* Hero Section - Full Bleed */}
         <motion.section 
           initial="hidden"
@@ -938,31 +928,6 @@ export default function CoffeeBookPage() {
                 )}
               </motion.section>
             ))}
-
-            {/* Footer */}
-            <motion.footer 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className={`pt-20 border-t-2 ${theme.border} text-center`}
-            >
-              <div className="flex items-center justify-center gap-6 mb-8">
-                <span className={`w-24 h-0.5 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  <Coffee size={32} className={theme.accent} />
-                </motion.div>
-                <span className={`w-24 h-0.5 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
-              </div>
-              <p className={`text-xl lg:text-2xl font-semibold ${theme.textHeading} mb-3`}>
-                Coffee from Bean to Cup: A Serious Guide
-              </p>
-              <p className={`text-base ${theme.textMuted}`}>
-                © 2025 Wildan Ferdiansyah. All rights reserved.
-              </p>
-            </motion.footer>
 
           </div>
         </div>
