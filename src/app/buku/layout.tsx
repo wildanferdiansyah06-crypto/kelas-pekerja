@@ -1,5 +1,6 @@
 import ReadingProgress from "@/src/components/ReadingProgress";
 import ScrollToTop from "@/src/components/ScrollToTop";
+import Footer from "@/src/components/Footer";
 
 export default function BukuLayout({
   children,
@@ -7,17 +8,22 @@ export default function BukuLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
+
       {/* Progress bar membaca */}
       <ReadingProgress />
 
-      {/* Konten halaman buku */}
-      <main className="min-h-screen max-w-3xl mx-auto px-6 pt-24 pb-32">
+      {/* Konten buku */}
+      <main className="flex-1 max-w-3xl mx-auto px-6 pt-24 pb-32">
         {children}
       </main>
 
-      {/* Tombol scroll ke atas */}
+      {/* Scroll to top */}
       <ScrollToTop />
-    </>
+
+      {/* Footer tetap muncul */}
+      <Footer />
+
+    </div>
   );
 }
