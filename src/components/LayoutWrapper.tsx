@@ -12,8 +12,8 @@ export default function LayoutWrapper({
 
   const pathname = usePathname();
 
-  // cek apakah halaman buku detail
-  const isBookPage = pathname.startsWith("/buku/");
+  // semua halaman yang dimulai dengan /buku
+  const hideFooter = pathname.startsWith("/buku");
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,7 +27,7 @@ export default function LayoutWrapper({
       </main>
 
       {/* Footer hanya muncul jika bukan halaman buku */}
-      {!isBookPage && <Footer />}
+      {!hideFooter && <Footer />}
 
     </div>
   );
