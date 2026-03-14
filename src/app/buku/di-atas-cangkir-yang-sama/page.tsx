@@ -171,7 +171,7 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar Navigation */}
+      {/* Sidebar Navigation - POSISI PERTAHANKAN (sudah bagus) */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -189,7 +189,7 @@ export default function CoffeeBookPage() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed left-0 top-0 bottom-0 w-full sm:w-[480px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              {/* PERUBAHAN: Daftar bab DITURUNKAN - padding top lebih besar */}
+              {/* Pertahankan: Daftar bab diturunkan */}
               <div className="pt-28 sm:pt-32 p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
@@ -247,16 +247,16 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - PERUBAHAN: Buku NAIK KE ATAS - padding top dikurangi jadi 14 (56px) */}
-      <main className="min-h-screen pt-14 pb-20">
-        {/* Hero Section */}
+      {/* Main Content - PERUBAHAN: Buku NAIK LAGI, hapus gap hitam */}
+      <main className="min-h-screen pt-0 pb-20">
+        {/* Hero Section - PERUBAHAN: Hapus min-h calculation, langsung mulai dari atas */}
         <motion.section 
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.highlight} border-b ${theme.border}`}
+          className={`relative flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.bg} border-b ${theme.border}`}
         >
-          <div className="max-w-7xl mx-auto w-full py-20">
+          <div className="max-w-7xl mx-auto w-full pt-16 sm:pt-20 pb-20">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <motion.div 
@@ -840,42 +840,9 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Quick Navigation */}
-            <motion.section 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              className="mb-32"
-            >
-              <div className={`p-12 lg:p-16 rounded-3xl ${theme.highlight} border ${theme.border} text-center shadow-2xl`}>
-                <motion.div 
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <BookOpen size={64} className={`mx-auto mb-6 ${theme.accent} opacity-60`} />
-                </motion.div>
-                <h3 className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-4`}>15 Bab Lainnya</h3>
-                <p className={`${theme.textMuted} mb-10 max-w-2xl mx-auto text-lg lg:text-xl`}>
-                  Buku ini mencakup 20 bab lengkap tentang sains kopi, dari sensory science hingga coffee economics.
-                </p>
-                <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-                  {[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((num) => (
-                    <motion.a
-                      key={num}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={`#bab-${num}`}
-                      className={`px-5 py-3 rounded-xl text-base font-semibold transition-all border ${theme.border} ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-100'} ${theme.textMuted} hover:${theme.accent} shadow-sm`}
-                    >
-                      Bab {num}
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
-            </motion.section>
+            {/* DIHAPUS: Quick Navigation (bagian coklat yang berasa double footer) */}
 
-            {/* Sample chapters - TANPA QUOTE BESAR DI AKHIR (hapus double footer) */}
+            {/* Sample chapters - langsung ke bab tanpa section coklat di tengah */}
             {[
               { id: 6, title: "Taste & Sensory Science", subtitle: "Sistem Sensorik Manusia", content: "Persepsi rasa kopi adalah hasil integrasi antara indera pengecap (taste), penciuman (smell), dan sensasi taktil di mulut (mouthfeel). Sebagian besar kompleksitas rasa kopi sebenarnya berasal dari aroma yang terdeteksi oleh hidung melalui jalur retronasal." },
               { id: 9, title: "Water Chemistry", subtitle: "Mineral dan Ekstraksi", content: "Lebih dari 98% isi secangkir kopi adalah air. Mineral terlarut berfungsi sebagai ion yang berinteraksi dengan senyawa rasa. Magnesium meningkatkan sweetness, kalsium berkontribusi terhadap body. TDS ideal: 75-150 ppm." },
@@ -911,8 +878,6 @@ export default function CoffeeBookPage() {
           </div>
         </div>
       </main>
-      
-      {/* TIDAK ADA FOOTER LAGI - global footer akan menangani bagian bawah */}
     </div>
   );
 }
