@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, BookOpen, Coffee, ChevronRight, Menu, X, Search, ArrowUp, BookMarked, Compass } from 'lucide-react';
+import { Moon, Sun, BookOpen, Coffee, ChevronRight, Menu, X, BookMarked, Compass } from 'lucide-react';
 
 export default function CoffeeBookPage() {
   const [darkMode, setDarkMode] = useState(true);
@@ -188,7 +188,7 @@ export default function CoffeeBookPage() {
               className={`p-2 rounded-full ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
             >
               <Compass size={20} className={theme.textMuted} />
-            </motion.button>
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
