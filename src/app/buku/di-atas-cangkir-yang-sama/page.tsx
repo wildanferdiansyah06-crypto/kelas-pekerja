@@ -135,60 +135,54 @@ export default function CoffeeBookPage() {
         />
       </div>
 
-      {/* Floating Bottom Navigation - Muncul setelah scroll */}
+      {/* Floating Bottom Left Navigation */}
       <AnimatePresence>
         {showFloatingMenu && (
           <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-3 rounded-full ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl`}
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -100, opacity: 0 }}
+            className={`fixed bottom-6 left-6 z-50 flex flex-col gap-3`}
           >
-            {/* Menu Toggle */}
+            {/* Main Menu Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSidebarOpen(true)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} ${theme.accent} font-medium text-sm`}
+              className={`flex items-center gap-3 px-5 py-3 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl ${theme.accent} font-medium`}
             >
-              <BookMarked size={18} />
+              <BookMarked size={20} />
               <span className="hidden sm:inline">Daftar Isi</span>
               <span className="sm:hidden">Menu</span>
+              <div className={`flex items-center gap-2 ml-2 pl-2 border-l ${theme.border}`}>
+                <span className={`text-xs font-mono ${theme.textMuted}`}>
+                  {String(activeChapter).padStart(2, '0')}/20
+                </span>
+              </div>
             </motion.button>
 
-            <div className={`w-px h-6 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
+            {/* Secondary Actions */}
+            <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleDarkMode}
+                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
+              >
+                {darkMode ? <Sun size={20} className={theme.accent} /> : <Moon size={20} className={theme.accent} />}
+              </motion.button>
 
-            {/* Current Chapter Indicator */}
-            <div className="flex items-center gap-3 px-2">
-              <span className={`text-xs font-mono ${theme.textMuted}`}>
-                {String(activeChapter).padStart(2, '0')}/20
-              </span>
-              <span className={`text-sm font-medium ${theme.textHeading} max-w-[120px] sm:max-w-[200px] truncate hidden sm:block`}>
-                {chapters.find(c => c.num === activeChapter)?.title}
-              </span>
+              <div className={`w-px h-6 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
+
+              <motion.a
+                href="#bab-1"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
+              >
+                <Compass size={20} className={theme.textMuted} />
+              </motion.a>
             </div>
-
-            <div className={`w-px h-6 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
-
-            {/* Theme Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-full ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
-            >
-              {darkMode ? <Sun size={20} className={theme.accent} /> : <Moon size={20} className={theme.accent} />}
-            </motion.button>
-
-            {/* Quick Actions */}
-            <motion.a
-              href="#bab-1"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className={`p-2 rounded-full ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
-            >
-              <Compass size={20} className={theme.textMuted} />
-            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
