@@ -5,13 +5,7 @@ import { getBooks } from "@/src/lib/api";
 import BookCard from "@/src/components/BookCard";
 import CategoryFilter from "@/src/components/CategoryFilter";
 import SearchBar from "@/src/components/SearchBar";
-
-// Types
-interface Book {
-  id: string;
-  title: string;
-  // tambahkan properti lain sesuai dengan struktur data buku Anda
-}
+import { Book } from "@/src/types";
 
 interface BooksResponse {
   books: Book[];
@@ -56,7 +50,6 @@ export default async function BooksPage() {
     }));
   } catch (error) {
     console.error("Error fetching books:", error);
-    // Bisa juga redirect ke error page atau tampilkan pesan error
   }
 
   return (
