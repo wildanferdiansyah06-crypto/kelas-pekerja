@@ -3,17 +3,25 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } from 'lucide-react';
+import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function CoffeeBookPage() {
-  const [darkMode, setDarkMode] = useState(true);
+  // Ambil tema global dari navbar
+  const { theme: globalTheme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChapter, setActiveChapter] = useState(1);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -36,8 +44,14 @@ export default function CoffeeBookPage() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [mounted]);
 
+  if (!mounted) return null;
+
+  // Derive darkMode dari global theme
+  const darkMode = globalTheme === 'dark';
+
+  // Theme classes - original colors
   const theme = darkMode ? {
     bg: 'bg-[#0a0a0a]',
     text: 'text-neutral-300',
@@ -130,6 +144,7 @@ export default function CoffeeBookPage() {
             exit={{ x: -100, opacity: 0 }}
             className={`fixed bottom-6 left-6 z-40 flex flex-col gap-3`}
           >
+            {/* Main Menu Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -146,11 +161,12 @@ export default function CoffeeBookPage() {
               </div>
             </motion.button>
 
+            {/* Secondary Actions - PERBAIKAN: Toggle theme pakai global theme */}
             <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={toggleDarkMode}
+                onClick={toggleTheme}
                 className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
               >
                 {darkMode ? <Sun size={20} className={theme.accent} /> : <Moon size={20} className={theme.accent} />}
@@ -171,7 +187,7 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar Navigation - POSISI PERTAHANKAN (sudah bagus) */}
+      {/* Sidebar Navigation - PERTAHANKAN POSISI */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -247,9 +263,9 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - PERUBAHAN: Buku NAIK LAGI, hapus gap hitam */}
+      {/* Main Content - PERBAIKAN: Hapus gap hitam, naikkan buku */}
       <main className="min-h-screen pt-0 pb-20">
-        {/* Hero Section - PERUBAHAN: Hapus min-h calculation, langsung mulai dari atas */}
+        {/* Hero Section - PERBAIKAN: Hapus min-h dan gap */}
         <motion.section 
           initial="hidden"
           animate="visible"
@@ -842,7 +858,7 @@ export default function CoffeeBookPage() {
 
             {/* DIHAPUS: Quick Navigation (bagian coklat yang berasa double footer) */}
 
-            {/* Sample chapters - langsung ke bab tanpa section coklat di tengah */}
+            {/* Sample chapters */}
             {[
               { id: 6, title: "Taste & Sensory Science", subtitle: "Sistem Sensorik Manusia", content: "Persepsi rasa kopi adalah hasil integrasi antara indera pengecap (taste), penciuman (smell), dan sensasi taktil di mulut (mouthfeel). Sebagian besar kompleksitas rasa kopi sebenarnya berasal dari aroma yang terdeteksi oleh hidung melalui jalur retronasal." },
               { id: 9, title: "Water Chemistry", subtitle: "Mineral dan Ekstraksi", content: "Lebih dari 98% isi secangkir kopi adalah air. Mineral terlarut berfungsi sebagai ion yang berinteraksi dengan senyawa rasa. Magnesium meningkatkan sweetness, kalsium berkontribusi terhadap body. TDS ideal: 75-150 ppm." },
