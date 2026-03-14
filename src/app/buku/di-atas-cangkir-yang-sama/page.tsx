@@ -3,20 +3,27 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } from 'lucide-react';
+import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function CoffeeBookPage() {
-  // Dark mode state - akan disinkronkan dengan navbar global
-  const [darkMode, setDarkMode] = useState(true);
+  // Menggunakan theme dari global context agar sync dengan navbar
+  const { theme: globalTheme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeChapter, setActiveChapter] = useState(1);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
 
-  // Toggle dark mode - bisa dihubungkan dengan context/global state
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  // Sync mounted state
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Handle scroll and responsive detection
   useEffect(() => {
+    if (!mounted) return;
+    
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -25,10 +32,10 @@ export default function CoffeeBookPage() {
       setShowFloatingMenu(scrollTop > 300);
       
       // Update active chapter based on scroll position
+      // Adjusted for navbar height (64px + offset)
       const chapters = document.querySelectorAll('[data-chapter]');
       chapters.forEach((chapter) => {
         const rect = chapter.getBoundingClientRect();
-        // Adjusted for global navbar height (assume 80px)
         if (rect.top <= 100 && rect.bottom >= 100) {
           setActiveChapter(Number(chapter.getAttribute('data-chapter')));
         }
@@ -41,39 +48,44 @@ export default function CoffeeBookPage() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [mounted]);
 
-  // Theme classes - compatible with global dark mode
+  if (!mounted) return null;
+
+  // Derive darkMode dari global theme
+  const darkMode = globalTheme === 'dark';
+
+  // Theme classes - sync dengan navbar colors
   const theme = darkMode ? {
-    bg: 'bg-[#0a0a0a]',
-    text: 'text-neutral-300',
-    textMuted: 'text-neutral-500',
-    textHeading: 'text-neutral-100',
-    textSubheading: 'text-neutral-400',
-    border: 'border-neutral-800',
-    accent: 'text-amber-500',
-    accentBg: 'bg-amber-950/30',
-    accentBorder: 'border-amber-800/50',
-    sidebar: 'bg-[#0f0f0f]',
-    code: 'bg-neutral-900',
-    highlight: 'bg-amber-950/20',
-    card: 'bg-neutral-900/40',
-    float: 'bg-neutral-900/90'
+    bg: 'bg-[#1a1816]', // Sync dengan navbar dark: bg-[#1a1816]/90
+    text: 'text-[#e8e6e3]',
+    textMuted: 'text-[#a8a5a0]',
+    textHeading: 'text-[#f5f3f0]',
+    textSubheading: 'text-[#b8b5b0]',
+    border: 'border-[#8b7355]/20',
+    accent: 'text-[#c9a87c]',
+    accentBg: 'bg-[#c9a87c]/10',
+    accentBorder: 'border-[#c9a87c]/30',
+    sidebar: 'bg-[#1a1816]',
+    code: 'bg-[#2a2826]',
+    highlight: 'bg-[#c9a87c]/5',
+    card: 'bg-[#2a2826]/60',
+    float: 'bg-[#2a2826]/95'
   } : {
-    bg: 'bg-[#fafaf9]',
-    text: 'text-stone-700',
-    textMuted: 'text-stone-500',
-    textHeading: 'text-stone-900',
-    textSubheading: 'text-stone-600',
-    border: 'border-stone-200',
-    accent: 'text-amber-700',
-    accentBg: 'bg-amber-100/60',
-    accentBorder: 'border-amber-300',
-    sidebar: 'bg-white',
-    code: 'bg-stone-100',
-    highlight: 'bg-amber-50/80',
-    card: 'bg-white',
-    float: 'bg-white/90'
+    bg: 'bg-[#faf8f5]', // Sync dengan navbar light: bg-[#faf8f5]/90
+    text: 'text-[#4a453f]',
+    textMuted: 'text-[#7a756f]',
+    textHeading: 'text-[#2a2520]',
+    textSubheading: 'text-[#5a554f]',
+    border: 'border-[#8b7355]/20',
+    accent: 'text-[#8b7355]',
+    accentBg: 'bg-[#8b7355]/10',
+    accentBorder: 'border-[#8b7355]/30',
+    sidebar: 'bg-[#faf8f5]',
+    code: 'bg-[#f0ebe5]',
+    highlight: 'bg-[#8b7355]/5',
+    card: 'bg-[#f5f0eb]/80',
+    float: 'bg-[#f5f0eb]/95'
   };
 
   const chapters = [
@@ -119,8 +131,8 @@ export default function CoffeeBookPage() {
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
       
-      {/* Reading Progress Bar - Top (below global navbar) */}
-      <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
+      {/* Reading Progress Bar - Positioned below navbar (h-16 = 64px) */}
+      <div className={`fixed top-16 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-[#2a2826]' : 'bg-[#e8e3de]'}`}>
         <motion.div 
           className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
           style={{ width: `${readingProgress}%` }}
@@ -158,19 +170,19 @@ export default function CoffeeBookPage() {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={toggleDarkMode}
-                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
+                onClick={toggleTheme}
+                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-[#2a2826]' : 'hover:bg-[#e8e3de]'} transition-colors`}
               >
                 {darkMode ? <Sun size={20} className={theme.accent} /> : <Moon size={20} className={theme.accent} />}
               </motion.button>
 
-              <div className={`w-px h-6 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
+              <div className={`w-px h-6 ${darkMode ? 'bg-[#3a3836]' : 'bg-[#d8d3ce]'}`} />
 
               <motion.a
                 href="#bab-1"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
+                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-[#2a2826]' : 'hover:bg-[#e8e3de]'} transition-colors`}
               >
                 <Compass size={20} className={theme.textMuted} />
               </motion.a>
@@ -197,7 +209,7 @@ export default function CoffeeBookPage() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed left-0 top-0 bottom-0 w-full sm:w-[480px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              {/* Added padding top for global navbar */}
+              {/* CRITICAL: Padding top untuk navbar (h-16 = 64px) + extra space */}
               <div className="pt-20 sm:pt-24 p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
@@ -211,7 +223,7 @@ export default function CoffeeBookPage() {
                   </div>
                   <button 
                     onClick={() => setSidebarOpen(false)}
-                    className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-100'} transition-colors`}
+                    className={`p-3 rounded-xl ${darkMode ? 'hover:bg-[#2a2826]' : 'hover:bg-[#e8e3de]'} transition-colors`}
                   >
                     <X size={24} className={theme.textMuted} />
                   </button>
@@ -229,7 +241,7 @@ export default function CoffeeBookPage() {
                       className={`group flex items-center gap-4 p-4 rounded-xl text-sm transition-all duration-300 ${
                         activeChapter === chapter.num 
                           ? `${theme.accentBg} ${theme.accent} font-semibold border ${theme.accentBorder}` 
-                          : `${darkMode ? 'hover:bg-neutral-800/50' : 'hover:bg-stone-100'} ${theme.textMuted} hover:text-current`
+                          : `${darkMode ? 'hover:bg-[#2a2826]/50' : 'hover:bg-[#e8e3de]'} ${theme.textMuted} hover:text-current`
                       }`}
                     >
                       <span className={`text-lg font-mono font-bold ${activeChapter === chapter.num ? theme.accent : theme.textMuted}`}>
@@ -255,9 +267,9 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - FULL WIDTH with top padding for global navbar */}
-      <main className="min-h-screen pb-20 pt-20 sm:pt-24">
-        {/* Hero Section - Full Bleed */}
+      {/* Main Content - CRITICAL: Padding top untuk navbar h-16 (64px) + progress bar (4px) = 68px + extra 16px = 84px */}
+      <main className="min-h-screen pt-20 sm:pt-24 pb-20">
+        {/* Hero Section - Adjusted for navbar height */}
         <motion.section 
           initial="hidden"
           animate="visible"
@@ -340,7 +352,7 @@ export default function CoffeeBookPage() {
                 className="hidden lg:block relative"
               >
                 <div className={`aspect-square rounded-3xl ${theme.card} border ${theme.border} p-8 shadow-2xl relative overflow-hidden`}>
-                  <div className={`absolute inset-0 bg-gradient-to-br ${darkMode ? 'from-amber-500/10 to-transparent' : 'from-amber-200/50 to-transparent'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${darkMode ? 'from-[#c9a87c]/10 to-transparent' : 'from-[#8b7355]/20 to-transparent'}`} />
                   <div className="relative z-10 grid grid-cols-2 gap-4 h-full">
                     <div className={`rounded-2xl ${theme.code} p-6 flex flex-col justify-center`}>
                       <p className={`text-4xl font-bold ${theme.accent} mb-2`}>120+</p>
@@ -470,7 +482,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-28"
+              className="mb-32 scroll-mt-24"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>01</span>
@@ -583,7 +595,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-28"
+              className="mb-32 scroll-mt-24"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>02</span>
@@ -643,7 +655,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-28"
+              className="mb-32 scroll-mt-24"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>03</span>
@@ -654,7 +666,7 @@ export default function CoffeeBookPage() {
               </div>
 
               <div className="space-y-8">
-                <div className={`p-8 lg:p-12 rounded-3xl ${darkMode ? 'bg-neutral-900/60' : 'bg-stone-100'} border ${theme.border} shadow-lg`}>
+                <div className={`p-8 lg:p-12 rounded-3xl ${darkMode ? 'bg-[#2a2826]/60' : 'bg-[#f0ebe5]'} border ${theme.border} shadow-lg`}>
                   <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-10 text-center`}>Spektrum Roast Level</h3>
                   <div className="space-y-6">
                     <div className="flex items-center gap-6">
@@ -703,11 +715,11 @@ export default function CoffeeBookPage() {
                 <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border}`}>
                   <h4 className={`font-bold text-xl ${theme.textHeading} mb-6`}>First Crack vs Second Crack</h4>
                   <div className="space-y-4 text-base">
-                    <div className={`flex items-start gap-4 p-5 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                    <div className={`flex items-start gap-4 p-5 rounded-xl ${darkMode ? 'bg-[#2a2826]' : 'bg-white'} shadow-sm`}>
                       <span className={`font-mono font-bold text-lg ${theme.accent} min-w-[100px]`}>1st CRACK</span>
                       <span className={`${theme.text} text-lg leading-relaxed`}>Tekanan uap dan gas menyebabkan struktur sel pecah. Transisi endothermic → exothermic. Titik kritis untuk light roast.</span>
                     </div>
-                    <div className={`flex items-start gap-4 p-5 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                    <div className={`flex items-start gap-4 p-5 rounded-xl ${darkMode ? 'bg-[#2a2826]' : 'bg-white'} shadow-sm`}>
                       <span className={`font-mono font-bold text-lg ${theme.accent} min-w-[100px]`}>2nd CRACK</span>
                       <span className={`${theme.text} text-lg leading-relaxed`}>Degradasi struktur sel, pelepasan minyak ke permukaan. Rasa pahit dan smoky mulai dominan. Batas untuk dark roast.</span>
                     </div>
@@ -724,7 +736,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-28"
+              className="mb-32 scroll-mt-24"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>04</span>
@@ -796,7 +808,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-28"
+              className="mb-32 scroll-mt-24"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>05</span>
@@ -837,11 +849,11 @@ export default function CoffeeBookPage() {
                     Crema bukan indikator rasa enak, tetapi indikator kesegaran kopi dan tekanan ekstraksi.
                   </p>
                   <div className={`flex items-center justify-center gap-3 text-base ${theme.textMuted} flex-wrap`}>
-                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'} font-mono`}>CO2</span>
+                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-[#2a2826]' : 'bg-[#e8e3de]'} font-mono`}>CO2</span>
                     <span className="text-2xl">+</span>
-                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'} font-mono`}>Minyak Kopi</span>
+                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-[#2a2826]' : 'bg-[#e8e3de]'} font-mono`}>Minyak Kopi</span>
                     <span className="text-2xl">+</span>
-                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'} font-mono`}>Air</span>
+                    <span className={`px-4 py-2 rounded-lg ${darkMode ? 'bg-[#2a2826]' : 'bg-[#e8e3de]'} font-mono`}>Air</span>
                     <span className="text-2xl">=</span>
                     <span className={`px-6 py-3 rounded-lg ${theme.accentBg} ${theme.accent} font-bold text-lg shadow-lg`}>Crema</span>
                   </div>
@@ -875,7 +887,7 @@ export default function CoffeeBookPage() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                       href={`#bab-${num}`}
-                      className={`px-5 py-3 rounded-xl text-base font-semibold transition-all border ${theme.border} ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-100'} ${theme.textMuted} hover:${theme.accent} shadow-sm`}
+                      className={`px-5 py-3 rounded-xl text-base font-semibold transition-all border ${theme.border} ${darkMode ? 'hover:bg-[#2a2826]' : 'hover:bg-[#e8e3de]'} ${theme.textMuted} hover:${theme.accent} shadow-sm`}
                     >
                       Bab {num}
                     </motion.a>
@@ -899,7 +911,7 @@ export default function CoffeeBookPage() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-150px" }}
                 variants={fadeIn}
-                className="mb-32 scroll-mt-28"
+                className="mb-32 scroll-mt-24"
               >
                 <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                   <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>
@@ -935,9 +947,6 @@ export default function CoffeeBookPage() {
           </div>
         </div>
       </main>
-      
-      {/* REMOVED: Footer section karena sudah ada footer global */}
-      {/* Jika ada content di bawah ini yang terkait footer, sudah dihapus */}
     </div>
   );
 }
