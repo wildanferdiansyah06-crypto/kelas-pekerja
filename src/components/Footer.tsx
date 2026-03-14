@@ -11,7 +11,7 @@ export default async function Footer() {
   }
 
   return (
-    <footer className="border-t border-[#8b7355]/10 mt-32 py-16 px-6 bg-[#faf8f5] dark:bg-[#1a1816] transition-colors duration-500">
+    <footer className="border-t border-[#8b7355]/10 py-16 px-6 bg-[#faf8f5] dark:bg-[#1a1816] transition-colors duration-500">
       <div className="max-w-4xl mx-auto text-center">
 
         {/* Title */}
