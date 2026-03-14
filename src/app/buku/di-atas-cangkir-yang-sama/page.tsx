@@ -189,8 +189,8 @@ export default function CoffeeBookPage() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed left-0 top-0 bottom-0 w-full sm:w-[480px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              {/* PERUBAHAN: Padding top dikurangi jadi 18 (72px) - cukup untuk navbar 64px + 8px spacing */}
-              <div className="pt-[72px] p-6 sm:p-8">
+              {/* PERUBAHAN: Daftar bab DITURUNKAN - padding top lebih besar */}
+              <div className="pt-28 sm:pt-32 p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
                     <div className={`p-3 rounded-xl ${theme.accentBg} border ${theme.accentBorder}`}>
@@ -247,14 +247,14 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - PERUBAHAN: Padding top dikurangi jadi 20 (80px) */}
-      <main className="min-h-screen pt-20 pb-20">
+      {/* Main Content - PERUBAHAN: Buku NAIK KE ATAS - padding top dikurangi jadi 14 (56px) */}
+      <main className="min-h-screen pt-14 pb-20">
         {/* Hero Section */}
         <motion.section 
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`relative min-h-[calc(100vh-5rem)] flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.highlight} border-b ${theme.border}`}
+          className={`relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.highlight} border-b ${theme.border}`}
         >
           <div className="max-w-7xl mx-auto w-full py-20">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -453,7 +453,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Bab 1 - PERUBAHAN: scroll-mt dikurangi jadi 20 (80px) */}
+            {/* Bab 1 */}
             <motion.section 
               id="bab-1"
               data-chapter={1}
@@ -461,7 +461,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-20"
+              className="mb-32 scroll-mt-16"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>01</span>
@@ -574,7 +574,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-20"
+              className="mb-32 scroll-mt-16"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>02</span>
@@ -634,7 +634,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-20"
+              className="mb-32 scroll-mt-16"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>03</span>
@@ -715,7 +715,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-20"
+              className="mb-32 scroll-mt-16"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>04</span>
@@ -787,7 +787,7 @@ export default function CoffeeBookPage() {
               whileInView="visible"
               viewport={{ once: true, margin: "-150px" }}
               variants={fadeIn}
-              className="mb-32 scroll-mt-20"
+              className="mb-32 scroll-mt-16"
             >
               <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>05</span>
@@ -875,7 +875,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Sample chapters */}
+            {/* Sample chapters - TANPA QUOTE BESAR DI AKHIR (hapus double footer) */}
             {[
               { id: 6, title: "Taste & Sensory Science", subtitle: "Sistem Sensorik Manusia", content: "Persepsi rasa kopi adalah hasil integrasi antara indera pengecap (taste), penciuman (smell), dan sensasi taktil di mulut (mouthfeel). Sebagian besar kompleksitas rasa kopi sebenarnya berasal dari aroma yang terdeteksi oleh hidung melalui jalur retronasal." },
               { id: 9, title: "Water Chemistry", subtitle: "Mineral dan Ekstraksi", content: "Lebih dari 98% isi secangkir kopi adalah air. Mineral terlarut berfungsi sebagai ion yang berinteraksi dengan senyawa rasa. Magnesium meningkatkan sweetness, kalsium berkontribusi terhadap body. TDS ideal: 75-150 ppm." },
@@ -890,7 +890,7 @@ export default function CoffeeBookPage() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-150px" }}
                 variants={fadeIn}
-                className="mb-32 scroll-mt-20"
+                className="mb-32 scroll-mt-16"
               >
                 <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
                   <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>
@@ -905,27 +905,14 @@ export default function CoffeeBookPage() {
                 <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
                   <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed`}>{chapter.content}</p>
                 </div>
-
-                {chapter.id === 20 && (
-                  <motion.div 
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    className={`mt-12 p-10 lg:p-16 rounded-3xl ${theme.accentBg} border-2 ${theme.accentBorder} text-center shadow-2xl`}
-                  >
-                    <p className={`text-2xl sm:text-3xl lg:text-4xl font-light italic ${theme.accent} mb-6 leading-relaxed`}>
-                      "Menjadi barista berarti memilih jalan presisi, kerendahan hati, 
-                      dan dedikasi seumur hidup terhadap kualitas."
-                    </p>
-                    <p className={`text-lg ${theme.textMuted}`}>— Wildan Ferdiansyah</p>
-                  </motion.div>
-                )}
               </motion.section>
             ))}
 
           </div>
         </div>
       </main>
+      
+      {/* TIDAK ADA FOOTER LAGI - global footer akan menangani bagian bawah */}
     </div>
   );
 }
