@@ -131,7 +131,8 @@ export default function DiBalikBarPage() {
         </button>
       </motion.div>
 
-      <main className="relative max-w-2xl mx-auto px-6 py-24 md:py-32">
+      {/* PERUBAHAN: max-w-2xl → max-w-5xl */}
+      <main className="relative max-w-5xl mx-auto px-6 py-24 md:py-32">
 
         {/* Header Section - No stagger, direct animation */}
         <motion.header 
