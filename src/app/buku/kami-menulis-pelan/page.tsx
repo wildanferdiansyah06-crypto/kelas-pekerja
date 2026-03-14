@@ -1,841 +1,663 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
-
 'use client';
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Coffee, Sun, Moon, BookOpen, Eye, EyeOff, ArrowUp, Clock, Quote } from 'lucide-react';
+import { Moon, Sun, Coffee, Settings2, X, Type, Palette, Eye, EyeOff, BookOpen } from 'lucide-react';
 
-// ==========================================
-// HOOK: Typewriter yang aman
-// ==========================================
-function useTypewriter(text: string, speed: number = 50, start: boolean = true) {
-  const [displayText, setDisplayText] = useState('');
-  const [isComplete, setIsComplete] = useState(false);
-  
-  const indexRef = useRef(0);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const textRef = useRef(text);
-  const startRef = useRef(start);
-
-  useEffect(() => {
-    textRef.current = text;
-    startRef.current = start;
-  }, [text, start]);
-
-  useEffect(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-
-    if (!start || speed <= 0 || !text) {
-      setDisplayText(text);
-      setIsComplete(true);
-      return;
-    }
-
-    indexRef.current = 0;
-    setDisplayText('');
-    setIsComplete(false);
-
-    const safeSpeed = Math.max(speed, 16);
-
-    timerRef.current = setInterval(() => {
-      const currentText = textRef.current;
-      const currentIndex = indexRef.current;
-
-      if (currentIndex < currentText.length) {
-        setDisplayText(currentText.slice(0, currentIndex + 1));
-        indexRef.current = currentIndex + 1;
-      } else {
-        setIsComplete(true);
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-        }
-      }
-    }, safeSpeed);
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [text, speed, start]);
-
-  return { displayText, isComplete };
-}
-
-// ==========================================
-// HOOK: Client-side detection
-// ==========================================
-function useIsClient() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  return isClient;
-}
-
-// ==========================================
-// HOOK: Scroll tracking yang aman
-// ==========================================
-function useScrollTracking(sectionIds: string[]) {
-  const [activeSection, setActiveSection] = useState('');
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const rafRef = useRef<number | null>(null);
-  const isClient = useIsClient();
-
-  useEffect(() => {
-    if (!isClient) return;
-
-    let lastScrollY = 0;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        rafRef.current = requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          
-          setShowScrollTop(currentScrollY > 300);
-          
-          if (Math.abs(currentScrollY - lastScrollY) > 50) {
-            lastScrollY = currentScrollY;
-            
-            const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
-            const scrollPosition = currentScrollY + 200;
-
-            for (const section of sections) {
-              if (section) {
-                const offsetTop = section.offsetTop;
-                const offsetHeight = section.offsetHeight;
-                
-                if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-                  setActiveSection(section.id);
-                  break;
-                }
-              }
-            }
-          }
-          
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [isClient, sectionIds]);
-
-  return { activeSection, showScrollTop };
-}
-
-export default function KamiMenulisPelanPage() {
-  const [darkMode, setDarkMode] = useState(false); // Default light mode untuk aesthetic kopi
-  const [focusMode, setFocusMode] = useState(false);
-  const [steamParticles, setSteamParticles] = useState<Array<{id: number, left: number, delay: number}>>([]);
-  const [typingEnabled, setTypingEnabled] = useState(true);
-  
-  const isClient = useIsClient();
+export default function LewatBegituSajaPage() {
+  const [darkMode, setDarkMode] = useState(true);
+  const [showTexture, setShowTexture] = useState(true);
+  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
+  const [showControls, setShowControls] = useState(false);
 
   const { scrollYProgress } = useScroll();
-  const progressBar = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const smoothProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Steam particles effect
+  // Sync dengan tema global
   useEffect(() => {
-    if (!isClient) return;
+    const checkGlobalTheme = () => {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) setDarkMode(true);
+      else if (html.classList.contains('light')) setDarkMode(false);
+    };
     
-    const particles = Array.from({ length: 5 }, (_, i) => ({
-      id: i,
-      left: 20 + Math.random() * 60,
-      delay: i * 0.5
-    }));
-    setSteamParticles(particles);
-  }, [isClient]);
+    checkGlobalTheme();
+    const observer = new MutationObserver(checkGlobalTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
-  // Sections data
-  const sections = useMemo(() => [
-    { id: 'pembuka', title: 'Pembuka', subtitle: 'Lewat Begitu Saja' },
-    { id: 'kelas-pekerja', title: 'Tentang Kelas Pekerja', subtitle: 'Menulis dari Sisa' },
-    { id: 'tentang-karya', title: 'Tentang Karya', subtitle: 'Bekal Dingin' },
-    { id: 'orang-terdekat', title: 'Tentang Orang Terdekat', subtitle: 'Yang Paling Sunyi' },
-    { id: 'dunia-sibuk', title: 'Tentang Dunia yang Sibuk', subtitle: 'Tidak Berhenti' },
-    { id: 'bertahan-menulis', title: 'Tentang Bertahan Menulis', subtitle: 'Meski Lewat' },
-    { id: 'penutup', title: 'Penutup', subtitle: 'Tetap Ditulis' },
-  ], []);
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
-  const sectionIds = useMemo(() => sections.map(s => s.id), [sections]);
-  const { activeSection, showScrollTop } = useScrollTracking(sectionIds);
-
-  const toggleDarkMode = useCallback(() => setDarkMode(prev => !prev), []);
-
-  // Aesthetic Coffee & Philosophy Theme
-  const theme = useMemo(() => darkMode ? {
-    // Dark mode: Deep espresso night
-    bg: 'bg-[#1a1512]', // Dark coffee bean
-    text: 'text-[#d4c4b0]', // Cream foam
-    textMuted: 'text-[#8b7355]', // Old paper
-    textHeading: 'text-[#f5e6d3]', // Warm milk
-    accent: 'text-[#c9a86c]', // Golden crema
-    accentBg: 'bg-[#c9a86c]/10',
-    accentSoft: 'bg-[#4a3f35]', // Coffee grounds
-    border: 'border-[#3d3229]', // Dark roast
-    borderAccent: 'border-[#c9a86c]/30',
-    highlight: 'bg-[#2a211c]', // Wet coffee grounds
-    card: 'bg-[#231c17]', // Espresso cup
-    cursor: 'bg-[#c9a86c]',
-    paperTexture: 'opacity-[0.03]'
+  const theme = darkMode ? {
+    bg: 'bg-[#0a0908]',
+    bgGradient: 'from-stone-950 via-[#1c1917] to-[#0a0908]',
+    text: 'text-stone-400',
+    textMuted: 'text-stone-600',
+    textHeading: 'text-stone-200',
+    accent: 'text-amber-600',
+    accentBg: 'bg-amber-950/20',
+    accentBorder: 'border-amber-900/30',
+    border: 'border-stone-800',
+    borderLight: 'border-stone-700/50',
+    card: 'bg-stone-900/30',
+    hover: 'hover:bg-stone-800/30',
+    coffee: 'text-amber-800/20',
+    progress: 'bg-amber-700'
   } : {
-    // Light mode: Warm coffee shop morning
-    bg: 'bg-[#faf8f5]', // Warm white paper
-    text: 'text-[#4a4036]', // Coffee stain text
-    textMuted: 'text-[#8b7355]', // Aged paper
-    textHeading: 'text-[#2c2416]', // Dark roast
-    accent: 'text-[#8b6914]', // Amber coffee
-    accentBg: 'bg-[#f5e6c8]', // Light cream
-    accentSoft: 'bg-[#e8dcc8]', // Foam
-    border: 'border-[#d4c4b0]', // Coffee with milk
-    borderAccent: 'border-[#c9a86c]',
-    highlight: 'bg-[#f5f0e8]', // Paper texture
-    card: 'bg-[#ffffff]', // Clean cup
-    cursor: 'bg-[#8b6914]',
-    paperTexture: 'opacity-[0.04]'
-  }, [darkMode]);
+    bg: 'bg-[#fafaf9]',
+    bgGradient: 'from-[#f5f5f4] via-[#fafaf9] to-[#f5f5f4]',
+    text: 'text-stone-600',
+    textMuted: 'text-stone-400',
+    textHeading: 'text-stone-800',
+    accent: 'text-amber-700',
+    accentBg: 'bg-amber-100/50',
+    accentBorder: 'border-amber-200',
+    border: 'border-stone-200',
+    borderLight: 'border-stone-300',
+    card: 'bg-white/50',
+    hover: 'hover:bg-stone-100/60',
+    coffee: 'text-amber-700/10',
+    progress: 'bg-amber-600'
+  };
 
-  if (!isClient) {
-    return (
-      <div className={`min-h-screen ${darkMode ? 'bg-[#1a1512]' : 'bg-[#faf8f5]'} flex items-center justify-center`}>
-        <div className="flex items-center gap-3 text-[#8b7355]">
-          <Coffee className="animate-pulse" size={20} />
-          <span className="font-serif italic text-sm">Menyeduh...</span>
-        </div>
-      </div>
-    );
-  }
+  const fontSizeClasses = fontSize === 'large' ? {
+    body: 'text-lg md:text-xl leading-[1.9]',
+    heading: 'text-3xl md:text-4xl',
+    title: 'text-4xl md:text-6xl',
+    small: 'text-sm'
+  } : {
+    body: 'text-base md:text-lg leading-[1.8]',
+    heading: 'text-2xl md:text-3xl',
+    title: 'text-3xl md:text-5xl',
+    small: 'text-xs'
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 }}
+  };
+
+  const lineReveal = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+  };
+
+  const viewportConfig = { once: true, amount: 0.2 };
+
+  const sections = [
+    { id: 'pembuka', title: 'Pembuka' },
+    { id: 'tentang', title: 'Tentang Kelas Pekerja' },
+    { id: 'karya', title: 'Tentang Karya' },
+    { id: 'terdekat', title: 'Tentang Orang Terdekat' },
+    { id: 'dunia', title: 'Tentang Dunia yang Sibuk' },
+    { id: 'bertahan', title: 'Tentang Bertahan Menulis' },
+    { id: 'penutup', title: 'Penutup' },
+  ];
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500 font-serif selection:bg-[#c9a86c]/30`}>
+    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-700 ease-out selection:bg-amber-900/20 selection:text-amber-700`}>
       
-      {/* Paper Texture Overlay */}
-      <div className={`fixed inset-0 pointer-events-none z-50 ${theme.paperTexture}`}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          mixBlendMode: 'multiply'
-        }}
-      />
-
-      {/* Coffee Steam Animation */}
-      <div className="fixed top-20 left-1/2 -translate-x-1/2 pointer-events-none z-40 hidden md:block">
-        {steamParticles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            className={`absolute w-1 h-8 rounded-full ${darkMode ? 'bg-[#d4c4b0]/20' : 'bg-[#8b7355]/10'}`}
-            style={{ left: `${particle.left}%` }}
-            animate={{
-              y: [-20, -100],
-              opacity: [0, 0.6, 0],
-              scale: [1, 1.5, 2],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              delay: particle.delay,
-              ease: "easeOut"
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Progress Bar - Coffee drip style */}
-      <div className={`fixed top-0 left-0 right-0 h-1 ${theme.bg} z-50`}>
+      {/* Aesthetic Background - Coffee & Indie vibes */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient Base */}
+        <div className={`absolute inset-0 bg-gradient-to-b ${theme.bgGradient}`} />
+        
+        {/* Coffee Stains - Organic shapes */}
         <motion.div 
-          className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
-          style={{ width: progressBar }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showTexture ? 0.3 : 0 }}
+          transition={{ duration: 1.5 }}
+          className={`absolute top-32 right-[5%] w-72 h-72 rounded-full border-[2px] ${darkMode ? 'border-amber-900/15' : 'border-amber-800/8'}`}
+          style={{ 
+            boxShadow: `inset 0 0 60px ${darkMode ? 'rgba(120,53,15,0.08)' : 'rgba(180,83,9,0.04)'}`,
+            transform: 'rotate(12deg)'
+          }}
+        />
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showTexture ? 0.25 : 0 }}
+          transition={{ duration: 1.5, delay: 0.3 }}
+          className={`absolute top-40 right-[8%] w-48 h-48 rounded-full border-[1px] ${darkMode ? 'border-amber-950/20' : 'border-amber-900/5'}`}
+        />
+        
+        {/* Bottom stains */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showTexture ? 0.2 : 0 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+          className={`absolute bottom-20 left-[3%] w-96 h-96 rounded-full border-[2px] ${darkMode ? 'border-amber-900/10' : 'border-amber-800/5'}`}
+          style={{ 
+            boxShadow: `inset 0 0 80px ${darkMode ? 'rgba(120,53,15,0.05)' : 'rgba(180,83,9,0.02)'}`,
+            transform: 'rotate(-8deg)'
+          }}
+        />
+
+        {/* Floating Coffee Beans */}
+        <motion.div 
+          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className={`absolute top-1/4 left-[10%] w-3 h-6 ${theme.coffee} rounded-full opacity-20`}
+          style={{ transform: 'rotate(45deg)' }}
+        />
+        <motion.div 
+          animate={{ y: [0, -20, 0], rotate: [0, -5, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className={`absolute top-1/2 right-[15%] w-2 h-5 ${theme.coffee} rounded-full opacity-15`}
+          style={{ transform: 'rotate(-30deg)' }}
+        />
+        <motion.div 
+          animate={{ y: [0, -10, 0], rotate: [0, 8, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className={`absolute bottom-1/3 left-[20%] w-4 h-8 ${theme.coffee} rounded-full opacity-10`}
+          style={{ transform: 'rotate(60deg)' }}
+        />
+
+        {/* Steam wisps - subtle */}
+        <svg className="absolute top-0 left-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="steam-wisps" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+              <path d="M100 200 Q80 100 100 0" stroke="currentColor" strokeWidth="0.8" fill="none" className={darkMode ? 'text-amber-700' : 'text-amber-600'} />
+              <path d="M140 200 Q160 100 140 20" stroke="currentColor" strokeWidth="0.6" fill="none" className={darkMode ? 'text-amber-700' : 'text-amber-600'} />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#steam-wisps)" />
+        </svg>
+
+        {/* Paper texture overlay */}
+        <div 
+          className={`absolute inset-0 opacity-[0.015] ${showTexture ? 'block' : 'hidden'}`}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+          }}
         />
       </div>
 
-      {/* Header */}
-      <header className={`fixed top-0 left-0 right-0 z-40 px-6 py-4 ${theme.bg}/90 backdrop-blur-sm border-b ${theme.border}`}>
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Coffee className={theme.accent} size={18} />
-            <span className={`text-xs uppercase tracking-[0.2em] ${theme.textMuted} font-medium`}>
-              Kopi & Catatan
-            </span>
-            {typingEnabled && (
-              <span className={`text-[10px] ${theme.accent} animate-pulse`}>● mengetik</span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setTypingEnabled(!typingEnabled)}
-              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
-              title="Toggle typewriter"
-            >
-              <span className="text-xs font-serif italic">
-                {typingEnabled ? 'A' : 'a'}
-              </span>
-            </button>
-            <button
-              onClick={() => setFocusMode(!focusMode)}
-              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
-            >
-              {focusMode ? <EyeOff size={14} /> : <Eye size={14} />}
-            </button>
-            <button
-              onClick={toggleDarkMode}
-              className={`p-2 rounded-full border ${theme.border} hover:${theme.accentBg} transition-all duration-300`}
-            >
-              {darkMode ? <Sun size={14} /> : <Moon size={14} />}
-            </button>
-          </div>
+      {/* Progress Indicator - Circular right side */}
+      <div className="fixed top-24 right-6 z-40 hidden md:flex flex-col items-center gap-2">
+        <div className={`relative w-10 h-10 rounded-full ${darkMode ? 'bg-stone-900/80' : 'bg-white/80'} backdrop-blur-md border ${theme.border} shadow-lg flex items-center justify-center`}>
+          <svg className="w-6 h-6 -rotate-90" viewBox="0 0 36 36">
+            <path
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              fill="none"
+              stroke={darkMode ? '#292524' : '#e7e5e4'}
+              strokeWidth="2"
+            />
+            <motion.path
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              fill="none"
+              stroke={darkMode ? '#b45309' : '#d97706'}
+              strokeWidth="2"
+              strokeDasharray="100, 100"
+              style={{ pathLength: smoothProgress }}
+            />
+          </svg>
         </div>
-      </header>
+      </div>
 
-      {/* Sidebar Navigation - Book style */}
-      <AnimatePresence>
-        {!focusMode && (
-          <motion.nav
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className={`fixed left-6 top-32 bottom-20 w-56 ${theme.card} border ${theme.border} z-30 hidden lg:block overflow-y-auto rounded-lg shadow-lg`}
-          >
-            <div className={`p-4 border-b ${theme.border} ${theme.accentSoft}`}>
-              <p className={`text-[10px] uppercase tracking-widest ${theme.accent} font-semibold`}>Daftar Isi</p>
-            </div>
-            {sections.map((section, index) => (
-              <a
-                key={section.id}
-                href={`#${section.id}`}
-                className={`block p-4 text-sm border-b ${theme.border} last:border-0 transition-all duration-300 ${
-                  activeSection === section.id 
-                    ? `${theme.accentBg} ${theme.accent} border-l-4 ${theme.borderAccent} pl-6` 
-                    : `hover:${theme.highlight} ${theme.textMuted} hover:pl-6`
-                }`}
-              >
-                <span className="block font-serif">{section.title}</span>
-                <span className={`block text-[11px] mt-1 italic ${theme.textMuted}`}>{section.subtitle}</span>
-              </a>
-            ))}
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      {/* Mobile Progress */}
+      <div className="fixed top-0 left-0 right-0 h-[2px] z-50 md:hidden">
+        <motion.div 
+          className={`h-full ${theme.progress}`}
+          style={{ width: useTransform(smoothProgress, v => `${v * 100}%`) }}
+        />
+      </div>
 
       {/* Main Content */}
-      <main className={`relative z-20 pt-32 pb-32 px-6 transition-all duration-500 ${focusMode ? 'max-w-2xl' : 'max-w-2xl lg:ml-72'} mx-auto`}>
-        
-        {/* Title Section */}
-        <section className="mb-20 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`inline-block px-4 py-2 text-[10px] uppercase tracking-[0.3em] ${theme.accentBg} ${theme.accent} border ${theme.borderAccent} mb-8 rounded-full`}
-          >
-            [Essai]
+      <main className={`relative z-20 max-w-3xl mx-auto px-6 md:px-12 pt-16 pb-32`}>
+
+        {/* Hero / Pembuka */}
+        <motion.section 
+          id="pembuka"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="min-h-[80vh] flex flex-col justify-center mb-24 md:mb-32"
+        >
+          <motion.div variants={fadeInUp} className="mb-8">
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase`}>Pembuka</span>
           </motion.div>
-          
-          <h1 className={`text-4xl md:text-6xl font-serif font-bold ${theme.textHeading} mb-6 tracking-tight leading-tight`}>
-            Kami Menulis
+
+          <motion.h1 
+            variants={fadeInUp}
+            className={`font-serif ${fontSizeClasses.title} font-light tracking-tight ${theme.textHeading} leading-[1.1] mb-12`}
+          >
+            Lewat
             <br />
-            <span className={`${theme.accent} italic font-light`}>Pelan</span>
-          </h1>
-          
-          <div className={`flex items-center justify-center gap-4 text-xs ${theme.textMuted} mt-8 font-serif italic`}>
-            <span className="flex items-center gap-1">
-              <Clock size={12} />
-              8 menit membaca
-            </span>
-            <span>•</span>
-            <span>1,247 kata</span>
-          </div>
+            <span className={`italic ${theme.accent}`}>Begitu Saja</span>
+          </motion.h1>
 
-          {/* Decorative coffee ring */}
-          <div className={`mt-12 w-32 h-32 mx-auto rounded-full border-2 ${theme.border} opacity-20 relative`}>
-            <div className={`absolute inset-2 rounded-full border ${theme.border} opacity-40`} />
-          </div>
-        </section>
+          <motion.div variants={staggerContainer} className="space-y-6 max-w-2xl">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai.
+            </motion.p>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata.
+            </motion.p>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Badan bau keringat.
+            </motion.p>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Kopi instan dingin di meja.
+            </motion.p>
+          </motion.div>
 
-        {/* Pembuka */}
-        <section id="pembuka" className="mb-24 scroll-mt-32">
-          <TypewriterParagraph 
-            text="Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="text-xl md:text-2xl leading-relaxed mb-8 font-serif text-center italic"
-          />
-          
-          <div className={`space-y-4 ${theme.textMuted} text-base leading-loose mb-12 pl-6 border-l-2 ${theme.borderAccent}`}>
-            <TypewriterParagraph 
-              text="Alarm pagi belum sempat dilupakan."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              delay={500}
-            />
-            <TypewriterParagraph 
-              text="Layar ponsel masih perih di mata."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              delay={700}
-            />
-            <TypewriterParagraph 
-              text="Badan bau keringat."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              delay={900}
-            />
-            <TypewriterParagraph 
-              text="Kopi instan dingin di meja."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              delay={1100}
-            />
-          </div>
+          <motion.div variants={fadeInUp} className={`mt-12 pl-6 border-l-2 ${theme.borderLight}`}>
+            <p className={`${fontSizeClasses.body} font-light italic ${theme.textMuted}`}>
+              Aku mengirimkannya sebagai tautan.
+            </p>
+            <p className={`${fontSizeClasses.body} font-light ${theme.text} mt-4`}>
+              Kadang hanya satu kalimat.
+            </p>
+            <p className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Kadang tanpa pesan apa-apa.
+            </p>
+          </motion.div>
 
-          <TypewriterParagraph 
-            text="Aku mengirimkannya sebagai tautan."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="mb-6 text-lg"
-            delay={1300}
-          />
-          
-          <div className={`p-6 ${theme.highlight} border ${theme.border} my-10 rounded-lg shadow-sm`}>
-            <TypewriterParagraph 
-              text="Kadang hanya satu kalimat."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="mb-3 text-lg italic"
-            />
-            <TypewriterParagraph 
-              text="Kadang tanpa pesan apa-apa."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="text-lg italic"
-            />
-          </div>
-
-          <TypewriterParagraph 
-            text="Lalu aku menunggu."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className={`text-2xl ${theme.textHeading} mt-12 text-center font-serif`}
-            delay={1500}
-          />
-          
-          <p className={`mt-6 text-sm ${theme.textMuted} italic text-center max-w-md mx-auto leading-relaxed`}>
-            Bukan dengan harapan besar. Cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.
-          </p>
-        </section>
+          <motion.div variants={fadeInUp} className={`mt-12 p-6 ${theme.card} border ${theme.border} rounded-lg`}>
+            <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic`}>
+              Lalu aku menunggu.
+            </p>
+            <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} mt-4`}>
+              Bukan dengan harapan besar. Cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.
+            </p>
+          </motion.div>
+        </motion.section>
 
         {/* Tentang Kelas Pekerja */}
-        <section id="kelas-pekerja" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab I</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Kelas Pekerja</h2>
-            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Menulis dari Sisa</p>
-          </div>
+        <motion.section 
+          id="tentang"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-24 md:mb-32 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Tentang</span>
+            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading}`}>Kelas Pekerja</h2>
+          </motion.div>
 
-          <TypewriterParagraph 
-            text="Kelas pekerja menulis dari sisa."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="text-xl leading-relaxed mb-10 font-serif"
-          />
+          <motion.div variants={staggerContainer} className="space-y-8">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Kelas pekerja menulis dari sisa.
+            </motion.p>
 
-          <div className={`grid gap-4 mb-10`}>
-            {['Sisa tenaga.', 'Sisa waktu.', 'Sisa pikiran yang belum habis dipakai bekerja.'].map((item, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className={`p-5 ${theme.card} border ${theme.border} rounded-lg flex items-center gap-4 shadow-sm`}
-              >
-                <span className={`text-sm ${theme.accent} font-serif italic`}>{String(i + 1).padStart(2, '0')}.</span>
-                <TypewriterParagraph 
-                  text={item}
-                  theme={theme}
-                  typingEnabled={typingEnabled}
-                  delay={i * 200}
-                  className="font-serif text-lg"
-                />
-              </motion.div>
-            ))}
-          </div>
+            <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+              {['Sisa tenaga.', 'Sisa waktu.', 'Sisa pikiran yang belum habis dipakai bekerja.'].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  variants={scaleIn}
+                  className={`p-4 ${theme.card} border ${theme.border} rounded-lg text-center`}
+                >
+                  <p className={`${fontSizeClasses.body} font-light ${theme.textHeading}`}>{item}</p>
+                </motion.div>
+              ))}
+            </motion.div>
 
-          <div className={`p-8 ${theme.accentSoft} border-l-4 ${theme.borderAccent} rounded-r-lg`}>
-            <Quote className={`${theme.accent} mb-4 opacity-50`} size={24} />
-            <TypewriterParagraph 
-              text="Kami menulis bukan karena yakin. Tapi karena diam-diam tahu kalau tidak ditulis, hari ini akan hilang."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="leading-relaxed mb-4 text-lg font-serif"
-            />
-            <TypewriterParagraph 
-              text="Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="leading-relaxed italic"
-            />
-          </div>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Kami menulis bukan karena yakin. Tapi karena diam-diam tahu kalau tidak ditulis, hari ini akan hilang.
+            </motion.p>
 
-          <p className={`mt-8 text-sm ${theme.textMuted} border-t ${theme.border} pt-6 italic text-center`}>
-            Karena itu, ia tidak pandai meminta perhatian.
-          </p>
-        </section>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className={`p-6 ${theme.accentBg} ${theme.accentBorder} border rounded-lg`}>
+              <p className={`${fontSizeClasses.body} font-light ${theme.accent} italic text-center`}>
+                Karena itu, ia tidak pandai meminta perhatian.
+              </p>
+            </motion.div>
+          </motion.div>
+        </motion.section>
 
         {/* Tentang Karya */}
-        <section id="tentang-karya" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab II</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Karya</h2>
-            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Bekal Dingin</p>
-          </div>
+        <motion.section 
+          id="karya"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-24 md:mb-32 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Tentang</span>
+            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading}`}>Karya</h2>
+          </motion.div>
 
-          <div className={`p-8 ${theme.card} border-2 ${theme.border} relative overflow-hidden mb-10 rounded-lg shadow-lg`}>
-            <div className={`absolute top-0 right-0 px-4 py-2 text-[10px] ${theme.accentBg} ${theme.accent} border-l border-b ${theme.border} rounded-bl-lg font-semibold uppercase tracking-wider`}>
-              Catatan Pinggir
-            </div>
-            
-            <TypewriterParagraph 
-              text="Karya itu seperti bekal yang dimakan dingin di sela jam kerja."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="text-xl leading-relaxed mb-8 mt-4 font-serif"
-            />
-            
-            <div className={`space-y-3 text-base ${theme.textMuted} mb-8 pl-4`}>
-              <p className="italic">Tidak mewah.</p>
-              <p className="italic">Tidak istimewa.</p>
-            </div>
+          <motion.div variants={staggerContainer} className="space-y-6">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Karya itu seperti bekal yang dimakan dingin di sela jam kerja.
+            </motion.p>
 
-            <TypewriterParagraph 
-              text="Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="leading-relaxed font-serif text-lg"
-            />
-          </div>
+            <motion.div variants={fadeInUp} className="flex gap-4 justify-center my-10">
+              <span className={`${theme.textMuted} italic`}>Tidak mewah.</span>
+              <span className={theme.textMuted}>•</span>
+              <span className={`${theme.textMuted} italic`}>Tidak istimewa.</span>
+            </motion.div>
 
-          <div className={`p-6 ${theme.accentBg} border ${theme.borderAccent} rounded-lg text-center`}>
-            <p className={`${theme.accent} font-serif italic text-lg`}>
-              "Dan ketika tidak dibuka, ia tidak marah. Hanya diam lebih lama."
-            </p>
-          </div>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi.
+            </motion.p>
 
-          <p className={`mt-10 text-sm ${theme.textMuted} italic text-center font-serif`}>
-            Kadang, ketika dunia luar melewatinya begitu saja, rasanya masih bisa diterima.
-          </p>
-        </section>
+            <motion.div variants={fadeInUp} className={`my-10 py-8 px-6 ${theme.card} border ${theme.border} rounded-xl relative overflow-hidden`}>
+              <motion.div 
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className={`absolute top-4 right-4 ${theme.coffee}`}
+              >
+                <Coffee size={48} strokeWidth={1} />
+              </motion.div>
+              <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic relative z-10`}>
+                Dan ketika tidak dibuka, ia tidak marah. Hanya diam lebih lama.
+              </p>
+            </motion.div>
+
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center italic`}>
+              Kadang, ketika dunia luar melewatinya begitu saja, rasanya masih bisa diterima.
+            </motion.p>
+          </motion.div>
+        </motion.section>
 
         {/* Tentang Orang Terdekat */}
-        <section id="orang-terdekat" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab III</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Orang Terdekat</h2>
-            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Yang Paling Sunyi</p>
-          </div>
+        <motion.section 
+          id="terdekat"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-24 md:mb-32 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Tentang</span>
+            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading}`}>Orang Terdekat</h2>
+          </motion.div>
 
-          <TypewriterParagraph 
-            text="Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="leading-relaxed mb-10 text-lg font-serif"
-          />
+          <motion.div variants={staggerContainer} className="space-y-6">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan.
+            </motion.p>
 
-          <div className={`py-16 text-center border-y-2 ${theme.border} my-12 ${theme.highlight}`}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className={`text-3xl md:text-5xl font-serif font-bold ${theme.textHeading} tracking-tight italic`}>
+            <motion.div variants={fadeInUp} className={`my-8 p-6 ${theme.card} border-l-4 ${theme.accentBorder} rounded-r-lg`}>
+              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} italic`}>
                 Buku itu ada.
               </p>
-              <p className={`text-xs ${theme.accent} mt-6 tracking-[0.5em] uppercase font-semibold`}>Berbulan-bulan.</p>
+              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} mt-2`}>
+                Berbulan-bulan.
+              </p>
             </motion.div>
-          </div>
 
-          <TypewriterParagraph 
-            text="Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="leading-relaxed mb-10 text-lg font-serif"
-          />
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan.
+            </motion.p>
 
-          <div className={`p-8 ${theme.accentSoft} border-l-4 ${theme.borderAccent} rounded-r-lg`}>
-            <p className={`${theme.accent} italic mb-4 text-lg font-serif`}>Kadang, yang paling sunyi bukan tidak dibaca,</p>
-            <p className={`${theme.textHeading} text-xl font-serif font-bold`}>
-              tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
-            </p>
-          </div>
+            <motion.blockquote variants={scaleIn} className={`my-10 pl-6 border-l-2 ${theme.borderLight}`}>
+              <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic`}>
+                Kadang, yang paling sunyi bukan tidak dibaca, tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
+              </p>
+            </motion.blockquote>
 
-          <p className={`mt-10 text-sm ${theme.textMuted} border-t ${theme.border} pt-6 italic text-center font-serif`}>
-            Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing.
-          </p>
-        </section>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} italic`}>
+              Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing.
+            </motion.p>
+          </motion.div>
+        </motion.section>
 
         {/* Tentang Dunia yang Sibuk */}
-        <section id="dunia-sibuk" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab IV</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Dunia yang Sibuk</h2>
-            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Tidak Berhenti</p>
-          </div>
+        <motion.section 
+          id="dunia"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-24 md:mb-32 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Tentang</span>
+            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading}`}>Dunia yang Sibuk</h2>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className={`p-8 ${theme.card} border ${theme.border} rounded-lg shadow-sm`}>
-              <p className={`mt-4 text-2xl ${theme.textHeading} font-serif italic`}>Dunia tidak kejam.</p>
-              <p className={`mt-4 ${theme.text} font-serif`}>Ia hanya tidak berhenti.</p>
-            </div>
-            
-            <div className={`p-8 ${theme.highlight} border ${theme.border} rounded-lg`}>
-              <p className={`text-base ${theme.textMuted} leading-relaxed font-serif italic`}>
+          <motion.div variants={staggerContainer} className="space-y-6">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Dunia tidak kejam.
+            </motion.p>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Ia hanya tidak berhenti.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className={`my-10 p-8 ${theme.accentBg} ${theme.accentBorder} border rounded-xl text-center`}>
+              <p className={`${fontSizeClasses.body} font-light ${theme.accent} italic`}>
                 Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
               </p>
-              <p className={`mt-6 text-base ${theme.text} font-serif`}>
-                Karya seperti ini tidak cocok dengan ritme itu.
-              </p>
-            </div>
-          </div>
+            </motion.div>
 
-          <div className={`mt-8 p-6 border ${theme.border} ${theme.accentBg} rounded-lg text-center`}>
-            <p className={`${theme.accent} text-base font-serif italic`}>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Karya seperti ini tidak cocok dengan ritme itu.
+            </motion.p>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
               Ia berdiri di pinggir, menyadari bahwa tidak semua yang dibuat dengan sungguh-sungguh akan diberi waktu.
-            </p>
-          </div>
-        </section>
+            </motion.p>
+          </motion.div>
+        </motion.section>
 
         {/* Tentang Bertahan Menulis */}
-        <section id="bertahan-menulis" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Bab V</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tentang Bertahan Menulis</h2>
-            <p className={`text-sm ${theme.textMuted} mt-2 italic`}>Meski Lewat</p>
-          </div>
+        <motion.section 
+          id="bertahan"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-24 md:mb-32 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Tentang</span>
+            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading}`}>Bertahan Menulis</h2>
+          </motion.div>
 
-          <TypewriterParagraph 
-            text="Aku tetap menulis bukan karena yakin akan dibaca."
-            theme={theme}
-            typingEnabled={typingEnabled}
-            className="text-2xl leading-relaxed mb-8 font-serif text-center"
-          />
+          <motion.div variants={staggerContainer} className="space-y-8">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Aku tetap menulis bukan karena yakin akan dibaca.
+            </motion.p>
 
-          <div className={`p-10 ${theme.card} border-2 ${theme.borderAccent} relative rounded-lg shadow-lg`}>
-            <div className={`absolute -top-4 left-8 px-4 py-1 ${theme.bg} text-xs ${theme.accent} border ${theme.border} rounded-full font-semibold uppercase tracking-wider`}>
-              Inti
-            </div>
-            <TypewriterParagraph 
-              text="Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="text-xl leading-relaxed font-serif italic text-center mt-4"
-            />
-          </div>
+            <motion.div variants={scaleIn} className={`p-8 ${theme.card} border ${theme.border} rounded-xl relative overflow-hidden`}>
+              <motion.div 
+                animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className={`absolute -bottom-10 -right-10 w-40 h-40 rounded-full ${theme.coffee} blur-2xl`}
+              />
+              <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic relative z-10`}>
+                Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi.
+              </p>
+            </motion.div>
 
-          <div className={`mt-10 py-12 text-center border-y ${theme.border} ${theme.highlight}`}>
-            <p className={`${theme.textMuted} italic text-sm mb-4 font-serif`}>Menulis adalah caraku mengatakan pada diri sendiri bahwa</p>
-            <p className={`text-3xl ${theme.textHeading} font-serif font-bold italic`}>Aku Pernah Ada</p>
-            <p className={`${theme.accent} text-sm mt-4 tracking-[0.3em] uppercase font-semibold`}>Di Hari Ini.</p>
-          </div>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text}`}>
+              Menulis adalah caraku mengatakan pada diri sendiri bahwa aku pernah ada di hari ini.
+            </motion.p>
 
-          <p className={`mt-10 text-right text-sm ${theme.textMuted} tracking-widest uppercase font-semibold`}>
-            Meski Lewat.
-          </p>
-        </section>
+            <motion.p variants={fadeInUp} className={`${fontSizeClasses.heading} font-serif ${theme.accent} italic text-center mt-12`}>
+              Meski lewat.
+            </motion.p>
+          </motion.div>
+        </motion.section>
 
         {/* Penutup */}
-        <section id="penutup" className="mb-24 scroll-mt-32">
-          <div className={`mb-10 pb-4 border-b-2 ${theme.border}`}>
-            <span className={`text-[10px] uppercase tracking-[0.3em] ${theme.accent} font-semibold`}>Penutup</span>
-            <h2 className={`text-3xl font-serif font-bold ${theme.textHeading} mt-3`}>Tetap Ditulis</h2>
-          </div>
+        <motion.section 
+          id="penutup"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-16 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-center justify-center gap-4 mb-12`}>
+            <span className={`w-12 h-px ${darkMode ? 'bg-stone-800' : 'bg-stone-300'}`} />
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.3em] uppercase`}>Penutup</span>
+            <span className={`w-12 h-px ${darkMode ? 'bg-stone-800' : 'bg-stone-300'}`} />
+          </motion.div>
 
-          <div className={`space-y-8`}>
-            <TypewriterParagraph 
-              text="Buku ini tidak meminta perhatian. Ia juga tidak ingin dipahami."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className="leading-relaxed text-lg font-serif"
-            />
-            
-            <TypewriterParagraph 
-              text="Ia hanya ingin jujur."
-              theme={theme}
-              typingEnabled={typingEnabled}
-              className={`text-2xl ${theme.textHeading} font-serif font-bold text-center italic`}
-            />
+          <motion.h3 variants={fadeInUp} className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} text-center mb-10 italic`}>
+            Tetap Ditulis
+          </motion.h3>
 
-            <div className={`p-8 ${theme.highlight} border ${theme.border} my-10 rounded-lg text-center`}>
-              <p className={`text-base ${theme.textMuted} leading-relaxed font-serif italic mb-6`}>
-                Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi,
+          <motion.div variants={staggerContainer} className="max-w-2xl mx-auto space-y-6">
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} text-center`}>
+              Buku ini tidak meminta perhatian. Ia juga tidak ingin dipahami.
+            </motion.p>
+
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic text-center`}>
+              Ia hanya ingin jujur.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className={`my-12 p-8 ${theme.accentBg} ${theme.accentBorder} border rounded-xl`}>
+              <p className={`${fontSizeClasses.body} font-light ${theme.text} text-center`}>
+                Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, itu sudah cukup.
               </p>
-              <p className={`text-2xl ${theme.accent} font-serif font-bold tracking-wide`}>
-                ITU SUDAH CUKUP.
-              </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className={`p-6 ${theme.card} border ${theme.border} text-center rounded-lg`}>
-                <p className={`text-xs ${theme.textMuted} uppercase tracking-wider font-semibold mb-2`}>Jika Tidak Dibaca</p>
-                <p className={`text-base ${theme.text} font-serif italic`}>Tidak apa-apa.</p>
-              </div>
-              <div className={`p-6 ${theme.accentBg} border ${theme.borderAccent} text-center rounded-lg`}>
-                <p className={`text-xs ${theme.accent} uppercase tracking-wider font-semibold mb-2`}>Keadaan Akhir</p>
-                <p className={`text-base ${theme.textHeading} font-serif font-bold italic`}>Ia tetap ditulis.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center italic`}>
+              Jika tidak, tidak apa-apa.
+            </motion.p>
 
-        {/* Footer */}
-        <footer className={`mt-24 pt-10 border-t-2 ${theme.border} text-xs ${theme.textMuted}`}>
-          <div className="flex items-center justify-between font-serif">
-            <span className="italic">Kami Menulis Pelan</span>
-            <span>1,247 kata</span>
-          </div>
-          <div className="flex items-center justify-between mt-3 font-serif">
-            <span className="italic">Oleh: Seorang Pekerja</span>
-            <span>Selesai.</span>
-          </div>
-          <div className={`mt-8 pt-8 border-t ${theme.border} text-center`}>
-            <Coffee className={`${theme.accent} mx-auto mb-4`} size={24} />
-            <span className={`${theme.accent} font-serif italic text-sm`}>Sampai kopi berikutnya.</span>
-          </div>
-        </footer>
+            <motion.p variants={fadeInUp} className={`${fontSizeClasses.heading} font-serif ${theme.textHeading} text-center mt-12 tracking-widest`}>
+              Ia tetap ditulis.
+            </motion.p>
+          </motion.div>
+        </motion.section>
+
+        {/* End decoration */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="flex items-center justify-center gap-4 pt-16"
+        >
+          <span className={`w-16 h-px ${darkMode ? 'bg-stone-800' : 'bg-stone-300'}`} />
+          <Coffee size={20} className={theme.accent} strokeWidth={1} />
+          <span className={`w-16 h-px ${darkMode ? 'bg-stone-800' : 'bg-stone-300'}`} />
+        </motion.div>
 
       </main>
 
-      {/* Scroll to Top */}
+      {/* Floating Controls - Bottom Left (Google-style, mengganti footer page) */}
       <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`fixed bottom-6 right-6 z-50 p-4 ${theme.card} border ${theme.border} ${theme.accent} hover:${theme.accentBg} transition-all duration-300 rounded-full shadow-lg`}
+        {showControls && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            className={`fixed bottom-20 left-6 z-40 ${darkMode ? 'bg-stone-900/95' : 'bg-white/95'} backdrop-blur-xl border ${theme.border} rounded-2xl shadow-2xl p-4 min-w-[220px]`}
           >
-            <ArrowUp size={18} />
-          </motion.button>
+            <div className="space-y-4">
+              {/* Tema */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Palette size={14} className={theme.textMuted} />
+                  <span className={`${theme.textMuted} text-xs`}>Tema</span>
+                </div>
+                <button
+                  onClick={toggleDarkMode}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs transition-all ${darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-100 text-amber-700'}`}
+                >
+                  {darkMode ? <Moon size={12} /> : <Sun size={12} />}
+                  <span>{darkMode ? 'Gelap' : 'Terang'}</span>
+                </button>
+              </div>
+
+              {/* Ukuran Font */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Type size={14} className={theme.textMuted} />
+                  <span className={`${theme.textMuted} text-xs`}>Teks</span>
+                </div>
+                <div className="flex gap-1">
+                  <button
+                    onClick={() => setFontSize('normal')}
+                    className={`px-2.5 py-1 rounded text-xs transition-all ${fontSize === 'normal' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}
+                  >
+                    A
+                  </button>
+                  <button
+                    onClick={() => setFontSize('large')}
+                    className={`px-2.5 py-1 rounded text-xs transition-all ${fontSize === 'large' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}
+                  >
+                    A+
+                  </button>
+                </div>
+              </div>
+
+              {/* Texture Toggle */}
+              <div className="flex items-center justify-between pt-3 border-t border-stone-700/20">
+                <div className="flex items-center gap-2">
+                  <Coffee size={14} className={theme.textMuted} />
+                  <span className={`${theme.textMuted} text-xs`}>Latar</span>
+                </div>
+                <button
+                  onClick={() => setShowTexture(!showTexture)}
+                  className={`p-1.5 rounded-lg transition-all ${showTexture ? (darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-200 text-amber-700') : theme.textMuted}`}
+                >
+                  {showTexture ? <Eye size={12} /> : <EyeOff size={12} />}
+                </button>
+              </div>
+
+              {/* Quick Nav */}
+              <div className="pt-3 border-t border-stone-700/20">
+                <p className={`${theme.textMuted} text-xs mb-2 flex items-center gap-1`}>
+                  <BookOpen size={12} /> Loncat ke
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {sections.slice(0, 4).map((section) => (
+                    <a
+                      key={section.id}
+                      href={`#${section.id}`}
+                      onClick={() => setShowControls(false)}
+                      className={`text-left py-1.5 px-2 rounded text-xs ${theme.hover} transition-colors ${theme.textMuted} truncate`}
+                    >
+                      {section.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Global Styles */}
-      <style jsx global>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .cursor-blink {
-          animation: blink 1.5s ease-in-out infinite;
-        }
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: ${darkMode ? '#1a1512' : '#faf8f5'};
-        }
-        ::-webkit-scrollbar-thumb {
-          background: ${darkMode ? '#3d3229' : '#d4c4b0'};
-          border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: ${darkMode ? '#c9a86c' : '#8b6914'};
-        }
-      `}</style>
-    </div>
-  );
-}
+      {/* Toggle Button - Bottom Left */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setShowControls(!showControls)}
+        className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 ${darkMode ? 'bg-stone-900/90 text-stone-200 hover:bg-stone-800' : 'bg-white/90 text-stone-700 hover:bg-stone-50'} backdrop-blur-xl border ${theme.border} rounded-full shadow-lg transition-all duration-300`}
+      >
+        <Settings2 size={16} strokeWidth={1.5} />
+        <span className="text-xs font-medium">Menu</span>
+        {showControls && <X size={14} className="ml-1 opacity-60" />}
+      </motion.button>
 
-// ==========================================
-// COMPONENT: Typewriter Paragraph
-// ==========================================
-function TypewriterParagraph({ 
-  text, 
-  theme, 
-  typingEnabled, 
-  className = '', 
-  delay = 0 
-}: { 
-  text: string; 
-  theme: any; 
-  typingEnabled: boolean;
-  className?: string;
-  delay?: number;
-}) {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const isClient = useIsClient();
-
-  useEffect(() => {
-    if (!isClient || !ref.current) return;
-
-    const element = ref.current;
-    
-    observerRef.current = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          const timer = setTimeout(() => {
-            setIsVisible(true);
-          }, delay);
-          
-          return () => clearTimeout(timer);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    observerRef.current.observe(element);
-
-    return () => {
-      if (observerRef.current && element) {
-        observerRef.current.unobserve(element);
-        observerRef.current.disconnect();
-        observerRef.current = null;
-      }
-    };
-  }, [isClient, delay]);
-
-  const { displayText, isComplete } = useTypewriter(
-    text, 
-    typingEnabled ? 40 : 0, 
-    isVisible && typingEnabled
-  );
-
-  if (!isClient) {
-    return <div ref={ref} className={className}>{text}</div>;
-  }
-
-  return (
-    <div ref={ref} className={className}>
-      {typingEnabled ? displayText : text}
-      {typingEnabled && !isComplete && isVisible && (
-        <span className={`inline-block w-0.5 h-5 ml-1 ${theme.cursor} cursor-blink align-middle`} />
-      )}
     </div>
   );
 }
