@@ -21,9 +21,6 @@ export default function BukuLayout({
       {/* Scroll to top */}
       <ScrollToTop />
 
-      {/* Footer tetap muncul */}
-      <Footer />
-
     </div>
   );
 }
