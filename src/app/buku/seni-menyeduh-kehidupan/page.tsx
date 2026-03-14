@@ -434,12 +434,13 @@ export default function SeniMenyeduhiKehidupanPage() {
 
           <motion.div variants={staggerContainer} className="space-y-6">
             {[
-              "Setiap kali aku menggenggam segenggam biji kopi, ada perasaan hangat yang sulit dijelaskan—seolah aku sedang memegang sesuatu yang hidup. Bukan hanya karena aroma segarnya yang khas, tapi karena aku tahu biji-biji kecil itu telah melalui perjalanan panjang dan penuh makna.",
+              "Setiap kali aku menggenggam segenggam biji kopi, ada perasaan hangat yang sulit dijelaskan—seolah aku sedang memegang sesuatu yang hidup. Bukan hanya karena aroma segarnya yang khas, tapi karena aku tahu biji-biji kecil itu telah melalui perjalanan panjang dan penuh makna. Mereka tumbuh di ketinggian, di antara tanah, hujan, dan matahari; menunggu waktu yang tepat untuk dipetik, melewati panasnya proses sangrai, hingga akhirnya tiba di meja bar tempat aku berdiri sekarang.",
               "Kita semua memulai perjalanan dari sesuatu yang sederhana—kecil, polos, dan penuh potensi. Lalu hidup memanggang kita dengan berbagai pengalaman: rasa gagal, kehilangan, cinta, kecewa, tawa, dan harapan. Setiap \"sangrai\" itu meninggalkan bekas, mengubah kita sedikit demi sedikit, hingga akhirnya kita memiliki aroma dan rasa yang khas: diri kita sendiri.",
-              "Suatu hari, seorang pelanggan berkata padaku, \"Kopi yang enak itu bukan yang mahal, tapi yang punya cerita.\" Kalimat itu menempel di pikiranku, karena memang benar—bukan harga yang menentukan nilai, tetapi perjalanan di baliknya.",
-              "Biji yang belum matang tidak bisa dipaksa dipetik. Begitu juga manusia. Kadang kita ingin buru-buru sampai—ingin sukses hari ini, bahagia sekarang juga. Tapi hidup punya ritmenya sendiri.",
-              "Saat aku menatap biji-biji yang menari di dalam grinder, aku teringat satu hal: kadang kita perlu dihancurkan dulu untuk mengeluarkan aroma terbaik dari dalam diri. Tidak nyaman memang, seperti biji yang hancur menjadi bubuk halus—namun dari situlah kehidupan mulai mengalir.",
-              "Mungkin begitulah cara semesta bekerja. Tekanan, panas, dan waktu bukan hukuman; mereka adalah cara hidup mengeluarkan versi terbaik dari kita."
+              "Suatu hari, seorang pelanggan berkata padaku, \"Kopi yang enak itu bukan yang mahal, tapi yang punya cerita.\" Kalimat itu menempel di pikiranku, karena memang benar—bukan harga yang menentukan nilai, tetapi perjalanan di baliknya. Seperti manusia, kita tidak diukur dari pencapaian semata, melainkan dari proses yang membentuk siapa kita hari ini. Kopi mengajarkanku bahwa setiap hal indah membutuhkan waktu; tidak semua bisa dipercepat.",
+              "Biji yang belum matang tidak bisa dipaksa dipetik. Begitu juga manusia. Kadang kita ingin buru-buru sampai—ingin sukses hari ini, bahagia sekarang juga. Tapi hidup punya ritmenya sendiri. Jika kita terburu-buru, \"rasa\" kita bisa belum matang.",
+              "Saat aku menatap biji-biji yang menari di dalam grinder, aku teringat satu hal: kadang kita perlu dihancurkan dulu untuk mengeluarkan aroma terbaik dari dalam diri. Tidak nyaman memang, seperti biji yang hancur menjadi bubuk halus—namun dari situlah kehidupan mulai mengalir. Ketika air panas menyentuh bubuk kopi, aroma yang tersembunyi mulai keluar. Panas itu menyakitkan, tapi juga membangkitkan kehidupan baru.",
+              "Mungkin begitulah cara semesta bekerja. Tekanan, panas, dan waktu bukan hukuman; mereka adalah cara hidup mengeluarkan versi terbaik dari kita. Setiap kali aku menyeduh kopi untuk pelanggan, aku berpikir: setiap cangkir kopi adalah kisah tentang kesabaran, luka, dan keindahan yang berpadu dalam harmoni. Dan setiap kali aku mencicipinya, aku belajar satu hal sederhana—bahwa di balik rasa pahit, selalu ada aroma yang menenangkan. Seperti hidup, yang kadang keras di luar, tapi hangat di dalam.",
+              "Jadi, sebelum kamu menyesap kopi berikutnya, berhentilah sejenak. Perhatikan aromanya, rasakan kehangatannya, dan pikirkan perjalanan panjang yang membawanya ke hadapanmu. Karena mungkin, di sana—di antara biji dan jiwa—kamu akan menemukan dirimu sendiri."
             ].map((text, i) => (
               <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
                 {text}
@@ -486,9 +487,13 @@ export default function SeniMenyeduhiKehidupanPage() {
             </motion.div>
 
             {[
-              "Pagi itu, aku menyiapkan seduhan untuk pelanggan tetap. Ia selalu memesan kopi yang sama, tapi hari itu rasanya sedikit berbeda. \"Sedikit lebih pahit, ya?\" katanya sambil tersenyum. Aku menatap timbangan dan termometer—suhu airku terlalu tinggi dua derajat. Sekecil itu, tapi rasanya berubah.",
-              "Air mengajarkan kita untuk seimbang. Ia tidak menolak bentuk cangkir yang menampungnya; ia menerima, beradaptasi, dan tetap jernih. Kadang lembut seperti tetesan pour-over yang pelan, kadang kuat seperti semburan espresso di bawah tekanan tinggi.",
-              "Ada masa ketika aku dulu \"terlalu panas\" menghadapi hidup. Aku ingin semuanya cepat selesai—karier, mimpi, cinta. Tapi seperti kopi yang diseduh air mendidih, aku malah kehilangan rasa."
+              "Pagi itu, aku menyiapkan seduhan untuk pelanggan tetap. Ia selalu memesan kopi yang sama, tapi hari itu rasanya sedikit berbeda. \"Sedikit lebih pahit, ya?\" katanya sambil tersenyum. Aku menatap timbangan dan termometer—suhu airku terlalu tinggi dua derajat. Sekecil itu, tapi rasanya berubah. Dari situ aku belajar, hidup pun seperti itu. Hal kecil bisa mengubah segalanya. Suhu emosi, kadar sabar, atau intensitas perhatian—semuanya memengaruhi \"rasa\" hari kita. Terlalu panas, kita terbakar. Terlalu dingin, kita membeku.",
+              "Air mengajarkan kita untuk seimbang. Ia tidak menolak bentuk cangkir yang menampungnya; ia menerima, beradaptasi, dan tetap jernih. Kadang lembut seperti tetesan pour-over yang pelan, kadang kuat seperti semburan espresso di bawah tekanan tinggi. Tapi dalam segala bentuknya, air tetap air—tenang, lentur, tapi tegas.",
+              "Aku sering merenung tentang itu saat menuangkan air ke atas bubuk kopi. Gerakan kecil pergelangan tangan, aliran air yang melingkar, dan ritme napas yang harus dijaga—semuanya menuntut kesadaran. Kalau terburu-buru, hasilnya kacau. Kalau terlalu berhati-hati, airnya keburu dingin. Hidup pun begitu: kita butuh flow yang pas antara niat, tindakan, dan rasa percaya.",
+              "Ada masa ketika aku dulu \"terlalu panas\" menghadapi hidup. Aku ingin semuanya cepat selesai—karier, mimpi, cinta. Tapi seperti kopi yang diseduh air mendidih, aku malah kehilangan rasa. Butuh waktu untuk belajar menurunkan suhu, menenangkan diri, dan menyadari bahwa tidak semua hal harus mendidih untuk terasa hidup. Keseimbangan bukan berarti tanpa tekanan, melainkan tahu kapan harus diam dan kapan harus mengalir.",
+              "Kadang kita perlu jadi air yang tenang, menenangkan sekitar. Kadang, jadi air yang deras, menembus halangan. Tapi yang paling penting: tetap jernih, apa pun wadahnya.",
+              "Setiap kali aku menatap air yang mengalir dari ketel, aku teringat satu hal sederhana—bahwa keseimbangan tidak datang dari kontrol penuh, tapi dari kemampuan untuk menerima dan menyesuaikan diri. Kopi dan air saling melengkapi. Tanpa kopi, air tak punya rasa. Tanpa air, kopi tak punya makna. Begitu juga manusia: tanpa keseimbangan antara hati dan pikiran, kita hanya akan jadi salah satu—terlalu pahit, atau terlalu hambar.",
+              "Maka, sebelum kamu meneguk kopi pagimu, lihatlah air yang menjadi bagian dari seduhan itu. Lihat bagaimana ia mengalir tanpa perlawanan, membawa rasa tanpa kehilangan dirinya. Karena mungkin, di situ kamu akan belajar: menjadi tenang bukan berarti lemah, dan menyesuaikan diri bukan berarti kehilangan jati diri."
             ].map((text, i) => (
               <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
                 {text}
@@ -504,45 +509,254 @@ export default function SeniMenyeduhiKehidupanPage() {
           </motion.blockquote>
         </motion.section>
 
-        {/* Bab 3-9 - Simplified untuk contoh */}
-        {[3, 4, 5, 6, 7, 8, 9].map((babNum) => {
-          const titles = [
-            "Suhu, Tekanan, dan Ketahanan",
-            "Grind Size: Tentang Detail dan Kesabaran", 
-            "Waktu Seduh dan Kesabaran",
-            "Rasa: Pahit, Manis, dan Seimbang",
-            "Ritual Kopi, Ritual Diri",
-            "Seni Menyeduh Kehidupan",
-            "Kopi, Waktu, dan Keheningan"
-          ];
-          const icons = ["🔥", "⚙", "⏳", "☕", "🌿", "☀", "🌙"];
-          const colors = ["text-orange-500", "text-stone-400", "text-purple-400", "text-yellow-600", "text-green-500", "text-amber-500", "text-indigo-400"];
-          
-          return (
-            <motion.section
-              key={babNum}
-              id={`bab-${babNum}`}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportConfig}
-              variants={staggerContainer}
-              className="mb-28 md:mb-36 scroll-mt-24"
-            >
-              <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
-                <span className={`${colors[babNum-3]} text-sm font-medium tracking-widest`}>BAB 0{babNum}</span>
-                <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>
-                  {titles[babNum-3]}
-                </h2>
-              </motion.div>
-              
-              <motion.div variants={fadeInUp} className={`p-8 ${theme.card} border ${theme.border} rounded-xl`}>
-                <p className={`${fontSizeClasses.body} ${theme.text} font-light italic`}>
-                  [Konten lengkap Bab {babNum} akan ditampilkan di sini dengan format yang sama—paragraf demi paragraf dengan animasi stagger, blockquote di akhir, dan visual yang sesuai tema bab.]
-                </p>
-              </motion.div>
-            </motion.section>
-          );
-        })}
+        {/* Bab 3 */}
+        <motion.section 
+          id="bab-3"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-orange-500 text-sm font-medium tracking-widest`}>BAB 03</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Suhu, Tekanan, dan Ketahanan</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Di balik setiap cangkir espresso yang sempurna, ada kekuatan yang sering diabaikan: tekanan. Tanpa tekanan, tidak ada crema, tidak ada rasa yang kuat, tidak ada aroma yang menonjol. Mesin espresso bekerja dengan mendorong air panas di bawah tekanan tinggi untuk mengekstraksi rasa terbaik dari bubuk kopi yang halus dan rapat. Dan setiap kali aku menatap mesin itu bekerja, aku selalu berpikir: hidup juga menekan kita dengan cara yang sama.",
+              "Dulu aku takut pada tekanan—tekanan dari pekerjaan, ekspektasi, dan diri sendiri. Semua terasa berat, seperti air panas yang siap meledak jika tak tertahan. Tapi kopi mengajarkanku satu hal penting: tekanan tidak selalu berarti kehancuran; kadang justru itu yang membentuk kekuatan rasa.",
+              "Aku ingat malam itu, kedai sudah hampir tutup. Seorang pelanggan terakhir datang, wajahnya lelah tapi matanya memohon secangkir espresso. Aku tahu, ia tidak butuh kafein—ia butuh kehangatan. Aku menyalakan mesin, memantau tekanan di manometer, memperhatikan setiap tetes yang keluar. Semakin tinggi tekanannya, semakin pekat warnanya. Dan di detik itu aku sadar, rasa terbaik memang lahir dari tekanan yang pas, bukan dari pelarian.",
+              "Kopi yang diseduh tanpa tekanan terasa datar dan hambar, seperti hidup tanpa tantangan. Tapi tekanan yang berlebihan juga bisa menghancurkan rasa—gosong, pahit, tak seimbang. Hidup mengajarkan kita hal yang sama: ketahanan bukan hanya soal kuat menahan beban, tapi juga tahu kapan harus menurunkan panasnya.",
+              "Dalam dunia kopi, suhu adalah sahabat sekaligus musuh. Sedikit terlalu panas, kopi terbakar. Terlalu dingin, ekstraksinya gagal. Mungkin begitulah emosi manusia. Ketika marah, kita \"terlalu panas\"; ketika menyerah, kita \"terlalu dingin.\" Butuh ketenangan untuk menjaga suhu hati agar tetap di titik yang pas—hangat, tapi tidak membakar.",
+              "Kopi mengajarkanku untuk menghargai tekanan yang datang. Ia menunjukkan bahwa dari situlah lahir sesuatu yang pekat, beraroma, dan bermakna. Tekanan bukan musuh; ia adalah pengingat bahwa kita masih hidup, bahwa kita masih punya sesuatu untuk dikeluarkan dari dalam diri.",
+              "Namun tidak semua tekanan baik. Ada kalanya kita perlu \"menurunkan suhu,\" memberi ruang bagi diri sendiri untuk bernapas. Mesin pun butuh waktu istirahat agar tidak rusak. Begitu juga manusia. Kita tidak bisa terus-menerus berada di bawah tekanan tanpa jeda. Kadang kita harus berhenti sejenak, mengangkat tuas, dan membiarkan uapnya keluar agar tidak meledak di dalam.",
+              "Tekanan, suhu, dan ketahanan—tiga hal yang menentukan kualitas espresso, juga kualitas manusia. Kopi yang baik bukan kopi yang tidak pernah tertekan, tapi kopi yang tahu bagaimana mengolah tekanan itu menjadi rasa. Hidup yang baik pun bukan hidup tanpa masalah, melainkan hidup yang mampu mengubah tekanan menjadi keteguhan, panas menjadi semangat, dan luka menjadi aroma yang menenangkan.",
+              "Setiap kali aku menatap lapisan crema di atas espresso—lembut, keemasan, sempurna—aku selalu berpikir: itulah hasil dari perjuangan, dari panas dan tekanan yang seimbang. Sama seperti kita—di balik senyum yang tenang, selalu ada cerita tentang seberapa kuat kita menahan diri agar tidak hancur di tengah panas kehidupan."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-orange-500 text-orange-500 italic font-serif text-xl py-4`}
+          >
+            "Tekanan bukan musuh. Ia hanya cara hidup menanyakan: sudahkah kamu siap mengeluarkan rasa terbaikmu hari ini?"
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 4 */}
+        <motion.section 
+          id="bab-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-stone-400 text-sm font-medium tracking-widest`}>BAB 04</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Grind Size: Tentang Detail dan Kesabaran</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Di dunia kopi, ukuran gilingan adalah hal yang sering diremehkan kecil, tapi menentukan segalanya. Terlalu halus, kopi jadi pahit. Terlalu kasar, rasanya lemah. Butuh ketepatan, kesabaran, dan sedikit intuisi untuk menemukan keseimbangan itu.",
+              "Aku pernah menyeduh kopi dengan terburu-buru. Grinder kuatur cepat, tanpa periksa hasilnya. Saat diseduh, kopi itu rasanya aneh seolah kehilangan jati dirinya. Dari situ aku belajar, bahwa dalam hidup pun, kita sering terburu-buru dan kehilangan rasa.",
+              "Detail kecil menentukan hasil besar. Cara kita menyapa orang, mendengarkan, bahkan menyeduh kopi untuk diri sendiri semua adalah bentuk perhatian yang sederhana tapi bermakna. Kesabaran bukan berarti lambat, tapi sadar akan proses. Karena setiap hal besar dibangun dari hal-hal kecil yang dilakukan dengan hati.",
+              "Kopi yang baik tidak terburu-buru. Dan manusia yang baik, bukan yang cepat selesai tapi yang tidak melewatkan proses penggilingannya. Karena justru di saat-saat kita \"dihaluskan,\" karakter sejati kita terbentuk."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-stone-400 text-stone-400 italic font-serif text-xl py-4`}
+          >
+            "Kadang yang membedakan rasa bukan bahan, tapi ketulusan dalam memperhatikan hal-hal kecil."
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 5 */}
+        <motion.section 
+          id="bab-5"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-purple-400 text-sm font-medium tracking-widest`}>BAB 05</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Waktu Seduh dan Kesabaran</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Tidak ada kopi yang bisa diseduh dalam satu detik.",
+              "Waktu adalah bagian dari rasa ia mengikat aroma, menyeimbangkan panas, dan memberi ruang bagi kopi untuk bercerita. Aku sering menyeduh pour-over sambil menatap air menetes perlahan ke dalam cangkir. Setiap tetes seperti menit yang berjalan sabar, tenang, tanpa tergesa.",
+              "Jika kupercepat, rasanya belum matang. Jika kutunda terlalu lama, ia kehilangan hangatnya. Begitulah hidup. Kita semua punya \"waktu seduh\" masing-masing. Tidak ada yang benar-benar terlambat, tidak ada yang terlalu cepat. Setiap orang punya waktu yang ditentukan semesta kita hanya perlu percaya prosesnya.",
+              "Kesabaran bukan berarti pasrah, tapi tahu kapan harus berhenti mengaduk dan mulai menikmati aroma. Hidup pun begitu ada saat bekerja keras, ada saat menunggu hasilnya. Dan yang indah, terkadang momen menunggu itulah yang membuat hasil akhirnya terasa lebih manis."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-purple-400 text-purple-400 italic font-serif text-xl py-4`}
+          >
+            "Rasa terbaik hanya muncul jika kita cukup sabar untuk menunggu aroma muncul sepenuhnya."
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 6 */}
+        <motion.section 
+          id="bab-6"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-yellow-600 text-sm font-medium tracking-widest`}>BAB 06</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Rasa: Pahit, Manis, dan Seimbang</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Kopi yang sempurna tidak pernah hanya manis. Ia punya pahit yang jujur, asam yang hidup, dan manis yang datang di akhir — seperti hidup.",
+              "Aku pernah takut pada rasa pahit. Dulu, aku selalu menambah gula dalam kopi. Tapi semakin lama aku belajar menyeduh, aku sadar: pahit bukan musuh. Ia bagian dari keseimbangan. Tanpanya, manis tidak akan berarti. Hidup pun begitu.",
+              "Kita sering ingin semuanya terasa manis — hubungan, pekerjaan, mimpi. Tapi tanpa rasa pahit, kita tidak akan tahu arti syukur. Rasa pahit mengingatkan kita untuk menghargai momen ringan, dan memberi kedalaman pada cerita kita sendiri.",
+              "Setiap seduhan punya komposisi unik. Ada yang lebih pekat, ada yang ringan. Begitu juga manusia kita semua punya \"profil rasa\" masing-masing. Tak perlu sama, cukup jujur dengan rasa yang kita bawa."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-yellow-600 text-yellow-600 italic font-serif text-xl py-4`}
+          >
+            "Hidup yang seimbang bukan yang selalu manis, tapi yang berani menerima pahit sebagai bagian dari rasa."
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 7 */}
+        <motion.section 
+          id="bab-7"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-green-500 text-sm font-medium tracking-widest`}>BAB 07</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Ritual Kopi, Ritual Diri</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Setiap pagi, sebelum kedai ramai, aku selalu membuat kopi untuk diriku sendiri.",
+              "Bukan karena butuh kafein, tapi karena butuh keheningan. Ritual kecil itu menjadi waktu untuk menenangkan pikiran, menyapa hari, dan berdialog dengan diri sendiri. Menyiapkan kopi perlahan menggiling, menyeduh, menunggu, mencium aroma semuanya seperti meditasi.",
+              "Di situ aku belajar hadir. Tidak memikirkan masa lalu, tidak mengkhawatirkan nanti. Hanya di sini, di detik ini. Kita sering hidup terlalu cepat, sampai lupa menikmati momen sederhana. Padahal, seperti kopi, hidup terasa paling nikmat saat kita menikmatinya perlahan.",
+              "Ritual itu tidak harus besar. Bisa berupa secangkir kopi, napas panjang di pagi hari, atau menulis tiga hal yang disyukuri sebelum tidur. Yang penting, kita menyisakan ruang untuk mengenali diri karena hidup yang terlalu sibuk tanpa jeda, akan kehilangan rasa."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-green-500 text-green-500 italic font-serif text-xl py-4`}
+          >
+            "Ritual kecil menjaga kita tetap waras di tengah hiruk pikuk — seperti kopi yang menjaga hangat di pagi yang dingin."
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 8 */}
+        <motion.section 
+          id="bab-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`${theme.accent} text-sm font-medium tracking-widest`}>BAB 08</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Seni Menyeduh Kehidupan</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Hidup, pada akhirnya, adalah tentang cara kita menyeduhnya. Tentang bagaimana kita mengolah panas, tekanan, waktu, dan rasa. Setiap unsur punya perannya, dan tak satu pun bisa diabaikan.",
+              "Kopi tidak pernah terburu-buru, tapi juga tidak berdiam terlalu lama. Ia tahu kapan harus berhenti. Hidup juga begitu. Kita harus tahu kapan berjuang, kapan beristirahat, dan kapan menikmati hasil seduhan kita sendiri.",
+              "Kadang hidup terasa pahit, kadang manis, tapi yang membuatnya indah adalah cara kita meresapi setiap tegukan.",
+              "Kopi mengajarkan bahwa hasil terbaik bukan dari kesempurnaan, tapi dari ketulusan dari niat untuk memberi rasa yang tulus, sekecil apa pun itu."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 ${theme.quoteBorder} ${theme.accent} italic font-serif text-xl py-4`}
+          >
+            "Hidup bukan tentang mencari rasa yang sempurna, tapi tentang belajar menikmati setiap rasa yang datang."
+          </motion.blockquote>
+        </motion.section>
+
+        {/* Bab 9 */}
+        <motion.section 
+          id="bab-9"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportConfig}
+          variants={staggerContainer}
+          className="mb-28 md:mb-36 scroll-mt-24"
+        >
+          <motion.div variants={fadeInUp} className={`flex items-baseline gap-4 mb-8 pb-4 border-b ${theme.border}`}>
+            <span className={`text-indigo-400 text-sm font-medium tracking-widest`}>BAB 09</span>
+            <h2 className={`font-serif ${fontSizeClasses.subheading} ${theme.textHeading}`}>Kopi, Waktu, dan Keheningan</h2>
+          </motion.div>
+
+          <motion.div variants={staggerContainer} className="space-y-6">
+            {[
+              "Ada saat ketika kedai sudah sepi, lampu tinggal redup, dan aroma kopi terakhir masih tertinggal di udara. Di momen-momen seperti itu, aku sering merenung tentang waktu.",
+              "Waktu bukan musuh, ia adalah teman yang diam-diam menemani kita tumbuh. Ia tidak bisa kita percepat, tidak bisa kita ubah, tapi bisa kita nikmati. Seperti kopi yang menua dengan indah di dalam cangkir makin lama dibiarkan, rasanya berubah, tapi tetap punya cerita.",
+              "Keheningan malam mengingatkanku untuk tidak selalu melawan waktu. Kadang, diam justru memberi jawaban yang tak bisa dikejar dengan tergesa. Hidup tidak selalu harus ramai; ada makna yang hanya bisa ditemukan dalam senyap, di antara detak jam dan sisa aroma kopi yang perlahan hilang."
+            ].map((text, i) => (
+              <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
+
+          <motion.blockquote 
+            variants={scaleIn}
+            className={`mt-10 pl-6 border-l-4 border-indigo-400 text-indigo-400 italic font-serif text-xl py-4`}
+          >
+            "Waktu tidak pernah benar-benar pergi — ia hanya berubah bentuk menjadi kenangan yang menghangatkan."
+          </motion.blockquote>
+        </motion.section>
 
         {/* Bab 10 */}
         <motion.section 
@@ -580,6 +794,10 @@ export default function SeniMenyeduhiKehidupanPage() {
                 Di situ, kamu sedang belajar menyeduh kehidupanmu sendiri.
               </p>
             </motion.div>
+
+            <motion.p variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
+              Dan ketika kamu menyeruput tegukan terakhirnya, mungkin kamu akan tersenyum dan berkata pelan: "Hidupku mungkin tidak selalu manis, tapi selalu punya rasa."
+            </motion.p>
           </motion.div>
 
           <motion.blockquote 
@@ -622,7 +840,19 @@ export default function SeniMenyeduhiKehidupanPage() {
             </motion.p>
 
             <motion.p variants={fadeInUp}>
-              Aku sering berpikir, mungkin kita semua hanyalah biji-biji kopi kecil yang sedang diseduh oleh waktu. Setiap tekanan, panas, dan diamnya bukan untuk menghancurkan, tapi untuk membangkitkan rasa terbaik dari dalam diri.
+              Aku sering berpikir, mungkin kita semua hanyalah biji-biji kopi kecil yang sedang diseduh oleh waktu. Setiap tekanan, panas, dan diamnya bukan untuk menghancurkan, tapi untuk membangkitkan rasa terbaik dari dalam diri. Kita belajar dari air untuk tetap mengalir, dari api untuk tetap hangat, dan dari kopi — untuk tetap jujur terhadap rasa yang kita bawa.
+            </motion.p>
+
+            <motion.p variants={fadeInUp}>
+              Setiap orang yang pernah datang dalam hidup kita adalah seperti pelanggan yang singgah di kedai: Ada yang hanya memesan sekali lalu pergi, ada yang kembali setiap pagi, dan ada yang diam-diam meninggalkan bekas di meja hati. Namun semuanya memiliki aroma sendiri, dan semuanya layak disyukuri.
+            </motion.p>
+
+            <motion.p variants={fadeInUp}>
+              Kini aku paham, seni menyeduh kehidupan bukan tentang mencari kesempurnaan rasa, Melainkan tentang keberanian untuk hadir sepenuhnya — meski tahu panas bisa melukai, meski sadar waktu akan mendinginkan. Karena yang membuat setiap tegukan istimewa bukan hasilnya, tapi proses kita menantikan aroma itu muncul.
+            </motion.p>
+
+            <motion.p variants={fadeInUp}>
+              Dan saat cangkir terakhir kosong, jangan bersedih. Lihatlah sisa ampas di dasar gelas — di sanalah cerita kita tersimpan. Bukan untuk disesali, tapi untuk diingat: bahwa kita pernah hangat, pernah berproses, dan pernah memberi rasa.
             </motion.p>
 
             <motion.div variants={fadeInUp} className={`my-12 p-8 ${theme.card} border ${theme.border} rounded-xl text-center`}>
