@@ -18,7 +18,7 @@ export default function LewatBegituSajaPage() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
   
   const [subtitleText, setSubtitleText] = useState("");
-  const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
+  const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
   
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -75,7 +75,7 @@ export default function LewatBegituSajaPage() {
       y: 0,
       rotateX: 0,
       transition: {
-        delay: 0.5 + (i * 0.05),
+        delay: 0.5 + (i * 0.08),
         duration: 1,
         ease: [0.22, 1, 0.36, 1]
       }
@@ -91,9 +91,8 @@ export default function LewatBegituSajaPage() {
     }
   };
 
-  // "Lewat Begitu Saja" dipecah per huruf untuk animasi
-  const title = "Lewat Begitu Saja";
-  const letters = title.split("");
+  const words = ["Lewat", "Begitu", "Saja"];
+  const allLetters = words.map(word => word.split(""));
 
   return (
     <section 
@@ -178,22 +177,26 @@ export default function LewatBegituSajaPage() {
 
           {/* Main Title - Animated Letters */}
           <div className="overflow-hidden mb-8">
-            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center perspective-1000 flex-wrap`}>
-              {letters.map((letter, i) => (
-                <motion.span
-                  key={i}
-                  custom={i}
-                  variants={letterAnimation}
-                  initial="hidden"
-                  animate={isHeroInView ? "visible" : "hidden"}
-                  className={`inline-block ${letter === " " ? "w-4 md:w-8" : ""}`}
-                  style={{ 
-                    transformStyle: "preserve-3d",
-                    textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
-                  }}
-                >
-                  {letter === " " ? "\u00A0" : letter}
-                </motion.span>
+            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center gap-4 md:gap-8 perspective-1000 flex-wrap`}>
+              {words.map((word, wordIndex) => (
+                <span key={wordIndex} className="flex">
+                  {allLetters[wordIndex].map((letter, i) => (
+                    <motion.span
+                      key={`${wordIndex}-${i}`}
+                      custom={wordIndex * 10 + i}
+                      variants={letterAnimation}
+                      initial="hidden"
+                      animate={isHeroInView ? "visible" : "hidden"}
+                      className="inline-block"
+                      style={{ 
+                        transformStyle: "preserve-3d",
+                        textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
+                      }}
+                    >
+                      {letter}
+                    </motion.span>
+                  ))}
+                </span>
               ))}
             </h1>
           </div>
