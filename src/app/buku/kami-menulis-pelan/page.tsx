@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useTheme } from "@/components/ThemeProvider";
-import Footer from "@/components/Footer";
+import { useTheme } from "next-themes";
+import Footer from "@/src/components/Footer";
 
-export default function LewatBegituSajaPage() {
+export default function KamiMenulisPelanPage() {
   const containerRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const isHeroInView = useInView(heroRef, { once: true });
@@ -21,7 +21,11 @@ export default function LewatBegituSajaPage() {
   const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
   
   const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isHeroInView) {
@@ -37,6 +41,13 @@ export default function LewatBegituSajaPage() {
       return () => clearInterval(timer);
     }
   }, [isHeroInView]);
+
+  const isDark = theme === "dark";
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return <div className="min-h-screen bg-[#0a0908]" />;
+  }
 
   const colors = {
     bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
