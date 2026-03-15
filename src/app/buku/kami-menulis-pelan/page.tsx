@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useTheme } from "next-themes";
 import Footer from "@/src/components/Footer";
 
 export default function KamiMenulisPelanPage() {
@@ -20,11 +19,24 @@ export default function KamiMenulisPelanPage() {
   const [subtitleText, setSubtitleText] = useState("");
   const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
   
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  // Deteksi tema dari document.documentElement class
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
+    const checkTheme = () => {
+      const html = document.documentElement;
+      setIsDark(html.classList.contains('dark'));
+    };
+    
+    checkTheme();
+    
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -41,13 +53,6 @@ export default function KamiMenulisPelanPage() {
       return () => clearInterval(timer);
     }
   }, [isHeroInView]);
-
-  const isDark = theme === "dark";
-
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return <div className="min-h-screen bg-[#0a0908]" />;
-  }
 
   const colors = {
     bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
