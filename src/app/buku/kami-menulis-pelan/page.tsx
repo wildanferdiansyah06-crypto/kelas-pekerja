@@ -5,10 +5,9 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Footer from "@/src/components/Footer";
 
-export default function KamiMenulisPelanPage() {
+export default function LewatBegituSajaPage() {
   const containerRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const isHeroInView = useInView(heroRef, { once: true });
   
   const { scrollYProgress } = useScroll({
@@ -19,7 +18,7 @@ export default function KamiMenulisPelanPage() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
   
   const [subtitleText, setSubtitleText] = useState("");
-  const fullSubtitle = "Dari kelas pekerja yang menulis di sela-sela waktu yang bukan milik mereka. Bukan untuk dilihat, bukan untuk dipuji—hanya untuk mengingat bahwa kita pernah hidup.";
+  const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
   
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -34,7 +33,7 @@ export default function KamiMenulisPelanPage() {
         } else {
           clearInterval(timer);
         }
-      }, 30);
+      }, 25);
       return () => clearInterval(timer);
     }
   }, [isHeroInView]);
@@ -76,7 +75,7 @@ export default function KamiMenulisPelanPage() {
       y: 0,
       rotateX: 0,
       transition: {
-        delay: 0.5 + (i * 0.08),
+        delay: 0.5 + (i * 0.05),
         duration: 1,
         ease: [0.22, 1, 0.36, 1]
       }
@@ -92,8 +91,9 @@ export default function KamiMenulisPelanPage() {
     }
   };
 
-  const words = ["Kami", "Menulis", "Pelan"];
-  const allLetters = words.map(word => word.split(""));
+  // "Lewat Begitu Saja" dipecah per huruf untuk animasi
+  const title = "Lewat Begitu Saja";
+  const letters = title.split("");
 
   return (
     <section 
@@ -158,7 +158,7 @@ export default function KamiMenulisPelanPage() {
               animate={isHeroInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.8, duration: 1 }}
             >
-              Arsip Kelas Pekerja
+              Arsip Pribadi
             </motion.span>
             <motion.div 
               className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-left`}
@@ -173,31 +173,27 @@ export default function KamiMenulisPelanPage() {
             animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
             transition={{ delay: 0.3, duration: 1 }}
           >
-            catatan dari
+            sebuah pengakuan
           </motion.p>
 
           {/* Main Title - Animated Letters */}
           <div className="overflow-hidden mb-8">
-            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center gap-4 md:gap-8 perspective-1000 flex-wrap`}>
-              {words.map((word, wordIndex) => (
-                <span key={wordIndex} className="flex">
-                  {allLetters[wordIndex].map((letter, i) => (
-                    <motion.span
-                      key={`${wordIndex}-${i}`}
-                      custom={wordIndex * 10 + i}
-                      variants={letterAnimation}
-                      initial="hidden"
-                      animate={isHeroInView ? "visible" : "hidden"}
-                      className="inline-block"
-                      style={{ 
-                        transformStyle: "preserve-3d",
-                        textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
-                      }}
-                    >
-                      {letter}
-                    </motion.span>
-                  ))}
-                </span>
+            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center perspective-1000 flex-wrap`}>
+              {letters.map((letter, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={letterAnimation}
+                  initial="hidden"
+                  animate={isHeroInView ? "visible" : "hidden"}
+                  className={`inline-block ${letter === " " ? "w-4 md:w-8" : ""}`}
+                  style={{ 
+                    transformStyle: "preserve-3d",
+                    textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
+                  }}
+                >
+                  {letter === " " ? "\u00A0" : letter}
+                </motion.span>
               ))}
             </h1>
           </div>
@@ -224,7 +220,7 @@ export default function KamiMenulisPelanPage() {
       {/* Main Content */}
       <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
         
-        {/* Opening Paragraph */}
+        {/* Section 1: Pembuka dengan Drop Cap */}
         <motion.div
           custom={0}
           variants={fadeInUp}
@@ -241,13 +237,13 @@ export default function KamiMenulisPelanPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              K
+              B
             </motion.span>
-            ami menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak, tapi masih cukup untuk menyalakan lampu meja. Sisa waktu yang tidak dimiliki siapa-siapa, jadi kami klaim sebagai milik kami. Sisa pikiran yang belum sepenuhnya habis dipakai untuk memenuhi tuntutan hari.
+            adan bau keringat. Layar ponsel masih perih di mata. Alarm pagi belum sempat dilupakan. Kopi instan dingin di meja, sudah kehilangan uapnya sejak jam yang lalu. Aku mengirimkannya sebagai tautan—kadang hanya satu kalimat, kadang tanpa pesan apa-apa.
           </p>
         </motion.div>
 
-        {/* Content Sections */}
+        {/* Section 2: Kelas Pekerja */}
         <motion.div 
           className="space-y-8"
           initial="hidden"
@@ -259,15 +255,35 @@ export default function KamiMenulisPelanPage() {
             variants={fadeInUp}
             className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
           >
-            Kami bukan penulis profesional. Kami adalah pekerja—di pabrik, di kantor, di jalanan, di dapur orang lain. Kami bangun pagi untuk melakukan hal-hal yang tidak kami cintai, lalu pulang dengan tubuh yang ingin rebah tapi pikiran yang masih berdenyut. Di celah-celah itu, di antara kelelahan dan tidur, kami mencuri waktu untuk menulis.
+            Kelas pekerja menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak. Sisa waktu yang tidak dimiliki siapa-siapa. Sisa pikiran yang belum habis dipakai bekerja. Kami menulis bukan karena yakin, tapi karena diam-diam tahu: kalau tidak ditulis, hari ini akan hilang.
           </motion.p>
 
-          <motion.p 
+          {/* Three Cards */}
+          <motion.div 
             custom={2}
+            variants={fadeInUp}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12"
+          >
+            {['Sisa tenaga.', 'Sisa waktu.', 'Sisa pikiran.'].map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2, duration: 0.8 }}
+                className={`p-6 ${colors.accentBgLight} border ${colors.accentBorder} text-center`}
+              >
+                <p className={`font-serif italic ${colors.accent}`}>{item}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.p 
+            custom={3}
             variants={fadeInUp}
             className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
           >
-            Tulisan kami tidak muncul dari inspirasi yang tiba-tiba melanda. Mereka lahir dari keharusan—keharusan untuk mengingat, untuk mengeluh, untuk bertanya <em className={`${colors.accent} not-italic`}>apakah ini saja?</em> Keharusan untuk membuktikan bahwa kami lebih dari sekadar alat, lebih dari sekadar angka di daftar gaji.
+            Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk. Karena itu, ia tidak pandai meminta perhatian. Ia hanya diam, menunggu, dan kadang—ketika dunia luar melewatinya begitu saja—rasanya masih bisa diterima.
           </motion.p>
         </motion.div>
 
@@ -286,20 +302,60 @@ export default function KamiMenulisPelanPage() {
             viewport={{ once: true }}
             transition={{ duration: 1.5, delay: 0.5 }}
           >
-            &ldquo;Menulis pelan bukan karena tidak punya urgensi. Tapi karena kami tahu, jika ditulis terlalu cepat, kami akan kehabisan diri sendiri sebelum dunia kehabisan tuntutan.&rdquo;
+            &ldquo;Karya itu seperti bekal yang dimakan dingin di sela jam kerja. Tidak mewah. Tidak istimewa. Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi.&rdquo;
           </motion.blockquote>
         </motion.div>
 
-        {/* More Content */}
-        <motion.p 
-          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
+        {/* Section 3: Orang Terdekat */}
+        <motion.div 
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.p 
+            custom={4}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan. Buku itu ada di sana, berbulan-bulan. Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan.
+          </motion.p>
+
+          <motion.p 
+            custom={5}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-center italic px-8`}
+          >
+            Kadang, yang paling sunyi bukan tidak dibaca, tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
+          </motion.p>
+
+          <motion.p 
+            custom={6}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
+          </motion.p>
+        </motion.div>
+
+        {/* Section 4: Bertahan Menulis */}
+        <motion.div
+          className={`my-16 p-8 ${colors.accentBgLight} border ${colors.accentBorder}`}
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          Kami tidak menulis untuk viral. Kami tidak menulis untuk dipuji. Kami menulis karena diam lebih berbahaya—karena jika tidak ditulis, hari-hari ini akan runtuh tanpa saksi. Karena ada sesuatu di dalam yang harus dikeluarkan, meski tak ada yang menunggu di luar.
-        </motion.p>
+          <motion.p 
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.text} font-light text-center italic`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            Aku tetap menulis bukan karena yakin akan dibaca. Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi. Menulis adalah caraku mengatakan pada diri sendiri bahwa aku pernah ada di hari ini.
+          </motion.p>
+        </motion.div>
 
         {/* Section Divider */}
         <motion.div 
@@ -330,7 +386,7 @@ export default function KamiMenulisPelanPage() {
           />
         </motion.div>
 
-        {/* Empty State / Placeholder */}
+        {/* Penutup */}
         <motion.div
           className="mt-20"
           initial={{ opacity: 0, y: 60 }}
@@ -339,7 +395,52 @@ export default function KamiMenulisPelanPage() {
           transition={{ duration: 1 }}
         >
           <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
-            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Tulisan-tulisan</h3>
+            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Penutup</h3>
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Akhir</span>
+          </div>
+
+          <motion.div 
+            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p 
+              custom={0}
+              variants={fadeInUp}
+              className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-center`}
+            >
+              Buku ini tidak meminta perhatian. Ia juga tidak ingin dipahami. Ia hanya ingin jujur.
+            </motion.p>
+
+            <motion.p 
+              custom={1}
+              variants={fadeInUp}
+              className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-center italic`}
+            >
+              Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, itu sudah cukup. Jika tidak, tidak apa-apa.
+            </motion.p>
+
+            <motion.p 
+              custom={2}
+              variants={fadeInUp}
+              className={`font-serif text-2xl md:text-3xl ${colors.accent} italic text-center mt-12`}
+            >
+              Ia tetap ditulis.
+            </motion.p>
+          </motion.div>
+        </motion.div>
+
+        {/* Empty State / Placeholder for future */}
+        <motion.div
+          className="mt-24"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
+            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Tulisan-tulisan Lain</h3>
             <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Segera</span>
           </div>
 
@@ -361,13 +462,13 @@ export default function KamiMenulisPelanPage() {
                 ease: "easeInOut" 
               }}
             >
-              Ruang yang menunggu diisi
+              Keheningan yang menunggu
             </motion.p>
-            <p className={`text-sm ${colors.emptyState}`}>Belum ada kata yang berani keluar dari bayangan.</p>
+            <p className={`text-sm ${colors.emptyState}`}>Belum ada kata yang berani keluar.</p>
           </motion.div>
         </motion.div>
 
-        {/* Closing Quote */}
+        {/* Final Quote */}
         <motion.div 
           className="mt-24 text-center"
           initial={{ opacity: 0, y: 40 }}
@@ -383,10 +484,10 @@ export default function KamiMenulisPelanPage() {
             transition={{ duration: 1.5 }}
           />
           <p className={`font-serif italic text-lg md:text-xl ${colors.accentMuted} max-w-2xl mx-auto leading-[1.7] mb-4`}>
-            &ldquo;Kami mungkin lewat begitu saja. Tapi setidaknya, kami pernah mencoba mengingatkan bahwa kami ada.&rdquo;
+            &ldquo;Meski lewat begitu saja, setidaknya aku pernah mencoba mengingatkan bahwa aku ada.&rdquo;
           </p>
           <p className={`text-[10px] tracking-[0.3em] uppercase ${colors.subtleText}`}>
-            — Dari kami yang menulis pelan
+            — Dari yang menulis pelan
           </p>
         </motion.div>
 
