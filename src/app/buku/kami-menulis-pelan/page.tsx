@@ -1,703 +1,428 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
-import { Moon, Sun, Coffee, Settings2, X, Type, Palette, Eye, EyeOff, BookOpen, Clock, Wind, Ghost } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useTheme } from "@/src/components/ThemeProvider";
+import Footer from "@/src/components/Footer";
 
-export default function LewatBegituSajaPage() {
-  const [darkMode, setDarkMode] = useState(true);
-  const [showTexture, setShowTexture] = useState(true);
-  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
-  const [showControls, setShowControls] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+export default function KamiMenulisPelanPage() {
+  const containerRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isHeroInView = useInView(heroRef, { once: true });
   
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
-  
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
   });
 
-  // Mouse tracking untuk efek parallax
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  
+  const [subtitleText, setSubtitleText] = useState("");
+  const fullSubtitle = "Dari kelas pekerja yang menulis di sela-sela waktu yang bukan milik mereka. Bukan untuk dilihat, bukan untuk dipuji—hanya untuk mengingat bahwa kita pernah hidup.";
+  
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
-    const checkGlobalTheme = () => {
-      const html = document.documentElement;
-      if (html.classList.contains('dark')) setDarkMode(true);
-      else if (html.classList.contains('light')) setDarkMode(false);
-    };
-    checkGlobalTheme();
-    const observer = new MutationObserver(checkGlobalTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+    if (isHeroInView) {
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i <= fullSubtitle.length) {
+          setSubtitleText(fullSubtitle.slice(0, i));
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 30);
+      return () => clearInterval(timer);
     }
-  };
+  }, [isHeroInView]);
 
-  const theme = darkMode ? {
-    bg: 'bg-[#050505]',
-    bgGradient: 'from-[#0a0a0a] via-[#0f0f0f] to-[#050505]',
-    text: 'text-stone-500',
-    textMuted: 'text-stone-700',
-    textHeading: 'text-stone-300',
-    accent: 'text-amber-900',
-    accentSoft: 'text-amber-950',
-    accentBg: 'bg-amber-950/10',
-    accentBorder: 'border-amber-950/30',
-    border: 'border-stone-900',
-    borderLight: 'border-stone-800',
-    card: 'bg-stone-950/40',
-    hover: 'hover:bg-stone-900/30',
-    coffee: 'text-amber-950/30',
-    progress: 'bg-amber-900',
-    glow: 'shadow-amber-900/20'
-  } : {
-    bg: 'bg-[#fafaf9]',
-    bgGradient: 'from-[#f5f5f4] via-[#fafaf9] to-[#f5f5f4]',
-    text: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    textHeading: 'text-stone-800',
-    accent: 'text-amber-800',
-    accentSoft: 'text-amber-700',
-    accentBg: 'bg-amber-100/30',
-    accentBorder: 'border-amber-200',
-    border: 'border-stone-200',
-    borderLight: 'border-stone-300',
-    card: 'bg-white/40',
-    hover: 'hover:bg-stone-100/50',
-    coffee: 'text-amber-800/15',
-    progress: 'bg-amber-700',
-    glow: 'shadow-amber-700/10'
-  };
-
-  const fontSizeClasses = fontSize === 'large' ? {
-    body: 'text-lg md:text-xl leading-[2.2]',
-    heading: 'text-2xl md:text-3xl',
-    title: 'text-4xl md:text-6xl',
-    small: 'text-sm',
-    poetry: 'text-xl md:text-2xl'
-  } : {
-    body: 'text-base md:text-lg leading-[2]',
-    heading: 'text-xl md:text-2xl',
-    title: 'text-3xl md:text-5xl',
-    small: 'text-xs',
-    poetry: 'text-lg md:text-xl'
+  const colors = {
+    bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
+    text: isDark ? "text-[#e7e5e4]" : "text-[#1c1917]",
+    textMuted: isDark ? "text-[#a8a29e]" : "text-[#78716c]",
+    textSecondary: isDark ? "text-[#d6d3d1]" : "text-[#57534e]",
+    accent: isDark ? "text-[#8b7355]" : "text-[#a16207]",
+    accentMuted: isDark ? "text-[#8b7355]/60" : "text-[#a16207]/60",
+    accentLight: isDark ? "text-[#8b7355]/30" : "text-[#a16207]/30",
+    accentBorder: isDark ? "border-[#8b7355]/30" : "border-[#a16207]/30",
+    accentBg: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
+    accentBgLight: isDark ? "bg-[#8b7355]/10" : "bg-[#a16207]/10",
+    divider: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
+    subtleText: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
+    emptyState: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+    hidden: { opacity: 0, y: 60, filter: "blur(10px)" },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        delay: i * 0.15,
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    })
   };
 
-  const fadeInSlow = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 2, ease: "easeOut" }}
+  const letterAnimation = {
+    hidden: { opacity: 0, y: 100, rotateX: -90 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      transition: {
+        delay: 0.5 + (i * 0.08),
+        duration: 1,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    })
   };
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.3 }}
-  };
-
-  const lineReveal = {
-    hidden: { opacity: 0, x: -50, filter: 'blur(10px)' },
-    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-  };
-
-  const scaleIn = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-  };
-
-  const breathe = {
-    animate: { 
-      opacity: [0.4, 0.8, 0.4],
-      scale: [1, 1.02, 1],
-      transition: { duration: 8, repeat: Infinity, ease: "easeInOut" }
+  const lineExpand = {
+    hidden: { scaleX: 0, opacity: 0 },
+    visible: {
+      scaleX: 1,
+      opacity: 1,
+      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
-  const float = {
-    animate: {
-      y: [0, -20, 0],
-      transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-    }
-  };
-
-  const viewportConfig = { once: true, amount: 0.15 };
-
-  const sections = [
-    { id: 'luka', title: 'Luka yang Tak Berdarah' },
-    { id: 'ruang', title: 'Ruang Hening' },
-    { id: 'waktu', title: 'Waktu yang Melupakan' },
-    { id: 'suara', title: 'Suara dalam Sunyi' },
-    { id: 'jejak', title: 'Jejak yang Pudar' },
-    { id: 'akhir', title: 'Akhir yang Tak Pernah Tiba' },
-  ];
+  const words = ["Kami", "Menulis", "Pelan"];
+  const allLetters = words.map(word => word.split(""));
 
   return (
-    <div 
+    <section 
       ref={containerRef}
-      className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-1000 ease-out selection:bg-amber-950/30 selection:text-amber-800 overflow-x-hidden`}
-      style={{ cursor: 'none' }}
+      className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}
     >
-      {/* Custom Cursor */}
-      <motion.div
-        className={`fixed w-4 h-4 rounded-full ${theme.accent} pointer-events-none z-[100] mix-blend-difference hidden md:block`}
-        animate={{ x: mousePosition.x - 8, y: mousePosition.y - 8 }}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
-      />
-      <motion.div
-        className={`fixed w-8 h-8 rounded-full border ${theme.borderLight} pointer-events-none z-[99] hidden md:block`}
-        animate={{ x: mousePosition.x - 16, y: mousePosition.y - 16 }}
-        transition={{ type: "spring", stiffness: 150, damping: 20 }}
-      />
+      {/* Noise Texture Background */}
+      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]`}></div>
 
-      {/* Atmospheric Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Deep gradient layers */}
-        <div className={`absolute inset-0 bg-gradient-to-b ${theme.bgGradient}`} />
-        
-        {/* Animated fog/mist layers */}
-        <motion.div 
-          animate={{ opacity: [0.3, 0.6, 0.3], x: [0, 30, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute inset-0 bg-gradient-to-r from-transparent via-${darkMode ? 'stone-950' : 'stone-200'}/20 to-transparent`}
-        />
+      {/* Floating Particles */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: backgroundY }}
+      >
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute w-[1px] h-[1px] ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'} rounded-full`}
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${15 + (i % 4) * 20}%`,
+            }}
+            animate={{
+              y: [0, -40, 0],
+              opacity: isDark ? [0.1, 0.4, 0.1] : [0.05, 0.2, 0.05],
+              scale: [1, 2, 1]
+            }}
+            transition={{
+              duration: 5 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3
+            }}
+          />
+        ))}
+      </motion.div>
 
-        {/* Organic stains - like old coffee rings on forgotten paper */}
+      {/* Hero Section */}
+      <div 
+        ref={heroRef}
+        className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12"
+      >
         <motion.div 
+          className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0 }}
-          animate={{ opacity: showTexture ? 0.15 : 0 }}
-          transition={{ duration: 3 }}
-          className={`absolute top-[10%] right-[3%] w-[500px] h-[500px] rounded-full border-[1px] ${theme.border}`}
-          style={{ 
-            boxShadow: `inset 0 0 100px ${darkMode ? 'rgba(69,26,3,0.1)' : 'rgba(120,53,15,0.05)'}`,
-            transform: 'rotate(25deg)'
-          }}
-        />
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showTexture ? 0.1 : 0 }}
-          transition={{ duration: 3, delay: 0.5 }}
-          className={`absolute top-[15%] right-[5%] w-[350px] h-[350px] rounded-full border-[0.5px] ${theme.borderLight}`}
-        />
-        
-        {/* Bottom stains - heavy, melancholic */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showTexture ? 0.12 : 0 }}
-          transition={{ duration: 3, delay: 1 }}
-          className={`absolute bottom-[5%] left-[2%] w-[600px] h-[600px] rounded-full border-[1px] ${theme.border}`}
-          style={{ 
-            boxShadow: `inset 0 0 120px ${darkMode ? 'rgba(69,26,3,0.08)' : 'rgba(120,53,15,0.03)'}`,
-            transform: 'rotate(-15deg)'
-          }}
-        />
-
-        {/* Floating debris - like forgotten memories */}
-        <motion.div 
-          variants={float}
-          animate="animate"
-          className={`absolute top-[20%] left-[8%] w-2 h-3 ${theme.coffee} rounded-full opacity-10 rotate-45`}
-        />
-        <motion.div 
-          variants={float}
-          animate="animate"
-          transition={{ delay: 2 }}
-          className={`absolute top-[60%] right-[12%] w-1.5 h-2.5 ${theme.coffee} rounded-full opacity-8 rotate-[-30deg]`}
-        />
-        <motion.div 
-          variants={float}
-          animate="animate"
-          transition={{ delay: 4 }}
-          className={`absolute bottom-[30%] left-[15%] w-2.5 h-4 ${theme.coffee} rounded-full opacity-6 rotate-[60deg]`}
-        />
-
-        {/* Subtle noise texture */}
-        <div 
-          className={`absolute inset-0 opacity-[0.03] ${showTexture ? 'block' : 'hidden'}`}
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-          }}
-        />
-
-        {/* Vignette - drawing eyes to center, pushing world away */}
-        <div className={`absolute inset-0 ${darkMode ? 'bg-radial-gradient' : ''}`} style={{
-          background: darkMode ? 'radial-gradient(circle at center, transparent 0%, rgba(5,5,5,0.4) 100%)' : 'none'
-        }} />
-      </div>
-
-      {/* Minimal Progress - just a whisper */}
-      <div className="fixed top-0 left-0 right-0 h-[1px] z-50">
-        <motion.div 
-          className={`h-full ${theme.progress} opacity-50`}
-          style={{ width: useTransform(smoothProgress, v => `${v * 100}%`) }}
-        />
-      </div>
-
-      {/* Main Content - Generous breathing room */}
-      <main className={`relative z-10 max-w-2xl mx-auto px-8 md:px-16 pt-32 pb-48`}>
-
-        {/* Hero - Slow emergence from void */}
-        <motion.section 
-          id="luka"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="min-h-[90vh] flex flex-col justify-center mb-48 md:mb-64"
+          animate={isHeroInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5 }}
         >
-          <motion.div variants={fadeInSlow} className="mb-16">
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.5em] uppercase opacity-60`}>
-              Sebuah Pengakuan
-            </span>
-          </motion.div>
-
-          <motion.h1 
-            variants={fadeInUp}
-            className={`font-serif ${fontSizeClasses.title} font-light tracking-tight ${theme.textHeading} leading-[1.15] mb-20`}
-          >
-            Lewat
-            <br />
-            <span className={`italic ${theme.accentSoft} opacity-80`}>Begitu Saja</span>
-          </motion.h1>
-
-          <motion.div variants={staggerContainer} className="space-y-8 max-w-xl">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.2]`}>
-              Ada luka yang tak berdarah.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2] ml-4`}>
-              Ia tinggal di sela-sela hari, di ruang-ruang yang tidak pernah kita namai.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2] ml-4`}>
-              Di sudut mata yang kering, di tenggorokan yang selalu tercekat, di dada yang berdegup terlalu pelan untuk dianggap hidup.
-            </motion.p>
-          </motion.div>
-
-          <motion.div variants={fadeInUp} className={`mt-20 pl-8 border-l ${theme.borderLight} opacity-80`}>
-            <p className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2] italic`}>
-              "Aku menulis ini bukan untuk dimengerti."
-            </p>
-            <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} mt-8 leading-[2]`}>
-              Tapi karena diam lebih menyakitkan. Karena ada sesuatu di dalam yang harus dikeluarkan, meski tak ada yang menunggu di luar.
-            </p>
-          </motion.div>
-
+          {/* Decorative Lines */}
           <motion.div 
-            variants={breathe}
-            animate="animate"
-            className={`mt-24 flex justify-center`}
+            className="flex items-center justify-center gap-4 mb-8"
+            initial="hidden"
+            animate={isHeroInView ? "visible" : "hidden"}
           >
-            <Wind size={24} className={`${theme.textMuted} opacity-30`} strokeWidth={1} />
-          </motion.div>
-        </motion.section>
-
-        {/* Ruang Hening */}
-        <motion.section 
-          id="ruang"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="mb-48 md:mb-64 scroll-mt-32"
-        >
-          <motion.div variants={fadeInUp} className={`flex items-center gap-6 mb-16 pb-6 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase opacity-50`}>Bab I</span>
-            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} italic`}>Ruang Hening</h2>
-          </motion.div>
-
-          <motion.div variants={staggerContainer} className="space-y-12">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.4]`}>
-              Setiap malam, aku duduk di kursi yang sama.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Bukan karena nyaman. Tapi karena kursi ini sudah menyerap terlalu banyak sunyi. Sudah menjadi bagian dari keheningan yang kukenakan setiap hari seperti baju kedua.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="my-16 space-y-6">
-              <p className={`${fontSizeClasses.body} font-light ${theme.text} text-center italic opacity-80`}>
-                Di seberang jendela, kota terus berdenyut.
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center`}>
-                Lampu-lampu berkedip dalam bahasa yang tidak kupahami.
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center`}>
-                Mobil-mobil lewat, membawa orang-orang dengan tujuan.
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Aku hanya menonton. Bukan sebagai bagian dari dunia, tapi sebagai bayangan yang tertinggal di kaca. Seperti noda air yang tidak pernah benar-benar kering.
-            </motion.p>
-
-            <motion.div variants={scaleIn} className={`my-16 p-10 ${theme.card} border ${theme.border} rounded-sm relative overflow-hidden`}>
-              <motion.div 
-                animate={{ opacity: [0.05, 0.15, 0.05] }}
-                transition={{ duration: 10, repeat: Infinity }}
-                className={`absolute inset-0 ${theme.accentBg}`}
-              />
-              <p className={`${fontSizeClasses.poetry} font-light ${theme.textHeading} italic text-center leading-[2.4] relative z-10`}>
-                "Kadang aku bertanya pada bayanganku sendiri: apakah kau masih mengenaliku?"
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center mt-8 relative z-10`}>
-                Ia tidak pernah menjawab. Hanya mengikuti setiap gerakanku, sepena yang setia pada mayatnya.
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Ruang ini tidak kosong. Ia penuh dengan yang tak terucap. Penuh dengan percakapan yang hanya terjadi di dalam kepala, dengan pelukan yang tidak pernah diberikan, dengan kata-kata yang terus mengendap di dasar kerongkongan seperti endapan kopi yang terlalu lama dibiarkan.
-            </motion.p>
-          </motion.div>
-        </motion.section>
-
-        {/* Waktu yang Melupakan */}
-        <motion.section 
-          id="waktu"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="mb-48 md:mb-64 scroll-mt-32"
-        >
-          <motion.div variants={fadeInUp} className={`flex items-center gap-6 mb-16 pb-6 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase opacity-50`}>Bab II</span>
-            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} italic`}>Waktu yang Melupakan</h2>
+            <motion.div 
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-right`}
+              variants={lineExpand}
+            />
+            <motion.span 
+              className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}
+              initial={{ opacity: 0 }}
+              animate={isHeroInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.8, duration: 1 }}
+            >
+              Arsip Kelas Pekerja
+            </motion.span>
+            <motion.div 
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-left`}
+              variants={lineExpand}
+            />
           </motion.div>
 
-          <motion.div variants={staggerContainer} className="space-y-12">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.4]`}>
-              Waktu tidak pernah berjalan lurus.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2] ml-6`}>
-              Ia berkelok, berputar, lalu tersedak di tenggorokan hari-hari yang monoton. Di sini, di ruang ini, jam dinding hanya hiasan. Jarumnya bergerak, tapi waktu tidak pernah benar-benar lewat.
-            </motion.p>
+          {/* Subtitle Above */}
+          <motion.p
+            className={`font-serif italic ${colors.accent} text-xl mb-6 opacity-80`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            catatan dari
+          </motion.p>
 
-            <motion.div variants={fadeInUp} className="my-16 grid grid-cols-1 gap-8">
-              {[
-                { text: "Pagi datang dengan cahaya yang sama.", sub: "Aku membuka mata, dan lupa apakah ini hari ini atau kemarin." },
-                { text: "Siang berlalu tanpa jejak.", sub: "Makan siang di meja yang sama, dengan rasa yang sudah mati sebelum menyentuh lidah." },
-                { text: "Malam tiba seperti tamu yang tidak diundang.", sub: "Membawa sunyi yang lebih dalam, lebih berat, lebih mengenaliku daripada siapapun." }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  variants={scaleIn}
-                  className={`p-8 ${theme.card} border-l-2 ${theme.borderLight} ${theme.hover} transition-all duration-700`}
-                >
-                  <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic mb-4`}>{item.text}</p>
-                  <p className={`${fontSizeClasses.body} font-light ${theme.textMuted}`}>{item.sub}</p>
-                </motion.div>
+          {/* Main Title - Animated Letters */}
+          <div className="overflow-hidden mb-8">
+            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center gap-4 md:gap-8 perspective-1000 flex-wrap`}>
+              {words.map((word, wordIndex) => (
+                <span key={wordIndex} className="flex">
+                  {allLetters[wordIndex].map((letter, i) => (
+                    <motion.span
+                      key={`${wordIndex}-${i}`}
+                      custom={wordIndex * 10 + i}
+                      variants={letterAnimation}
+                      initial="hidden"
+                      animate={isHeroInView ? "visible" : "hidden"}
+                      className="inline-block"
+                      style={{ 
+                        transformStyle: "preserve-3d",
+                        textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
+                      }}
+                    >
+                      {letter}
+                    </motion.span>
+                  ))}
+                </span>
               ))}
-            </motion.div>
+            </h1>
+          </div>
 
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Aku menulis tanggal di sudut kertas, lalu melupakannya. Apakah penting? Hari ini, kemarin, atau lima tahun lalu—semua terasa sama. Semua adalah ruang yang sama, dengan bau yang sama, dengan kekosongan yang sama.
-            </motion.p>
-
-            <motion.blockquote variants={scaleIn} className={`my-16 pl-8 border-l-2 ${theme.accentBorder}`}>
-              <p className={`${fontSizeClasses.poetry} font-light ${theme.accentSoft} italic leading-[2.4]`}>
-                "Yang paling menakutkan bukanlah kematian, tapi terus hidup sementara dunia perlahan-lahan melupakan bahwa kau pernah ada."
-              </p>
-            </motion.blockquote>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Kadang aku menemukan foto lama. Diriku yang tersenyum, bersama orang-orang yang kini hanya nama di memori. Aku mencoba mengingat rasanya—bahagia, mungkin? Tapi itu seperti mencicipi air. Tidak ada rasa. Hanya dingin yang lewat di kerongkongan.
-            </motion.p>
+          {/* Typewriter Subtitle */}
+          <motion.div 
+            className="max-w-2xl mx-auto mt-8"
+            initial={{ opacity: 0 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ delay: 1.5, duration: 1 }}
+          >
+            <p className={`text-[15px] md:text-base leading-[1.8] ${colors.textMuted} font-light`}>
+              {subtitleText}
+              <motion.span
+                className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+              />
+            </p>
           </motion.div>
-        </motion.section>
+        </motion.div>
+      </div>
 
-        {/* Suara dalam Sunyi */}
-        <motion.section 
-          id="suara"
+      {/* Main Content */}
+      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
+        
+        {/* Opening Paragraph */}
+        <motion.div
+          custom={0}
+          variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="mb-48 md:mb-64 scroll-mt-32"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-12"
         >
-          <motion.div variants={fadeInUp} className={`flex items-center gap-6 mb-16 pb-6 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase opacity-50`}>Bab III</span>
-            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} italic`}>Suara dalam Sunyi</h2>
-          </motion.div>
-
-          <motion.div variants={staggerContainer} className="space-y-12">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.4]`}>
-              Ada suara yang hanya terdengar ketika semuanya sunyi.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Bukan suara dari luar. Bukan deru mesin, bukan langkah kaki di koridor, bukan bisikan tetangga di balik dinding tipis. Ini suara dari dalam—dari tempat yang lebih dalam daripada pikiran, lebih dalam daripada kenangan.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className={`my-16 p-10 ${theme.accentBg} border ${theme.accentBorder} rounded-sm`}>
-              <p className={`${fontSizeClasses.body} font-light ${theme.text} italic text-center leading-[2.4]`}>
-                "Ia berbisik tentang hal-hal yang kucoba kubur: tentang mimpi yang terlalu kecil untuk dikejar, tentang cinta yang terlalu besar untuk diungkapkan, tentang diriku yang terlalu rapuh untuk diakui."
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Di tengah malam, ketika tidur adalah musuh yang tak bisa dikalahkan, suara itu menjadi nyaring. Ia menceritakan kisah-kisah yang tidak kuminta. Tentang jalan yang tidak kutempuh. Tentang kata-kata yang tertelan. Tentang peluang yang kulihat pergi, satu per satu, seperti debu yang terbawa angin.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Aku mencoba membalas. Bicara pada diri sendiri, kadang keras, kadang hanya gerakan bibir yang tak bersuara. Tapi suara itu tidak mendengarkan. Ia hanya terus berbicara, dalam irama yang sama, dalam nada yang sama, seperti jarum piringan hitam yang tersangkut di lekukan yang sama.
-            </motion.p>
-
-            <motion.div variants={scaleIn} className="my-16 text-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                className={`inline-block p-8 ${theme.card} border ${theme.border} rounded-full`}
-              >
-                <Clock size={32} className={`${theme.textMuted} opacity-40`} strokeWidth={1} />
-              </motion.div>
-              <p className={`${fontSizeClasses.small} ${theme.textMuted} mt-6 uppercase tracking-[0.3em]`}>
-                Berputar tanpa arah
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Mungkin inilah sebabnya aku menulis. Bukan untuk didengar oleh dunia, tapi untuk mengalihkan suara itu. Untuk memberinya bentuk, memberinya kata-kata, sehingga ia tidak lagi menguasai ruang-ruang kosong di kepalaku.
-            </motion.p>
-          </motion.div>
-        </motion.section>
-
-        {/* Jejak yang Pudar */}
-        <motion.section 
-          id="jejak"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="mb-48 md:mb-64 scroll-mt-32"
-        >
-          <motion.div variants={fadeInUp} className={`flex items-center gap-6 mb-16 pb-6 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase opacity-50`}>Bab IV</span>
-            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} italic`}>Jejak yang Pudar</h2>
-          </motion.div>
-
-          <motion.div variants={staggerContainer} className="space-y-12">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.4]`}>
-              Aku meninggalkan jejak setiap hari.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Di sandal yang terus mengikis di ujung. Di piring yang terus menumpuk di wastafel. Di kertas-kertas yang kubuang, yang kutulis, yang kubakar. Tapi jejak-jejak itu tidak bertanya ke mana perginya. Mereka hanya ada, lalu hilang, seperti napas yang tak pernah dihirup dengan sengaja.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="my-16 space-y-8">
-              <p className={`${fontSizeClasses.body} font-light ${theme.text} text-center italic`}>
-                "Pernahkah kau merasa menjadi hantu di kehidupanmu sendiri?"
-              </p>
-              <div className="flex justify-center">
-                <Ghost size={48} className={`${theme.textMuted} opacity-20`} strokeWidth={1} />
-              </div>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} text-center max-w-lg mx-auto`}>
-                Melihat, tapi tidak terlihat. Menyentuh, tapi tidak terasa. Berbicara, tapi hanya angin yang menjawab.
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Aku mencoba mengingat kapan terakhir kali seseorang benar-benar melihatku. Bukan melihat tubuhku, atau namaku, atau peranku. Tapi melihat ke dalam, ke tempat di mana suara-suara itu berasal. Ke tempat di mana aku benar-benar berada.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Mungkin tidak pernah. Mungkin itu terlalu banyak diminta. Atau mungkin, aku sendiri sudah lupa bagaimana caranya terbuka. Bagaimana caranya tidak menjadi bayangan. Bagaimana caranya hadir sepenuhnya, tanpa setengah hati menunggu saat aku bisa kembali ke sunyi.
-            </motion.p>
-
-            <motion.div variants={scaleIn} className={`my-16 p-10 ${theme.card} border ${theme.border} relative`}>
-              <div className={`absolute -top-3 left-8 px-4 ${theme.bg}`}>
-                <span className={`${fontSizeClasses.small} ${theme.textMuted} uppercase tracking-[0.3em]`}>Pengakuan</span>
-              </div>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textHeading} italic leading-[2.4]`}>
-                "Aku takut bahwa suatu hari nanti, ketika aku benar-benar pergi, tidak akan ada yang menyadari kekosongan yang kutinggalkan. Karena kekosongan itu sudah ada sejak lama. Aku hanya menempatinya."
-              </p>
-            </motion.div>
-          </motion.div>
-        </motion.section>
-
-        {/* Akhir yang Tak Pernah Tiba */}
-        <motion.section 
-          id="akhir"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="mb-32 scroll-mt-32"
-        >
-          <motion.div variants={fadeInUp} className={`flex items-center gap-6 mb-16 pb-6 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.4em] uppercase opacity-50`}>Bab V</span>
-            <h2 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} italic`}>Akhir yang Tak Pernah Tiba</h2>
-          </motion.div>
-
-          <motion.div variants={staggerContainer} className="space-y-12">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.text} leading-[2.4]`}>
-              Setiap kisah seharusnya punya akhir.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Tapi yang ini terus berlanjut, hari demi hari, dalam irama yang sama, dalam sunyi yang sama. Tidak ada klimaks. Tidak ada resolusi. Hanya pengulangan yang perlahan-lahan menggerus apa pun yang tersisa dari harapan.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className={`my-16 p-12 ${theme.accentBg} border ${theme.accentBorder} rounded-sm text-center`}>
-              <p className={`${fontSizeClasses.poetry} font-light ${theme.accentSoft} italic leading-[2.6] mb-8`}>
-                "Jadi aku terus menulis."
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-                Bukan karena yakin ada yang membaca. Bukan karena berharap ada yang mengerti.
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} mt-6 leading-[2.2]`}>
-                Tapi karena menulis adalah satu-satunya cara aku tahu untuk membuktikan bahwa aku masih ada. Bahwa di balik sunyi ini, di balik bayangan ini, masih ada sesuatu yang berdenyut—terlalu pelan untuk didengar orang lain, tapi cukup keras untuk kurasakan sendiri.
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Mungkin suatu hari, ketika cahaya pagi datang dengan sudut yang berbeda, aku akan menemukan kata yang tepat. Kata yang bisa mengubah semua ini menjadi makna. Tapi sampai saat itu—jika memang akan datang—aku akan terus di sini. Di kursi yang sama. Di ruang yang sama. Menunggu.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2] text-center italic mt-16`}>
-              Bukan dengan harapan.
-            </motion.p>
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.poetry} font-light ${theme.textHeading} leading-[2.4] text-center`}>
-              Tapi dengan kesetiaan yang hanya dimiliki oleh yang sudah terlalu lama berada di tempat yang sama.
-            </motion.p>
-          </motion.div>
-        </motion.section>
-
-        {/* Penutup - Epilog */}
-        <motion.section 
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportConfig}
-          variants={staggerContainer}
-          className="pt-32 border-t border-stone-900"
-        >
-          <motion.div variants={fadeInUp} className="flex items-center justify-center gap-8 mb-20">
-            <span className={`w-24 h-px ${theme.border}`} />
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.5em] uppercase opacity-40`}>Epilog</span>
-            <span className={`w-24 h-px ${theme.border}`} />
-          </motion.div>
-
-          <motion.div variants={staggerContainer} className="max-w-xl mx-auto text-center space-y-10">
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} leading-[2.2]`}>
-              Jika kau membaca sampai di sini, mungkin kau juga mengenal sunyi ini.
-            </motion.p>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.text} leading-[2.2]`}>
-              Mungkin di suatu tempat, di waktu yang berbeda, kau juga duduk di kursimu sendiri. Menatap jendela yang sama. Mendengar suara yang sama.
-            </motion.p>
-
-            <motion.div variants={scaleIn} className={`py-12 px-8 ${theme.card} border ${theme.border}`}>
-              <p className={`${fontSizeClasses.poetry} font-light ${theme.textHeading} italic leading-[2.4]`}>
-                "Maka dari itu, selamat datang."
-              </p>
-              <p className={`${fontSizeClasses.body} font-light ${theme.textMuted} mt-6 leading-[2]`}>
-                Bukan sebagai pembaca. Tapi sebagai penghuni sunyi yang lain. Sebagai bayangan yang juga mencoba diingat. Sebagai suara yang juga berusaha didengar.
-              </p>
-            </motion.div>
-
-            <motion.p variants={lineReveal} className={`${fontSizeClasses.body} font-light ${theme.textMuted} italic leading-[2.2]`}>
-              Kita mungkin tidak akan pernah bertemu. Tapi di dalam sunyi ini, kita tidak sendiri.
-            </motion.p>
-
-            <motion.div variants={breathe} animate="animate" className="pt-12">
-              <Coffee size={20} className={`${theme.accent} mx-auto opacity-40`} strokeWidth={1} />
-            </motion.div>
-          </motion.div>
-        </motion.section>
-
-        {/* Final whisper */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 3 }}
-          className="text-center pt-32 pb-16"
-        >
-          <p className={`${fontSizeClasses.small} ${theme.textMuted} tracking-[0.3em] uppercase opacity-30`}>
-            Dari satu yang lewat, untuk yang lain yang juga lewat
-          </p>
-          <p className={`${fontSizeClasses.small} ${theme.textMuted} mt-4 opacity-20`}>
-            — tanpa tahun, tanpa nama, tanpa jejak —
+          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
+            <motion.span 
+              className={`float-left text-7xl font-serif ${colors.accent} mr-4 mt-2 leading-none`}
+              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              K
+            </motion.span>
+            ami menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak, tapi masih cukup untuk menyalakan lampu meja. Sisa waktu yang tidak dimiliki siapa-siapa, jadi kami klaim sebagai milik kami. Sisa pikiran yang belum sepenuhnya habis dipakai untuk memenuhi tuntutan hari.
           </p>
         </motion.div>
 
-      </main>
-
-      {/* Controls - Minimal, unobtrusive */}
-      <AnimatePresence>
-        {showControls && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className={`fixed bottom-24 left-6 z-40 ${darkMode ? 'bg-stone-950/90' : 'bg-white/90'} backdrop-blur-xl border ${theme.border} p-5 rounded-sm shadow-2xl`}
+        {/* Content Sections */}
+        <motion.div 
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.p 
+            custom={1}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
           >
-            <div className="space-y-4 min-w-[180px]">
-              <div className="flex items-center justify-between">
-                <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>Tema</span>
-                <button onClick={toggleDarkMode} className={`p-2 rounded-sm ${theme.hover}`}>
-                  {darkMode ? <Moon size={14} className={theme.accent} /> : <Sun size={14} className={theme.accent} />}
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>Teks</span>
-                <div className="flex gap-2">
-                  <button onClick={() => setFontSize('normal')} className={`px-2 py-1 ${fontSize === 'normal' ? theme.accentBg : ''} ${fontSizeClasses.small}`}>A</button>
-                  <button onClick={() => setFontSize('large')} className={`px-2 py-1 ${fontSize === 'large' ? theme.accentBg : ''} ${fontSizeClasses.small}`}>A+</button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>Latar</span>
-                <button onClick={() => setShowTexture(!showTexture)} className={`p-2 rounded-sm ${theme.hover}`}>
-                  {showTexture ? <Eye size={14} className={theme.textMuted} /> : <EyeOff size={14} className={theme.textMuted} />}
-                </button>
-              </div>
-              <div className={`pt-3 border-t ${theme.border}`}>
-                <p className={`${theme.textMuted} ${fontSizeClasses.small} mb-2`}>Loncat ke</p>
-                <div className="space-y-1">
-                  {sections.map((s) => (
-                    <a key={s.id} href={`#${s.id}`} onClick={() => setShowControls(false)} className={`block ${fontSizeClasses.small} ${theme.textMuted} ${theme.hover} py-1`}>
-                      {s.title}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
+            Kami bukan penulis profesional. Kami adalah pekerja—di pabrik, di kantor, di jalanan, di dapur orang lain. Kami bangun pagi untuk melakukan hal-hal yang tidak kami cintai, lalu pulang dengan tubuh yang ingin rebah tapi pikiran yang masih berdenyut. Di celah-celah itu, di antara kelelahan dan tidur, kami mencuri waktu untuk menulis.
+          </motion.p>
+
+          <motion.p 
+            custom={2}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Tulisan kami tidak muncul dari inspirasi yang tiba-tiba melanda. Mereka lahir dari keharusan—keharusan untuk mengingat, untuk mengeluh, untuk bertanya <em className={`${colors.accent} not-italic`}>apakah ini saja?</em> Keharusan untuk membuktikan bahwa kami lebih dari sekadar alat, lebih dari sekadar angka di daftar gaji.
+          </motion.p>
+        </motion.div>
+
+        {/* Quote Block */}
+        <motion.div
+          className={`my-16 pl-6 border-l-2 ${colors.accentBorder}`}
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <motion.blockquote 
+            className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.6]`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.9 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            &ldquo;Menulis pelan bukan karena tidak punya urgensi. Tapi karena kami tahu, jika ditulis terlalu cepat, kami akan kehabisan diri sendiri sebelum dunia kehabisan tuntutan.&rdquo;
+          </motion.blockquote>
+        </motion.div>
+
+        {/* More Content */}
+        <motion.p 
+          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          Kami tidak menulis untuk viral. Kami tidak menulis untuk dipuji. Kami menulis karena diam lebih berbahaya—karena jika tidak ditulis, hari-hari ini akan runtuh tanpa saksi. Karena ada sesuatu di dalam yang harus dikeluarkan, meski tak ada yang menunggu di luar.
+        </motion.p>
+
+        {/* Section Divider */}
+        <motion.div 
+          className="flex items-center justify-center gap-4 py-12"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <motion.div 
+            className={`h-px ${colors.divider} w-24`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+          <motion.div 
+            className={`w-2 h-2 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#a16207]/40'} rotate-45`}
+            animate={{ rotate: [45, 225, 45] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div 
+            className={`h-px ${colors.divider} w-24`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+        </motion.div>
+
+        {/* Empty State / Placeholder */}
+        <motion.div
+          className="mt-20"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
+            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Tulisan-tulisan</h3>
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Segera</span>
+          </div>
+
+          <motion.div 
+            className="text-center py-20"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            <motion.p 
+              className={`font-serif italic text-xl ${colors.accentMuted} mb-3`}
+              animate={{ 
+                opacity: [0.4, 0.8, 0.4],
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+            >
+              Ruang yang menunggu diisi
+            </motion.p>
+            <p className={`text-sm ${colors.emptyState}`}>Belum ada kata yang berani keluar dari bayangan.</p>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
 
-      {/* Toggle */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShowControls(!showControls)}
-        className={`fixed bottom-6 left-6 z-50 p-3 ${darkMode ? 'bg-stone-900/80' : 'bg-white/80'} backdrop-blur-md border ${theme.border} rounded-full shadow-lg ${theme.textMuted} hover:${theme.text} transition-colors`}
-      >
-        {showControls ? <X size={16} /> : <Settings2 size={16} />}
-      </motion.button>
+        {/* Closing Quote */}
+        <motion.div 
+          className="mt-24 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+        >
+          <motion.div
+            className={`w-12 h-px ${colors.divider} mx-auto mb-8`}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5 }}
+          />
+          <p className={`font-serif italic text-lg md:text-xl ${colors.accentMuted} max-w-2xl mx-auto leading-[1.7] mb-4`}>
+            &ldquo;Kami mungkin lewat begitu saja. Tapi setidaknya, kami pernah mencoba mengingatkan bahwa kami ada.&rdquo;
+          </p>
+          <p className={`text-[10px] tracking-[0.3em] uppercase ${colors.subtleText}`}>
+            — Dari kami yang menulis pelan
+          </p>
+        </motion.div>
 
-    </div>
+        {/* Final Note */}
+        <motion.div 
+          className="mt-24 text-center pb-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+        >
+          <motion.p 
+            className={`font-serif italic ${colors.accentMuted} text-sm`}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            Ditulis setelah kerja selesai,<br />
+            di malam yang tidak yakin ingin dihabiskan.
+          </motion.p>
+          
+          <motion.div 
+            className="mt-8 flex items-center justify-center gap-3"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 1, duration: 1 }}
+          >
+            <div className={`h-px ${colors.accentBg} w-8`}></div>
+            <span className={`text-[9px] tracking-[0.4em] uppercase ${isDark ? 'text-[#44403c]' : 'text-[#d6d3d1]'}`}>Akhir dari arsip</span>
+            <div className={`h-px ${colors.accentBg} w-8`}></div>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Footer */}
+      <Footer />
+    </section>
   );
 }
