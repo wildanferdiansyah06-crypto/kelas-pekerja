@@ -1,27 +1,41 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useTheme } from "@/src/components/ThemeProvider";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import Footer from "@/src/components/Footer";
 
-export default function TentangPage() {
-  const containerRef = useRef<HTMLElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+export default function LewatBegituSajaPage() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
   const isHeroInView = useInView(heroRef, { once: true });
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
+
+  const { scrollYProgress } = useScroll();
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  
+
   const [subtitleText, setSubtitleText] = useState("");
-  const fullSubtitle = "Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan. Bukan untuk diterima, bukan untuk dipahami—hanya untuk ada.";
-  
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
+
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    const checkTheme = () => {
+      const html = document.documentElement;
+      setIsDark(html.classList.contains('dark'));
+    };
+    
+    checkTheme();
+    
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (isHeroInView) {
@@ -33,7 +47,7 @@ export default function TentangPage() {
         } else {
           clearInterval(timer);
         }
-      }, 30);
+      }, 25);
       return () => clearInterval(timer);
     }
   }, [isHeroInView]);
@@ -55,11 +69,10 @@ export default function TentangPage() {
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0, y: 60, filter: "blur(10px)" },
+    hidden: { opacity: 0, y: 60 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: {
         delay: i * 0.15,
         duration: 1.2,
@@ -69,11 +82,10 @@ export default function TentangPage() {
   };
 
   const letterAnimation = {
-    hidden: { opacity: 0, y: 100, rotateX: -90 },
+    hidden: { opacity: 0, y: 100 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
-      rotateX: 0,
       transition: {
         delay: 0.5 + (i * 0.08),
         duration: 1,
@@ -91,38 +103,39 @@ export default function TentangPage() {
     }
   };
 
-  const words = ["Tentang"];
-  const letters = words[0].split("");
+  const title = "Lewat Begitu Saja";
+  const letters = title.split("");
 
   return (
-    <section 
+    <div 
       ref={containerRef}
       className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}
     >
-      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]`}></div>
+      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none`} style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+      }} />
 
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{ y: backgroundY }}
       >
-        {[...Array(8)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute w-[1px] h-[1px] ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'} rounded-full`}
+            className={`absolute w-1 h-1 rounded-full ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'}`}
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + (i % 4) * 20}%`,
+              left: `${15 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
             }}
             animate={{
-              y: [0, -40, 0],
-              opacity: isDark ? [0.1, 0.4, 0.1] : [0.05, 0.2, 0.05],
-              scale: [1, 2, 1]
+              y: [0, -30, 0],
+              opacity: isDark ? [0.1, 0.3, 0.1] : [0.05, 0.15, 0.05],
             }}
             transition={{
-              duration: 5 + i * 0.5,
+              duration: 6 + i * 0.5,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.3
+              delay: i * 0.5
             }}
           />
         ))}
@@ -144,7 +157,7 @@ export default function TentangPage() {
             animate={isHeroInView ? "visible" : "hidden"}
           >
             <motion.div 
-              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-right`}
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16`}
               variants={lineExpand}
             />
             <motion.span 
@@ -153,10 +166,10 @@ export default function TentangPage() {
               animate={isHeroInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.8, duration: 1 }}
             >
-              Arsip Pikiran
+              Arsip Pribadi
             </motion.span>
             <motion.div 
-              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-left`}
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16`}
               variants={lineExpand}
             />
           </motion.div>
@@ -167,11 +180,11 @@ export default function TentangPage() {
             animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
             transition={{ delay: 0.3, duration: 1 }}
           >
-            ruang bagi
+            sebuah pengakuan
           </motion.p>
 
           <div className="overflow-hidden mb-8">
-            <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl ${colors.text} flex justify-center perspective-1000`}>
+            <h1 className={`font-serif text-4xl md:text-6xl lg:text-7xl ${colors.text} flex justify-center flex-wrap`}>
               {letters.map((letter, i) => (
                 <motion.span
                   key={i}
@@ -179,25 +192,21 @@ export default function TentangPage() {
                   variants={letterAnimation}
                   initial="hidden"
                   animate={isHeroInView ? "visible" : "hidden"}
-                  className="inline-block"
-                  style={{ 
-                    transformStyle: "preserve-3d",
-                    textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
-                  }}
+                  className={`inline-block ${letter === " " ? "w-3 md:w-4" : ""}`}
                 >
-                  {letter}
+                  {letter === " " ? "\u00A0" : letter}
                 </motion.span>
               ))}
             </h1>
           </div>
 
           <motion.div 
-            className="max-w-2xl mx-auto mt-8"
+            className="max-w-2xl mx-auto mt-8 px-4"
             initial={{ opacity: 0 }}
             animate={isHeroInView ? { opacity: 1 } : {}}
             transition={{ delay: 1.5, duration: 1 }}
           >
-            <p className={`text-[15px] md:text-base leading-[1.8] ${colors.textMuted} font-light`}>
+            <p className={`text-sm md:text-base leading-[1.8] ${colors.textMuted} font-light`}>
               {subtitleText}
               <motion.span
                 className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
@@ -210,6 +219,7 @@ export default function TentangPage() {
       </div>
 
       <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
+        
         <motion.div
           custom={0}
           variants={fadeInUp}
@@ -218,17 +228,17 @@ export default function TentangPage() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-12"
         >
-          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
+          <p className={`text-base md:text-lg leading-[2] ${colors.textSecondary} font-light text-justify`}>
             <motion.span 
-              className={`float-left text-7xl font-serif ${colors.accent} mr-4 mt-2 leading-none`}
-              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              className={`float-left text-6xl md:text-7xl font-serif ${colors.accent} mr-4 mt-2 leading-none`}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              K
+              B
             </motion.span>
-            ita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Namun di sudut terdalam kesadaran, kita tahu: yang benar-benar berarti justru datang dari proses yang lambat, menyakitkan, dan seringkali tanpa tujuan jelas.
+            adan bau keringat. Layar ponsel masih perih di mata. Alarm pagi belum sempat dilupakan. Kopi instan dingin di meja, sudah kehilangan uapnya sejak jam yang lalu. Aku mengirimkannya sebagai tautan—kadang hanya satu kalimat, kadang tanpa pesan apa-apa.
           </p>
         </motion.div>
 
@@ -241,17 +251,36 @@ export default function TentangPage() {
           <motion.p 
             custom={1}
             variants={fadeInUp}
-            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+            className={`text-base md:text-lg leading-[2] ${colors.textMuted} font-light text-justify`}
           >
-            Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Mereka tidak mengklaim kebenaran. Mereka hanya mengakui keberadaan: bahwa seseorang, di suatu tempat, pernah merasa sesuatu yang terlalu kompleks untuk diungkapkan dalam percakapan sehari-hari.
+            Kelas pekerja menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak. Sisa waktu yang tidak dimiliki siapa-siapa. Sisa pikiran yang belum habis dipakai bekerja. Kami menulis bukan karena yakin, tapi karena diam-diam tahu: kalau tidak ditulis, hari ini akan hilang.
           </motion.p>
 
-          <motion.p 
+          <motion.div 
             custom={2}
             variants={fadeInUp}
-            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12"
           >
-            Tentang kopi yang bukan sekadar minuman, melainkan ritual penundaan— cara kita memberontak terhadap waktu. Tentang kerja yang memakan hari-hari kita, lalu kita bertanya: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya?</em> Tentang keheningan yang mengganggu, karena di dalamnya kita terpaksa berhadapan dengan diri sendiri.
+            {['Sisa tenaga.', 'Sisa waktu.', 'Sisa pikiran.'].map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2, duration: 0.8 }}
+                className={`p-6 ${colors.accentBgLight} border ${colors.accentBorder} text-center`}
+              >
+                <p className={`font-serif italic ${colors.accent} text-sm md:text-base`}>{item}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.p 
+            custom={3}
+            variants={fadeInUp}
+            className={`text-base md:text-lg leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk. Karena itu, ia tidak pandai meminta perhatian. Ia hanya diam, menunggu, dan kadang—ketika dunia luar melewatinya begitu saja—rasanya masih bisa diterima.
           </motion.p>
         </motion.div>
 
@@ -263,25 +292,64 @@ export default function TentangPage() {
           transition={{ duration: 1, delay: 0.3 }}
         >
           <motion.blockquote 
-            className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.6]`}
+            className={`font-serif italic text-lg md:text-xl ${colors.accent} leading-[1.6]`}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 0.9 }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, delay: 0.5 }}
           >
-            &ldquo;Menulis adalah cara kita memberi makna pada kekosongan. Bukan untuk mengisinya, tetapi untuk mengenalinya. Seperti menatap ke dalam sumur yang gelap dan akhirnya melihat bayangan diri sendiri.&rdquo;
+            &ldquo;Karya itu seperti bekal yang dimakan dingin di sela jam kerja. Tidak mewah. Tidak istimewa. Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi.&rdquo;
           </motion.blockquote>
         </motion.div>
 
-        <motion.p 
-          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
+        <motion.div 
+          className="space-y-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.p 
+            custom={4}
+            variants={fadeInUp}
+            className={`text-base md:text-lg leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan. Buku itu ada di sana, berbulan-bulan. Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan.
+          </motion.p>
+
+          <motion.p 
+            custom={5}
+            variants={fadeInUp}
+            className={`text-base md:text-lg leading-[2] ${colors.textSecondary} font-light text-center italic px-4 md:px-8`}
+          >
+            Kadang, yang paling sunyi bukan tidak dibaca, tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
+          </motion.p>
+
+          <motion.p 
+            custom={6}
+            variants={fadeInUp}
+            className={`text-base md:text-lg leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          className={`my-16 p-6 md:p-8 ${colors.accentBgLight} border ${colors.accentBorder}`}
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          Mungkin ini semua hanya monolog yang tak pernah dimaksudkan untuk didengar. Tapi jika kamu menemukan dirimu di sini, di antara kata-kata yang tercecer—selamat datang. Kita adalah orang-orang yang sama: yang mencari arti di tempat-tempat yang orang lain lewati begitu saja.
-        </motion.p>
+          <motion.p 
+            className={`text-base md:text-lg leading-[2] ${colors.text} font-light text-center italic`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            Aku tetap menulis bukan karena yakin akan dibaca. Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi. Menulis adalah caraku mengatakan pada diri sendiri bahwa aku pernah ada di hari ini.
+          </motion.p>
+        </motion.div>
 
         <motion.div 
           className="flex items-center justify-center gap-4 py-12"
@@ -319,8 +387,52 @@ export default function TentangPage() {
           transition={{ duration: 1 }}
         >
           <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
-            <h3 className={`font-serif italic text-2xl ${colors.text}`}>Catatan-catatan</h3>
-            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Kosong</span>
+            <h3 className={`font-serif italic text-xl md:text-2xl ${colors.text}`}>Penutup</h3>
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Akhir</span>
+          </div>
+
+          <motion.div 
+            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.p 
+              custom={0}
+              variants={fadeInUp}
+              className={`text-base md:text-lg leading-[2] ${colors.textMuted} font-light text-center`}
+            >
+              Buku ini tidak meminta perhatian. Ia juga tidak ingin dipahami. Ia hanya ingin jujur.
+            </motion.p>
+
+            <motion.p 
+              custom={1}
+              variants={fadeInUp}
+              className={`text-base md:text-lg leading-[2] ${colors.textSecondary} font-light text-center italic`}
+            >
+              Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, itu sudah cukup. Jika tidak, tidak apa-apa.
+            </motion.p>
+
+            <motion.p 
+              custom={2}
+              variants={fadeInUp}
+              className={`font-serif text-xl md:text-2xl ${colors.accent} italic text-center mt-12`}
+            >
+              Ia tetap ditulis.
+            </motion.p>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="mt-24"
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          <div className={`flex items-center justify-between mb-8 border-b ${colors.accentBgLight} pb-4`}>
+            <h3 className={`font-serif italic text-xl md:text-2xl ${colors.text}`}>Tulisan-tulisan Lain</h3>
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${colors.accentMuted}`}>Segera</span>
           </div>
 
           <motion.div 
@@ -331,7 +443,7 @@ export default function TentangPage() {
             transition={{ delay: 0.3, duration: 1 }}
           >
             <motion.p 
-              className={`font-serif italic text-xl ${colors.accentMuted} mb-3`}
+              className={`font-serif italic text-lg ${colors.accentMuted} mb-3`}
               animate={{ 
                 opacity: [0.4, 0.8, 0.4],
               }}
@@ -361,11 +473,11 @@ export default function TentangPage() {
             viewport={{ once: true }}
             transition={{ duration: 1.5 }}
           />
-          <p className={`font-serif italic text-lg md:text-xl ${colors.accentMuted} max-w-2xl mx-auto leading-[1.7] mb-4`}>
-            &ldquo;Tulisan yang paling jujur adalah yang ditulis tanpa penonton, hanya untuk meyakinkan diri sendiri bahwa kita pernah merasa.&rdquo;
+          <p className={`font-serif italic text-base md:text-lg ${colors.accentMuted} max-w-2xl mx-auto leading-[1.7] mb-4`}>
+            &ldquo;Meski lewat begitu saja, setidaknya aku pernah mencoba mengingatkan bahwa aku ada.&rdquo;
           </p>
           <p className={`text-[10px] tracking-[0.3em] uppercase ${colors.subtleText}`}>
-            — Dari ruang yang sunyi
+            — Dari yang menulis pelan
           </p>
         </motion.div>
 
@@ -381,8 +493,8 @@ export default function TentangPage() {
             animate={{ opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           >
-            Ditulis perlahan, seperti menyeduh kopi<br />
-            di pagi yang belum yakin ingin dimulai.
+            Ditulis setelah kerja selesai,<br />
+            di malam yang tidak yakin ingin dihabiskan.
           </motion.p>
           
           <motion.div 
@@ -398,6 +510,8 @@ export default function TentangPage() {
           </motion.div>
         </motion.div>
       </div>
-    </section>
+
+      <Footer />
+    </div>
   );
 }
