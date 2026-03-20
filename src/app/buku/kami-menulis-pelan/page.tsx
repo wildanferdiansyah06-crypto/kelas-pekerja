@@ -73,6 +73,10 @@ export default function LewatBegituSajaPage() {
   // Parallax calculation
   const backgroundOffset = scrollY * -0.15;
 
+  if (!isVisible) {
+    return <div className="min-h-screen bg-[#0a0908]" />;
+  }
+
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
       
@@ -134,7 +138,7 @@ export default function LewatBegituSajaPage() {
           <div className="max-w-2xl mx-auto mt-8 px-4 animate-fade-in" style={{ animationDelay: '1.5s' }}>
             <p className={`text-sm md:text-base leading-[1.8] ${theme.textMuted} font-light`}>
               {subtitleText}
-              <span className={`inline-block w-[2px] h-[1.2em] ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]} ml-1 align-middle animate-blink`} />
+              <span className={`inline-block w-[2px] h-[1.2em] ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle animate-blink`} />
             </p>
           </div>
         </div>
