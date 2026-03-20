@@ -55,8 +55,10 @@ export default function LewatBegituSajaPage() {
     );
 
     // Observe all elements with data-reveal
-    const elements = document.querySelectorAll('[data-reveal]');
-    elements.forEach((el) => observer.observe(el));
+    setTimeout(() => {
+  const elements = document.querySelectorAll('[data-reveal]');
+  elements.forEach((el) => observer.observe(el));
+}, 100);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
