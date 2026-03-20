@@ -25,7 +25,10 @@ export default function LewatBegituSajaPage() {
   ];
 
   // Memoize the check function
-  const isVisible = useCallback((id: string) => visibleItems.has(id), [visibleItems]);
+  const isVisible = useCallback(
+  (id: string) => visibleItems.has(id) || visibleItems.size === 0,
+  [visibleItems]
+);
 
   useEffect(() => {
     setMounted(true);
