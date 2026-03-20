@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
 export default function LewatBegituSajaPage() {
@@ -12,12 +12,21 @@ export default function LewatBegituSajaPage() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
   const [subtitleText, setSubtitleText] = useState("");
-  const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
-
   const [isDark, setIsDark] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
+  const fullSubtitle = useMemo(() => 
+    "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja."
+  , []);
+
+  // Handle mounting first
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    setMounted(true);
+  }, []);
+
+  // Theme detection
+  useEffect(() => {
+    if (!mounted) return;
     
     const checkTheme = () => {
       const html = document.documentElement;
@@ -33,10 +42,11 @@ export default function LewatBegituSajaPage() {
     });
     
     return () => observer.disconnect();
-  }, []);
+  }, [mounted]);
 
+  // Typewriter effect
   useEffect(() => {
-    if (!isHeroInView) return;
+    if (!isHeroInView || !mounted) return;
     
     let i = 0;
     const timer = setInterval(() => {
@@ -49,9 +59,9 @@ export default function LewatBegituSajaPage() {
     }, 25);
     
     return () => clearInterval(timer);
-  }, [isHeroInView]);
+  }, [isHeroInView, fullSubtitle, mounted]);
 
-  const colors = {
+  const colors = useMemo(() => ({
     bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
     text: isDark ? "text-[#e7e5e4]" : "text-[#1c1917]",
     textMuted: isDark ? "text-[#a8a29e]" : "text-[#78716c]",
@@ -62,33 +72,38 @@ export default function LewatBegituSajaPage() {
     accentBgLight: isDark ? "bg-[#8b7355]/10" : "bg-[#a16207]/10",
     divider: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
     subtleText: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
-  };
+  }), [isDark]);
 
-  const fadeInUp = {
+  const fadeInUp = useMemo(() => ({
     hidden: { opacity: 0, y: 60 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: { delay: i * 0.15, duration: 1.2, ease: [0.22, 1, 0.36, 1] }
     })
-  };
+  }), []);
 
-  const letterAnimation = {
+  const letterAnimation = useMemo(() => ({
     hidden: { opacity: 0, y: 100 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: { delay: 0.5 + (i * 0.08), duration: 1, ease: [0.22, 1, 0.36, 1] }
     })
-  };
+  }), []);
 
-  const lineExpand = {
+  const lineExpand = useMemo(() => ({
     hidden: { scaleX: 0, opacity: 0 },
     visible: { scaleX: 1, opacity: 1, transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] } }
-  };
+  }), []);
 
   const title = "Lewat Begitu Saja";
-  const letters = title.split("");
+  const letters = useMemo(() => title.split(""), []);
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return <div className="min-h-screen bg-[#0a0908]" />;
+  }
 
   return (
     <div ref={containerRef} className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}>
@@ -97,7 +112,7 @@ export default function LewatBegituSajaPage() {
       }} />
 
       <motion.div className="absolute inset-0 pointer-events-none" style={{ y: backgroundY }}>
-        {[...Array(5)].map((_, i) => (
+        {[0, 1, 2, 3, 4].map((i) => (
           <motion.div
             key={i}
             className={`absolute w-1 h-1 rounded-full ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'}`}
