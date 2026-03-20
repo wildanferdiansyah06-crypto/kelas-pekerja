@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function LewatBegituSajaPage() {
@@ -24,24 +24,15 @@ export default function LewatBegituSajaPage() {
     { id: 'penutup', title: 'Penutup' }
   ];
 
+  // Memoize the check function
+  const isVisible = useCallback((id: string) => visibleItems.has(id), [visibleItems]);
+
   useEffect(() => {
     setMounted(true);
     
     const handleScroll = () => {
       const y = window.scrollY;
       setScrollY(y);
-      
-      // Update active section
-      const scrollPosition = y + 200;
-      sections.forEach((section, index) => {
-        const element = document.getElementById(section.id);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(index);
-          }
-        }
-      });
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -51,24 +42,43 @@ export default function LewatBegituSajaPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleItems((prev) => new Set([...prev, entry.target.id]));
+          if (entry.isIntersecting && entry.target.id) {
+            setVisibleItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.add(entry.target.id);
+              return newSet;
+            });
           }
         });
       },
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    // Observe all scroll-reveal elements
-    document.querySelectorAll('[data-reveal]').forEach((el) => {
-      observer.observe(el);
-    });
+    // Observe all elements with data-reveal
+    const elements = document.querySelectorAll('[data-reveal]');
+    elements.forEach((el) => observer.observe(el));
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
-  }, [mounted]);
+  }, []);
+
+  // Update active section based on scroll
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const scrollPosition = scrollY + 200;
+    sections.forEach((section, index) => {
+      const element = document.getElementById(section.id);
+      if (element) {
+        const { offsetTop, offsetHeight } = element;
+        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          setActiveSection(index);
+        }
+      }
+    });
+  }, [scrollY, mounted, sections]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -121,8 +131,6 @@ export default function LewatBegituSajaPage() {
     }
     setShowGooglePopup(false);
   };
-
-  const isVisible = (id: string) => visibleItems.has(id);
 
   return (
     <div ref={mainRef} className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
