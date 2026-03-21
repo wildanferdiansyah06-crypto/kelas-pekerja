@@ -34,11 +34,9 @@ export default async function HomePage() {
   const allBooks = allBooksData.books;
   
   // Split untuk section: ambil 3 terbaru untuk "Tulisan Terbaru"
-  // Sisanya (atau yang featured) untuk "Paling Banyak Dirasa"
   const latestBooks = allBooks.slice(0, 3);
   
   // Untuk "Paling Banyak Dirasa", prioritaskan yang featured tapi belum muncul di latest
-  // Atau kalau kurang, ambil dari allBooks yang beda index
   const featuredSlugs = new Set(latestBooks.map(b => b.slug));
   const mostRelatable = allBooks
     .filter(b => b.featured && !featuredSlugs.has(b.slug))
@@ -85,7 +83,7 @@ export default async function HomePage() {
           </p>
 
           <p className="text-sm md:text-base text-[#8b7355] max-w-md mx-auto mb-12 leading-relaxed opacity-80">
-            {config.site?.tagline || "Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri."}
+            {config.tagline || "Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -175,6 +173,7 @@ export default async function HomePage() {
                       {/* Cover Image */}
                       {book.cover && (
                         <div className="aspect-[16/10] overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img 
                             src={book.cover} 
                             alt={book.title}
