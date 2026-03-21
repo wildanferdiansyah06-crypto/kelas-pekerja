@@ -1,13 +1,100 @@
+"use client";
+
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, PenLine, Send, Coffee } from "lucide-react";
+import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2 } from "lucide-react";
+import { useState } from "react";
 
+// Metadata harus di export terpisah untuk client component
 export const metadata: Metadata = {
   title: "Tulis Cerita — Kelas Pekerja",
   description: "Gak semua hal harus dipendam sendiri. Tulis ceritamu di sini.",
 };
 
 export default function TulisPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      title: formData.get("title"),
+      author: formData.get("author"),
+      email: formData.get("email"),
+      category: formData.get("category"),
+      content: formData.get("content"),
+    };
+
+    try {
+      const response = await fetch("/api/submit-story", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Gagal mengirim");
+      }
+
+      setIsSuccess(true);
+      e.currentTarget.reset();
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  // Success State
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
+        <header className="px-6 py-6 border-b border-[#8b7355]/10">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <Link 
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
+            >
+              <ArrowLeft size={16} />
+              Kembali
+            </Link>
+            
+            <div className="flex items-center gap-2">
+              <Coffee size={18} className="text-[#8b7355]" />
+              <span className="font-serif text-lg">Kelas Pekerja</span>
+            </div>
+          </div>
+        </header>
+
+        <main className="px-6 py-16 md:py-24">
+          <div className="max-w-2xl mx-auto text-center">
+            <CheckCircle className="w-16 h-16 mx-auto mb-6 text-[#8b7355]" />
+            <h1 className="font-serif text-3xl mb-4 text-[#f5f0e8]">
+              Ceritamu Sudah Terkirim
+            </h1>
+            <p className="text-[#a09080] mb-8">
+              Terima kasih sudah berbagi. Kami akan review dan kabari kalau sudah dipublikasikan.
+            </p>
+            <button
+              onClick={() => setIsSuccess(false)}
+              className="text-[#8b7355] hover:text-[#e8e0d5] transition-colors text-sm underline underline-offset-4"
+            >
+              Tulis cerita lain
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
       {/* Header */}
@@ -47,19 +134,26 @@ export default function TulisPage() {
           </div>
 
           {/* Form */}
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 bg-red-900/20 border border-red-800/30 rounded-lg text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             {/* Judul */}
             <div>
               <label 
                 htmlFor="title" 
                 className="block text-[10px] tracking-[0.2em] uppercase text-[#8b7355] mb-2"
               >
-                Judul Cerita
+                Judul Cerita *
               </label>
               <input
                 type="text"
                 id="title"
                 name="title"
+                required
                 placeholder="Misal: 'Malam di Sudut Kedai'"
                 className="w-full bg-[#1a1816] border border-[#8b7355]/20 rounded-lg px-4 py-3 
                   text-[#e8e0d5] placeholder-[#6b5a45]
@@ -119,6 +213,12 @@ export default function TulisPage() {
                 className="w-full bg-[#1a1816] border border-[#8b7355]/20 rounded-lg px-4 py-3 
                   text-[#e8e0d5] focus:border-[#8b7355]/50 focus:outline-none transition-colors
                   appearance-none cursor-pointer"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b7355'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 1rem center',
+                  backgroundSize: '1rem',
+                }}
               >
                 <option value="">Pilih tema...</option>
                 <option value="kehidupan">Kehidupan</option>
@@ -136,11 +236,12 @@ export default function TulisPage() {
                 htmlFor="content" 
                 className="block text-[10px] tracking-[0.2em] uppercase text-[#8b7355] mb-2"
               >
-                Ceritamu
+                Ceritamu *
               </label>
               <textarea
                 id="content"
                 name="content"
+                required
                 rows={10}
                 placeholder="Tulis apa yang kamu rasakan. Tidak ada yang salah di sini..."
                 className="w-full bg-[#1a1816] border border-[#8b7355]/20 rounded-lg px-4 py-3 
@@ -156,14 +257,24 @@ export default function TulisPage() {
             <div className="pt-4">
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 
                   bg-[#8b7355] text-[#0f0e0c] rounded-full
                   hover:bg-[#a08060] transition-all duration-300 
                   text-sm tracking-wider font-medium
                   disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send size={18} />
-                Kirim Cerita
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" />
+                    Mengirim...
+                  </>
+                ) : (
+                  <>
+                    <Send size={18} />
+                    Kirim Cerita
+                  </>
+                )}
               </button>
               
               <p className="text-xs text-[#6b5a45] text-center mt-4">
