@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, PenLine, Coffee } from "lucide-react";
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
-import BookCard from "@/src/components/BookCard";
 
 export const metadata: Metadata = {
   title: "Kelas Pekerja — Tempat Cerita Orang yang Tetap Jalan",
@@ -12,16 +11,31 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-export default async function HomePage() {
-  const [featuredBooks, configData, allBooks] = await Promise.all([
-    getFeaturedBooks(2),
-    getConfig(),
-    getBooks({ limit: 6 }),
-  ]);
+// Helper untuk format tanggal relatif
+function getRelativeTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (diffInDays === 0) return "Hari ini";
+  if (diffInDays === 1) return "Kemarin";
+  if (diffInDays < 7) return `${diffInDays} hari lalu`;
+  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
+  return `${Math.floor(diffInDays / 30)} bulan lalu`;
+}
 
-  const config: any = configData;
-  const latestBooks = allBooks?.books?.slice(0, 3) || [];
-  const mostRelatable = allBooks?.books?.slice(3, 6) || [];
+export default async function HomePage() {
+  // Fetch data dari API local JSON
+  const featuredData = await getFeaturedBooks(2);
+  const config = await getConfig();
+  const allBooksData = await getBooks({ limit: 6 });
+
+  const featuredBooks = featuredData.books;
+  const allBooks = allBooksData.books;
+  
+  // Split untuk section terbaru dan paling relate
+  const latestBooks = allBooks.slice(0, 3);
+  const mostRelatable = allBooks.slice(3, 6);
 
   return (
     <div className="relative min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
@@ -136,11 +150,8 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestBooks.map((book: any, index: number) => (
-              <article 
-                key={book.id} 
-                className="group cursor-pointer"
-              >
+            {latestBooks.map((book) => (
+              <article key={book.id} className="group cursor-pointer">
                 <Link href={`/buku/${book.slug}`} className="block">
                   <div className="bg-[#1a1816] rounded-lg p-8 h-full 
                     border border-[#8b7355]/10 
@@ -149,9 +160,9 @@ export default async function HomePage() {
                     transition-all duration-300">
                     
                     <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] mb-4">
-                      <span>{book.date || "2 hari lalu"}</span>
+                      <span>{getRelativeTime(book.publishedAt)}</span>
                       <span>•</span>
-                      <span>{book.readTime || "4 min read"}</span>
+                      <span>{book.readTime || "5 min read"}</span>
                     </div>
 
                     <h4 className="font-serif text-xl mb-3 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
@@ -159,7 +170,7 @@ export default async function HomePage() {
                     </h4>
                     
                     <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3">
-                      {book.excerpt || "Preview cerita yang akan membawa kamu ke sudut-sudut pikiran yang mungkin sering kamu kunjungi sendirian..."}
+                      {book.excerpt || "Sebuah cerita yang menunggu untuk dibaca..."}
                     </p>
 
                     <div className="mt-6 flex items-center gap-2 text-xs text-[#8b7355] group-hover:text-[#c4b5a0] transition-colors">
@@ -202,11 +213,8 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {mostRelatable.map((book: any, index: number) => (
-              <article 
-                key={book.id} 
-                className="group cursor-pointer relative"
-              >
+            {mostRelatable.length > 0 ? mostRelatable.map((book) => (
+              <article key={book.id} className="group cursor-pointer relative">
                 <Link href={`/buku/${book.slug}`} className="block">
                   {/* Badge */}
                   <div className="absolute -top-3 left-6 bg-[#8b7355] text-[#0f0e0c] text-[10px] tracking-wider uppercase px-3 py-1 rounded-full font-medium z-10">
@@ -234,7 +242,12 @@ export default async function HomePage() {
                   </div>
                 </Link>
               </article>
-            ))}
+            )) : (
+              // Fallback kalau data kurang dari 6
+              <div className="col-span-3 text-center py-12 text-[#8b7355]">
+                <p>Lebih banyak cerita akan segera hadir...</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -243,7 +256,6 @@ export default async function HomePage() {
           5. CTA: IKUT NULIS
           ============================================ */}
       <section className="py-32 px-6 relative overflow-hidden">
-        {/* Subtle background accent */}
         <div className="absolute inset-0 bg-[#8b7355]/5" />
         
         <div className="max-w-3xl mx-auto text-center relative z-10">
