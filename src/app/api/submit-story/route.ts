@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Ambil dari env var, fallback ke hardcoded untuk testing (hapus fallback di production!)
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || 
-  "https://discord.com/api/webhooks/1484977180336197894/GQPmH1NJ6PFpn0stTVQABogQP4fiDe3R_xCAVxG96A-qXrY0AG4cjfYogThhpX8S7MqU";
+  "https://discord.com/api/webhooks/1484984129568379041/F8izxYUheowfTbczX9cj6LPJjYFrE-VdUjUq28m3dyd6KMfJ6FB6iuFONevBGj4QAnk8";
 
 export async function POST(request: NextRequest) {
   try {
