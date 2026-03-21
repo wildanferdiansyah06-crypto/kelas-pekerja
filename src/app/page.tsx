@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, PenLine, Coffee } from "lucide-react";
+import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ function getRelativeTime(dateString: string): string {
 }
 
 export default async function HomePage() {
-  // Fetch data dari API local JSON
+  // Fetch data
   const featuredData = await getFeaturedBooks(2);
   const config = await getConfig();
   const allBooksData = await getBooks({ limit: 6 });
@@ -33,9 +33,26 @@ export default async function HomePage() {
   const featuredBooks = featuredData.books;
   const allBooks = allBooksData.books;
   
-  // Split untuk section terbaru dan paling relate
+  // Split untuk section: ambil 3 terbaru untuk "Tulisan Terbaru"
+  // Sisanya (atau yang featured) untuk "Paling Banyak Dirasa"
   const latestBooks = allBooks.slice(0, 3);
-  const mostRelatable = allBooks.slice(3, 6);
+  
+  // Untuk "Paling Banyak Dirasa", prioritaskan yang featured tapi belum muncul di latest
+  // Atau kalau kurang, ambil dari allBooks yang beda index
+  const featuredSlugs = new Set(latestBooks.map(b => b.slug));
+  const mostRelatable = allBooks
+    .filter(b => b.featured && !featuredSlugs.has(b.slug))
+    .slice(0, 3);
+  
+  // Kalau masih kurang, tambah dari sisa buku
+  if (mostRelatable.length < 3) {
+    const remaining = allBooks.filter(b => !featuredSlugs.has(b.slug) && !mostRelatable.find(m => m.slug === b.slug));
+    mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
+  }
+
+  // Stats untuk section stats
+  const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
+  const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
 
   return (
     <div className="relative min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
@@ -68,7 +85,7 @@ export default async function HomePage() {
           </p>
 
           <p className="text-sm md:text-base text-[#8b7355] max-w-md mx-auto mb-12 leading-relaxed opacity-80">
-            Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri.
+            {config.site?.tagline || "Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -133,7 +150,70 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================
-          3. TULISAN TERBARU
+          3. FEATURED BOOKS (Pilihan Editor)
+          ============================================ */}
+      {featuredBooks.length > 0 && (
+        <section className="py-24 px-6 border-t border-[#8b7355]/10">
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-16 text-center">
+              <p className="text-[10px] tracking-[0.4em] uppercase mb-4 text-[#8b7355]">
+                Pilihan Editor
+              </p>
+              <h3 className="font-serif text-3xl md:text-4xl mb-3 text-[#f5f0e8]">
+                Buku Unggulan
+              </h3>
+              <p className="text-sm text-[#8b7355] max-w-md mx-auto">
+                Dua buku yang paling banyak membantu pembaca menemukan makna dalam keheningan.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {featuredBooks.map((book) => (
+                <article key={book.id} className="group cursor-pointer">
+                  <Link href={`/buku/${book.slug}`} className="block">
+                    <div className="bg-[#1a1816] rounded-lg overflow-hidden border border-[#8b7355]/10 group-hover:border-[#8b7355]/30 transition-all duration-300">
+                      {/* Cover Image */}
+                      {book.cover && (
+                        <div className="aspect-[16/10] overflow-hidden">
+                          <img 
+                            src={book.cover} 
+                            alt={book.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] mb-3">
+                          <span>{book.category}</span>
+                          <span>•</span>
+                          <span>{book.pages} halaman</span>
+                        </div>
+
+                        <h4 className="font-serif text-xl mb-2 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
+                          {book.title}
+                        </h4>
+                        
+                        <p className="text-sm text-[#a09080] line-clamp-2 mb-4">
+                          {book.subtitle || book.excerpt}
+                        </p>
+
+                        <div className="flex items-center justify-between text-xs text-[#8b7355]">
+                          <span>{book.readTime}</span>
+                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ============================================
+          4. TULISAN TERBARU
           ============================================ */}
       <section className="py-24 px-6 border-t border-[#8b7355]/10">
         <div className="max-w-6xl mx-auto">
@@ -162,7 +242,7 @@ export default async function HomePage() {
                     <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] mb-4">
                       <span>{getRelativeTime(book.publishedAt)}</span>
                       <span>•</span>
-                      <span>{book.readTime || "5 min read"}</span>
+                      <span>{book.readTime}</span>
                     </div>
 
                     <h4 className="font-serif text-xl mb-3 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
@@ -170,7 +250,7 @@ export default async function HomePage() {
                     </h4>
                     
                     <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3">
-                      {book.excerpt || "Sebuah cerita yang menunggu untuk dibaca..."}
+                      {book.excerpt}
                     </p>
 
                     <div className="mt-6 flex items-center gap-2 text-xs text-[#8b7355] group-hover:text-[#c4b5a0] transition-colors">
@@ -196,7 +276,7 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================
-          4. PALING BANYAK DIRASA
+          5. PALING BANYAK DIRASA
           ============================================ */}
       <section className="py-24 px-6 bg-[#1a1816]/50">
         <div className="max-w-6xl mx-auto">
@@ -231,19 +311,29 @@ export default async function HomePage() {
                       {book.title}
                     </h4>
                     
-                    <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3">
-                      {book.excerpt || "Cerita ini resonansi kuat dengan banyak pembaca..."}
+                    <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3 mb-4">
+                      {book.excerpt}
                     </p>
 
-                    <div className="mt-6 flex items-center justify-between text-xs">
-                      <span className="text-[#8b7355]">{book.readTime || "5 min read"}</span>
+                    {/* Stats */}
+                    <div className="flex items-center gap-4 text-xs text-[#6b5a45] mb-4">
+                      <span className="flex items-center gap-1">
+                        <Eye size={12} />
+                        {book.stats?.views?.toLocaleString() || 0}
+                      </span>
+                      <span>{book.readTime}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-[#8b7355] group-hover:text-[#c4b5a0] transition-colors">
+                        Baca selengkapnya
+                      </span>
                       <ArrowRight size={14} className="text-[#8b7355] group-hover:text-[#e8e0d5] group-hover:translate-x-1 transition-all" />
                     </div>
                   </div>
                 </Link>
               </article>
             )) : (
-              // Fallback kalau data kurang dari 6
               <div className="col-span-3 text-center py-12 text-[#8b7355]">
                 <p>Lebih banyak cerita akan segera hadir...</p>
               </div>
@@ -253,7 +343,40 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================
-          5. CTA: IKUT NULIS
+          6. STATS SECTION
+          ============================================ */}
+      <section className="py-24 px-6 border-t border-[#8b7355]/10">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+          <div>
+            <div className="text-3xl font-serif text-[#8b7355] mb-2">
+              {allBooks.length}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Buku</div>
+          </div>
+
+          <div>
+            <div className="text-3xl font-serif text-[#8b7355] mb-2">
+              {totalViews.toLocaleString()}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Dibaca</div>
+          </div>
+
+          <div>
+            <div className="text-3xl font-serif text-[#8b7355] mb-2">
+              {totalDownloads.toLocaleString()}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Diunduh</div>
+          </div>
+
+          <div>
+            <div className="text-3xl font-serif text-[#8b7355] mb-2">∞</div>
+            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Kopi</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          7. CTA: IKUT NULIS
           ============================================ */}
       <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-[#8b7355]/5" />
@@ -294,7 +417,7 @@ export default async function HomePage() {
       </section>
 
       {/* ============================================
-          6. FOOTER SIGNATURE
+          8. FOOTER SIGNATURE
           ============================================ */}
       <footer className="py-24 px-6 border-t border-[#8b7355]/10">
         <div className="max-w-3xl mx-auto text-center">
