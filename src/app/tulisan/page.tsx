@@ -3,6 +3,8 @@
 import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
+import Link from "next/link"; // TAMBAH INI
+import { PenLine } from "lucide-react"; // TAMBAH INI
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -84,6 +86,27 @@ export default function TulisanPage() {
               Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika
               kata-kata menjadi satu-satunya tempat perlindungan.
             </p>
+
+            {/* ⭐ TAMBAHAN: CTA TULIS CERITA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-12"
+            >
+              <Link
+                href="/tulis"
+                className="inline-flex items-center gap-3 px-8 py-4 
+                  border border-[#8b7355]/40 rounded-full
+                  text-[#8b7355] hover:text-[#c7b299] hover:border-[#c7b299]
+                  transition-all duration-300 text-sm tracking-wider"
+              >
+                <PenLine size={18} />
+                Tulis Ceritamu
+              </Link>
+            </motion.div>
+            {/* END TAMBAHAN */}
+
           </motion.header>
 
           <motion.section
@@ -143,7 +166,16 @@ export default function TulisanPage() {
                   <p className="font-serif text-xl italic mb-4">
                     Keheningan yang menunggu
                   </p>
-                  <p className="text-sm">Belum ada kata yang berani keluar.</p>
+                  <p className="text-sm mb-8">Belum ada kata yang berani keluar.</p>
+                  
+                  {/* ⭐ TAMBAHAN: CTA KALAU KOSONG */}
+                  <Link
+                    href="/tulis"
+                    className="inline-flex items-center gap-2 text-[#8b7355] hover:text-[#c7b299] transition-colors text-sm"
+                  >
+                    <PenLine size={16} />
+                    Jadi yang pertama menulis
+                  </Link>
                 </motion.div>
               ) : (
                 posts.map((post: any, index: number) => (
@@ -171,6 +203,17 @@ export default function TulisanPage() {
                         {post.excerpt}
                       </p>
 
+                      {/* ⭐ TAMBAHAN: LINK KE DETAIL (opsional) */}
+                      {post.slug && (
+                        <Link
+                          href={`/tulisan/${post.slug}`}
+                          className="inline-flex items-center gap-2 text-xs text-[#8b7355] hover:text-[#c7b299] transition-colors"
+                        >
+                          Baca selengkapnya
+                          <span className="group-hover:translate-x-1 transition-transform">→</span>
+                        </Link>
+                      )}
+
                     </div>
                   </motion.article>
                 ))
@@ -184,9 +227,23 @@ export default function TulisanPage() {
             animate="show"
             className={`pt-16 border-t ${colors.footerBorder} text-center transition-colors duration-500`}
           >
-            <p className={`font-serif italic ${colors.footerText} text-lg mb-4 transition-colors duration-500`}>
+            <p className={`font-serif italic ${colors.footerText} text-lg mb-8 transition-colors duration-500`}>
               Ditulis perlahan, seperti menyeduh kopi.
             </p>
+
+            {/* ⭐ TAMBAHAN: CTA FOOTER */}
+            <Link
+              href="/tulis"
+              className="inline-flex items-center gap-3 px-8 py-4 
+                bg-[#8b7355] text-[#0a0a0a] dark:text-[#fafafa] rounded-full
+                hover:bg-[#c7b299] transition-all duration-300 
+                text-sm tracking-wider font-medium"
+            >
+              <PenLine size={18} />
+              Tulis Ceritamu
+            </Link>
+            {/* END TAMBAHAN */}
+
           </motion.footer>
 
         </div>
