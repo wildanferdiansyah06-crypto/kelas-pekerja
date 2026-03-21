@@ -1,15 +1,8 @@
 "use client";
 
-import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
-
-// Metadata harus di export terpisah untuk client component
-export const metadata: Metadata = {
-  title: "Tulis Cerita — Kelas Pekerja",
-  description: "Gak semua hal harus dipendam sendiri. Tulis ceritamu di sini.",
-};
 
 export default function TulisPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
