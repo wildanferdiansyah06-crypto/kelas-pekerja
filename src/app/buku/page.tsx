@@ -154,6 +154,7 @@ function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; inde
   );
 }
 
+// FIX: Hapus 'export' keyword, jadi cuma 'async function'
 async function BooksGrid({ 
   books, 
   total,
@@ -235,7 +236,7 @@ async function BooksGrid({
   );
 }
 
-// PASTIKAN INI EXPORT DEFAULT YANG BENAR
+// INI SATU-SATUNYA EXPORT DEFAULT
 export default async function BooksPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const category = typeof params.category === 'string' ? params.category : undefined;
