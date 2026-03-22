@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { getBooks } from "@/src/lib/api";
 
 import BookCard from "@/src/components/BookCard";
@@ -17,12 +18,12 @@ interface PageProps {
 }
 
 export const metadata: Metadata = {
-  title: "Koleksi Buku | Kelas Pekerja",
+  title: "Rak Buku | Kelas Pekerja",
   description:
-    "Koleksi buku-buku kecil tentang malam, kopi, dan kehidupan pekerja.",
+    "Kumpulan pengalaman kerja nyata dari barista, retail staff, dan pekerja kantoran yang gak diajarin di sekolah.",
   openGraph: {
-    title: "Koleksi Buku | Kelas Pekerja",
-    description: "Koleksi buku-buku kecil tentang malam, kopi, dan kehidupan pekerja.",
+    title: "Rak Buku | Kelas Pekerja",
+    description: "Kumpulan pengalaman kerja nyata dari barista, retail staff, dan pekerja kantoran yang gak diajarin di sekolah.",
     type: "website",
   },
 };
@@ -68,13 +69,24 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
         </svg>
       </div>
       <p className="font-serif text-2xl opacity-60 mb-4">
-        {hasFilters ? "Tidak ada buku yang cocok" : "Tidak ada buku yang ditemukan"}
+        {hasFilters ? "Tidak ada buku yang cocok" : "Rak masih terlalu ringan"}
       </p>
-      <p className="text-base opacity-40 max-w-md mx-auto">
+      <p className="text-base opacity-40 max-w-md mx-auto mb-8">
         {hasFilters 
           ? "Coba ubah filter kategori atau kata kunci pencarian" 
-          : "Koleksi buku sedang dalam perbaikan"}
+          : "Belum banyak cerita di sini. Jadi yang pertama berbagi pengalaman lo."}
       </p>
+      {!hasFilters && (
+        <Link 
+          href="/tulis"
+          className="inline-flex items-center gap-2 px-6 py-3 border border-[#2b2b2b] dark:border-[#e8e0d5] rounded-full hover:bg-[#2b2b2b] hover:text-[#e8e0d5] dark:hover:bg-[#e8e0d5] dark:hover:text-[#2b2b2b] transition-all duration-300"
+        >
+          <span>Tulis Pengalaman Lo</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </Link>
+      )}
     </div>
   );
 }
@@ -94,6 +106,51 @@ function BooksGridSkeleton() {
   );
 }
 
+// Featured Book Card - lebih besar untuk highlight
+function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; index: number }) {
+  return (
+    <Link 
+      href={`/buku/${book.slug}`}
+      className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/30 dark:hover:border-[#e8e0d5]/30 transition-all duration-500 hover:shadow-lg"
+      style={{ animationDelay: `${index * 150}ms` }}
+    >
+      <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg bg-[#2b2b2b]/5 flex-shrink-0">
+        {book.coverUrl ? (
+          <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <svg className="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2b2b2b]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </div>
+      
+      <div className="flex flex-col justify-center">
+        <span className="inline-flex items-center gap-2 text-[10px] tracking-wider uppercase opacity-50 mb-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+          {book.category || "Umum"}
+        </span>
+        
+        <h3 className="font-serif text-2xl md:text-3xl leading-tight mb-3 group-hover:opacity-70 transition-opacity">
+          {book.title}
+        </h3>
+        
+        <p className="text-base opacity-60 leading-relaxed line-clamp-3 mb-4">
+          "{book.excerpt?.substring(0, 150) || book.subtitle}..."
+        </p>
+        
+        <div className="flex items-center gap-4 text-xs opacity-40 mt-auto">
+          <span>{book.readTime || "5 min read"}</span>
+          <span>•</span>
+          <span>{book.author || "Anonim"}</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // Komponen terpisah untuk grid buku dengan filtering
 async function BooksGrid({ 
   books, 
@@ -109,10 +166,9 @@ async function BooksGrid({
   // Filter buku berdasarkan kategori dan pencarian
   let filteredBooks = books;
   
-  // FIX: Hanya filter berdasarkan category (tanpa genre)
   if (category && category !== 'all') {
     filteredBooks = filteredBooks.filter(book => 
-      book.category === category
+      book.category?.toLowerCase() === category.toLowerCase()
     );
   }
   
@@ -120,12 +176,17 @@ async function BooksGrid({
     const searchLower = search.toLowerCase();
     filteredBooks = filteredBooks.filter(book =>
       book.title.toLowerCase().includes(searchLower) ||
-      book.excerpt.toLowerCase().includes(searchLower) ||
-      book.subtitle?.toLowerCase().includes(searchLower)
+      book.excerpt?.toLowerCase().includes(searchLower) ||
+      book.subtitle?.toLowerCase().includes(searchLower) ||
+      book.category?.toLowerCase().includes(searchLower)
     );
   }
 
   const hasFilters = !!(category || search);
+  
+  // Pilih featured books (3 pertama atau random)
+  const featuredBooks = !hasFilters ? filteredBooks.slice(0, 2) : [];
+  const regularBooks = !hasFilters ? filteredBooks.slice(2) : filteredBooks;
 
   if (filteredBooks.length === 0) {
     return <EmptyState hasFilters={hasFilters} />;
@@ -133,15 +194,38 @@ async function BooksGrid({
 
   return (
     <>
-      {/* Desktop: 2 kolom, Tablet: 2 kolom, Mobile: 1 kolom */}
+      {/* SECTION FEATURED - hanya muncul tanpa filter */}
+      {!hasFilters && featuredBooks.length > 0 && (
+        <section className="mb-20 animate-fade-in">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            <h2 className="text-sm tracking-[0.2em] uppercase opacity-60 font-medium">
+              Paling Banyak Dibaca Minggu Ini
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {featuredBooks.map((book, index) => (
+              <FeaturedBookCard key={book.id} book={book} index={index} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* REGULAR GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
-        {filteredBooks.map((book, index) => (
-          <BookCard
+        {regularBooks.map((book, index) => (
+          <div 
             key={book.id}
-            book={book}
-            index={index}
-            href={`/buku/${book.slug}`}
-          />
+            style={{ animationDelay: `${index * 100}ms` }}
+            className="animate-fade-in-up opacity-0"
+          >
+            <BookCard
+              book={book}
+              index={index}
+              href={`/buku/${book.slug}`}
+            />
+          </div>
         ))}
       </div>
 
@@ -150,9 +234,9 @@ async function BooksGrid({
         <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/20 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
           <span className="w-2 h-2 rounded-full bg-[#2b2b2b]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
           <span className="text-sm opacity-50 tracking-wide">
-            Menampilkan {filteredBooks.length} dari {total} buku
-            {category && category !== 'all' && ` • Kategori: ${category}`}
-            {search && ` • Pencarian: "${search}"`}
+            Menampilkan {filteredBooks.length} dari {total} cerita
+            {category && category !== 'all' && ` • ${category}`}
+            {search && ` • "${search}"`}
           </span>
         </div>
       </div>
@@ -168,6 +252,7 @@ export default async function BooksPage({ searchParams }: PageProps) {
   let booksWithSlugs: (Book & { slug: string })[] = [];
   let total = 0;
   let error: Error | null = null;
+  let uniqueCategories: string[] = [];
 
   try {
     const { books, total: totalBooks }: BooksResponse = await getBooks();
@@ -177,34 +262,54 @@ export default async function BooksPage({ searchParams }: PageProps) {
       ...book,
       slug: bookSlugMap[book.title] || generateSlug(book.title),
     }));
+
+    // Extract unique categories untuk stats
+    uniqueCategories = [...new Set(books.map(b => b.category).filter(Boolean))];
   } catch (err) {
     error = err instanceof Error ? err : new Error('Unknown error');
     console.error("Error fetching books:", error);
   }
 
-  // Cek apakah ada data buku
   const hasBooks = booksWithSlugs.length > 0;
 
   return (
     <main className="min-h-screen">
-      {/* HEADER */}
+      {/* HEADER - DENGAN HOOK DAN STATS */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-screen-lg mx-auto text-center">
           <p className="text-[11px] tracking-[0.5em] uppercase opacity-40 mb-6 font-medium animate-fade-in">
             Perpustakaan Mini
           </p>
 
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl opacity-90 mb-8 tracking-tight animate-fade-in-up">
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl opacity-90 mb-6 tracking-tight animate-fade-in-up">
             Rak Buku
           </h1>
 
-          <p className="text-base md:text-lg opacity-50 max-w-lg mx-auto leading-relaxed animate-fade-in-up delay-100">
-            Koleksi buku-buku kecil yang ditulis perlahan, untuk dibaca perlahan.
+          {/* HOOK UTAMA */}
+          <p className="text-lg md:text-xl opacity-60 max-w-2xl mx-auto leading-relaxed mb-6 animate-fade-in-up delay-100">
+            "Kumpulan pengalaman kerja nyata dari barista, retail staff, 
+            dan pekerja kantoran yang gak diajarin di sekolah."
           </p>
+
+          {/* STATS BAR */}
+          <div className="flex items-center justify-center gap-6 text-sm opacity-40 animate-fade-in-up delay-200">
+            <span className="flex items-center gap-2">
+              <span className="font-semibold opacity-60">{total}</span> cerita
+            </span>
+            <span className="opacity-20">|</span>
+            <span className="flex items-center gap-2">
+              <span className="font-semibold opacity-60">{uniqueCategories.length}</span> kategori
+            </span>
+            <span className="opacity-20">|</span>
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              diupdate mingguan
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* FILTER */}
+      {/* FILTER SECTION */}
       <section className="px-6 pb-16">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
@@ -213,7 +318,7 @@ export default async function BooksPage({ searchParams }: PageProps) {
                 <div className="h-12 w-40 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />
               }
             >
-              <CategoryFilter activeCategory={category} />
+              <CategoryFilter activeCategory={category} books={booksWithSlugs} />
             </Suspense>
 
             <Suspense
