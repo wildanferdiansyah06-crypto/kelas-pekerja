@@ -30,28 +30,25 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// Mapping judul buku ke slug folder - diperluas untuk mendukung lebih banyak buku
+// Mapping judul buku ke slug folder
 const bookSlugMap: Record<string, string> = {
   "Di Atas Cangkir Yang Sama": "di-atas-cangkir-yang-sama",
   "Di Balik Bar": "di-balik-bar",
   "Kami Menulis Pelan": "kami-menulis-pelan",
   "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
-  "Malam dan Cerita": "malam-dan-cerita",
-  "Kopi Hitam Pagi": "kopi-hitam-pagi",
-  "Pekerja Senja": "pekerja-senja",
 };
 
 // Helper function untuk generate slug fallback
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
-    .replace(/[^\w\s-]/g, "") // Hapus karakter special kecuali spasi dan dash
-    .replace(/\s+/g, "-") // Ganti spasi dengan dash
-    .replace(/-+/g, "-") // Hindari multiple dash
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
     .trim();
 }
 
-// Komponen terpisah untuk empty state agar lebih clean
+// Komponen terpisah untuk empty state
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
   return (
     <div className="text-center py-32 animate-fade-in">
@@ -112,10 +109,10 @@ async function BooksGrid({
   // Filter buku berdasarkan kategori dan pencarian
   let filteredBooks = books;
   
+  // FIX: Hanya filter berdasarkan category (tanpa genre)
   if (category && category !== 'all') {
     filteredBooks = filteredBooks.filter(book => 
-      book.category?.toLowerCase() === category.toLowerCase() ||
-      book.genre?.toLowerCase() === category.toLowerCase()
+      book.category === category
     );
   }
   
@@ -123,8 +120,8 @@ async function BooksGrid({
     const searchLower = search.toLowerCase();
     filteredBooks = filteredBooks.filter(book =>
       book.title.toLowerCase().includes(searchLower) ||
-      book.author?.toLowerCase().includes(searchLower) ||
-      book.description?.toLowerCase().includes(searchLower)
+      book.excerpt.toLowerCase().includes(searchLower) ||
+      book.subtitle?.toLowerCase().includes(searchLower)
     );
   }
 
@@ -216,7 +213,7 @@ export default async function BooksPage({ searchParams }: PageProps) {
                 <div className="h-12 w-40 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />
               }
             >
-              <CategoryFilter currentCategory={category} />
+              <CategoryFilter activeCategory={category} />
             </Suspense>
 
             <Suspense
@@ -224,7 +221,7 @@ export default async function BooksPage({ searchParams }: PageProps) {
                 <div className="h-12 w-72 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />
               }
             >
-              <SearchBar currentSearch={search} />
+              <SearchBar initialSearch={search} />
             </Suspense>
           </div>
         </div>
