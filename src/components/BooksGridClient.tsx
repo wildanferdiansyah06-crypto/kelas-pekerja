@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Book } from "@/src/types";
 import BookCard from "./BookCard";
@@ -53,20 +52,16 @@ export default function BooksGridClient({
         </section>
       )}
 
-      {/* Regular Grid */}
+      {/* Regular Grid - FIX: Langsung pass onClick ke BookCard, hapus href */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
         {regularBooks.map((book, index) => (
-          <div 
+          <BookCard
             key={book.id}
-            onClick={() => setSelectedBook(book)}
-            className="cursor-pointer"
-          >
-            <BookCard
-              book={book}
-              index={index}
-              href={`/buku/${book.slug}`}
-            />
-          </div>
+            book={book}
+            index={index}
+            onClick={() => setSelectedBook(book)} // PASS ONCLICK
+            // HAPUS href prop
+          />
         ))}
       </div>
 
@@ -92,7 +87,7 @@ export default function BooksGridClient({
   );
 }
 
-// Featured card yang bisa diklik
+// Featured card (udah bener pake div)
 function FeaturedBookCard({ 
   book, 
   index, 
