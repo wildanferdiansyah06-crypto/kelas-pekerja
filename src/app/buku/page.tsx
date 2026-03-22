@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getBooks } from "@/src/lib/api";
 
 import BookCard from "@/src/components/BookCard";
@@ -108,6 +109,9 @@ function BooksGridSkeleton() {
 
 // Featured Book Card - lebih besar untuk highlight
 function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; index: number }) {
+  // Extract author dari metadata atau default
+  const author = (book as any).author || "Kelas Pekerja";
+  
   return (
     <Link 
       href={`/buku/${book.slug}`}
@@ -115,7 +119,13 @@ function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; inde
     >
       <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg bg-[#2b2b2b]/5 flex-shrink-0">
         {book.cover ? (
-          <img src={book.cover} alt={book.title} className="w-full h-full object-cover" />
+          <Image 
+            src={book.cover} 
+            alt={book.title} 
+            fill
+            className="object-cover"
+            sizes="(max-width:768px) 100vw, 200px"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <svg className="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,13 +147,13 @@ function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; inde
         </h3>
         
         <p className="text-base opacity-60 leading-relaxed line-clamp-3 mb-4">
-          &ldquo;{book.excerpt?.substring(0, 150) || book.subtitle || "Tidak ada deskripsi"}...&rdquo;
+          &ldquo;{(book.excerpt?.substring(0, 150) || book.subtitle || "Tidak ada deskripsi")}...&rdquo;
         </p>
         
         <div className="flex items-center gap-4 text-xs opacity-40 mt-auto">
           <span>{book.readTime || "5 min read"}</span>
           <span>•</span>
-          <span>{book.author || "Anonim"}</span>
+          <span>{author}</span>
         </div>
       </div>
     </Link>
@@ -176,8 +186,8 @@ async function BooksGrid({
     filteredBooks = filteredBooks.filter(book =>
       book.title.toLowerCase().includes(searchLower) ||
       book.excerpt?.toLowerCase().includes(searchLower) ||
-      book.subtitle?.toLowerCase().includes(searchLower) ||
-      book.category?.toLowerCase().includes(searchLower)
+      (book.subtitle?.toLowerCase().includes(searchLower) || false) ||
+      (book.category?.toLowerCase().includes(searchLower) || false)
     );
   }
 
