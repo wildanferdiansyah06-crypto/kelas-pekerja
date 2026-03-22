@@ -31,8 +31,10 @@ export default function CategoryFilter({ activeCategory = 'all', books }: Catego
     return acc;
   }, {} as Record<string, number>);
 
-  // Extract unique categories dari data
-  const uniqueCategories = ['all', ...new Set(books.map(b => b.category?.toLowerCase() || 'umum').filter(Boolean))];
+  // FIX: Extract unique categories dengan cara yang type-safe
+  const allCategories = books.map(b => b.category?.toLowerCase() || 'umum');
+  const uniqueCategoriesSet = new Set(allCategories);
+  const uniqueCategories = ['all', ...Array.from(uniqueCategoriesSet)];
 
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide max-w-full">
