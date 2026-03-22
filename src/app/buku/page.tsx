@@ -40,6 +40,7 @@ const bookSlugMap: Record<string, string> = {
   "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
 };
 
+// YANG INI KEEP - HAPUS YANG KEDUA
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -61,15 +62,6 @@ function generateExcerpt(content: string, maxLength = 140): string {
   if (clean.length <= maxLength) return clean;
 
   return clean.slice(0, maxLength) + "...";
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
 }
 
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
@@ -193,30 +185,10 @@ export default async function BooksPage({ searchParams }: PageProps) {
     const { books, total: totalBooks }: BooksResponse = await getBooks();
     total = totalBooks;
 
-   booksWithSlugs = books.map((book) => {
-  const content = book.content || "";
-
-  return {
-    ...book,
-
-    // slug aman (multi fallback)
-    slug:
-      bookSlugMap[book.title] ||
-      book.slug ||
-      generateSlug(book.title),
-
-    // 🔥 FIX UTAMA: preview otomatis
-    excerpt:
-      book.excerpt ||
-      generateExcerpt(content),
-
-    // 🔥 BONUS: estimasi waktu baca
-    readingTime: Math.max(
-      1,
-      Math.ceil(content.split(" ").length / 200)
-    ),
-  };
-});
+    booksWithSlugs = books.map((book) => ({
+      ...book,
+      slug: bookSlugMap[book.title] || generateSlug(book.title),
+    }));
 
     const allCategories = books.map(b => b.category).filter(Boolean) as string[];
     uniqueCategories = Array.from(new Set(allCategories));
