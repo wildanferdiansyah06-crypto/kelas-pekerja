@@ -32,7 +32,6 @@ export default function BookCard({ book, index = 0, href, featured = false }: Bo
       : book.excerpt
     : "Belum ada deskripsi untuk buku ini.";
 
-  // FIX: Type assertion untuk author
   const author = (book as any).author || "Kelas Pekerja";
 
   return (
@@ -158,7 +157,6 @@ export default function BookCard({ book, index = 0, href, featured = false }: Bo
                 <Bookmark size={14} className="opacity-40 hover:opacity-70 transition-opacity" />
               </button>
               
-              {/* FIX: Pake variable author yang udah di type assertion */}
               <span className="text-[11px] uppercase tracking-wider opacity-35 font-medium">
                 {author}
               </span>
