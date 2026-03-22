@@ -47,35 +47,52 @@ export default function TulisPage() {
   }
 
   // Success State
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
-        <header className="px-6 py-6 border-b border-[#8b7355]/10">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <Link 
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
-            >
-              <ArrowLeft size={16} />
-              Kembali
-            </Link>
-            
-            <div className="flex items-center gap-2">
-              <Coffee size={18} className="text-[#8b7355]" />
-              <span className="font-serif text-lg">Kelas Pekerja</span>
-            </div>
+if (isSuccess) {
+  return (
+    <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
+      <header className="px-6 py-6 border-b border-[#8b7355]/10">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
+          >
+            <ArrowLeft size={16} />
+            Kembali
+          </Link>
+          
+          <div className="flex items-center gap-2">
+            <Coffee size={18} className="text-[#8b7355]" />
+            <span className="font-serif text-lg">Kelas Pekerja</span>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="px-6 py-16 md:py-24">
-          <div className="max-w-2xl mx-auto text-center">
-            <CheckCircle className="w-16 h-16 mx-auto mb-6 text-[#8b7355]" />
-            <h1 className="font-serif text-3xl mb-4 text-[#f5f0e8]">
-              Ceritamu Sudah Terkirim
-            </h1>
-            <p className="text-[#a09080] mb-8">
-              Terima kasih sudah berbagi. Kami akan review dan kabari kalau sudah dipublikasikan.
-            </p>
+      <main className="px-6 py-16 md:py-24">
+        <div className="max-w-2xl mx-auto text-center">
+          <CheckCircle className="w-16 h-16 mx-auto mb-6 text-[#8b7355]" />
+          
+          <h1 className="font-serif text-3xl mb-6 text-[#f5f0e8]">
+            Ceritamu Sudah Sampai
+          </h1>
+
+          <p className="text-[#a09080] leading-relaxed mb-10">
+            Mungkin gak semua orang akan mengerti,  
+            <br />
+            tapi di sini… ada yang mau membaca.
+            <br /><br />
+            Terima kasih sudah berbagi.
+          </p>
+
+          <div className="flex flex-col items-center gap-4">
+            <Link
+              href="/buku"
+              className="inline-flex items-center justify-center px-6 py-3 
+                bg-[#8b7355] text-[#0f0e0c] rounded-full
+                hover:bg-[#a08060] transition-all duration-300 text-sm"
+            >
+              Baca Cerita
+            </Link>
+
             <button
               onClick={() => setIsSuccess(false)}
               className="text-[#8b7355] hover:text-[#e8e0d5] transition-colors text-sm underline underline-offset-4"
@@ -83,11 +100,15 @@ export default function TulisPage() {
               Tulis cerita lain
             </button>
           </div>
-        </main>
-      </div>
-    );
-  }
 
+          <p className="text-xs text-[#6b5a45] mt-10">
+            Cerita terpilih akan dipublikasikan di Kelas Pekerja.
+          </p>
+        </div>
+      </main>
+    </div>
+  );
+}
   return (
     <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
       {/* Header */}
