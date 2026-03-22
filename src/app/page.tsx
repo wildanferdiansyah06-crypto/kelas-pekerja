@@ -1,452 +1,254 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
-import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
+import { getBooks } from "@/src/lib/api";
 
-export const metadata: Metadata = {
-  title: "Kelas Pekerja — Tempat Cerita Orang yang Tetap Jalan",
-  description:
-    "Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri. Ditulis perlahan, untuk dibaca perlahan.",
-};
+import BookCard from "@/src/components/BookCard";
+import CategoryFilter from "@/src/components/CategoryFilter";
+import SearchBar from "@/src/components/SearchBar";
+import { Book } from "@/src/types";
 
-export const revalidate = 3600;
-
-// Helper untuk format tanggal relatif
-function getRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
-  if (diffInDays === 0) return "Hari ini";
-  if (diffInDays === 1) return "Kemarin";
-  if (diffInDays < 7) return `${diffInDays} hari lalu`;
-  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
-  return `${Math.floor(diffInDays / 30)} bulan lalu`;
+interface BooksResponse {
+  books: Book[];
+  total: number;
 }
 
-export default async function HomePage() {
-  // Fetch data
-  const featuredData = await getFeaturedBooks(2);
-  const config = await getConfig();
-  const allBooksData = await getBooks({ limit: 6 });
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-  const featuredBooks = featuredData.books;
-  const allBooks = allBooksData.books;
+export const metadata: Metadata = {
+  title: "Koleksi Buku | Kelas Pekerja",
+  description:
+    "Koleksi buku-buku kecil tentang malam, kopi, dan kehidupan pekerja.",
+  openGraph: {
+    title: "Koleksi Buku | Kelas Pekerja",
+    description: "Koleksi buku-buku kecil tentang malam, kopi, dan kehidupan pekerja.",
+    type: "website",
+  },
+};
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+// Mapping judul buku ke slug folder
+const bookSlugMap: Record<string, string> = {
+  "Di Atas Cangkir Yang Sama": "di-atas-cangkir-yang-sama",
+  "Di Balik Bar": "di-balik-bar",
+  "Kami Menulis Pelan": "kami-menulis-pelan",
+  "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
+};
+
+// Helper function untuk generate slug fallback
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
+// Komponen terpisah untuk empty state
+function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
+  return (
+    <div className="text-center py-32 animate-fade-in">
+      <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-[#2b2b2b]/5 dark:bg-[#e8e0d5]/5 flex items-center justify-center transition-all duration-500 hover:scale-105">
+        <svg
+          className="w-10 h-10 opacity-30"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+      </div>
+      <p className="font-serif text-2xl opacity-60 mb-4">
+        {hasFilters ? "Tidak ada buku yang cocok" : "Tidak ada buku yang ditemukan"}
+      </p>
+      <p className="text-base opacity-40 max-w-md mx-auto">
+        {hasFilters 
+          ? "Coba ubah filter kategori atau kata kunci pencarian" 
+          : "Koleksi buku sedang dalam perbaikan"}
+      </p>
+    </div>
+  );
+}
+
+// Skeleton loading untuk grid buku
+function BooksGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="animate-pulse">
+          <div className="aspect-[3/4] bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded-lg mb-6" />
+          <div className="h-6 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded w-3/4 mb-3" />
+          <div className="h-4 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded w-1/2" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Komponen terpisah untuk grid buku dengan filtering
+async function BooksGrid({ 
+  books, 
+  total,
+  category,
+  search
+}: { 
+  books: (Book & { slug: string })[]; 
+  total: number;
+  category?: string;
+  search?: string;
+}) {
+  // Filter buku berdasarkan kategori dan pencarian
+  let filteredBooks = books;
   
-  // Split untuk section: ambil 3 terbaru untuk "Tulisan Terbaru"
-  const latestBooks = allBooks.slice(0, 3);
+  // FIX: Hanya filter berdasarkan category (tanpa genre)
+  if (category && category !== 'all') {
+    filteredBooks = filteredBooks.filter(book => 
+      book.category === category
+    );
+  }
   
-  // Untuk "Paling Banyak Dirasa", prioritaskan yang featured tapi belum muncul di latest
-  const featuredSlugs = new Set(latestBooks.map(b => b.slug));
-  const mostRelatable = allBooks
-    .filter(b => b.featured && !featuredSlugs.has(b.slug))
-    .slice(0, 3);
-  
-  // Kalau masih kurang, tambah dari sisa buku
-  if (mostRelatable.length < 3) {
-    const remaining = allBooks.filter(b => !featuredSlugs.has(b.slug) && !mostRelatable.find(m => m.slug === b.slug));
-    mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
+  if (search) {
+    const searchLower = search.toLowerCase();
+    filteredBooks = filteredBooks.filter(book =>
+      book.title.toLowerCase().includes(searchLower) ||
+      book.excerpt.toLowerCase().includes(searchLower) ||
+      book.subtitle?.toLowerCase().includes(searchLower)
+    );
   }
 
-  // Stats untuk section stats
-  const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
-  const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
+  const hasFilters = !!(category || search);
+
+  if (filteredBooks.length === 0) {
+    return <EmptyState hasFilters={hasFilters} />;
+  }
 
   return (
-    <div className="relative min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
-      {/* ============================================
-          1. HERO SECTION
-          ============================================ */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-        {/* Background */}
-        <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
-            style={{
-              backgroundImage: `url('https://images.pexels.com/photos/30266551/pexels-photo-30266551/free-photo-of-cozy-autumn-coffee-with-old-books-and-music.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920')`,
-            }}
+    <>
+      {/* Desktop: 2 kolom, Tablet: 2 kolom, Mobile: 1 kolom */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
+        {filteredBooks.map((book, index) => (
+          <BookCard
+            key={book.id}
+            book={book}
+            index={index}
+            href={`/buku/${book.slug}`}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0f0e0c]/80 via-[#0f0e0c]/90 to-[#0f0e0c]" />
-        </div>
+        ))}
+      </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <p className="text-[11px] tracking-[0.4em] uppercase mb-8 text-[#8b7355] font-medium">
-            Sebuah Ruang untuk
+      {/* INFO JUMLAH BUKU */}
+      <div className="mt-32 text-center animate-fade-in">
+        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/20 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
+          <span className="w-2 h-2 rounded-full bg-[#2b2b2b]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
+          <span className="text-sm opacity-50 tracking-wide">
+            Menampilkan {filteredBooks.length} dari {total} buku
+            {category && category !== 'all' && ` • Kategori: ${category}`}
+            {search && ` • Pencarian: "${search}"`}
+          </span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default async function BooksPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const category = typeof params.category === 'string' ? params.category : undefined;
+  const search = typeof params.search === 'string' ? params.search : undefined;
+
+  let booksWithSlugs: (Book & { slug: string })[] = [];
+  let total = 0;
+  let error: Error | null = null;
+
+  try {
+    const { books, total: totalBooks }: BooksResponse = await getBooks();
+    total = totalBooks;
+
+    booksWithSlugs = books.map((book) => ({
+      ...book,
+      slug: bookSlugMap[book.title] || generateSlug(book.title),
+    }));
+  } catch (err) {
+    error = err instanceof Error ? err : new Error('Unknown error');
+    console.error("Error fetching books:", error);
+  }
+
+  // Cek apakah ada data buku
+  const hasBooks = booksWithSlugs.length > 0;
+
+  return (
+    <main className="min-h-screen">
+      {/* HEADER */}
+      <section className="pt-32 pb-16 px-6">
+        <div className="max-w-screen-lg mx-auto text-center">
+          <p className="text-[11px] tracking-[0.5em] uppercase opacity-40 mb-6 font-medium animate-fade-in">
+            Perpustakaan Mini
           </p>
 
-          <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 text-[#f5f0e8]">
-            Kelas Pekerja
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl opacity-90 mb-8 tracking-tight animate-fade-in-up">
+            Rak Buku
           </h1>
-          
-          <p className="text-xl md:text-2xl text-[#c4b5a0] mb-4 max-w-2xl mx-auto leading-relaxed">
-            Tempat cerita orang-orang yang tetap jalan, meski capek.
-          </p>
 
-          <p className="text-sm md:text-base text-[#8b7355] max-w-md mx-auto mb-12 leading-relaxed opacity-80">
-            {config.tagline || "Tentang malam, kopi, kerja, dan hal-hal yang sering kita pendam sendiri."}
+          <p className="text-base md:text-lg opacity-50 max-w-lg mx-auto leading-relaxed animate-fade-in-up delay-100">
+            Koleksi buku-buku kecil yang ditulis perlahan, untuk dibaca perlahan.
           </p>
+        </div>
+      </section>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/buku"
-              className="group inline-flex items-center gap-3 px-8 py-4 
-              bg-[#e8e0d5] text-[#0f0e0c] rounded-full 
-              hover:bg-[#f5f0e8] transition-all duration-300 text-sm tracking-wider font-medium"
+      {/* FILTER */}
+      <section className="px-6 pb-16">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+            <Suspense
+              fallback={
+                <div className="h-12 w-40 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />
+              }
             >
-              <BookOpen size={18} />
-              Mulai Baca
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+              <CategoryFilter activeCategory={category} />
+            </Suspense>
 
-            <Link
-              href="/tulis"
-              className="inline-flex items-center gap-2 px-8 py-4 
-              border border-[#8b7355]/40 rounded-full text-[#c4b5a0]
-              hover:border-[#8b7355] hover:text-[#e8e0d5] transition-all duration-300 text-sm tracking-wider"
+            <Suspense
+              fallback={
+                <div className="h-12 w-72 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />
+              }
             >
-              <PenLine size={18} />
-              Tulis Cerita
-            </Link>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-px h-12 bg-gradient-to-b from-[#8b7355] to-transparent" />
-        </div>
-      </section>
-
-      {/* ============================================
-          2. INI TEMPAT APA SIH?
-          ============================================ */}
-      <section className="py-32 px-6 relative">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[10px] tracking-[0.4em] uppercase mb-6 text-[#8b7355]">
-            Ini Tempat Apa Sih?
-          </p>
-
-          <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-8 text-[#f5f0e8]">
-            Kelas Pekerja bukan tentang sukses.
-            <br />
-            <span className="italic text-[#8b7355]">Ini tentang bertahan.</span>
-          </h2>
-
-          <div className="space-y-4 text-lg md:text-xl leading-relaxed text-[#a09080]">
-            <p>Tentang bangun pagi meski gak ada motivasi.</p>
-            <p>Tentang pulang malam tapi kepala masih penuh.</p>
-            <p className="text-[#c4b5a0]">
-              Dan tentang hal-hal yang gak selalu bisa kita ceritakan ke siapa-siapa.
-            </p>
-          </div>
-
-          <div className="mt-16 flex justify-center gap-8 text-[#8b7355]">
-            <div className="w-24 h-px bg-[#8b7355]/30" />
-            <Coffee size={20} className="opacity-60" />
-            <div className="w-24 h-px bg-[#8b7355]/30" />
+              <SearchBar initialSearch={search} />
+            </Suspense>
           </div>
         </div>
       </section>
 
-      {/* ============================================
-          3. FEATURED BOOKS (Pilihan Editor)
-          ============================================ */}
-      {featuredBooks.length > 0 && (
-        <section className="py-24 px-6 border-t border-[#8b7355]/10">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-16 text-center">
-              <p className="text-[10px] tracking-[0.4em] uppercase mb-4 text-[#8b7355]">
-                Pilihan Editor
-              </p>
-              <h3 className="font-serif text-3xl md:text-4xl mb-3 text-[#f5f0e8]">
-                Buku Unggulan
-              </h3>
-              <p className="text-sm text-[#8b7355] max-w-md mx-auto">
-                Dua buku yang paling banyak membantu pembaca menemukan makna dalam keheningan.
-              </p>
+      {/* GRID BUKU */}
+      <section className="px-6 pb-32">
+        <div className="max-w-screen-2xl mx-auto">
+          {error ? (
+            <div className="text-center py-32">
+              <p className="font-serif text-2xl opacity-60 mb-4">Terjadi kesalahan</p>
+              <p className="text-base opacity-40">{error.message}</p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {featuredBooks.map((book) => (
-                <article key={book.id} className="group cursor-pointer">
-                  <Link href={`/buku/${book.slug}`} className="block">
-                    <div className="bg-[#1a1816] rounded-lg overflow-hidden border border-[#8b7355]/10 group-hover:border-[#8b7355]/30 transition-all duration-300">
-                      {/* Cover Image */}
-                      {book.cover && (
-                        <div className="aspect-[16/10] overflow-hidden">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img 
-                            src={book.cover} 
-                            alt={book.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] mb-3">
-                          <span>{book.category}</span>
-                          <span>•</span>
-                          <span>{book.pages} halaman</span>
-                        </div>
-
-                        <h4 className="font-serif text-xl mb-2 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
-                          {book.title}
-                        </h4>
-                        
-                        <p className="text-sm text-[#a09080] line-clamp-2 mb-4">
-                          {book.subtitle || book.excerpt}
-                        </p>
-
-                        <div className="flex items-center justify-between text-xs text-[#8b7355]">
-                          <span>{book.readTime}</span>
-                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ============================================
-          4. TULISAN TERBARU
-          ============================================ */}
-      <section className="py-24 px-6 border-t border-[#8b7355]/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <p className="text-[10px] tracking-[0.4em] uppercase mb-4 text-[#8b7355]">
-              Tulisan Terbaru
-            </p>
-            <h3 className="font-serif text-3xl md:text-4xl mb-3 text-[#f5f0e8]">
-              Cerita-cerita yang baru saja ditinggalkan di sini.
-            </h3>
-            <p className="text-sm text-[#8b7355]">
-              Update setiap minggu. Baca pelan-pelan aja.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestBooks.map((book) => (
-              <article key={book.id} className="group cursor-pointer">
-                <Link href={`/buku/${book.slug}`} className="block">
-                  <div className="bg-[#1a1816] rounded-lg p-8 h-full 
-                    border border-[#8b7355]/10 
-                    group-hover:border-[#8b7355]/30 
-                    group-hover:-translate-y-1 
-                    transition-all duration-300">
-                    
-                    <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] mb-4">
-                      <span>{getRelativeTime(book.publishedAt)}</span>
-                      <span>•</span>
-                      <span>{book.readTime}</span>
-                    </div>
-
-                    <h4 className="font-serif text-xl mb-3 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
-                      {book.title}
-                    </h4>
-                    
-                    <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3">
-                      {book.excerpt}
-                    </p>
-
-                    <div className="mt-6 flex items-center gap-2 text-xs text-[#8b7355] group-hover:text-[#c4b5a0] transition-colors">
-                      <span>Baca selengkapnya</span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link
-              href="/buku"
-              className="inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
-            >
-              Lihat Semua Tulisan
-              <ArrowRight size={16} />
-            </Link>
-          </div>
+          ) : hasBooks ? (
+            <Suspense fallback={<BooksGridSkeleton />}>
+              <BooksGrid 
+                books={booksWithSlugs} 
+                total={total} 
+                category={category}
+                search={search}
+              />
+            </Suspense>
+          ) : (
+            <EmptyState />
+          )}
         </div>
       </section>
-
-      {/* ============================================
-          5. PALING BANYAK DIRASA
-          ============================================ */}
-      <section className="py-24 px-6 bg-[#1a1816]/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-16">
-            <p className="text-[10px] tracking-[0.4em] uppercase mb-4 text-[#8b7355]">
-              Paling Banyak Dirasa
-            </p>
-            <h3 className="font-serif text-3xl md:text-4xl mb-3 text-[#f5f0e8]">
-              Tulisan yang paling banyak bikin orang diem sebentar.
-            </h3>
-            <p className="text-sm text-[#8b7355]">
-              Bukan karena viral. Tapi karena relate.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {mostRelatable.length > 0 ? mostRelatable.map((book) => (
-              <article key={book.id} className="group cursor-pointer relative">
-                <Link href={`/buku/${book.slug}`} className="block">
-                  {/* Badge */}
-                  <div className="absolute -top-3 left-6 bg-[#8b7355] text-[#0f0e0c] text-[10px] tracking-wider uppercase px-3 py-1 rounded-full font-medium z-10">
-                    Paling Dibaca
-                  </div>
-
-                  <div className="bg-[#0f0e0c] rounded-lg p-8 h-full pt-10
-                    border border-[#8b7355]/20 
-                    group-hover:border-[#8b7355]/40 
-                    group-hover:-translate-y-1 
-                    transition-all duration-300">
-                    
-                    <h4 className="font-serif text-xl mb-3 text-[#e8e0d5] group-hover:text-[#f5f0e8] transition-colors">
-                      {book.title}
-                    </h4>
-                    
-                    <p className="text-sm leading-relaxed text-[#a09080] line-clamp-3 mb-4">
-                      {book.excerpt}
-                    </p>
-
-                    {/* Stats */}
-                    <div className="flex items-center gap-4 text-xs text-[#6b5a45] mb-4">
-                      <span className="flex items-center gap-1">
-                        <Eye size={12} />
-                        {book.stats?.views?.toLocaleString() || 0}
-                      </span>
-                      <span>{book.readTime}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-[#8b7355] group-hover:text-[#c4b5a0] transition-colors">
-                        Baca selengkapnya
-                      </span>
-                      <ArrowRight size={14} className="text-[#8b7355] group-hover:text-[#e8e0d5] group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </div>
-                </Link>
-              </article>
-            )) : (
-              <div className="col-span-3 text-center py-12 text-[#8b7355]">
-                <p>Lebih banyak cerita akan segera hadir...</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================
-          6. STATS SECTION
-          ============================================ */}
-      <section className="py-24 px-6 border-t border-[#8b7355]/10">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-          <div>
-            <div className="text-3xl font-serif text-[#8b7355] mb-2">
-              {allBooks.length}
-            </div>
-            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Buku</div>
-          </div>
-
-          <div>
-            <div className="text-3xl font-serif text-[#8b7355] mb-2">
-              {totalViews.toLocaleString()}
-            </div>
-            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Dibaca</div>
-          </div>
-
-          <div>
-            <div className="text-3xl font-serif text-[#8b7355] mb-2">
-              {totalDownloads.toLocaleString()}
-            </div>
-            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Diunduh</div>
-          </div>
-
-          <div>
-            <div className="text-3xl font-serif text-[#8b7355] mb-2">∞</div>
-            <div className="text-xs uppercase tracking-wider text-[#6b5a45]">Kopi</div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================
-          7. CTA: IKUT NULIS
-          ============================================ */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#8b7355]/5" />
-        
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <PenLine className="w-12 h-12 mx-auto mb-8 text-[#8b7355] opacity-80" />
-          
-          <h3 className="font-serif text-3xl md:text-4xl mb-6 text-[#f5f0e8]">
-            Gak semua hal harus dipendam sendiri.
-          </h3>
-          
-          <p className="text-lg text-[#a09080] mb-4 max-w-xl mx-auto leading-relaxed">
-            Kalau lo punya cerita, tulis di sini.
-          </p>
-          <p className="text-sm text-[#8b7355] mb-10">
-            Gak perlu sempurna. Yang penting, jujur.
-          </p>
-
-          <Link
-            href="/tulis"
-            className="inline-flex items-center gap-3 px-10 py-5 
-            bg-[#8b7355] text-[#0f0e0c] rounded-full
-            hover:bg-[#a08060] transition-all duration-300 text-sm tracking-wider font-medium
-            shadow-lg shadow-[#8b7355]/20 hover:shadow-[#8b7355]/30"
-          >
-            <PenLine size={18} />
-            Tulis Cerita
-          </Link>
-
-          {/* Testimoni mini */}
-          <div className="mt-16 pt-8 border-t border-[#8b7355]/20">
-            <p className="text-sm italic text-[#8b7355] max-w-md mx-auto">
-              "Awalnya ragu, tapi ternyata banyak yang ngerasa sama."
-            </p>
-            <p className="text-xs text-[#6b5a45] mt-2">— Raka, Jakarta</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================
-          8. FOOTER SIGNATURE
-          ============================================ */}
-      <footer className="py-24 px-6 border-t border-[#8b7355]/10">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Signature Quote */}
-          <div className="mb-16 space-y-2">
-            <p className="font-serif text-2xl md:text-3xl text-[#c4b5a0]">
-              Gak semua orang kuat.
-            </p>
-            <p className="font-serif text-2xl md:text-3xl text-[#c4b5a0]">
-              Tapi banyak yang tetap jalan.
-            </p>
-            <p className="font-serif text-2xl md:text-3xl text-[#8b7355] italic">
-              Dan mungkin, lo salah satunya.
-            </p>
-          </div>
-
-          {/* Simple Nav */}
-          <div className="flex justify-center gap-8 mb-12 text-sm text-[#8b7355]">
-            <Link href="/buku" className="hover:text-[#e8e0d5] transition-colors">Buku</Link>
-            <Link href="/tentang" className="hover:text-[#e8e0d5] transition-colors">Tentang</Link>
-            <Link href="/tulis" className="hover:text-[#e8e0d5] transition-colors">Tulis</Link>
-          </div>
-
-          {/* Copyright */}
-          <div className="flex items-center justify-center gap-2 text-xs text-[#6b5a45]">
-            <Coffee size={14} />
-            <span>Kelas Pekerja © {new Date().getFullYear()}</span>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </main>
   );
 }
