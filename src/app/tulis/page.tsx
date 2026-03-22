@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2, FileUp, X, Moon, Sun } from "lucide-react";
+import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2, FileUp, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 export default function TulisPage() {
@@ -13,35 +13,39 @@ export default function TulisPage() {
   const [mounted, setMounted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Check theme dari localStorage/system preference
+  // Sync theme dengan navbar global
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-      setIsDark(true);
-    } else {
-      setIsDark(false);
-    }
-  }, []);
-
-  // Toggle theme
-  const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    // Dispatch event buat sync dengan navbar global
-    window.dispatchEvent(new CustomEvent('themeChange', { detail: { isDark: newTheme } }));
-  };
-
-  // Listen theme change dari navbar
-  useEffect(() => {
-    const handleThemeChange = (e: CustomEvent<{isDark: boolean}>) => {
-      setIsDark(e.detail.isDark);
+    // Check initial theme
+    const checkTheme = () => {
+      const isDarkMode = document.documentElement.classList.contains('dark') || 
+                        localStorage.getItem('theme') === 'dark' ||
+                        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      setIsDark(isDarkMode);
     };
-    window.addEventListener('themeChange' as any, handleThemeChange);
-    return () => window.removeEventListener('themeChange' as any, handleThemeChange);
+    
+    checkTheme();
+    
+    // Listen perubahan theme dari navbar global
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          checkTheme();
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, { attributes: true });
+    
+    // Listen storage event (kalau navbar pakai localStorage)
+    const handleStorage = () => checkTheme();
+    window.addEventListener('storage', handleStorage);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('storage', handleStorage);
+    };
   }, []);
 
   const allowedTypes = [
@@ -138,27 +142,32 @@ export default function TulisPage() {
     }
   }
 
-  // Theme classes
+  // Mocha soft theme colors
   const theme = {
     bg: isDark 
-      ? "bg-gradient-to-br from-[#0a0908] via-[#1a1814] to-[#0f0e0c]" 
-      : "bg-gradient-to-br from-[#f5f0e8] via-[#ebe4d8] to-[#e8e0d5]",
-    text: isDark ? "text-[#e8e0d5]" : "text-[#2a2520]",
-    textMuted: isDark ? "text-[#a09080]" : "text-[#6b5a45]",
-    textSubtle: isDark ? "text-[#8b7355]" : "text-[#8b7355]",
+      ? "bg-[#1a1814]" 
+      : "bg-[#f5f0e8]",
+    text: isDark ? "text-[#e8e0d5]" : "text-[#3d3229]",
+    textMuted: isDark ? "text-[#a09080]" : "text-[#8b7355]",
+    textSubtle: isDark ? "text-[#8b7355]" : "text-[#a08060]",
     card: isDark 
-      ? "bg-[#1a1816]/80 backdrop-blur-sm border-[#8b7355]/20" 
-      : "bg-white/80 backdrop-blur-sm border-[#8b7355]/30",
+      ? "bg-[#231f1a]/90 border-[#3d3229]/50" 
+      : "bg-[#faf8f5]/90 border-[#d4c8b8]/50",
     input: isDark 
-      ? "bg-[#0f0e0c]/60 border-[#8b7355]/30 text-[#e8e0d5] placeholder-[#6b5a45]" 
-      : "bg-[#faf8f5] border-[#d4c8b8] text-[#2a2520] placeholder-[#a09080]",
+      ? "bg-[#0f0e0c]/50 border-[#3d3229]/50 text-[#e8e0d5] placeholder-[#5a4d40]" 
+      : "bg-[#fff]/60 border-[#d4c8b8] text-[#3d3229] placeholder-[#a09080]",
     accent: "text-[#8b7355]",
-    accentBg: "bg-[#8b7355] hover:bg-[#a08060]",
-    accentText: isDark ? "text-[#0f0e0c]" : "text-white",
-    border: isDark ? "border-[#8b7355]/20" : "border-[#8b7355]/30",
-    gradientOverlay: isDark
-      ? "bg-gradient-to-t from-[#0a0908] via-transparent to-transparent"
-      : "bg-gradient-to-t from-[#f5f0e8] via-transparent to-transparent",
+    accentBg: "bg-[#8b7355] hover:bg-[#6b5a45]",
+    accentText: "text-white",
+    border: isDark ? "border-[#3d3229]/30" : "border-[#d4c8b8]/50",
+    mocha: {
+      light: "#f5f0e8",
+      cream: "#ebe4d8", 
+      medium: "#d4c8b8",
+      brown: "#8b7355",
+      dark: "#3d3229",
+      deep: "#1a1814"
+    }
   };
 
   if (!mounted) return null;
@@ -166,84 +175,71 @@ export default function TulisPage() {
   // Success State
   if (isSuccess) {
     return (
-      <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-700`}>
-        {/* Animated Background Elements */}
+      <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+        {/* Soft Mocha Background */}
         <div className="fixed inset-0 pointer-events-none">
-          {/* Steam Particles */}
+          {/* Gradient overlay */}
+          <div className={`absolute inset-0 bg-gradient-to-b ${isDark ? 'from-[#231f1a]/50 via-transparent to-[#0f0e0c]/30' : 'from-[#faf8f5]/50 via-transparent to-[#ebe4d8]/30'}`} />
+          
+          {/* Coffee Illustrations - Success State */}
+          {/* V60 Dripper - Top Right */}
+          <div className="absolute top-20 right-10 md:right-20 opacity-20 md:opacity-30">
+            <svg width="120" height="140" viewBox="0 0 120 140" fill="none" className="animate-float-slow">
+              {/* Dripper */}
+              <path d="M30 40 L60 120 L90 40" stroke="currentColor" strokeWidth="2" fill={isDark ? "#3d3229" : "#d4c8b8"} opacity="0.3"/>
+              <path d="M25 35 Q60 25 95 35 L90 45 Q60 35 30 45 Z" stroke="currentColor" strokeWidth="2" fill={isDark ? "#2a2520" : "#e8e0d5"}/>
+              {/* Glass server */}
+              <path d="M45 120 Q60 130 75 120 L75 125 Q60 135 45 125 Z" stroke="currentColor" strokeWidth="1.5" fill={isDark ? "#1a1814" : "#f5f0e8"} opacity="0.5"/>
+              {/* Coffee liquid */}
+              <ellipse cx="60" cy="125" rx="12" ry="4" fill={isDark ? "#4a4035" : "#8b7355"} opacity="0.6"/>
+            </svg>
+          </div>
+
+          {/* Coffee Cup - Bottom Left */}
+          <div className="absolute bottom-32 left-10 md:left-20 opacity-20 md:opacity-30">
+            <svg width="100" height="80" viewBox="0 0 100 80" fill="none" className="animate-float-slow" style={{animationDelay: '2s'}}>
+              {/* Saucer */}
+              <ellipse cx="50" cy="70" rx="35" ry="8" stroke="currentColor" strokeWidth="2" fill={isDark ? "#2a2520" : "#ebe4d8"} opacity="0.4"/>
+              {/* Cup body */}
+              <path d="M25 30 Q25 65 50 65 Q75 65 75 30" stroke="currentColor" strokeWidth="2" fill={isDark ? "#3d3229" : "#faf8f5"} opacity="0.5"/>
+              {/* Cup rim */}
+              <ellipse cx="50" cy="30" rx="25" ry="6" stroke="currentColor" strokeWidth="2" fill={isDark ? "#4a4035" : "#f5f0e8"} opacity="0.3"/>
+              {/* Coffee surface */}
+              <ellipse cx="50" cy="32" rx="20" ry="4" fill={isDark ? "#2a2520" : "#8b7355"} opacity="0.4"/>
+              {/* Steam */}
+              <path d="M45 20 Q40 10 45 0" stroke="currentColor" strokeWidth="1.5" opacity="0.3" className="animate-steam"/>
+              <path d="M55 20 Q60 10 55 0" stroke="currentColor" strokeWidth="1.5" opacity="0.3" className="animate-steam" style={{animationDelay: '1s'}}/>
+            </svg>
+          </div>
+
+          {/* Coffee Beans Scattered */}
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className={`absolute w-2 h-24 ${isDark ? 'bg-gradient-to-t from-[#8b7355]/10 to-transparent' : 'bg-gradient-to-t from-[#8b7355]/5 to-transparent'} rounded-full blur-xl animate-steam`}
+              className={`absolute w-3 h-4 ${isDark ? 'bg-[#4a4035]/20' : 'bg-[#8b7355]/15'} rounded-full`}
               style={{
                 left: `${15 + i * 15}%`,
-                bottom: '-100px',
-                animationDelay: `${i * 2}s`,
-                animationDuration: '8s',
+                top: `${20 + (i % 3) * 25}%`,
+                transform: `rotate(${45 + i * 30}deg)`,
+                animation: `float ${8 + i}s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s`
               }}
             />
           ))}
-          
-          {/* Floating Coffee Beans */}
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`bean-${i}`}
-              className={`absolute w-3 h-4 ${isDark ? 'bg-[#6b5a45]/20' : 'bg-[#8b7355]/15'} rounded-full rotate-45 animate-float`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 1.5}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-
-          {/* Subtle Grid Pattern */}
-          <div className={`absolute inset-0 opacity-[0.03] ${isDark ? 'bg-[#8b7355]' : 'bg-[#6b5a45]'}`}
-            style={{
-              backgroundImage: `linear-gradient(${isDark ? '#8b7355' : '#6b5a45'} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? '#8b7355' : '#6b5a45'} 1px, transparent 1px)`,
-              backgroundSize: '50px 50px',
-            }}
-          />
         </div>
 
-        <header className={`relative z-10 px-6 py-6 ${theme.border} border-b backdrop-blur-md`}>
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <Link 
-              href="/"
-              className={`inline-flex items-center gap-2 text-sm ${theme.textSubtle} hover:${theme.text} transition-colors`}
-            >
-              <ArrowLeft size={16} />
-              Kembali
-            </Link>
-            
-            <div className="flex items-center gap-2">
-              <Coffee size={18} className={theme.accent} />
-              <span className="font-serif text-lg">Kelas Pekerja</span>
-            </div>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-full ${theme.card} hover:scale-110 transition-all duration-300`}
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun size={18} className={theme.accent} /> : <Moon size={18} className={theme.accent} />}
-            </button>
-          </div>
-        </header>
-
-        <main className="relative z-10 px-6 py-16 md:py-24">
+        <main className="relative z-10 px-6 py-16 md:py-24 min-h-screen flex items-center justify-center">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="relative inline-block">
-              <CheckCircle className={`w-16 h-16 mx-auto mb-6 ${theme.accent} animate-pulse`} />
-              <div className={`absolute inset-0 w-16 h-16 mx-auto ${theme.accent} blur-2xl opacity-30`} />
+            <div className="relative inline-block mb-8">
+              <CheckCircle className={`w-20 h-20 mx-auto ${theme.accent} animate-pulse`} />
+              <div className={`absolute inset-0 w-20 h-20 mx-auto ${theme.accent} blur-3xl opacity-20`} />
             </div>
             
-            <h1 className="font-serif text-3xl md:text-4xl mb-6">
+            <h1 className="font-serif text-3xl md:text-5xl mb-6 leading-tight">
               Ceritamu Sudah Sampai
             </h1>
 
-            <p className={`${theme.textMuted} leading-relaxed mb-10 text-lg`}>
+            <p className={`${theme.textMuted} leading-relaxed mb-10 text-lg max-w-md mx-auto`}>
               Mungkin gak semua orang akan mengerti,  
               <br />
               tapi di sini… ada yang mau membaca.
@@ -269,7 +265,7 @@ export default function TulisPage() {
               </button>
             </div>
 
-            <p className={`text-xs ${isDark ? 'text-[#6b5a45]' : 'text-[#a09080]'} mt-12`}>
+            <p className={`text-xs ${theme.textMuted} mt-12`}>
               Cerita terpilih akan dipublikasikan di Kelas Pekerja.
             </p>
           </div>
@@ -279,116 +275,139 @@ export default function TulisPage() {
   }
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-700`}>
-      {/* Rich Background Layer */}
+    <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+      {/* Mocha Soft Background with Coffee Illustrations */}
       <div className="fixed inset-0 pointer-events-none">
         
-        {/* Base Gradient Noise Texture */}
-        <div className="absolute inset-0 opacity-40 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          }}
-        />
+        {/* Base soft gradient */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#231f1a] via-[#1a1814] to-[#0f0e0c]' : 'from-[#faf8f5] via-[#f5f0e8] to-[#ebe4d8]'}`} />
 
-        {/* Coffee Steam Animation */}
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-1 h-32 ${isDark ? 'bg-gradient-to-t from-[#8b7355]/20 via-[#a08060]/10 to-transparent' : 'bg-gradient-to-t from-[#8b7355]/10 via-[#a08060]/5 to-transparent'} rounded-full blur-2xl`}
-            style={{
-              left: `${20 + i * 15}%`,
-              bottom: '0',
-              animation: `steam 10s ease-in-out ${i * 2}s infinite`,
-            }}
-          />
-        ))}
+        {/* V60 Dripper - Positioned top right, partially visible */}
+        <div className="absolute -top-4 -right-8 md:right-10 opacity-10 md:opacity-20 hover:opacity-30 transition-opacity duration-700">
+          <svg width="200" height="240" viewBox="0 0 200 240" fill="none" className="animate-float-slow">
+            {/* Dripper cone */}
+            <path d="M50 80 L100 200 L150 80" stroke={theme.mocha.brown} strokeWidth="3" fill={isDark ? theme.mocha.dark : theme.mocha.cream} opacity="0.2"/>
+            {/* Top rim */}
+            <ellipse cx="100" cy="80" rx="55" ry="15" stroke={theme.mocha.brown} strokeWidth="3" fill={isDark ? theme.mocha.deep : theme.mocha.light} opacity="0.3"/>
+            {/* Ribs/detail lines */}
+            <line x1="75" y1="80" x2="100" y2="200" stroke={theme.mocha.brown} strokeWidth="1" opacity="0.3"/>
+            <line x1="100" y1="80" x2="100" y2="200" stroke={theme.mocha.brown} strokeWidth="1" opacity="0.3"/>
+            <line x1="125" y1="80" x2="100" y2="200" stroke={theme.mocha.brown} strokeWidth="1" opacity="0.3"/>
+            {/* Glass server below */}
+            <path d="M70 200 Q100 220 130 200 L130 210 Q100 230 70 210 Z" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.deep : theme.mocha.light} opacity="0.4"/>
+            {/* Coffee level */}
+            <ellipse cx="100" cy="215" rx="25" ry="6" fill={theme.mocha.brown} opacity="0.3"/>
+            {/* Single drop falling */}
+            <circle cx="100" cy="195" r="3" fill={theme.mocha.brown} opacity="0.5" className="animate-drip"/>
+          </svg>
+        </div>
 
-        {/* Floating Elements - Coffee Beans & Ink Drops */}
-        {[...Array(12)].map((_, i) => (
+        {/* Chemex - Left side, mid height */}
+        <div className="absolute top-1/3 -left-12 md:left-8 opacity-10 md:opacity-15 hover:opacity-25 transition-opacity duration-700">
+          <svg width="180" height="280" viewBox="0 0 180 280" fill="none" className="animate-float-slow" style={{animationDelay: '3s'}}>
+            {/* Chemex body - hourglass shape */}
+            <path d="M40 60 Q30 140 60 160 Q90 180 120 160 Q150 140 140 60" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.dark : theme.mocha.cream} opacity="0.15"/>
+            {/* Top opening */}
+            <ellipse cx="90" cy="60" rx="50" ry="12" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.deep : theme.mocha.light} opacity="0.2"/>
+            {/* Bottom */}
+            <path d="M60 160 Q50 220 70 250 Q90 270 110 250 Q130 220 120 160" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.dark : theme.mocha.cream} opacity="0.15"/>
+            {/* Wood collar */}
+            <rect x="65" y="155" width="50" height="12" rx="2" fill={theme.mocha.brown} opacity="0.3"/>
+            {/* Tie */}
+            <path d="M90 167 L85 180 L90 175 L95 180 Z" fill={theme.mocha.brown} opacity="0.4"/>
+          </svg>
+        </div>
+
+        {/* Coffee Cup & Saucer - Bottom right */}
+        <div className="absolute bottom-20 right-5 md:right-16 opacity-15 md:opacity-25 hover:opacity-35 transition-opacity duration-700">
+          <svg width="140" height="100" viewBox="0 0 140 100" fill="none" className="animate-float-slow" style={{animationDelay: '1.5s'}}>
+            {/* Saucer */}
+            <ellipse cx="70" cy="85" rx="50" ry="12" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.dark : theme.mocha.cream} opacity="0.3"/>
+            {/* Cup handle */}
+            <path d="M110 45 Q130 45 130 60 Q130 75 110 75" stroke={theme.mocha.brown} strokeWidth="3" fill="none" opacity="0.4"/>
+            {/* Cup body */}
+            <path d="M30 40 Q30 80 70 80 Q110 80 110 40" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.dark : theme.mocha.light} opacity="0.25"/>
+            {/* Cup rim */}
+            <ellipse cx="70" cy="40" rx="40" ry="10" stroke={theme.mocha.brown} strokeWidth="2" fill={isDark ? theme.mocha.deep : theme.mocha.cream} opacity="0.2"/>
+            {/* Coffee liquid */}
+            <ellipse cx="70" cy="42" rx="32" ry="6" fill={theme.mocha.brown} opacity="0.4"/>
+            {/* Reflection */}
+            <ellipse cx="55" cy="38" rx="8" ry="3" fill={isDark ? theme.mocha.light : theme.mocha.cream} opacity="0.2"/>
+            {/* Steam lines */}
+            <path d="M60 25 Q55 15 60 5" stroke={theme.mocha.brown} strokeWidth="1.5" opacity="0.3" fill="none" className="animate-steam"/>
+            <path d="M70 20 Q75 10 70 0" stroke={theme.mocha.brown} strokeWidth="1.5" opacity="0.3" fill="none" className="animate-steam" style={{animationDelay: '0.5s'}}/>
+            <path d="M80 25 Q75 15 80 5" stroke={theme.mocha.brown} strokeWidth="1.5" opacity="0.3" fill="none" className="animate-steam" style={{animationDelay: '1s'}}/>
+          </svg>
+        </div>
+
+        {/* Small espresso cup - Top left */}
+        <div className="absolute top-32 left-10 md:left-24 opacity-10 md:opacity-20">
+          <svg width="80" height="70" viewBox="0 0 80 70" fill="none" className="animate-float-slow" style={{animationDelay: '2s'}}>
+            {/* Saucer */}
+            <ellipse cx="40" cy="60" rx="30" ry="6" stroke={theme.mocha.brown} strokeWidth="1.5" fill={isDark ? theme.mocha.dark : theme.mocha.cream} opacity="0.3"/>
+            {/* Cup */}
+            <path d="M20 30 Q20 55 40 55 Q60 55 60 30" stroke={theme.mocha.brown} strokeWidth="1.5" fill={isDark ? theme.mocha.dark : theme.mocha.light} opacity="0.25"/>
+            <ellipse cx="40" cy="30" rx="20" ry="5" stroke={theme.mocha.brown} strokeWidth="1.5" fill={isDark ? theme.mocha.deep : theme.mocha.cream} opacity="0.2"/>
+            {/* Crema */}
+            <ellipse cx="40" cy="31" rx="16" ry="3" fill={theme.mocha.brown} opacity="0.5"/>
+            {/* Handle */}
+            <path d="M60 35 Q72 35 72 42 Q72 49 60 49" stroke={theme.mocha.brown} strokeWidth="1.5" fill="none" opacity="0.4"/>
+          </svg>
+        </div>
+
+        {/* Coffee Beans - Scattered artistically */}
+        {[...Array(8)].map((_, i) => (
           <div
-            key={`float-${i}`}
-            className={`absolute animate-float-slow ${i % 3 === 0 ? 'w-2 h-3' : 'w-1.5 h-2'} ${i % 2 === 0 ? (isDark ? 'bg-[#6b5a45]/30' : 'bg-[#8b7355]/20') : (isDark ? 'bg-[#4a4035]/20' : 'bg-[#6b5a45]/15')} rounded-full`}
+            key={`bean-${i}`}
+            className="absolute animate-float"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${10 + (i * 11)}%`,
+              top: `${15 + (i % 4) * 20}%`,
               animationDelay: `${i * 0.8}s`,
-              animationDuration: `${8 + Math.random() * 6}s`,
-              transform: `rotate(${Math.random() * 360}deg)`,
+              animationDuration: `${6 + i}s`,
             }}
-          />
+          >
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" opacity={isDark ? 0.15 : 0.1}>
+              <ellipse cx="10" cy="14" rx="8" ry="12" fill={theme.mocha.brown} transform="rotate(15 10 14)"/>
+              <line x1="10" y1="6" x2="10" y2="22" stroke={isDark ? theme.mocha.deep : theme.mocha.light} strokeWidth="1" transform="rotate(15 10 14)"/>
+            </svg>
+          </div>
         ))}
 
-        {/* Subtle Light Rays (Dark mode) or Warm Glow (Light mode) */}
-        <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] ${isDark ? 'bg-gradient-to-b from-[#8b7355]/10 via-transparent to-transparent' : 'bg-gradient-to-b from-[#e8d5b5]/30 via-[#f5f0e8]/10 to-transparent'} rounded-full blur-3xl`} />
-
-        {/* Corner Decorations - Coffee Ring Stains */}
-        <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full border-4 ${isDark ? 'border-[#3a3530]/30' : 'border-[#d4c8b8]/40'} opacity-30`} />
-        <div className={`absolute -bottom-32 -left-32 w-96 h-96 rounded-full border-2 ${isDark ? 'border-[#4a4035]/20' : 'border-[#c4b8a8]/30'} opacity-20`} />
-        
-        {/* Writing Lines Effect */}
-        <div className="absolute inset-0 opacity-[0.02]"
+        {/* Soft texture overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" 
           style={{
-            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 24px, ${isDark ? '#8b7355' : '#6b5a45'} 24px, ${isDark ? '#8b7355' : '#6b5a45'} 25px)`,
-            backgroundSize: '100% 25px',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
-      {/* Header */}
-      <header className={`relative z-10 px-6 py-6 ${theme.border} border-b backdrop-blur-md sticky top-0`}>
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link 
-            href="/"
-            className={`inline-flex items-center gap-2 text-sm ${theme.textSubtle} hover:${theme.text} transition-all duration-300 hover:-translate-x-1`}
-          >
-            <ArrowLeft size={16} />
-            <span>Kembali</span>
-          </Link>
-          
-          <div className="flex items-center gap-3">
-            <Coffee size={18} className={`${theme.accent} animate-pulse`} />
-            <span className="font-serif text-lg tracking-wide">Kelas Pekerja</span>
-          </div>
-
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className={`p-2.5 rounded-full ${theme.card} hover:scale-110 transition-all duration-300 shadow-sm hover:shadow-md group`}
-            aria-label="Toggle theme"
-          >
-            {isDark ? (
-              <Sun size={18} className={`${theme.accent} group-hover:rotate-90 transition-transform duration-500`} />
-            ) : (
-              <Moon size={18} className={`${theme.accent} group-hover:-rotate-12 transition-transform duration-500`} />
-            )}
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="relative z-10 px-6 py-12 md:py-20">
+      {/* Main Content - No Navbar */}
+      <main className="relative z-10 px-6 py-12 md:py-16">
         <div className="max-w-2xl mx-auto">
           
-          {/* Intro Section dengan Visual Poetry */}
-          <div className="text-center mb-16 relative">
-            {/* Decorative Quote Marks */}
-            <div className={`absolute -top-8 left-1/2 -translate-x-1/2 text-8xl ${theme.textSubtle} opacity-20 font-serif select-none`}>
-              "
+          {/* Back Link */}
+          <div className="mb-8">
+            <Link 
+              href="/"
+              className={`inline-flex items-center gap-2 text-sm ${theme.textSubtle} hover:${theme.text} transition-all duration-300 hover:-translate-x-1 group`}
+            >
+              <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+              <span>Kembali</span>
+            </Link>
+          </div>
+          
+          {/* Intro Section */}
+          <div className="text-center mb-12 relative">
+            <div className="relative inline-block mb-6">
+              <PenLine className={`w-10 h-10 mx-auto ${theme.accent} opacity-80`} />
             </div>
             
-            <div className="relative inline-block mb-8">
-              <PenLine className={`w-12 h-12 mx-auto ${theme.accent} opacity-80 animate-bounce-slow`} />
-              <div className={`absolute inset-0 w-12 h-12 mx-auto ${theme.accent} blur-xl opacity-20`} />
-            </div>
-            
-            <h1 className="font-serif text-3xl md:text-5xl mb-6 tracking-tight leading-tight">
-              <span className="block">Tulis Ceritamu</span>
-              <span className={`block text-lg md:text-xl ${theme.textMuted} mt-2 font-normal italic`}>
-                di antara hiruk pikuk dan secangkir kopi yang menghangat
-              </span>
+            <h1 className="font-serif text-3xl md:text-4xl mb-4 leading-tight">
+              Tulis Ceritamu
             </h1>
             
-            <p className={`${theme.textMuted} leading-relaxed text-sm md:text-base max-w-md mx-auto`}>
+            <p className={`${theme.textMuted} leading-relaxed text-sm`}>
               Gak perlu sempurna. Gak perlu panjang. 
               <br />
               <span className={`${theme.textSubtle} italic`}>Yang penting, jujur.</span>
@@ -396,11 +415,8 @@ export default function TulisPage() {
           </div>
 
           {/* Form Card */}
-          <div className={`${theme.card} rounded-2xl p-6 md:p-10 shadow-2xl backdrop-blur-md relative overflow-hidden`}>
-            {/* Card Inner Glow */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#8b7355]/5 to-transparent' : 'from-[#f5f0e8]/50 to-transparent'} pointer-events-none`} />
-            
-            <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+          <div className={`${theme.card} backdrop-blur-sm rounded-2xl p-6 md:p-8 border shadow-xl`}>
+            <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <div className="p-4 bg-red-900/10 border border-red-800/20 rounded-lg text-red-500 text-sm animate-shake">
                   {error}
@@ -408,10 +424,10 @@ export default function TulisPage() {
               )}
 
               {/* Judul */}
-              <div className="group">
+              <div>
                 <label 
                   htmlFor="title" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
                   Judul Cerita <span className="text-red-500">*</span>
                 </label>
@@ -421,17 +437,16 @@ export default function TulisPage() {
                   name="title"
                   required
                   placeholder="Misal: 'Malam di Sudut Kedai'"
-                  className={`w-full ${theme.input} border rounded-xl px-5 py-4 
-                    focus:border-[#8b7355]/60 focus:outline-none focus:ring-2 focus:ring-[#8b7355]/20
-                    transition-all duration-300 hover:border-[#8b7355]/40`}
+                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 
+                    focus:border-[#8b7355]/60 focus:outline-none transition-all duration-300`}
                 />
               </div>
 
               {/* Nama */}
-              <div className="group">
+              <div>
                 <label 
                   htmlFor="author" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
                   Nama Kamu <span className={`text-xs normal-case ${theme.textMuted}`}>(Boleh Samaran)</span>
                 </label>
@@ -439,95 +454,78 @@ export default function TulisPage() {
                   type="text"
                   id="author"
                   name="author"
-                  placeholder="Bisa nama asli atau inisial..."
-                  className={`w-full ${theme.input} border rounded-xl px-5 py-4 
-                    focus:border-[#8b7355]/60 focus:outline-none focus:ring-2 focus:ring-[#8b7355]/20
-                    transition-all duration-300 hover:border-[#8b7355]/40`}
+                  placeholder="Bisa nama asli atau inisial"
+                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 
+                    focus:border-[#8b7355]/60 focus:outline-none transition-all duration-300`}
                 />
               </div>
 
               {/* Email */}
-              <div className="group">
+              <div>
                 <label 
                   htmlFor="email" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
-                  Email <span className={`text-xs normal-case ${theme.textMuted}`}>(Opsional, untuk update)</span>
+                  Email <span className={`text-xs normal-case ${theme.textMuted}`}>(Opsional)</span>
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   placeholder="email@kamu.com"
-                  className={`w-full ${theme.input} border rounded-xl px-5 py-4 
-                    focus:border-[#8b7355]/60 focus:outline-none focus:ring-2 focus:ring-[#8b7355]/20
-                    transition-all duration-300 hover:border-[#8b7355]/40`}
+                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 
+                    focus:border-[#8b7355]/60 focus:outline-none transition-all duration-300`}
                 />
               </div>
 
               {/* Kategori */}
-              <div className="group">
+              <div>
                 <label 
                   htmlFor="category" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
                   Tema Cerita
                 </label>
-                <div className="relative">
-                  <select
-                    id="category"
-                    name="category"
-                    className={`w-full ${theme.input} border rounded-xl px-5 py-4 
-                      focus:border-[#8b7355]/60 focus:outline-none focus:ring-2 focus:ring-[#8b7355]/20
-                      transition-all duration-300 hover:border-[#8b7355]/40
-                      appearance-none cursor-pointer`}
-                  >
-                    <option value="">Pilih tema yang merepresentasikan...</option>
-                    <option value="kehidupan">Kehidupan — yang berjalan tanpa ampun</option>
-                    <option value="kerja">Kerja — di antara tumpukan deadline</option>
-                    <option value="malam">Malam — saat dunia berdiam</option>
-                    <option value="kopi">Kopi — teman setia di pagi buta</option>
-                    <option value="proses">Proses — perjalanan yang belum usai</option>
-                    <option value="lainnya">Lainnya — yang tak terkategorikan</option>
-                  </select>
-                  <div className={`absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none ${theme.textSubtle}`}>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" className="animate-bounce-slow">
-                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
+                <select
+                  id="category"
+                  name="category"
+                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 
+                    focus:border-[#8b7355]/60 focus:outline-none transition-all duration-300
+                    appearance-none cursor-pointer`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b7355'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 1rem center',
+                    backgroundSize: '1rem',
+                  }}
+                >
+                  <option value="">Pilih tema...</option>
+                  <option value="kehidupan">Kehidupan</option>
+                  <option value="kerja">Kerja</option>
+                  <option value="malam">Malam</option>
+                  <option value="kopi">Kopi</option>
+                  <option value="proses">Proses</option>
+                  <option value="lainnya">Lainnya</option>
+                </select>
               </div>
 
-              {/* File Upload - Enhanced */}
-              <div className="group">
+              {/* File Upload */}
+              <div>
                 <label 
                   htmlFor="files" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
                   Lampiran <span className={`text-xs normal-case ${theme.textMuted}`}>(Opsional)</span>
                 </label>
                 
-                {/* Enhanced Drop Zone */}
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className={`w-full ${theme.input} border-2 border-dashed rounded-xl px-6 py-10 
-                    text-center cursor-pointer hover:border-[#8b7355]/60 hover:bg-[#8b7355]/5
-                    transition-all duration-500 group/upload relative overflow-hidden`}
+                  className={`w-full ${theme.input} border-2 border-dashed rounded-lg px-4 py-8 
+                    text-center cursor-pointer hover:border-[#8b7355]/60 transition-all duration-300`}
                 >
-                  {/* Hover Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8b7355]/5 to-transparent translate-x-[-100%] group-hover/upload:translate-x-[100%] transition-transform duration-1000" />
-                  
-                  <div className="relative z-10">
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full ${isDark ? 'bg-[#8b7355]/20' : 'bg-[#8b7355]/10'} flex items-center justify-center group-hover/upload:scale-110 transition-transform duration-300`}>
-                      <FileUp className={`w-8 h-8 ${theme.accent}`} />
-                    </div>
-                    <p className={`text-sm ${theme.text} mb-2 font-medium`}>
-                      Letakkan file di sini, atau klik untuk memilih
-                    </p>
-                    <p className={`text-xs ${theme.textMuted}`}>
-                      DOCX, TXT, PDF, JPG, PNG • Maksimal 25MB per file
-                    </p>
-                  </div>
+                  <FileUp className={`w-8 h-8 mx-auto mb-2 ${theme.accent}`} />
+                  <p className={`text-sm ${theme.text} mb-1`}>Klik atau drag & drop file di sini</p>
+                  <p className={`text-xs ${theme.textMuted}`}>DOCX, TXT, PDF, JPG, PNG (Max 25MB)</p>
                 </div>
 
                 <input
@@ -541,31 +539,31 @@ export default function TulisPage() {
                   className="hidden"
                 />
 
-                {/* File List - Enhanced */}
+                {/* File List */}
                 {files.length > 0 && (
-                  <div className="mt-4 space-y-3">
+                  <div className="mt-3 space-y-2">
                     {files.map((file, index) => (
                       <div 
                         key={index}
-                        className={`flex items-center justify-between ${theme.input} border rounded-xl px-4 py-3 group/file hover:border-[#8b7355]/50 transition-all duration-300`}
+                        className={`flex items-center justify-between ${theme.input} border rounded-lg px-3 py-2`}
                       >
-                        <div className="flex items-center gap-4 min-w-0">
-                          <div className={`w-10 h-10 ${isDark ? 'bg-[#8b7355]/20' : 'bg-[#8b7355]/10'} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                            <span className={`text-xs ${theme.accent} font-bold uppercase`}>
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`w-8 h-8 ${isDark ? 'bg-[#3d3229]/50' : 'bg-[#d4c8b8]/50'} rounded flex items-center justify-center flex-shrink-0`}>
+                            <span className={`text-xs ${theme.accent} font-medium uppercase`}>
                               {file.name.split('.').pop()?.slice(0, 3)}
                             </span>
                           </div>
                           <div className="min-w-0">
-                            <p className={`text-sm ${theme.text} truncate font-medium`}>{file.name}</p>
+                            <p className={`text-sm ${theme.text} truncate`}>{file.name}</p>
                             <p className={`text-xs ${theme.textMuted}`}>{formatFileSize(file.size)}</p>
                           </div>
                         </div>
                         <button
                           type="button"
                           onClick={() => removeFile(index)}
-                          className={`p-2 hover:bg-red-500/10 rounded-lg transition-all duration-300 group-hover/file:opacity-100 opacity-70`}
+                          className="p-1 hover:bg-red-500/10 rounded transition-colors"
                         >
-                          <X size={18} className="text-red-500" />
+                          <X size={16} className="text-red-500" />
                         </button>
                       </div>
                     ))}
@@ -573,135 +571,106 @@ export default function TulisPage() {
                 )}
               </div>
 
-              {/* Cerita - Enhanced */}
-              <div className="group">
+              {/* Cerita */}
+              <div>
                 <label 
                   htmlFor="content" 
-                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-3 font-medium`}
+                  className={`block text-[10px] tracking-[0.2em] uppercase ${theme.textSubtle} mb-2 font-medium`}
                 >
                   Ceritamu <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <textarea
-                    id="content"
-                    name="content"
-                    required
-                    rows={12}
-                    placeholder="Tulis apa yang kamu rasakan. Kesunyian. Kerinduan. Kopi yang dingin di meja. Tidak ada yang salah di sini..."
-                    className={`w-full ${theme.input} border rounded-xl px-5 py-4 
-                      focus:border-[#8b7355]/60 focus:outline-none focus:ring-2 focus:ring-[#8b7355]/20
-                      transition-all duration-300 hover:border-[#8b7355]/40 leading-relaxed resize-none`}
-                  />
-                  {/* Corner Decoration */}
-                  <div className={`absolute bottom-3 right-3 text-xs ${theme.textMuted} pointer-events-none`}>
-                    <PenLine size={14} className="inline mr-1 opacity-50" />
-                    bebas
-                  </div>
-                </div>
+                <textarea
+                  id="content"
+                  name="content"
+                  required
+                  rows={10}
+                  placeholder="Tulis apa yang kamu rasakan. Tidak ada yang salah di sini..."
+                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 
+                    focus:border-[#8b7355]/60 focus:outline-none transition-all duration-300 resize-none leading-relaxed`}
+                />
               </div>
 
-              {/* Submit Button - Enhanced */}
-              <div className="pt-6">
+              {/* Submit */}
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full inline-flex items-center justify-center gap-3 px-8 py-5 
+                  className={`w-full inline-flex items-center justify-center gap-2 px-8 py-4 
                     ${theme.accentBg} ${theme.accentText} rounded-full
-                    transition-all duration-500 
-                    text-sm tracking-wider font-semibold
-                    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none
-                    hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.02]
-                    active:scale-[0.98] relative overflow-hidden group`}
+                    transition-all duration-300 text-sm tracking-wider font-medium
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    hover:shadow-lg hover:-translate-y-0.5`}
                 >
-                  {/* Shine Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                  
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={20} className="animate-spin" />
-                      <span>Mengirim ke ruang baca...</span>
+                      <Loader2 size={18} className="animate-spin" />
+                      Mengirim...
                     </>
                   ) : (
                     <>
-                      <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-                      <span>Kirim Cerita</span>
+                      <Send size={18} />
+                      Kirim Cerita
                     </>
                   )}
                 </button>
                 
-                <p className={`text-xs ${theme.textMuted} text-center mt-6 italic`}>
-                  Ceritamu akan direview dulu sebelum dipublikasikan di sudut kopi kami.
+                <p className={`text-xs ${theme.textMuted} text-center mt-4`}>
+                  Ceritamu akan direview dulu sebelum dipublikasikan.
                 </p>
               </div>
             </form>
           </div>
 
           {/* Footer Quote */}
-          <div className={`mt-16 pt-8 ${theme.border} border-t`}>
-            <div className="relative text-center max-w-lg mx-auto">
-              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 ${isDark ? 'bg-[#0f0e0c]' : 'bg-[#f5f0e8]'} flex items-center justify-center`}>
-                <Coffee size={16} className={theme.accent} />
-              </div>
-              <p className={`text-sm ${theme.textSubtle} leading-relaxed italic`}>
-                "Gak semua orang kuat. Tapi banyak yang tetap jalan. 
-                Dan mungkin, dengan menulis, kita bisa jalan bareng."
-              </p>
-              <div className={`mt-4 text-[10px] tracking-widest uppercase ${theme.textMuted}`}>
-                — Kelas Pekerja
-              </div>
-            </div>
+          <div className={`mt-12 pt-6 ${theme.border} border-t text-center`}>
+            <p className={`text-sm ${theme.textSubtle} italic leading-relaxed`}>
+              "Gak semua orang kuat. Tapi banyak yang tetap jalan. 
+              Dan mungkin, dengan menulis, kita bisa jalan bareng."
+            </p>
           </div>
         </div>
       </main>
 
       {/* CSS Animations */}
       <style jsx global>{`
-        @keyframes steam {
-          0%, 100% {
-            transform: translateY(0) scaleX(1);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.5;
-          }
-          100% {
-            transform: translateY(-100vh) scaleX(2);
-            opacity: 0;
-          }
-        }
-        
         @keyframes float {
           0%, 100% {
-            transform: translateY(0) rotate(45deg);
-            opacity: 0.3;
+            transform: translateY(0) rotate(0deg);
           }
           50% {
-            transform: translateY(-20px) rotate(45deg);
-            opacity: 0.6;
+            transform: translateY(-15px) rotate(5deg);
           }
         }
         
         @keyframes float-slow {
           0%, 100% {
-            transform: translateY(0) translateX(0) rotate(0deg);
-            opacity: 0.2;
+            transform: translateY(0) rotate(0deg);
           }
           33% {
-            transform: translateY(-30px) translateX(10px) rotate(120deg);
-            opacity: 0.4;
+            transform: translateY(-10px) rotate(2deg);
           }
           66% {
-            transform: translateY(20px) translateX(-10px) rotate(240deg);
-            opacity: 0.3;
+            transform: translateY(5px) rotate(-2deg);
           }
         }
         
-        @keyframes bounce-slow {
+        @keyframes steam {
+          0% {
+            transform: translateY(0) opacity(0.3);
+          }
+          100% {
+            transform: translateY(-20px) opacity(0);
+          }
+        }
+        
+        @keyframes drip {
           0%, 100% {
             transform: translateY(0);
+            opacity: 0.5;
           }
           50% {
-            transform: translateY(-5px);
+            transform: translateY(3px);
+            opacity: 0.8;
           }
         }
         
@@ -711,20 +680,20 @@ export default function TulisPage() {
           75% { transform: translateX(5px); }
         }
         
-        .animate-steam {
-          animation: steam 8s ease-in-out infinite;
-        }
-        
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
         
         .animate-float-slow {
-          animation: float-slow 12s ease-in-out infinite;
+          animation: float-slow 10s ease-in-out infinite;
         }
         
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
+        .animate-steam {
+          animation: steam 3s ease-out infinite;
+        }
+        
+        .animate-drip {
+          animation: drip 2s ease-in-out infinite;
         }
         
         .animate-shake {
