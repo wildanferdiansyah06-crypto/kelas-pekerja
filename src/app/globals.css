@@ -32,6 +32,7 @@
 }
 
 @layer utilities {
+  /* Animasi yang sudah ada */
   @keyframes breathe {
     0%, 100% { transform: scale(1.05); }
     50% { transform: scale(1.08); }
@@ -64,6 +65,46 @@
     }
   }
 
+  /* Animasi tambahan untuk filter & loading */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Classes yang sudah ada */
   .animate-breathe {
     animation: breathe 20s ease-in-out infinite;
   }
@@ -98,6 +139,69 @@
     will-change: transform, opacity;
   }
 
+  /* Classes tambahan untuk filter & interaksi */
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(139, 115, 85, 0.1) 25%,
+      rgba(139, 115, 85, 0.2) 50%,
+      rgba(139, 115, 85, 0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Delay utilities untuk staggered animations */
+  .delay-75 {
+    animation-delay: 75ms;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-150 {
+    animation-delay: 150ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  /* Cursor utilities */
+  .cursor-wait {
+    cursor: wait;
+  }
+
+  /* Hide scrollbar */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -107,6 +211,7 @@
     scrollbar-width: none;
   }
 
+  /* Grain overlay */
   .grain-overlay {
     position: fixed;
     inset: 0;
@@ -117,6 +222,7 @@
     background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
   }
 
+  /* Prose custom */
   .prose-custom {
     font-size: 18px;
     line-height: 1.85;
@@ -134,11 +240,88 @@
     @apply font-serif text-xl mt-8 mb-4 opacity-80;
   }
 
+  /* Focus ring konsisten dengan tema */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
   }
+
+  /* Transition utilities tambahan */
+  .transition-transform {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .transition-colors {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .transition-opacity {
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Scale utilities untuk hover effects */
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
+  }
+
+  .hover\:scale-105:hover {
+    transform: scale(1.05);
+  }
+
+  .active\:scale-95:active {
+    transform: scale(0.95);
+  }
+
+  .active\:scale-98:active {
+    transform: scale(0.98);
+  }
+
+  /* Loading state utilities */
+  .loading-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .loading-dots > div {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: bounce 0.6s infinite alternate;
+  }
+
+  .loading-dots > div:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .loading-dots > div:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-shimmer rounded;
+  }
+
+  /* Data pending state untuk Next.js transitions */
+  [data-pending] {
+    opacity: 0.7;
+    pointer-events: none;
+  }
 }
 
+/* Scrollbar styling yang sudah ada */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
