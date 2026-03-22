@@ -32,7 +32,7 @@
 }
 
 @layer utilities {
-  /* Animasi yang sudah ada */
+  /* === BASE ANIMATIONS === */
   @keyframes breathe {
     0%, 100% { transform: scale(1.05); }
     50% { transform: scale(1.08); }
@@ -65,7 +65,29 @@
     }
   }
 
-  /* Animasi tambahan untuk filter & loading */
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* === INTERACTION ANIMATIONS === */
   @keyframes bounce {
     0%, 100% {
       transform: translateY(-25%);
@@ -78,33 +100,36 @@
   }
 
   @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
   }
 
   @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   @keyframes shimmer {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 
-  /* Classes yang sudah ada */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  /* === EXISTING CLASSES === */
   .animate-breathe {
     animation: breathe 20s ease-in-out infinite;
   }
@@ -113,6 +138,12 @@
     opacity: 0;
     animation: fade-in 0.6s ease-out forwards;
     will-change: opacity;
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fade-in-up 0.6s ease-out forwards;
+    will-change: transform, opacity;
   }
 
   .animate-fade-in-slow {
@@ -139,13 +170,29 @@
     will-change: transform, opacity;
   }
 
-  /* Classes tambahan untuk filter & interaksi */
+  .animate-slide-in-left {
+    opacity: 0;
+    animation: slide-in-left 0.5s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  .animate-slide-in-up {
+    opacity: 0;
+    animation: slide-in-up 0.7s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  /* === NEW INTERACTION CLASSES === */
   .animate-bounce {
     animation: bounce 1s infinite;
   }
 
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
   }
 
   .animate-spin {
@@ -163,45 +210,62 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Delay utilities untuk staggered animations */
-  .delay-75 {
-    animation-delay: 75ms;
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 
-  .delay-100 {
-    animation-delay: 100ms;
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out infinite;
   }
 
-  .delay-150 {
-    animation-delay: 150ms;
+  /* === DELAY UTILITIES === */
+  .delay-75 { animation-delay: 75ms; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-700 { animation-delay: 700ms; }
+  .delay-800 { animation-delay: 800ms; }
+  .delay-1000 { animation-delay: 1000ms; }
+  .delay-1200 { animation-delay: 1200ms; }
+
+  /* === CURSOR UTILITIES === */
+  .cursor-wait { cursor: wait; }
+  .cursor-pointer { cursor: pointer; }
+
+  /* === LINE CLAMP (TEXT TRUNCATION) === */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .delay-200 {
-    animation-delay: 200ms;
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .delay-300 {
-    animation-delay: 300ms;
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .delay-500 {
-    animation-delay: 500ms;
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .delay-700 {
-    animation-delay: 700ms;
-  }
-
-  .delay-1000 {
-    animation-delay: 1000ms;
-  }
-
-  /* Cursor utilities */
-  .cursor-wait {
-    cursor: wait;
-  }
-
-  /* Hide scrollbar */
+  /* === SCROLLBAR UTILITIES === */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -211,7 +275,16 @@
     scrollbar-width: none;
   }
 
-  /* Grain overlay */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* === GRAIN OVERLAY === */
   .grain-overlay {
     position: fixed;
     inset: 0;
@@ -222,7 +295,7 @@
     background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
   }
 
-  /* Prose custom */
+  /* === PROSE CUSTOM === */
   .prose-custom {
     font-size: 18px;
     line-height: 1.85;
@@ -240,12 +313,12 @@
     @apply font-serif text-xl mt-8 mb-4 opacity-80;
   }
 
-  /* Focus ring konsisten dengan tema */
+  /* === FOCUS RING === */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
   }
 
-  /* Transition utilities tambahan */
+  /* === TRANSITION UTILITIES === */
   .transition-transform {
     transition-property: transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -270,24 +343,21 @@
     transition-duration: 150ms;
   }
 
-  /* Scale utilities untuk hover effects */
-  .hover\:scale-102:hover {
-    transform: scale(1.02);
+  .transition-shadow {
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 
-  .hover\:scale-105:hover {
-    transform: scale(1.05);
-  }
+  /* === SCALE UTILITIES === */
+  .hover\:scale-102:hover { transform: scale(1.02); }
+  .hover\:scale-105:hover { transform: scale(1.05); }
+  .hover\:scale-110:hover { transform: scale(1.10); }
+  
+  .active\:scale-95:active { transform: scale(0.95); }
+  .active\:scale-98:active { transform: scale(0.98); }
 
-  .active\:scale-95:active {
-    transform: scale(0.95);
-  }
-
-  .active\:scale-98:active {
-    transform: scale(0.98);
-  }
-
-  /* Loading state utilities */
+  /* === LOADING STATES === */
   .loading-dots {
     display: flex;
     gap: 4px;
@@ -301,27 +371,45 @@
     animation: bounce 0.6s infinite alternate;
   }
 
-  .loading-dots > div:nth-child(2) {
-    animation-delay: 0.15s;
-  }
+  .loading-dots > div:nth-child(2) { animation-delay: 0.15s; }
+  .loading-dots > div:nth-child(3) { animation-delay: 0.3s; }
 
-  .loading-dots > div:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  /* Skeleton loading */
   .skeleton {
     @apply animate-shimmer rounded;
   }
 
-  /* Data pending state untuk Next.js transitions */
+  /* === DATA PENDING STATE === */
   [data-pending] {
     opacity: 0.7;
     pointer-events: none;
   }
+
+  /* === BACKDROP BLUR UTILITIES === */
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
+  }
+
+  /* === TEXT UTILITIES === */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* === ASPECT RATIO UTILITIES === */
+  .aspect-book {
+    aspect-ratio: 3/4;
+  }
+
+  .aspect-cover {
+    aspect-ratio: 16/10;
+  }
+
+  /* === GRID UTILITIES === */
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }
 
-/* Scrollbar styling yang sudah ada */
+/* === SCROLLBAR STYLING === */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -337,4 +425,28 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-[#8b7355]/50;
+}
+
+/* === SELECTION STYLING === */
+::selection {
+  background-color: rgba(139, 115, 85, 0.3);
+  color: inherit;
+}
+
+/* === FOCUS VISIBLE === */
+:focus-visible {
+  outline: 2px solid rgba(139, 115, 85, 0.5);
+  outline-offset: 2px;
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
