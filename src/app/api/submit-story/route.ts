@@ -13,14 +13,12 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Paksa semua jadi string (penting!)
     const title = String(body.title || "");
     const author = String(body.author || "Anonymous");
     const email = String(body.email || "Tidak disertakan");
     const category = String(body.category || "lainnya");
     const content = String(body.content || "");
 
-    // Validasi
     if (!title.trim() || !content.trim()) {
       return NextResponse.json(
         { error: "Judul dan cerita wajib diisi" },
@@ -28,7 +26,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Format pesan sederhana (PASTI MASUK)
     const message = `
 📝 ${title}
 
@@ -52,15 +49,11 @@ ${content.slice(0, 1000)}
     const responseText = await discordResponse.text();
 
     if (!discordResponse.ok) {
-      console.error("❌ Discord Error:", responseText);
-
       return NextResponse.json(
         { error: "Discord error: " + responseText },
         { status: 500 }
       );
     }
-
-    console.log("✅ Discord masuk:", responseText);
 
     return NextResponse.json(
       {
@@ -71,10 +64,8 @@ ${content.slice(0, 1000)}
     );
 
   } catch (error) {
-    console.error("❌ Server Error:", error);
-
     return NextResponse.json(
-      { error: "Gagal mengirim cerita" },
+      { error: "Server error" },
       { status: 500 }
     );
   }
