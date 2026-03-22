@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// Mapping judul buku ke slug folder
 const bookSlugMap: Record<string, string> = {
   "Di Atas Cangkir Yang Sama": "di-atas-cangkir-yang-sama",
   "Di Balik Bar": "di-balik-bar",
@@ -40,7 +39,6 @@ const bookSlugMap: Record<string, string> = {
   "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
 };
 
-// Helper function untuk generate slug fallback
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -50,7 +48,6 @@ function generateSlug(title: string): string {
     .trim();
 }
 
-// Komponen terpisah untuk empty state
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
   return (
     <div className="text-center py-32" style={{ animation: 'fade-in 0.6s ease-out' }}>
@@ -92,7 +89,6 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
   );
 }
 
-// Skeleton loading untuk grid buku
 function BooksGridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
@@ -107,7 +103,6 @@ function BooksGridSkeleton() {
   );
 }
 
-// Featured Book Card - lebih besar untuk highlight
 function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; index: number }) {
   const author = (book as any).author || "Kelas Pekerja";
   
@@ -159,7 +154,6 @@ function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; inde
   );
 }
 
-// Komponen terpisah untuk grid buku dengan filtering
 async function BooksGrid({ 
   books, 
   total,
@@ -260,9 +254,9 @@ export default async function BooksPage({ searchParams }: PageProps) {
       slug: bookSlugMap[book.title] || generateSlug(book.title),
     }));
 
-    // FIX: Use Array.from() instead of spread operator on Set
-    const categoriesArray = books.map(b => b.category).filter((c): c is string => !!c);
-    uniqueCategories = Array.from(new Set(categoriesArray));
+    // FIX: Sederhana, pakai type assertion atau map ke string
+    const allCategories = books.map(b => b.category).filter(Boolean) as string[];
+    uniqueCategories = Array.from(new Set(allCategories));
   } catch (err) {
     error = err instanceof Error ? err : new Error('Unknown error');
     console.error("Error fetching books:", error);
