@@ -109,7 +109,6 @@ function BooksGridSkeleton() {
 
 // Featured Book Card - lebih besar untuk highlight
 function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; index: number }) {
-  // Extract author dari metadata atau default
   const author = (book as any).author || "Kelas Pekerja";
   
   return (
@@ -172,7 +171,6 @@ async function BooksGrid({
   category?: string;
   search?: string;
 }) {
-  // Filter buku berdasarkan kategori dan pencarian
   let filteredBooks = books;
   
   if (category && category !== 'all') {
@@ -192,8 +190,6 @@ async function BooksGrid({
   }
 
   const hasFilters = !!(category || search);
-  
-  // Pilih featured books (2 pertama kalau gak ada filter)
   const featuredBooks = !hasFilters ? filteredBooks.slice(0, 2) : [];
   const regularBooks = !hasFilters ? filteredBooks.slice(2) : filteredBooks;
 
@@ -203,7 +199,6 @@ async function BooksGrid({
 
   return (
     <>
-      {/* SECTION FEATURED - hanya muncul tanpa filter */}
       {!hasFilters && featuredBooks.length > 0 && (
         <section className="mb-20" style={{ animation: 'fade-in 0.6s ease-out' }}>
           <div className="flex items-center gap-3 mb-8">
@@ -221,7 +216,6 @@ async function BooksGrid({
         </section>
       )}
 
-      {/* REGULAR GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
         {regularBooks.map((book, index) => (
           <BookCard
@@ -233,7 +227,6 @@ async function BooksGrid({
         ))}
       </div>
 
-      {/* INFO JUMLAH BUKU */}
       <div className="mt-32 text-center" style={{ animation: 'fade-in 0.6s ease-out' }}>
         <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/20 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
           <span className="w-2 h-2 rounded-full bg-[#2b2b2b]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
@@ -267,7 +260,9 @@ export default async function BooksPage({ searchParams }: PageProps) {
       slug: bookSlugMap[book.title] || generateSlug(book.title),
     }));
 
-    uniqueCategories = [...new Set(books.map(b => b.category).filter(Boolean))];
+    // FIX: Use Array.from() instead of spread operator on Set
+    const categoriesArray = books.map(b => b.category).filter((c): c is string => !!c);
+    uniqueCategories = Array.from(new Set(categoriesArray));
   } catch (err) {
     error = err instanceof Error ? err : new Error('Unknown error');
     console.error("Error fetching books:", error);
@@ -277,7 +272,6 @@ export default async function BooksPage({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-screen">
-      {/* HEADER - DENGAN HOOK DAN STATS */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-screen-lg mx-auto text-center">
           <p className="text-[11px] tracking-[0.5em] uppercase opacity-40 mb-6 font-medium" style={{ animation: 'fade-in 0.6s ease-out' }}>
@@ -288,13 +282,11 @@ export default async function BooksPage({ searchParams }: PageProps) {
             Rak Buku
           </h1>
 
-          {/* HOOK UTAMA */}
           <p className="text-lg md:text-xl opacity-60 max-w-2xl mx-auto leading-relaxed mb-6" style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}>
             &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff, 
             dan pekerja kantoran yang gak diajarin di sekolah.&rdquo;
           </p>
 
-          {/* STATS BAR */}
           <div className="flex items-center justify-center gap-6 text-sm opacity-40" style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}>
             <span className="flex items-center gap-2">
               <span className="font-semibold opacity-60">{total}</span> cerita
@@ -312,7 +304,6 @@ export default async function BooksPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* FILTER SECTION */}
       <section className="px-6 pb-16">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
@@ -335,7 +326,6 @@ export default async function BooksPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* GRID BUKU */}
       <section className="px-6 pb-32">
         <div className="max-w-screen-2xl mx-auto">
           {error ? (
