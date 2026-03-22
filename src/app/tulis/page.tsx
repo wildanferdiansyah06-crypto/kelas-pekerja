@@ -1,13 +1,75 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2, FileUp, X } from "lucide-react";
+import { useState, useRef } from "react";
 
 export default function TulisPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const allowedTypes = [
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
+    'application/msword', // doc
+    'text/plain', // txt
+    'application/pdf', // pdf
+    'image/jpeg', // jpg
+    'image/png', // png
+    'image/jpg'
+  ];
+
+  const allowedExtensions = ['.docx', '.doc', '.txt', '.pdf', '.jpg', '.jpeg', '.png'];
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selectedFiles = Array.from(e.target.files || []);
+    const validFiles: File[] = [];
+    const invalidFiles: string[] = [];
+
+    selectedFiles.forEach(file => {
+      const isValidType = allowedTypes.includes(file.type);
+      const hasValidExt = allowedExtensions.some(ext => 
+        file.name.toLowerCase().endsWith(ext)
+      );
+      
+      if (isValidType || hasValidExt) {
+        // Check file size (max 25MB buat Discord)
+        if (file.size <= 25 * 1024 * 1024) {
+          validFiles.push(file);
+        } else {
+          invalidFiles.push(`${file.name} (terlalu besar, max 25MB)`);
+        }
+      } else {
+        invalidFiles.push(`${file.name} (format tidak didukung)`);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      setError(`File tidak valid: ${invalidFiles.join(', ')}`);
+      setTimeout(() => setError(""), 5000);
+    }
+
+    setFiles(prev => [...prev, ...validFiles]);
+    
+    // Reset input biar bisa pilih file yang sama lagi
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }
+
+  function removeFile(index: number) {
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  }
+
+  function formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -15,19 +77,19 @@ export default function TulisPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const data = {
-      title: formData.get("title"),
-      author: formData.get("author"),
-      email: formData.get("email"),
-      category: formData.get("category"),
-      content: formData.get("content"),
-    };
+    
+    // Append files ke FormData
+    files.forEach((file, index) => {
+      formData.append(`file-${index}`, file);
+    });
+    
+    // Tambah jumlah file buat info di server
+    formData.append('fileCount', files.length.toString());
 
     try {
       const response = await fetch("/api/submit-story", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: formData, // Jangan set Content-Type header biar browser yang handle multipart boundary
       });
 
       const result = await response.json();
@@ -37,6 +99,7 @@ export default function TulisPage() {
       }
 
       setIsSuccess(true);
+      setFiles([]);
       e.currentTarget.reset();
 
     } catch (err) {
@@ -47,68 +110,69 @@ export default function TulisPage() {
   }
 
   // Success State
-if (isSuccess) {
-  return (
-    <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
-      <header className="px-6 py-6 border-b border-[#8b7355]/10">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link 
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Kembali
-          </Link>
-          
-          <div className="flex items-center gap-2">
-            <Coffee size={18} className="text-[#8b7355]" />
-            <span className="font-serif text-lg">Kelas Pekerja</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="px-6 py-16 md:py-24">
-        <div className="max-w-2xl mx-auto text-center">
-          <CheckCircle className="w-16 h-16 mx-auto mb-6 text-[#8b7355]" />
-          
-          <h1 className="font-serif text-3xl mb-6 text-[#f5f0e8]">
-            Ceritamu Sudah Sampai
-          </h1>
-
-          <p className="text-[#a09080] leading-relaxed mb-10">
-            Mungkin gak semua orang akan mengerti,  
-            <br />
-            tapi di sini… ada yang mau membaca.
-            <br /><br />
-            Terima kasih sudah berbagi.
-          </p>
-
-          <div className="flex flex-col items-center gap-4">
-            <Link
-              href="/buku"
-              className="inline-flex items-center justify-center px-6 py-3 
-                bg-[#8b7355] text-[#0f0e0c] rounded-full
-                hover:bg-[#a08060] transition-all duration-300 text-sm"
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
+        <header className="px-6 py-6 border-b border-[#8b7355]/10">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <Link 
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#e8e0d5] transition-colors"
             >
-              Baca Cerita
+              <ArrowLeft size={16} />
+              Kembali
             </Link>
-
-            <button
-              onClick={() => setIsSuccess(false)}
-              className="text-[#8b7355] hover:text-[#e8e0d5] transition-colors text-sm underline underline-offset-4"
-            >
-              Tulis cerita lain
-            </button>
+            
+            <div className="flex items-center gap-2">
+              <Coffee size={18} className="text-[#8b7355]" />
+              <span className="font-serif text-lg">Kelas Pekerja</span>
+            </div>
           </div>
+        </header>
 
-          <p className="text-xs text-[#6b5a45] mt-10">
-            Cerita terpilih akan dipublikasikan di Kelas Pekerja.
-          </p>
-        </div>
-      </main>
-    </div>
-  );
-}
+        <main className="px-6 py-16 md:py-24">
+          <div className="max-w-2xl mx-auto text-center">
+            <CheckCircle className="w-16 h-16 mx-auto mb-6 text-[#8b7355]" />
+            
+            <h1 className="font-serif text-3xl mb-6 text-[#f5f0e8]">
+              Ceritamu Sudah Sampai
+            </h1>
+
+            <p className="text-[#a09080] leading-relaxed mb-10">
+              Mungkin gak semua orang akan mengerti,  
+              <br />
+              tapi di sini… ada yang mau membaca.
+              <br /><br />
+              Terima kasih sudah berbagi.
+            </p>
+
+            <div className="flex flex-col items-center gap-4">
+              <Link
+                href="/buku"
+                className="inline-flex items-center justify-center px-6 py-3 
+                  bg-[#8b7355] text-[#0f0e0c] rounded-full
+                  hover:bg-[#a08060] transition-all duration-300 text-sm"
+              >
+                Baca Cerita
+              </Link>
+
+              <button
+                onClick={() => setIsSuccess(false)}
+                className="text-[#8b7355] hover:text-[#e8e0d5] transition-colors text-sm underline underline-offset-4"
+              >
+                Tulis cerita lain
+              </button>
+            </div>
+
+            <p className="text-xs text-[#6b5a45] mt-10">
+              Cerita terpilih akan dipublikasikan di Kelas Pekerja.
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0f0e0c] text-[#e8e0d5]">
       {/* Header */}
@@ -242,6 +306,73 @@ if (isSuccess) {
                 <option value="proses">Proses</option>
                 <option value="lainnya">Lainnya</option>
               </select>
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label 
+                htmlFor="files" 
+                className="block text-[10px] tracking-[0.2em] uppercase text-[#8b7355] mb-2"
+              >
+                Lampiran (Opsional)
+              </label>
+              
+              {/* Drop Zone */}
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full bg-[#1a1816] border-2 border-dashed border-[#8b7355]/30 rounded-lg px-4 py-8 
+                  text-center cursor-pointer hover:border-[#8b7355]/60 hover:bg-[#1a1816]/80 transition-all"
+              >
+                <FileUp className="w-8 h-8 mx-auto mb-3 text-[#8b7355]" />
+                <p className="text-sm text-[#e8e0d5] mb-1">
+                  Klik atau drag & drop file di sini
+                </p>
+                <p className="text-xs text-[#6b5a45]">
+                  DOCX, TXT, PDF, JPG, PNG (Max 25MB per file)
+                </p>
+              </div>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                id="files"
+                name="files"
+                multiple
+                accept=".docx,.doc,.txt,.pdf,.jpg,.jpeg,.png"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              {/* File List */}
+              {files.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {files.map((file, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center justify-between bg-[#1a1816] border border-[#8b7355]/20 rounded-lg px-4 py-3"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-8 h-8 bg-[#8b7355]/20 rounded flex items-center justify-center flex-shrink-0">
+                          <span className="text-xs text-[#8b7355] font-medium uppercase">
+                            {file.name.split('.').pop()?.slice(0, 3)}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm text-[#e8e0d5] truncate">{file.name}</p>
+                          <p className="text-xs text-[#6b5a45]">{formatFileSize(file.size)}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="p-1 hover:bg-[#8b7355]/20 rounded transition-colors flex-shrink-0"
+                      >
+                        <X size={16} className="text-[#8b7355]" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Cerita */}
