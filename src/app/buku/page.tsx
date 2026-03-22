@@ -7,6 +7,7 @@ import { getBooks } from "@/src/lib/api";
 import BookCard from "@/src/components/BookCard";
 import CategoryFilter from "@/src/components/CategoryFilter";
 import SearchBar from "@/src/components/SearchBar";
+import BooksGridClient from "@/src/components/BooksGridClient";
 import { Book } from "@/src/types";
 
 interface BooksResponse {
@@ -103,58 +104,7 @@ function BooksGridSkeleton() {
   );
 }
 
-function FeaturedBookCard({ book, index }: { book: Book & { slug: string }; index: number }) {
-  const author = (book as any).author || "Kelas Pekerja";
-  
-  return (
-    <Link 
-      href={`/buku/${book.slug}`}
-      className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/30 dark:hover:border-[#e8e0d5]/30 transition-all duration-500 hover:shadow-lg"
-    >
-      <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg bg-[#2b2b2b]/5 flex-shrink-0">
-        {book.cover ? (
-          <Image 
-            src={book.cover} 
-            alt={book.title} 
-            fill
-            className="object-cover"
-            sizes="(max-width:768px) 100vw, 200px"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <svg className="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2b2b2b]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
-      
-      <div className="flex flex-col justify-center">
-        <span className="inline-flex items-center gap-2 text-[10px] tracking-wider uppercase opacity-50 mb-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-          {book.category || "Umum"}
-        </span>
-        
-        <h3 className="font-serif text-2xl md:text-3xl leading-tight mb-3 group-hover:opacity-70 transition-opacity">
-          {book.title}
-        </h3>
-        
-        <p className="text-base opacity-60 leading-relaxed line-clamp-3 mb-4">
-          &ldquo;{(book.excerpt?.substring(0, 150) || book.subtitle || "Tidak ada deskripsi")}...&rdquo;
-        </p>
-        
-        <div className="flex items-center gap-4 text-xs opacity-40 mt-auto">
-          <span>{book.readTime || "5 min read"}</span>
-          <span>•</span>
-          <span>{author}</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// FIX: Hapus 'export' keyword, jadi cuma 'async function'
+// Server component buat fetch data
 async function BooksGrid({ 
   books, 
   total,
@@ -192,51 +142,20 @@ async function BooksGrid({
     return <EmptyState hasFilters={hasFilters} />;
   }
 
+  // Pass data ke client component yang punya modal logic
   return (
-    <>
-      {!hasFilters && featuredBooks.length > 0 && (
-        <section className="mb-20" style={{ animation: 'fade-in 0.6s ease-out' }}>
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <h2 className="text-sm tracking-[0.2em] uppercase opacity-60 font-medium">
-              Paling Banyak Dibaca Minggu Ini
-            </h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {featuredBooks.map((book, index) => (
-              <FeaturedBookCard key={book.id} book={book} index={index} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
-        {regularBooks.map((book, index) => (
-          <BookCard
-            key={book.id}
-            book={book}
-            index={index}
-            href={`/buku/${book.slug}`}
-          />
-        ))}
-      </div>
-
-      <div className="mt-32 text-center" style={{ animation: 'fade-in 0.6s ease-out' }}>
-        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/20 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
-          <span className="w-2 h-2 rounded-full bg-[#2b2b2b]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
-          <span className="text-sm opacity-50 tracking-wide">
-            Menampilkan {filteredBooks.length} dari {total} cerita
-            {category && category !== 'all' && ` • ${category}`}
-            {search && ` • &quot;${search}&quot;`}
-          </span>
-        </div>
-      </div>
-    </>
+    <BooksGridClient 
+      featuredBooks={featuredBooks}
+      regularBooks={regularBooks}
+      total={total}
+      filteredCount={filteredBooks.length}
+      hasFilters={hasFilters}
+      category={category}
+      search={search}
+    />
   );
 }
 
-// INI SATU-SATUNYA EXPORT DEFAULT
 export default async function BooksPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const category = typeof params.category === 'string' ? params.category : undefined;
