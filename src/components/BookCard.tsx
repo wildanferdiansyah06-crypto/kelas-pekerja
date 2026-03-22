@@ -1,129 +1,28 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Eye, ArrowUpRight, Clock, BookOpen, ArrowRight } from "lucide-react";
-import { Book } from "@/src/types";
-
-interface BookCardProps {
-  book: Book;
-  index?: number;
-  href?: string;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-export default function BookCard({ book, index = 0, href }: BookCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
 
-  // pastikan slug ada
-  const linkHref = href ?? `/buku/${book.slug ?? ""}`;
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-  if (!book?.slug && !href) {
-    console.warn("BookCard missing slug:", book);
-  }
-
-  return (
-    <Link
-      href={linkHref}
-      prefetch
-      className="group block w-full"
-    >
-      <article
-        className="relative cursor-pointer"
-        style={{ animationDelay: `${index * 100}ms` }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div
-          className="relative aspect-[16/10] w-full mb-8 overflow-hidden rounded-lg
-                     shadow-[0_8px_30px_-12px_rgba(0,0,0,0.2)]
-                     group-hover:shadow-[0_25px_50px_-20px_rgba(0,0,0,0.4)]
-                     group-hover:-translate-y-3
-                     transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-        >
-          <Image
-            src={book.cover}
-            alt={book.title}
-            fill
-            className="object-cover opacity-95
-                       group-hover:opacity-100 group-hover:scale-[1.08]
-                       transition-all duration-1000 ease-out"
-            sizes="(max-width:768px) 100vw,
-                   (max-width:1200px) 50vw,
-                   33vw"
-            priority={index < 2}
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
-
-          <div
-            className={`absolute top-5 right-5 w-12 h-12 rounded-full
-                       bg-white/15 backdrop-blur-md border border-white/20
-                       flex items-center justify-center
-                       transition-all duration-500
-                       ${isHovered ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
-          >
-            <Eye size={20} className="text-white/90" />
-          </div>
-
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-            <div className="flex items-center gap-4 text-white/80 text-xs mb-3">
-              <span className="flex items-center gap-1.5">
-                <Clock size={12} />
-                {book.readTime}
-              </span>
-
-              <span className="w-1 h-1 rounded-full bg-white/50" />
-
-              <span>{book.pages} halaman</span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <p className="text-white/90 text-sm font-medium tracking-wide flex items-center gap-2">
-                Baca selengkapnya
-                <ArrowUpRight
-                  size={16}
-                  className={`transition-all duration-500 ${
-                    isHovered ? "translate-x-1 -translate-y-1" : ""
-                  }`}
-                />
-              </p>
-            </div>
-          </div>
-
-          <div className="absolute top-5 left-5 font-serif text-6xl text-white/10 font-light">
-            {String(index + 1).padStart(2, "0")}
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="font-serif text-2xl md:text-3xl leading-[1.15] opacity-85 group-hover:opacity-100 transition-all duration-300">
-            {book.title}
-          </h3>
-
-          <p className="text-base leading-[1.7] opacity-60 line-clamp-3">
-            {book.excerpt}
-          </p>
-
-          <div className="flex items-center justify-between pt-4 border-t border-[#2b2b2b]/5 dark:border-[#e8e0d5]/5">
-            {book.stats ? (
-              <div className="flex items-center gap-4 text-xs opacity-40">
-                <span className="flex items-center gap-1.5">
-                  <Eye size={12} />
-                  {book.stats.views.toLocaleString("id-ID")} dibaca
-                </span>
-              </div>
-            ) : (
-              <div className="text-xs opacity-40">Kelas Pekerja</div>
-            )}
-
-            <div className="flex items-center gap-1 text-xs font-medium opacity-60">
-              Lihat detail
-              <ArrowRight size={14} />
-            </div>
-          </div>
-        </div>
-      </article>
-    </Link>
-  );
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
