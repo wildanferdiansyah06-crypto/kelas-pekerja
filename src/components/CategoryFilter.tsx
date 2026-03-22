@@ -1,46 +1,60 @@
-'use client';
+// src/components/CategoryFilter.tsx
+"use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { categories } from '@/src/lib/api';
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { cn } from "@/src/lib/utils";
 
 interface CategoryFilterProps {
   activeCategory?: string;
+  books: { category?: string }[];
 }
 
-export default function CategoryFilter({ activeCategory = 'all' }: CategoryFilterProps) {
-  const router = useRouter();
+const CATEGORY_LABELS: Record<string, string> = {
+  'all': 'Semua',
+  'barista': 'Barista',
+  'cafe': 'Cafe',
+  'retail': 'Retail',
+  'kantoran': 'Kantoran',
+  'kitchen': 'Kitchen',
+  'umum': 'Umum',
+};
+
+export default function CategoryFilter({ activeCategory = 'all', books }: CategoryFilterProps) {
   const searchParams = useSearchParams();
+  
+  // Hitung count per kategori
+  const counts = books.reduce((acc, book) => {
+    const cat = book.category?.toLowerCase() || 'umum';
+    acc[cat] = (acc[cat] || 0) + 1;
+    acc['all'] = (acc['all'] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
 
-  const handleCategoryChange = (categoryId: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (categoryId === 'all') {
-      params.delete('category');
-    } else {
-      params.set('category', categoryId);
-    }
-
-    // Reset to page 1 when changing category
-    params.delete('page');
-
-    router.push(`/buku?${params.toString()}`);
-  };
+  // Extract unique categories dari data
+  const uniqueCategories = ['all', ...new Set(books.map(b => b.category?.toLowerCase() || 'umum').filter(Boolean))];
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {categories.map((category) => (
-        <button
-          key={category.id}
-          onClick={() => handleCategoryChange(category.id)}
-          className={`px-4 py-2 rounded-full text-xs tracking-wider transition-all
-            ${activeCategory === category.id 
-              ? 'bg-[#8b7355] text-white' 
-              : 'bg-[#8b7355]/10 text-[#8b7355] hover:bg-[#8b7355]/20'
-            }`}
+    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide max-w-full">
+      {uniqueCategories.map((cat) => (
+        <Link
+          key={cat}
+          href={`/buku?category=${cat}`}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm whitespace-nowrap transition-all duration-300",
+            activeCategory === cat
+              ? "border-[#2b2b2b] bg-[#2b2b2b] text-[#e8e0d5] dark:border-[#e8e0d5] dark:bg-[#e8e0d5] dark:text-[#2b2b2b]"
+              : "border-[#2b2b2b]/20 hover:border-[#2b2b2b]/40 dark:border-[#e8e0d5]/20 dark:hover:border-[#e8e0d5]/40"
+          )}
         >
-          {category.label}
-          <span className="ml-2 opacity-60">({category.count})</span>
-        </button>
+          {CATEGORY_LABELS[cat] || cat}
+          <span className={cn(
+            "text-xs",
+            activeCategory === cat ? "opacity-70" : "opacity-40"
+          )}>
+            ({counts[cat] || 0})
+          </span>
+        </Link>
       ))}
     </div>
   );
