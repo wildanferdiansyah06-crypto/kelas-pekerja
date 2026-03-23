@@ -1,31 +1,31 @@
 {
   "posts": [
     {
-      "slug": "barista-6-bulan-tanpa-tip",
-      "title": "6 Bulan Jadi Barista, Gaji Pas-pasan, Tip Gak Pernah Jelas",
-      "hook": "Gue kerja di kafe hits Jakarta Selatan. Yang orang liat: latte art aesthetic. Yang gue liat: sistem tip yang gak pernah transparan.",
-      "excerpt": "Di balik senyum sambut customer dan foam milk yang sempurna, ada cerita soal gaji yang dipotong 'biaya training' dan tip yang entah kemana...",
-      "category": "Barista & FnB",
-      "readTime": "4 menit",
-      "date": "2024-03-15",
-      "author": "Anonim",
-      "role": "Ex-Barista",
+      "slug": "ruang-bagi-tulisan",
+      "title": "Di Antara Deru Waktu yang Tak Pernah Berhenti",
+      "hook": "Kita hidup di era yang terobsesi pada kecepatan. Tapi ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.",
+      "excerpt": "Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak.",
+      "category": "Ruang Bagi",
+      "readTime": "2 menit",
+      "date": "2024-01-01",
+      "role": "Pembuka Ruang",
+      "isFeatured": true,
       "content": [
         {
           "type": "paragraph",
-          "text": "Hari pertama kerja, gue dikasih apron merah. 'Ini seragam kebanggaan,' kata manager. Tapi gaji? UMR dikurangi 'biaya seragam dan training'."
+          "text": "Kita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan."
         },
         {
           "type": "quote",
-          "text": "Kita gak boleh terima tip langsung. Harus masuk jar. Tapi isi jar? Gak pernah dibagi-bagi. Hilang entah kemana."
+          "text": "Menulis adalah cara kita memberi makna pada kekosongan."
         },
         {
           "type": "paragraph",
-          "text": "Customer bilang, 'Makasih ya, tipnya buat beli bensin.' Gue cuma bisa senyum. Padahal tip itu gak pernah nyentuh tangan gue."
+          "text": "Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Tidak ada yang abadi, dan justru karena itu, setiap kata menjadi berharga."
         }
       ],
-      "impact": "Cerita ini ditulis untuk membuka soal transparansi tip di industri FnB — sesuatu yang jarang dibicarakan tapi dirasakan banyak pekerja.",
-      "related": ["retail-3-tahun-resign", "office-intern-kerja-lembur"]
+      "impact": "Ruang ini dibuka sebagai tempat perlindungan bagi mereka yang butuh menyuarakan tanpa takut dikenali.",
+      "related": []
     }
   ]
 }
