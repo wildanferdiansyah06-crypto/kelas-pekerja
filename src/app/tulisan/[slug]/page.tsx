@@ -1,11 +1,11 @@
 "use client";
 
 import postsData from "@/public/data/posts.json";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 import { 
   PenLine, 
   Clock, 
@@ -13,10 +13,12 @@ import {
   ArrowRight, 
   Heart,
   Share2,
-  Quote,
   Bookmark,
+  ChevronRight,
+  Zap,
+  TrendingUp,
   MoreHorizontal,
-  ChevronRight
+  X
 } from "lucide-react";
 
 const fadeUp = {
@@ -26,14 +28,18 @@ const fadeUp = {
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.08 } },
 };
 
 export default function TulisanDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const router = useRouter();
   const { theme } = useTheme();
-  const [showFloatingCta, setShowFloatingCta] = useState(false);
+  const [showStickyCta, setShowStickyCta] = useState(false);
+  const [readProgress, setReadProgress] = useState(0);
+  const [showNextModal, setShowNextModal] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll();
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
@@ -49,39 +55,47 @@ export default function TulisanDetailPage() {
     accent: "#c7b299",
     accentSecondary: "#8b7355",
     border: isDark ? "border-neutral-800" : "border-neutral-200",
-    cardBg: isDark ? "bg-neutral-900/80" : "bg-white/80",
-    quoteBg: isDark ? "bg-[#8b7355]/10" : "bg-[#8b7355]/5",
+    cardBg: isDark ? "bg-neutral-900/90" : "bg-white/90",
     grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
     stickyBg: isDark ? "bg-[#0a0a0a]/95" : "bg-[#fafafa]/95",
+    highlight: isDark ? "bg-[#8b7355]/20" : "bg-[#8b7355]/10",
   };
 
   const posts = (postsData as any).posts || [];
-  const post = posts.find((p: any) => p.slug === slug);
+  const postIndex = posts.findIndex((p: any) => p.slug === slug);
+  const post = posts[postIndex];
   
-  const relatedPosts = post?.related?.length
-    ? posts.filter((p: any) => post.related.includes(p.slug)).slice(0, 3)
-    : [];
-
-  const morePosts = posts
-    .filter((p: any) => p.slug !== slug && !post?.related?.includes(p.slug))
+  // Next post logic (infinite loop)
+  const nextPost = posts[postIndex + 1] || posts[0];
+  const prevPost = posts[postIndex - 1] || posts[posts.length - 1];
+  
+  // Related by category
+  const sameCategory = posts.filter((p: any) => 
+    p.category === post?.category && p.slug !== slug
+  ).slice(0, 3);
+  
+  // Trending (random for now)
+  const trending = posts
+    .filter((p: any) => p.slug !== slug && !sameCategory.find((s: any) => s.slug === p.slug))
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      setShowFloatingCta(scrollPercent > 30 && scrollPercent < 90);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setReadProgress(Math.round(latest * 100));
+    setShowStickyCta(latest > 0.15 && latest < 0.85);
+    
+    // Show next modal at 90% read
+    if (latest > 0.9 && !showNextModal) {
+      setShowNextModal(true);
+    }
+  });
 
   if (!post) {
     return (
       <main className={`min-h-screen ${colors.bg} ${colors.text} flex items-center justify-center`}>
         <div className="text-center">
           <p className="font-serif text-2xl italic mb-4">Tulisan tidak ditemukan</p>
-          <Link href="/tulisan" className="text-[#8b7355] hover:text-[#c7b299]">Kembali ke arsip</Link>
+          <Link href="/tulisan" className="text-[#8b7355] hover:text-[#c7b299]">Kembali</Link>
         </div>
       </main>
     );
@@ -90,127 +104,195 @@ export default function TulisanDetailPage() {
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
       {/* Progress Bar */}
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-[#8b7355] z-[60] origin-left"
-        style={{ scaleX: scrollYProgress }}
-      />
+      <motion.div className="fixed top-0 left-0 right-0 h-0.5 bg-[#8b7355] z-[60] origin-left" style={{ scaleX: scrollYProgress }} />
+      
+      {/* Reading Progress % */}
+      <div className={`fixed top-4 right-4 z-[60] px-3 py-1 rounded-full text-xs font-medium
+        ${colors.cardBg} backdrop-blur border ${colors.border} hidden sm:block`}>
+        {readProgress}%
+      </div>
 
       {/* Grain */}
       <div className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0`} style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
       }} />
 
-      {/* Floating CTA - Muncul saat scroll */}
+      {/* Sticky Bottom CTA */}
       <motion.div 
         initial={false}
-        animate={{ y: showFloatingCta ? 0 : 100, opacity: showFloatingCta ? 1 : 0 }}
-        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-6 py-3 
-          ${colors.cardBg} backdrop-blur-xl rounded-full border ${colors.border}
-          shadow-2xl shadow-black/20 flex items-center gap-4`}
+        animate={{ y: showStickyCta ? 0 : 100 }}
+        className={`fixed bottom-0 left-0 right-0 z-50 px-4 py-3 
+          ${colors.stickyBg} backdrop-blur-xl border-t ${colors.border}`}
       >
-        <span className="text-sm hidden sm:block">Punya cerita serupa?</span>
-        <Link href="/tulis" className="flex items-center gap-2 px-4 py-2 bg-[#8b7355] text-white rounded-full text-sm font-medium hover:bg-[#c7b299] transition-colors">
-          <PenLine size={16} />
-          Tulis Sekarang
-        </Link>
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium hidden sm:block">Lanjut baca?</span>
+            <button 
+              onClick={() => router.push(`/tulisan/${nextPost.slug}`)}
+              className="flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#c7b299]"
+            >
+              <span className="line-clamp-1 max-w-[150px] sm:max-w-xs">{nextPost.title}</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+          <Link 
+            href="/tulis" 
+            className="flex items-center gap-2 px-4 py-2 bg-[#8b7355] text-white rounded-full text-sm font-medium hover:bg-[#c7b299] transition-colors"
+          >
+            <PenLine size={14} />
+            <span className="hidden sm:inline">Tulis Juga</span>
+          </Link>
+        </div>
       </motion.div>
 
-      <div className="relative z-10">
-        {/* Sticky Header dengan Metadata */}
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`fixed top-0 left-0 right-0 z-40 px-6 py-4 
-            ${colors.stickyBg} backdrop-blur-xl border-b ${colors.border}`}
+      {/* Next Article Modal (at 90% read) */}
+      {showNextModal && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
         >
+          <motion.div 
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className={`${colors.cardBg} rounded-3xl p-6 max-w-lg w-full border ${colors.border} shadow-2xl`}
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <span className="text-xs tracking-widest uppercase text-[#8b7355]">Lanjut Baca</span>
+                <h3 className={`font-serif text-xl mt-1 ${colors.heading}`}>Selesai membaca?</h3>
+              </div>
+              <button 
+                onClick={() => setShowNextModal(false)}
+                className={`p-2 rounded-full hover:bg-neutral-800/10 ${colors.textSubtle}`}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className={`p-4 rounded-xl ${colors.highlight} border border-[#8b7355]/20 mb-6`}>
+              <p className="text-sm text-[#8b7355] mb-2">Rekomendasi berikutnya:</p>
+              <h4 className={`font-serif text-lg ${colors.heading} mb-1`}>{nextPost.title}</h4>
+              <p className={`text-sm ${colors.textMuted} line-clamp-2`}>{nextPost.hook}</p>
+            </div>
+
+            <div className="flex gap-3">
+              <button 
+                onClick={() => router.push(`/tulisan/${nextPost.slug}`)}
+                className="flex-1 py-3 bg-[#8b7355] text-white rounded-xl font-medium hover:bg-[#c7b299] transition-colors"
+              >
+                Baca Sekarang
+              </button>
+              <Link 
+                href="/tulis"
+                className={`flex-1 py-3 border ${colors.border} rounded-xl text-center font-medium hover:border-[#8b7355] hover:text-[#8b7355] transition-colors`}
+              >
+                Tulis Cerita
+              </Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      <div className="relative z-10 pb-24">
+        {/* Sticky Header */}
+        <motion.nav className={`fixed top-0 left-0 right-0 z-40 px-4 sm:px-6 py-3 
+          ${colors.stickyBg} backdrop-blur-xl border-b ${colors.border}`}>
           <div className="max-w-3xl mx-auto flex items-center justify-between">
             <Link href="/tulisan" className="flex items-center gap-2 text-sm text-[#8b7355] hover:text-[#c7b299]">
               <ArrowLeft size={16} />
               <span className="hidden sm:inline">Arsip</span>
             </Link>
             
-            <div className="flex items-center gap-4 text-xs">
-              <span className="px-3 py-1 bg-[#8b7355]/10 text-[#8b7355] rounded-full">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="px-2 py-1 bg-[#8b7355]/10 text-[#8b7355] rounded-full">
                 {post.category}
               </span>
               <span className={colors.textSubtle}>{post.readTime}</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <button className={`p-2 rounded-full hover:bg-neutral-800/10 ${colors.textSubtle}`}>
-                <Bookmark size={18} />
+                <Bookmark size={16} />
               </button>
               <button className={`p-2 rounded-full hover:bg-neutral-800/10 ${colors.textSubtle}`}>
-                <Share2 size={18} />
+                <Share2 size={16} />
               </button>
             </div>
           </div>
         </motion.nav>
 
-        {/* HERO SECTION - DENGAN OPENING KILLER */}
-        <header className="pt-28 pb-12 px-6">
+        {/* HERO — KILLER OPENING */}
+        <header className="pt-24 sm:pt-28 pb-8 px-4 sm:px-6">
           <div className="max-w-2xl mx-auto">
             <motion.div variants={stagger} initial="hidden" animate="show">
               
-              {/* Meta Line */}
-              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3 mb-8 text-xs tracking-wider">
-                <span className="text-[#8b7355] font-medium">{post.category}</span>
-                <span className={colors.textSubtle}>•</span>
-                <span className={colors.textSubtle}>{post.duration || "Pengalaman Kerja"}</span>
-                <span className={colors.textSubtle}>•</span>
-                <span className={colors.textSubtle}>{post.readTime} baca</span>
+              {/* Meta Pills */}
+              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2 mb-6">
+                <span className="px-3 py-1.5 bg-[#8b7355] text-white text-xs font-medium rounded-full">
+                  {post.category}
+                </span>
+                <span className={`px-3 py-1.5 ${colors.highlight} text-[#8b7355] text-xs rounded-full border border-[#8b7355]/20`}>
+                  {post.duration || "Pengalaman Kerja"}
+                </span>
+                <span className={`flex items-center gap-1 px-3 py-1.5 ${colors.cardBg} border ${colors.border} text-xs rounded-full ${colors.textMuted}`}>
+                  <Clock size={12} />
+                  {post.readTime}
+                </span>
               </motion.div>
 
-              {/* OPENING KILLER - Sebelum Judul */}
+              {/* KILLER OPENING — Hook pertama */}
               <motion.div 
                 variants={fadeUp}
-                className="mb-8 p-6 rounded-2xl border-l-4 border-[#8b7355] bg-[#8b7355]/5"
+                className="mb-8 relative"
               >
-                <p className="text-lg md:text-xl leading-relaxed text-[#c7b299] italic font-serif">
-                  "{post.opening || post.hook}"
+                <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-[#8b7355] to-transparent rounded-full"></div>
+                <p className="text-xl sm:text-2xl leading-relaxed text-[#c7b299] font-serif italic pl-4">
+                  "{post.opening || "Awalnya gue kira ini bakal biasa aja. Ternyata enggak."}"
                 </p>
               </motion.div>
 
               {/* Judul */}
               <motion.h1 
                 variants={fadeUp}
-                className={`font-serif text-3xl md:text-5xl ${colors.heading} leading-[1.15] mb-6 tracking-tight`}
+                className={`font-serif text-3xl sm:text-4xl md:text-5xl ${colors.heading} leading-[1.1] mb-6 tracking-tight`}
               >
                 {post.title}
               </motion.h1>
 
-              {/* Hook/Subtitle */}
+              {/* Subtitle/Hook */}
               <motion.p 
                 variants={fadeUp}
-                className={`text-lg ${colors.textMuted} leading-relaxed mb-8`}
+                className={`text-lg sm:text-xl ${colors.textMuted} leading-relaxed mb-8`}
               >
                 {post.hook}
               </motion.p>
 
-              {/* Author Meta */}
-              <motion.div variants={fadeUp} className="flex items-center gap-4 text-sm">
-                <div className={`w-10 h-10 rounded-full ${isDark ? 'bg-neutral-800' : 'bg-neutral-200'} flex items-center justify-center`}>
-                  <span className="text-lg">✍️</span>
+              {/* Author Identity */}
+              <motion.div variants={fadeUp} className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-full ${isDark ? 'bg-neutral-800' : 'bg-neutral-200'} flex items-center justify-center text-xl`}>
+                  {post.category.includes("Barista") ? "☕" : 
+                   post.category.includes("Retail") ? "🛍️" : 
+                   post.category.includes("Office") ? "💼" : "✍️"}
                 </div>
                 <div>
-                  <p className={colors.heading}>{post.role}</p>
-                  <p className={colors.textSubtle}>{post.workplace || "Anonim"}</p>
+                  <p className={`font-medium ${colors.heading}`}>{post.role}</p>
+                  <p className={`text-sm ${colors.textSubtle}`}>{post.workplace || "Anonim"} • {post.date}</p>
                 </div>
-                <span className={`ml-auto text-xs ${colors.textSubtle}`}>{post.date}</span>
               </motion.div>
             </motion.div>
           </div>
         </header>
 
-        {/* CONTENT - MEDIUM STYLE */}
-        <article className="px-6 pb-16">
+        {/* CONTENT — Medium Style */}
+        <article ref={contentRef} className="px-4 sm:px-6">
           <div className="max-w-2xl mx-auto">
             <motion.div
               variants={stagger}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="space-y-10"
+              className="space-y-8 sm:space-y-10"
             >
               {post.content?.map((block: any, index: number) => {
                 if (block.type === "paragraph") {
@@ -218,8 +300,8 @@ export default function TulisanDetailPage() {
                     <motion.p
                       key={index}
                       variants={fadeUp}
-                      className={`text-lg md:text-[1.125rem] ${colors.text} leading-[1.8] tracking-[-0.01em]`}
-                      style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+                      className={`text-lg sm:text-[1.125rem] ${colors.text} leading-[1.9] tracking-[-0.01em]`}
+                      style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}
                     >
                       {block.text}
                     </motion.p>
@@ -231,10 +313,10 @@ export default function TulisanDetailPage() {
                     <motion.blockquote
                       key={index}
                       variants={fadeUp}
-                      className="relative my-16 py-8 px-0"
+                      className="relative my-12 sm:my-16 py-8"
                     >
-                      <div className="absolute -top-4 left-0 text-6xl text-[#8b7355]/20 font-serif">"</div>
-                      <p className="font-serif text-2xl md:text-3xl italic text-[#c7b299] leading-[1.4] pl-8 border-l-2 border-[#8b7355]/30">
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 text-6xl text-[#8b7355]/10 font-serif">"</div>
+                      <p className="relative font-serif text-2xl sm:text-3xl italic text-[#c7b299] leading-[1.4] text-center px-4">
                         {block.text}
                       </p>
                     </motion.blockquote>
@@ -245,44 +327,64 @@ export default function TulisanDetailPage() {
               })}
             </motion.div>
 
+            {/* Inline Reactions */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="flex items-center justify-center gap-4 my-16 py-8 border-y border-dashed border-[#8b7355]/20"
+            >
+              <span className={`text-sm ${colors.textSubtle}`}>Cerita ini bermanfaat?</span>
+              <div className="flex gap-2">
+                <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8b7355]/30 text-[#8b7355] hover:bg-[#8b7355]/10 transition-colors text-sm">
+                  <Heart size={16} />
+                  <span>Relate</span>
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8b7355]/30 text-[#8b7355] hover:bg-[#8b7355]/10 transition-colors text-sm">
+                  <Share2 size={16} />
+                  <span>Bagikan</span>
+                </button>
+              </div>
+            </motion.div>
+
             {/* Impact Box */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-20 mb-16 p-8 rounded-3xl bg-gradient-to-br from-[#8b7355]/10 to-transparent border border-[#8b7355]/20"
+              className="mb-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#8b7355]/10 to-transparent border border-[#8b7355]/20"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#8b7355]/20 flex items-center justify-center flex-shrink-0">
-                  <Heart size={20} className="text-[#8b7355]" />
+                <div className="w-10 h-10 rounded-full bg-[#8b7355]/20 flex items-center justify-center flex-shrink-0">
+                  <Zap size={18} className="text-[#8b7355]" />
                 </div>
                 <div>
-                  <h4 className={`text-sm font-semibold tracking-wider uppercase mb-3 ${colors.textSubtle}`}>
-                    Kenapa cerita ini penting
+                  <h4 className={`text-sm font-semibold tracking-wider uppercase mb-2 ${colors.textSubtle}`}>
+                    Kenapa ini penting
                   </h4>
-                  <p className={`text-lg ${colors.textMuted} leading-relaxed`}>
+                  <p className={`text-base sm:text-lg ${colors.textMuted} leading-relaxed`}>
                     {post.impact}
                   </p>
                 </div>
               </div>
             </motion.div>
 
-            {/* Inline CTA - Setelah Baca */}
+            {/* CTA After Reading */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="text-center py-12 border-y border-dashed border-[#8b7355]/30 my-16"
+              className="text-center py-12 mb-16"
             >
-              <p className="font-serif text-2xl italic text-[#c7b299] mb-4">
+              <p className="font-serif text-2xl sm:text-3xl italic text-[#c7b299] mb-4">
                 "Gue juga pernah ngalamin hal serupa..."
               </p>
-              <p className={`text-sm ${colors.textMuted} mb-6`}>
-                Ribuan pekerja lain punya cerita yang belum terdengar
+              <p className={`text-sm ${colors.textMuted} mb-6 max-w-md mx-auto`}>
+                Ceritamu bisa jadi pengingat buat pekerja lain bahwa mereka gak sendiri
               </p>
               <Link
                 href="/tulis"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-sm font-medium"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-sm font-medium shadow-lg shadow-[#8b7355]/25"
               >
                 <PenLine size={18} />
                 Tulis Ceritamu
@@ -291,147 +393,171 @@ export default function TulisanDetailPage() {
           </div>
         </article>
 
-        {/* RELATED CONTENT - INTEGRATED (Bukan Footer) */}
-        <section className={`px-6 py-20 ${isDark ? 'bg-neutral-900/30' : 'bg-neutral-100/50'}`}>
-          <div className="max-w-6xl mx-auto">
-            
-            {/* Related Posts */}
-            {relatedPosts.length > 0 && (
-              <div className="mb-16">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#8b7355]/30"></div>
+        {/* INFINITE LOOP SECTION — Same Category */}
+        {sameCategory.length > 0 && (
+          <section className={`px-4 sm:px-6 py-16 ${isDark ? 'bg-neutral-900/50' : 'bg-neutral-100/50'} border-y ${colors.border}`}>
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center justify-between mb-8">
+                <div>
                   <span className="text-xs tracking-[0.2em] uppercase text-[#8b7355] font-medium">
-                    Lanjut Baca — Cerita Serupa
+                    Dari Dunia Kerja yang Sama
                   </span>
-                  <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#8b7355]/30"></div>
+                  <h2 className={`font-serif text-2xl sm:text-3xl mt-2 ${colors.heading}`}>
+                    Lebih banyak cerita {post.category}
+                  </h2>
                 </div>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost: any, index: number) => (
-                    <motion.div
-                      key={relatedPost.slug}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link 
-                        href={`/tulisan/${relatedPost.slug}`}
-                        className="group block h-full"
-                      >
-                        <div className={`h-full p-6 rounded-2xl border ${colors.border} 
-                          hover:border-[#8b7355] hover:shadow-xl hover:shadow-[#8b7355]/10
-                          transition-all duration-300 ${colors.cardBg}`}>
-                          
-                          <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">
-                            {relatedPost.category}
-                          </span>
-                          
-                          <h3 className={`font-serif text-xl mt-3 mb-3 ${colors.heading} 
-                            group-hover:text-[#c7b299] transition-colors leading-snug`}>
-                            {relatedPost.title}
-                          </h3>
-                          
-                          <p className={`text-sm ${colors.textMuted} line-clamp-2 mb-4`}>
-                            {relatedPost.hook}
-                          </p>
-                          
-                          <div className="flex items-center gap-2 text-xs text-[#8b7355] group-hover:text-[#c7b299]">
-                            <span>Baca lanjutan</span>
-                            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                          </div>
-                        </div>
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* More Posts - Random */}
-            <div>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent to-neutral-500/30"></div>
-                <span className={`text-xs tracking-[0.2em] uppercase ${colors.textSubtle} font-medium`}>
-                  Kamu Juga Mungkin Suka
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-l from-transparent to-neutral-500/30"></div>
+                <Link href={`/tulisan?category=${post.category}`} className="hidden sm:flex items-center gap-1 text-sm text-[#8b7355] hover:text-[#c7b299]">
+                  Lihat semua <ChevronRight size={16} />
+                </Link>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6">
-                {morePosts.map((morePost: any, index: number) => (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {sameCategory.map((relatedPost: any, index: number) => (
                   <motion.div
-                    key={morePost.slug}
+                    key={relatedPost.slug}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
                     <Link 
-                      href={`/tulisan/${morePost.slug}`}
-                      className="group flex items-start gap-4 p-4 rounded-xl hover:bg-neutral-800/5 transition-colors"
+                      href={`/tulisan/${relatedPost.slug}`}
+                      className="group block h-full"
                     >
-                      <span className={`text-4xl font-serif ${colors.textSubtle} opacity-30`}>
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">
-                          {morePost.category}
-                        </span>
-                        <h4 className={`font-medium mt-1 ${colors.heading} group-hover:text-[#c7b299] transition-colors line-clamp-2`}>
-                          {morePost.title}
-                        </h4>
-                        <span className={`text-xs ${colors.textSubtle} mt-2 block`}>
-                          {morePost.readTime}
-                        </span>
+                      <div className={`h-full p-5 rounded-2xl border ${colors.border} 
+                        hover:border-[#8b7355] hover:shadow-xl hover:shadow-[#8b7355]/10
+                        transition-all duration-300 ${colors.cardBg}`}>
+                        
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="w-2 h-2 rounded-full bg-[#8b7355]"></span>
+                          <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">
+                            {relatedPost.readTime}
+                          </span>
+                        </div>
+                        
+                        <h3 className={`font-serif text-lg mb-2 ${colors.heading} 
+                          group-hover:text-[#c7b299] transition-colors leading-snug line-clamp-2`}>
+                          {relatedPost.title}
+                        </h3>
+                        
+                        <p className={`text-sm ${colors.textMuted} line-clamp-2 mb-4`}>
+                          {relatedPost.hook}
+                        </p>
+                        
+                        <div className="flex items-center gap-2 text-xs text-[#8b7355] group-hover:text-[#c7b299] font-medium">
+                          <span>Baca cerita</span>
+                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </Link>
                   </motion.div>
                 ))}
               </div>
             </div>
+          </section>
+        )}
+
+        {/* TRENDING NOW — Random Discovery */}
+        <section className="px-4 sm:px-6 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center gap-3 mb-8">
+              <TrendingUp size={20} className="text-[#8b7355]" />
+              <div>
+                <span className="text-xs tracking-[0.2em] uppercase text-[#8b7355] font-medium">
+                  Sedang Ramai Dibaca
+                </span>
+                <h2 className={`font-serif text-2xl ${colors.heading}`}>Yang lain juga baca</h2>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {trending.map((trendPost: any, index: number) => (
+                <motion.div
+                  key={trendPost.slug}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link 
+                    href={`/tulisan/${trendPost.slug}`}
+                    className="group flex items-start gap-4 p-4 rounded-xl hover:bg-neutral-800/5 transition-colors border border-transparent hover:border-[#8b7355]/20"
+                  >
+                    <span className="text-3xl font-serif text-[#8b7355]/30 font-bold w-8">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">
+                          {trendPost.category}
+                        </span>
+                        <span className={colors.textSubtle}>•</span>
+                        <span className={`text-xs ${colors.textSubtle}`}>{trendPost.readTime}</span>
+                      </div>
+                      <h4 className={`font-medium text-lg ${colors.heading} group-hover:text-[#c7b299] transition-colors`}>
+                        {trendPost.title}
+                      </h4>
+                      <p className={`text-sm ${colors.textMuted} mt-1 line-clamp-1`}>
+                        {trendPost.hook}
+                      </p>
+                    </div>
+                    <ArrowRight size={20} className={`${colors.textSubtle} group-hover:text-[#8b7355] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1`} />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* FINAL CTA - Full Width */}
-        <section className="px-6 py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#8b7355]/20 via-transparent to-[#c7b299]/10"></div>
+        {/* FINAL CTA — No Escape */}
+        <section className="px-4 sm:px-6 py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#8b7355]/30 via-[#8b7355]/10 to-transparent"></div>
           <div className="max-w-3xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <p className="font-serif text-4xl md:text-5xl italic text-[#c7b299] mb-6 leading-tight">
-                "Ceritamu mungkin yang mereka butuhkan hari ini"
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#8b7355] flex items-center justify-center text-2xl">
+                ✍️
+              </div>
+              <p className="font-serif text-3xl sm:text-5xl italic text-[#c7b299] mb-6 leading-tight">
+                "Ceritamu mungkin yang mereka cari hari ini"
               </p>
               <p className={`text-lg ${colors.textMuted} mb-10 max-w-xl mx-auto`}>
                 Setiap pengalaman kerja itu berharga. Jangan biarkan hilang begitu saja.
               </p>
-              <Link
-                href="/tulis"
-                className="inline-flex items-center gap-3 px-10 py-5 
-                  bg-[#8b7355] text-white rounded-full
-                  hover:bg-[#c7b299] transition-all duration-300 
-                  text-base tracking-wider font-medium shadow-2xl shadow-[#8b7355]/30
-                  hover:shadow-[#c7b299]/30 hover:-translate-y-1"
-              >
-                <PenLine size={20} />
-                Mulai Menulis
-              </Link>
-              <p className={`mt-6 text-xs ${colors.textSubtle}`}>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/tulis"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 
+                    bg-[#8b7355] text-white rounded-full
+                    hover:bg-[#c7b299] transition-all duration-300 
+                    text-base font-medium shadow-2xl shadow-[#8b7355]/40
+                    hover:shadow-[#c7b299]/40 hover:-translate-y-1"
+                >
+                  <PenLine size={20} />
+                  Tulis Ceritamu Sekarang
+                </Link>
+                <button 
+                  onClick={() => router.push(`/tulisan/${nextPost.slug}`)}
+                  className={`inline-flex items-center justify-center gap-3 px-10 py-5 
+                    border-2 ${colors.border} rounded-full
+                    hover:border-[#8b7355] hover:text-[#8b7355] transition-all duration-300 
+                    text-base font-medium`}
+                >
+                  Baca Cerita Lain
+                  <ArrowRight size={20} />
+                </button>
+              </div>
+              
+              <p className={`mt-8 text-xs ${colors.textSubtle}`}>
                 Anonim • Tanpa login • Langsung terbit
               </p>
             </motion.div>
           </div>
         </section>
-
-        {/* Simple Footer */}
-        <footer className={`py-8 px-6 border-t ${colors.border} text-center`}>
-          <Link href="/" className={`text-sm ${colors.textSubtle} hover:text-[#8b7355] transition-colors`}>
-            ← Kembali ke Beranda
-          </Link>
-        </footer>
       </div>
     </main>
   );
