@@ -20,7 +20,7 @@ const stagger = {
 const CATEGORIES = ["Semua", "Ruang Bagi", "Barista & FnB", "Retail", "Office & Korporat", "Kreatif", "Lainnya"];
 
 export default function TulisanPage() {
-  const posts = postsData.posts || [];
+  const posts = (postsData as any).posts || [];
   const { theme } = useTheme();
   const [activeCategory, setActiveCategory] = useState("Semua");
 
@@ -44,22 +44,18 @@ export default function TulisanPage() {
     grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
   };
 
-  // Pisahkan featured dan regular posts
   const featuredPost = posts.find((p: any) => p.isFeatured);
   const regularPosts = posts.filter((p: any) => !p.isFeatured);
   
-  // Filter regular posts
   const filteredPosts = useMemo(() => {
     if (activeCategory === "Semua") return regularPosts;
     return regularPosts.filter((post: any) => post.category === activeCategory);
   }, [regularPosts, activeCategory]);
 
-  // Check if featured is visible in current filter
   const showFeatured = activeCategory === "Semua" || activeCategory === "Ruang Bagi";
 
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} ${colors.selectionBg} ${colors.selectionText} transition-colors duration-500`}>
-      {/* Grain */}
       <div
         className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0 transition-opacity duration-500`}
         style={{
@@ -70,7 +66,6 @@ export default function TulisanPage() {
       <div className="relative z-10 py-32 px-6">
         <div className="max-w-5xl mx-auto">
           
-          {/* Header */}
           <motion.header
             variants={fadeUp}
             initial="hidden"
@@ -97,7 +92,6 @@ export default function TulisanPage() {
               kata-kata menjadi satu-satunya tempat perlindungan.
             </p>
 
-            {/* CTA Tulis */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -117,7 +111,6 @@ export default function TulisanPage() {
             </motion.div>
           </motion.header>
 
-          {/* Filter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -147,7 +140,6 @@ export default function TulisanPage() {
             </div>
           </motion.div>
 
-          {/* ⭐ FEATURED STORY - CERITA FILOSOFIS */}
           {showFeatured && featuredPost && (
             <motion.section
               initial={{ opacity: 0, y: 30 }}
@@ -156,12 +148,10 @@ export default function TulisanPage() {
               className="mb-20"
             >
               <div className={`relative overflow-hidden rounded-3xl ${colors.featuredBg} border ${colors.border} p-8 md:p-12`}>
-                {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#c7b299]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#8b7355]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
                 
                 <div className="relative z-10">
-                  {/* Badge */}
                   <div className="flex items-center gap-2 mb-6">
                     <Sparkles size={16} className="text-[#c7b299]" />
                     <span className="text-[10px] tracking-[0.3em] uppercase text-[#c7b299] font-medium">
@@ -169,24 +159,20 @@ export default function TulisanPage() {
                     </span>
                   </div>
 
-                  {/* Hook */}
                   <p className="text-lg md:text-xl italic text-[#c7b299]/90 mb-6 leading-relaxed 
                     border-l-2 border-[#8b7355]/50 pl-6 max-w-3xl">
                     "{featuredPost.hook}"
                   </p>
 
-                  {/* Title */}
                   <h2 className={`font-serif text-3xl md:text-4xl lg:text-5xl mb-6 ${colors.heading} 
                     leading-tight max-w-3xl`}>
                     {featuredPost.title}
                   </h2>
 
-                  {/* Excerpt */}
                   <p className={`text-lg ${colors.textMuted} leading-[1.9] mb-8 max-w-2xl`}>
                     {featuredPost.excerpt}
                   </p>
 
-                  {/* Meta & CTA */}
                   <div className="flex flex-wrap items-center gap-6">
                     <span className={`flex items-center gap-2 text-sm ${colors.textSubtle}`}>
                       <Clock size={14} />
@@ -211,7 +197,6 @@ export default function TulisanPage() {
             </motion.section>
           )}
 
-          {/* Divider */}
           {showFeatured && featuredPost && (
             <div className={`flex items-center justify-center gap-6 mb-16 ${colors.textSubtle}`}>
               <div className="h-px w-24 bg-gradient-to-r from-transparent to-[#c7b299]"></div>
@@ -220,7 +205,6 @@ export default function TulisanPage() {
             </div>
           )}
 
-          {/* Regular Posts Header */}
           <div className={`flex items-baseline justify-between mb-12 border-b ${colors.border} pb-4 transition-colors duration-500`}>
             <h2 className={`font-serif text-2xl ${colors.heading} italic transition-colors duration-500`}>
               {activeCategory === "Semua" ? "Catatan-catatan" : activeCategory}
@@ -230,7 +214,6 @@ export default function TulisanPage() {
             </span>
           </div>
 
-          {/* Regular Posts List */}
           <motion.div
             variants={stagger}
             initial="hidden"
@@ -243,7 +226,6 @@ export default function TulisanPage() {
                 className={`text-center py-24 ${colors.textSubtle}`}
               >
                 {regularPosts.length === 0 ? (
-                  // Belum ada tulisan sama sekali
                   <>
                     <p className="font-serif text-3xl italic mb-4 text-[#c7b299]">
                       "Keheningan yang menunggu..."
@@ -266,7 +248,6 @@ export default function TulisanPage() {
                     </Link>
                   </>
                 ) : (
-                  // Filter gak ketemu
                   <>
                     <p className="font-serif text-xl italic mb-4">
                       Belum ada cerita di kategori ini
@@ -292,7 +273,6 @@ export default function TulisanPage() {
                       hover:border-[#8b7355]/50 transition-all duration-500
                       hover:shadow-lg hover:shadow-[#8b7355]/5`}>
                       
-                      {/* Meta */}
                       <div className="flex flex-wrap items-center gap-4 mb-6">
                         <span className="px-3 py-1 text-[10px] tracking-widest uppercase 
                           bg-[#8b7355]/10 text-[#8b7355] rounded-full">
@@ -307,24 +287,20 @@ export default function TulisanPage() {
                         </span>
                       </div>
 
-                      {/* Hook */}
                       <p className={`text-base md:text-lg italic mb-4 text-[#c7b299] leading-relaxed 
                         border-l-2 border-[#8b7355]/30 pl-4`}>
                         "{post.hook}"
                       </p>
 
-                      {/* Title */}
                       <h3 className={`font-serif text-2xl md:text-3xl mb-4 ${colors.heading} 
                         group-hover:text-[#c7b299] transition-colors duration-500 leading-tight`}>
                         {post.title}
                       </h3>
 
-                      {/* Excerpt */}
                       <p className={`text-base ${colors.textMuted} leading-[1.9] mb-6 line-clamp-3`}>
                         {post.excerpt}
                       </p>
 
-                      {/* Role & CTA */}
                       <div className="flex items-center justify-between">
                         <span className={`text-xs ${colors.textSubtle} tracking-wider`}>
                           Ditulis oleh: {post.role}
@@ -342,7 +318,6 @@ export default function TulisanPage() {
             )}
           </motion.div>
 
-          {/* Footer CTA */}
           {filteredPosts.length > 0 && (
             <motion.footer
               initial={{ opacity: 0 }}
