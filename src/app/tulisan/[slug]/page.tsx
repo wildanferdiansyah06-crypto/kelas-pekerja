@@ -46,16 +46,15 @@ export default function TulisanDetailPage() {
     grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
   };
 
-  // Find current post
-  const post = postsData.posts.find((p: any) => p.slug === slug);
+  const posts = (postsData as any).posts || [];
   
-  // Find related posts
-  const relatedPosts = post?.related 
-    ? postsData.posts.filter((p: any) => post.related.includes(p.slug)).slice(0, 3)
+  const post = posts.find((p: any) => p.slug === slug);
+  
+  const relatedPosts = post?.related?.length
+    ? posts.filter((p: any) => post.related.includes(p.slug)).slice(0, 3)
     : [];
 
-  // Find random posts if no related
-  const randomPosts = postsData.posts
+  const randomPosts = posts
     .filter((p: any) => p.slug !== slug)
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
@@ -77,7 +76,6 @@ export default function TulisanDetailPage() {
 
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
-      {/* Grain */}
       <div
         className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0`}
         style={{
@@ -86,7 +84,6 @@ export default function TulisanDetailPage() {
       />
 
       <div className="relative z-10">
-        {/* Navigation Back */}
         <motion.nav
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -107,7 +104,6 @@ export default function TulisanDetailPage() {
           </div>
         </motion.nav>
 
-        {/* Hero Section */}
         <header className="pt-32 pb-16 px-6">
           <div className="max-w-3xl mx-auto">
             <motion.div
@@ -115,7 +111,6 @@ export default function TulisanDetailPage() {
               initial="hidden"
               animate="show"
             >
-              {/* Kategori & Meta */}
               <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 mb-8">
                 <span className="px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase 
                   bg-[#8b7355]/20 text-[#8b7355] rounded-full font-medium">
@@ -130,7 +125,6 @@ export default function TulisanDetailPage() {
                 </span>
               </motion.div>
 
-              {/* EMOTIONAL HOOK */}
               <motion.p 
                 variants={fadeUp}
                 className="text-lg md:text-xl italic text-[#c7b299] mb-6 leading-relaxed 
@@ -139,7 +133,6 @@ export default function TulisanDetailPage() {
                 {post.hook}
               </motion.p>
 
-              {/* Judul */}
               <motion.h1 
                 variants={fadeUp}
                 className={`font-serif text-4xl md:text-5xl lg:text-6xl ${colors.heading} 
@@ -148,7 +141,6 @@ export default function TulisanDetailPage() {
                 {post.title}
               </motion.h1>
 
-              {/* Role */}
               <motion.div variants={fadeUp} className={`text-sm ${colors.textSubtle} tracking-wider`}>
                 Ditulis oleh: <span className="text-[#8b7355]">{post.role}</span> • Anonim
               </motion.div>
@@ -156,7 +148,6 @@ export default function TulisanDetailPage() {
           </div>
         </header>
 
-        {/* Content */}
         <article className="px-6 pb-24">
           <div className="max-w-3xl mx-auto">
             <motion.div
@@ -166,7 +157,7 @@ export default function TulisanDetailPage() {
               viewport={{ once: true }}
               className="space-y-8"
             >
-              {post.content.map((block: any, index: number) => {
+              {post.content?.map((block: any, index: number) => {
                 if (block.type === "paragraph") {
                   return (
                     <motion.p
@@ -174,8 +165,7 @@ export default function TulisanDetailPage() {
                       variants={fadeUp}
                       className={`text-lg md:text-xl ${colors.textMuted} leading-[2] 
                         first-letter:text-5xl first-letter:font-serif first-letter:float-left 
-                        first-letter:mr-4 first-letter:mt-[-4px] first-letter:text-[#c7b299]
-                        ${index === 0 ? '' : ''}`}
+                        first-letter:mr-4 first-letter:mt-[-4px] first-letter:text-[#c7b299]`}
                     >
                       {block.text}
                     </motion.p>
@@ -202,7 +192,6 @@ export default function TulisanDetailPage() {
               })}
             </motion.div>
 
-            {/* Impact Statement */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -222,7 +211,6 @@ export default function TulisanDetailPage() {
               </div>
             </motion.div>
 
-            {/* Share/Actions */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -240,7 +228,6 @@ export default function TulisanDetailPage() {
           </div>
         </article>
 
-        {/* RELATED POSTS - THE LOOP */}
         {postsToShow.length > 0 && (
           <section className={`px-6 py-24 border-t ${colors.border}`}>
             <div className="max-w-5xl mx-auto">
@@ -299,7 +286,6 @@ export default function TulisanDetailPage() {
           </section>
         )}
 
-        {/* CTA FINAL - Convert to Writer */}
         <section className={`px-6 py-24 ${isDark ? 'bg-[#8b7355]/5' : 'bg-[#8b7355]/10'}`}>
           <div className="max-w-3xl mx-auto text-center">
             <motion.div
@@ -332,7 +318,6 @@ export default function TulisanDetailPage() {
           </div>
         </section>
 
-        {/* Simple Footer */}
         <footer className={`py-12 px-6 border-t ${colors.border} text-center`}>
           <Link href="/" className={`text-sm ${colors.textSubtle} hover:text-[#8b7355] transition-colors`}>
             Kembali ke Beranda
