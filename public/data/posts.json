@@ -1,6 +1,37 @@
 {
   "posts": [
     {
+      "slug": "ruang-bagi-tulisan",
+      "title": "Di Antara Deru Waktu yang Tak Pernah Berhenti",
+      "hook": "Kita hidup di era yang terobsesi pada kecepatan. Tapi ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.",
+      "opening": "Di era yang terobsesi kecepatan, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan. Ruang ini dibuka untuk itu.",
+      "excerpt": "Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak.",
+      "category": "Ruang Bagi",
+      "readTime": "2 menit",
+      "date": "2024-01-01",
+      "role": "Pembuka Ruang",
+      "workplace": "Arsip Pikiran",
+      "duration": "Selamanya",
+      "isFeatured": true,
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Kita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Tapi di sini, kita melambat."
+        },
+        {
+          "type": "quote",
+          "text": "Menulis adalah cara kita memberi makna pada kekosongan."
+        },
+        {
+          "type": "paragraph",
+          "text": "Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Tidak ada yang abadi, dan justru karena itu, setiap kata menjadi berharga."
+        }
+      ],
+      "impact": "Ruang ini dibuka sebagai tempat perlindungan bagi mereka yang butuh menyuarakan tanpa takut dikenali.",
+      "related": [],
+      "likes": 128
+    },
+    {
       "slug": "barista-6-bulan-tanpa-tip",
       "title": "6 Bulan Jadi Barista, Gaji Pas-pasan, Tip Gak Pernah Jelas",
       "hook": "Gue kerja di kafe hits Jakarta Selatan. Yang orang liat: latte art aesthetic. Yang gue liat: sistem tip yang gak pernah transparan.",
@@ -24,10 +55,177 @@
         {
           "type": "paragraph",
           "text": "Customer bilang, 'Makasih ya, tipnya buat beli bensin.' Gue cuma bisa senyum. Padahal tip itu gak pernah nyentuh tangan gue."
+        },
+        {
+          "type": "paragraph",
+          "text": "6 bulan gue tahan. Sampai suatu hari, gue liat manager bawa pulang jar tip dalam tas ransel. Besoknya, gue resign."
         }
       ],
       "impact": "Cerita ini ditulis untuk membuka soal transparansi tip di industri FnB — sesuatu yang jarang dibicarakan tapi dirasakan banyak pekerja.",
-      "related": ["retail-3-tahun-resign", "office-intern-kerja-lembur"]
+      "related": ["retail-3-tahun-resign", "office-intern-kerja-lembur"],
+      "likes": 89
+    },
+    {
+      "slug": "retail-3-tahun-resign",
+      "title": "3 Tahun di Retail, Resign Tanpa Bonus yang Dijanjikan",
+      "hook": "Janjiin bonus tahunan kalau target tercapai. Gue capaiin, bahkan lebih. Pas mau resign? 'Oh, itu belum diapprove pusat.'",
+      "opening": "Gue masuk dengan semangat tinggi. 'Retail itu fast-paced, gue bakal belajar banyak.' Ternyata yang gue pelajarin: cara survive di sistem yang manipulatif.",
+      "excerpt": "Sistem komisi di retail tuh kayak mimpi buruk. Target naik terus, tapi bonus turun terus. Yang paling sakit? Janji yang gak ditepati.",
+      "category": "Retail",
+      "readTime": "5 menit",
+      "date": "2024-02-28",
+      "role": "Ex-Sales Associate",
+      "workplace": "Mall Jakarta",
+      "duration": "3 tahun",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Masuk tahun ketiga, gue udah jadi top performer. Bulan Desember, gue jual 150% dari target. Manager tepuk punggung, 'Bonus lo gede nih tahun depan.'"
+        },
+        {
+          "type": "paragraph",
+          "text": "Januari, gue submit resign. Mau cari kesempatan baru. Manager bilang, 'Tunggu bonus keluar dulu, sayang banget.' Gue tunggu."
+        },
+        {
+          "type": "quote",
+          "text": "Pas gue submit resign, bonus jadi 'sedang diproses'. 3 bulan kemudian, masih 'sedang diproses'. Gue udah resign, jadi siapa yang ditanya?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Gue coba WA ex-manager. 'Maaf ya, itu urusan pusat, gue gak bisa bantu.' Padahal 3 tahun lalu, dia yang janjiin."
+        }
+      ],
+      "impact": "Banyak pekerja retail ngalamin janji bonus yang gak jelas. Ini bukan cerita gue doang — ini sistem.",
+      "related": ["barista-6-bulan-tanpa-tip", "gig-economy-ojol-2-tahun"],
+      "likes": 156
+    },
+    {
+      "slug": "office-intern-kerja-lembur",
+      "title": "Magang di Kantor 'Bonafide', Pulang Jam 10 Malam",
+      "hook": "Gue pikir magang di kantor gede bakal belajar banyak. Ternyata yang gue pelajarin: cara survive tanpa makan siang.",
+      "opening": "Offer letter-nya keren. Logo perusahaan besar, kantornya di gedung tinggi. Gue bangga banget bilang ke orang tua. Ternyata, itu awal dari eksploitasi terselubung.",
+      "excerpt": "Internship di perusahaan ternama gak selalu glamour. Kadang cuma jadi alat kerja gratis yang gak bisa komplain.",
+      "category": "Office & Korporat",
+      "readTime": "3 menit",
+      "date": "2024-01-20",
+      "role": "Ex-Intern",
+      "workplace": "Konsultan Jakarta",
+      "duration": "6 bulan",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Hari pertama, gue dikasih laptop bekas. 'Ini aset kantor, hati-hati ya.' Padahal yang harus hati-hati: kesehatan gue."
+        },
+        {
+          "type": "paragraph",
+          "text": "Jam 7 malam, karyawan tetap pada pulang. Intern? 'Lo tinggal bentar ya, ini urgent.' Urgent mulu, tiap hari."
+        },
+        {
+          "type": "quote",
+          "text": "Gue pernah pulang jam 10 malam, gak sempet makan siang. Di perjalanan, gue nangis di angkot. Tapi besoknya tetap masuk. Takut 'gak loyal' dicoret dari referensi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Pas sidang, gue dapet nilai bagus. Tapi gue juga dapet GERD dan anxiety. Bayaran? 'Pengalaman itu gak ada harganya,' katanya."
+        }
+      ],
+      "impact": "Eksploitasi intern masih marak. Ini pengingat buat perusahaan: magang bukan tenaga kerja gratis.",
+      "related": ["barista-6-bulan-tanpa-tip", "startup-1-tahun-burnout"],
+      "likes": 234
+    },
+    {
+      "slug": "gig-economy-ojol-2-tahun",
+      "title": "2 Tahun Jadi Ojol, Gue Lebih Pahit dari yang Diceritain Media",
+      "hook": "Media selalu bilang 'fleksibel', 'penghasilan besar'. Gue yang 2 tahun di jalan: itu omong kosong yang membahayakan.",
+      "opening": "Gue resign dari pabrik, mikir ojol lebih bebas. Ternyata 'bebas' itu artinya: bebas dari jam kerja, tapi terjebak di sistem algoritma yang gak kenal ampun.",
+      "excerpt": "Di balik promo diskon yang bikin customer senyum, ada driver yang ngitung bensin vs orderan yang gak masuk akal.",
+      "category": "Gig Economy",
+      "readTime": "6 menit",
+      "date": "2024-04-10",
+      "role": "Ex-Driver Ojol",
+      "workplace": "Jakarta & Sekitarnya",
+      "duration": "2 tahun",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Hari pertama, gue excited. HP bunyi terus, orderan masuk. Tapi seminggu kemudian, gue ngerti: promo itu bayar driver."
+        },
+        {
+          "type": "quote",
+          "text": "Customer bayar Rp10.000, gue dapet Rp8.000. Tapi bensin gue habis Rp12.000. Itu namanya kerja buat boncos."
+        },
+        {
+          "type": "paragraph",
+          "text": "Rating sistemnya kejam. Customer marah macet, rating bintang 1. Gue gak bisa jelasin, cuma bisa terima. 3 rating buruk, akun di-suspend. Gak ada banding."
+        },
+        {
+          "type": "paragraph",
+          "text": "Sakit pernah gue alami, jatuh dari motor. Gue tetap kerja, karena libur = gak dapet duit. BPJS? Gak, driver 'mitra', bukan 'karyawan'."
+        }
+      ],
+      "impact": "Cerita ini mengungkap realitas gig economy yang sering ditutupi narasi 'fleksibel'. Perlu regulasi yang melindungi pekerja platform.",
+      "related": ["retail-3-tahun-resign", "startup-1-tahun-burnout"],
+      "likes": 312
+    },
+    {
+      "slug": "startup-1-tahun-burnout",
+      "title": "1 Tahun di Startup 'Unicorn', Gue Jual Kesehatan Mental demi RSU",
+      "hook": "RSU, ESOP, culture yang 'keren'. Gue masuk dengan mimpi jadi milyuner. Keluar dengan resep obat tidur.",
+      "opening": "Interview-nya keren. 'Kita disrupt industri,' kata founder. Gue bayangin jadi bagian dari sesuatu besar. Ternyata yang didisrupsi: batasan kerja manusiawi.",
+      "excerpt": "Startup culture sering ditutupi kata-kata keren: hustle, grind, disrupt. Tapi di balik itu, ada pekerja yang gak tidur cukup selama berbulan-bulan.",
+      "category": "Startup",
+      "readTime": "5 menit",
+      "date": "2024-03-05",
+      "role": "Ex-Product Manager",
+      "workplace": "Startup Jakarta",
+      "duration": "1 tahun",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Bulan pertama, kerja sampe jam 11 malam. 'Ini sprint,' kata lead. Ternyata sprint-nya 12 bulan non-stop."
+        },
+        {
+          "type": "quote",
+          "text": "'Gue tidur 4 jam perhari selama 6 bulan,' bilang temen gue. Dia bangga. Gue ikut bangga. Ternyata itu tanda breakdown, bukan dedikasi."
+        },
+        {
+          "type": "paragraph",
+          "text": "Layoff datang tanpa warning. 30% tim, termasuk gue. RSU? Belum vest. ESOP? Kertas tak bernilai. Yang tinggal: resep dokter untuk anxiety."
+        }
+      ],
+      "impact": "Glorifikasi hustle culture di startup membahayakan. Ini pengingat bahwa 'growth' gak boleh mengorbankan kesehatan mental.",
+      "related": ["office-intern-kerja-lembur", "gig-economy-ojol-2-tahun"],
+      "likes": 178
+    },
+    {
+      "slug": "creative-agensi-4-tahun",
+      "title": "4 Tahun di Agensi Kreatif, Gue Lupa Cara Tidur Normal",
+      "hook": "Revisi ke-27 jam 3 pagi. Client bilang, 'Balikin ke versi pertama.' Gue ketawa gila di depan laptop.",
+      "opening": "Gue masuk karena suka bikin konten. Gue keluar karena gak tahan sistem yang menghargai 'respons cepat' lebih dari 'kerjaan bagus'.",
+      "excerpt": "Dunia kreatif seharusnya tentang ekspresi. Tapi di agensi, jadi tentang siapa yang paling cepat reply WhatsApp jam 2 pagi.",
+      "category": "Kreatif",
+      "readTime": "4 menit",
+      "date": "2024-02-15",
+      "role": "Ex-Copywriter",
+      "workplace": "Agensi Jakarta",
+      "duration": "4 tahun",
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Brief masuk jam 5 sore, deadline besok jam 9 pagi. 'Ini urgent,' kata account. Urgent-nya kenapa? Karena client males planning."
+        },
+        {
+          "type": "quote",
+          "text": "Revisi ke-27 jam 3 pagi. Client bilang, 'Balikin ke versi pertama.' Gue ketawa gila di depan laptop. Bukan karena lucu."
+        },
+        {
+          "type": "paragraph",
+          "text": "4 tahun, gue gak pernah libur tanpa cek HP. Fear of missing out? Bukan. Fear of getting fired karena 'respons lambat'."
+        }
+      ],
+      "impact": "Industri kreatif perlu boundary yang jelas. Kreativitas gak bisa dipaksa keluar dalam deadline yang tidak manusiawi.",
+      "related": ["startup-1-tahun-burnout", "barista-6-bulan-tanpa-tip"],
+      "likes": 145
     }
   ]
 }
