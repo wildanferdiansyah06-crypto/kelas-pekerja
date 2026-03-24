@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine } from 'lucide-react';
+import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DiBalikBarPage() {
@@ -188,7 +188,7 @@ export default function DiBalikBarPage() {
       {/* Main Content */}
       <main className={`relative max-w-3xl mx-auto px-6 md:px-12 ${fontSize === 'large' ? 'py-20 md:py-28' : 'py-16 md:py-24'}`}>
 
-        {/* Story Identity Badge */}
+        {/* Story Identity Badge - IDENTITAS CERITA */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -214,14 +214,16 @@ export default function DiBalikBarPage() {
               Di Balik <span className={`italic ${theme.accent} font-light`}>Bar</span>
             </h1>
             
-            {/* Brutal Opening */}
-            <motion.p 
+            {/* BRUTAL OPENING - NANGKEP LEHER */}
+            <motion.div 
               variants={fadeInUp}
-              className={`${theme.textSecondary} ${fontSize === 'large' ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} leading-relaxed italic mb-6 font-light`}
+              className={`${theme.accentBg} ${theme.accentBorder} border-l-4 p-6 rounded-r-lg mb-6`}
             >
-              "Orang cuma lihat kita bikin minuman yang cantik. 
-              <span className={`${theme.accent} not-italic font-normal`}> Tapi gak ada yang tahu capeknya di balik bar.</span>"
-            </motion.p>
+              <p className={`${theme.textHeading} ${fontSize === 'large' ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} leading-relaxed font-light`}>
+                "Orang cuma lihat kita bikin minuman yang cantik. 
+                <span className={`${theme.accent} font-medium block mt-2`}>Tapi gak ada yang tahu capeknya di balik bar.</span>"
+              </p>
+            </motion.div>
             
             <div className="flex flex-wrap items-center gap-4 text-sm">
               <span className={`${theme.textMuted} italic`}>Catatan dari Seorang Barista</span>
@@ -270,7 +272,7 @@ export default function DiBalikBarPage() {
             </p>
           </motion.div>
 
-          {/* Highlight Moment */}
+          {/* Highlight Moment - KOPI TUBRUK */}
           <motion.div 
             variants={scaleIn}
             whileHover={{ scale: 1.02 }}
@@ -327,7 +329,7 @@ export default function DiBalikBarPage() {
             </div>
           </motion.div>
 
-          {/* Deep Quote */}
+          {/* HIGHLIGHT MOMENT - QUOTE BLOCK */}
           <motion.div 
             variants={scaleIn}
             className={`p-8 ${theme.highlight} border-2 ${theme.accentBorder} rounded-xl my-12 relative overflow-hidden`}
@@ -336,10 +338,11 @@ export default function DiBalikBarPage() {
               {...breathAnimation}
               className={`absolute -right-10 -bottom-10 w-40 h-40 ${darkMode ? 'bg-amber-900/10' : 'bg-amber-500/10'} rounded-full blur-3xl`} 
             />
-            <div className="relative z-10">
+            <div className="relative z-10 text-center">
+              <Sparkles size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
               <p className={`${theme.accent} ${fontSizeClasses.small} uppercase tracking-[0.2em] mb-4`}>Yang Tidak Terlihat</p>
               <p className={`${theme.textHeading} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}>
-                "Capeknya bukan di tangan. Capeknya di kepala, di senyum yang dipaksakan, di 'baik-baik saja' yang terucap otomatis."
+                "Capeknya bukan di tangan. <span className={theme.accent}>Capeknya di kepala,</span> di senyum yang dipaksakan, di 'baik-baik saja' yang terucap otomatis."
               </p>
             </div>
           </motion.div>
@@ -356,8 +359,9 @@ export default function DiBalikBarPage() {
               Ada momen-momen langka. Ketika seorang pelanggan benar-benar melihatku. Bukan sebagai mesin pembuat kopi, tapi sebagai manusia. Mereka bertanya namaku. Mereka ingat pesanan favoritku — yang kubuat untuk diri sendiri di akhir shift.
             </motion.p>
 
+            {/* HIGHLIGHT MOMENT - BOLD */}
             <motion.p variants={fadeInUp} className={`${theme.textMuted} ${fontSizeClasses.body} italic leading-relaxed pl-6 border-l-2 ${theme.borderLight}`}>
-              "Kamu yang selalu bikin kopi kuat itu ya?" — Seperti ada yang memperhatikan. Seperti aku ada.
+              "<span className={`${theme.textHeading} font-medium not-italic`}>Kamu yang selalu bikin kopi kuat itu ya?</span>" — Seperti ada yang memperhatikan. Seperti aku ada.
             </motion.p>
 
             <motion.p variants={fadeInUp} className={`${fontSizeClasses.body} font-light leading-relaxed`}>
@@ -414,16 +418,19 @@ export default function DiBalikBarPage() {
                 <p className={`${theme.textMuted} ${fontSizeClasses.body}`}>Seperti sedang memberi nasihat biasa.</p>
               </div>
               
+              {/* HIGHLIGHT MOMENT - QUOTE BRUTAL */}
               <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
-                "Biasanya barista di Bali itu gigolo. Jangan sampai kamu jadi seperti itu."
+                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan sampai kamu jadi seperti itu."
               </blockquote>
               
               <div className="space-y-3">
                 <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
                   Aku tidak marah. Aku sudah terlalu lelah untuk marah. Hanya... sedih. Sedih karena mereka tidak tahu betapa kerasnya aku bekerja untuk tetap menjadi versi terbaik dari diriku. 
                 </p>
+                
+                {/* HIGHLIGHT MOMENT - BOLD */}
                 <p className={`${theme.textMuted} italic ${fontSizeClasses.body}`}>
-                  Sedih karena mereka melihat profesi ini dengan cara yang sama seperti orang-orang yang melewatku di café — sebagai sesuatu yang rendah, yang tidak perlu dihormati.
+                  Sedih karena mereka melihat profesi ini dengan cara yang sama seperti orang-orang yang melewatku di café — <span className={`${theme.textHeading} font-medium not-italic`}>sebagai sesuatu yang rendah, yang tidak perlu dihormati.</span>
                 </p>
               </div>
 
@@ -469,13 +476,14 @@ export default function DiBalikBarPage() {
               </ul>
             </motion.div>
 
+            {/* HIGHLIGHT MOMENT */}
             <motion.p variants={fadeInUp} className={`${theme.textMuted} ${fontSizeClasses.body} italic leading-relaxed pl-6 border-l-2 ${theme.borderLight}`}>
-              Kadang aku bertanya: apakah semua orang merasa seperti ini? Atau hanya aku? Atau hanya kita — mereka yang bekerja di balik bar, di balik meja, di balik senyum yang kita pinjam setiap hari?
+              Kadang aku bertanya: <span className={`${theme.textHeading} font-medium not-italic`}>apakah semua orang merasa seperti ini?</span> Atau hanya aku? Atau hanya kita — mereka yang bekerja di balik bar, di balik meja, di balik senyum yang kita pinjam setiap hari?
             </motion.p>
           </motion.div>
         </motion.section>
 
-        {/* Section: Masih Berdiri - Climax */}
+        {/* Section: Masih Berdiri - Climax dengan HIGHLIGHT */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Masih Berdiri</span>
@@ -504,7 +512,7 @@ export default function DiBalikBarPage() {
                   variants={scaleIn}
                   className={`${theme.textHeading} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}
                 >
-                  "Aku berdiri karena tubuhku masih sanggup melakukannya. Karena besok ada tagihan. Karena aku belum menemukan alasan untuk berhenti — atau untuk melanjutkan."
+                  "Aku berdiri karena tubuhku masih sanggup melakukannya. <span className={theme.accent}>Karena besok ada tagihan.</span> Karena aku belum menemukan alasan untuk berhenti — atau untuk melanjutkan."
                 </motion.p>
               </div>
               
@@ -534,7 +542,7 @@ export default function DiBalikBarPage() {
             </motion.p>
             
             <motion.p variants={lineReveal} className={`${theme.textMuted} font-light italic leading-relaxed ${fontSizeClasses.body}`}>
-              Aku tidak lagi mencari sempurna. Aku tidak lagi mencari pengakuan. Aku hanya mencari... tenang. Sedikit saja. Sebentar saja.
+              Aku tidak lagi mencari sempurna. Aku tidak lagi mencari pengakuan. Aku hanya mencari... <span className={`${theme.textHeading} font-medium not-italic`}>tenang.</span> Sedikit saja. Sebentar saja.
             </motion.p>
             
             <motion.div variants={scaleIn} className={`py-10 ${theme.accentBg} ${theme.accentBorder} border-2 rounded-lg my-10`}>
@@ -557,51 +565,58 @@ export default function DiBalikBarPage() {
           </div>
         </motion.section>
 
-        {/* CTA Section - Growth Killer Fix */}
+        {/* CTA Section - GROWTH FATAL FIX */}
         <motion.section
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className={`my-20 py-16 ${theme.accentBg} ${theme.accentBorder} border-y-2 text-center`}
+          className={`my-20 py-16 ${theme.accentBg} ${theme.accentBorder} border-y-2 text-center relative overflow-hidden`}
         >
-          <div className="max-w-2xl mx-auto px-6">
-            <PenLine size={40} className={`${theme.accent} mx-auto mb-6 opacity-60`} />
+          <motion.div 
+            animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+            transition={{ duration: 5, repeat: Infinity }}
+            className={`absolute inset-0 ${darkMode ? 'bg-amber-900/10' : 'bg-amber-500/10'}`}
+          />
+          
+          <div className="relative z-10 max-w-2xl mx-auto px-6">
+            <PenLine size={48} className={`${theme.accent} mx-auto mb-6`} />
             <h3 className={`font-serif ${fontSizeClasses.heading} ${theme.textHeading} mb-6 italic`}>
               Punya pengalaman kerja kayak gini juga?
             </h3>
             <p className={`${theme.textMuted} ${fontSizeClasses.body} mb-10 leading-relaxed`}>
-              Cerita lo mungkin beda profesi, beda kota, beda detail. Tapi rasanya? Mungkin sama. Capek yang tidak terlihat. Harapan yang terkikis. Kebanggaan kecil yang tidak ada yang lihat.
+              Cerita lo mungkin beda profesi, beda kota, beda detail. Tapi rasanya? Mungkin sama. 
+              <span className={`${theme.textHeading} font-medium block mt-2`}>Capek yang tidak terlihat. Harapan yang terkikis. Kebanggaan kecil yang tidak ada yang lihat.</span>
             </p>
             
             <Link href="/tulis">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`group relative px-10 py-5 ${darkMode ? 'bg-amber-900/30' : 'bg-amber-100'} ${theme.accentBorder} border-2 overflow-hidden rounded-lg`}
+                className={`group relative px-12 py-6 ${darkMode ? 'bg-amber-900/40' : 'bg-amber-100'} ${theme.accentBorder} border-2 overflow-hidden rounded-lg shadow-xl`}
               >
-                <span className={`relative z-10 text-[14px] tracking-[0.2em] uppercase ${theme.accent} font-medium transition-colors duration-300 group-hover:text-white`}>
+                <span className={`relative z-10 text-[16px] tracking-[0.15em] uppercase ${theme.accent} font-bold transition-colors duration-300 group-hover:text-white`}>
                   Tulis Cerita Lo
                 </span>
                 <motion.div
-                  className={`absolute inset-0 ${darkMode ? 'bg-amber-800' : 'bg-amber-700'}`}
+                  className={`absolute inset-0 ${darkMode ? 'bg-amber-700' : 'bg-amber-600'}`}
                   initial={{ y: "100%" }}
                   whileHover={{ y: 0 }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 />
-                <span className={`absolute inset-0 flex items-center justify-center text-[14px] tracking-[0.2em] uppercase font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20`}>
+                <span className={`absolute inset-0 flex items-center justify-center text-[16px] tracking-[0.15em] uppercase font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20`}>
                   Tulis Cerita Lo
                 </span>
               </motion.button>
             </Link>
 
             <p className={`mt-8 ${theme.textMuted} text-sm italic`}>
-              Tidak perlu sempurna. Tidak perlu panjang. Yang penting: jujur.
+              Tidak perlu sempurna. Tidak perlu panjang. Yang penting: <span className={theme.accent}>jujur.</span>
             </p>
           </div>
         </motion.section>
 
-        {/* Related Stories - Dead End Fix */}
+        {/* Related Stories - DEAD END FIX */}
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -610,7 +625,10 @@ export default function DiBalikBarPage() {
           className="mb-24"
         >
           <div className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`${theme.accent} ${fontSizeClasses.small} tracking-[0.15em] uppercase font-medium`}>🔥 Cerita Lain dari Dunia Kerja Bar</span>
+            <span className={`${theme.accent} ${fontSizeClasses.small} tracking-[0.15em] uppercase font-medium flex items-center gap-2`}>
+              <Sparkles size={16} />
+              Cerita Lain dari Dunia Kerja Bar
+            </span>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -634,6 +652,7 @@ export default function DiBalikBarPage() {
                     {story.excerpt}
                   </p>
                   
+                  {/* HIGHLIGHT di Card */}
                   <div className={`mt-auto pt-4 border-t ${theme.borderLight}`}>
                     <p className={`${theme.accent} text-xs italic leading-relaxed`}>
                       "{story.highlight}"
@@ -641,7 +660,7 @@ export default function DiBalikBarPage() {
                   </div>
                   
                   <div className={`flex items-center gap-2 mt-4 ${theme.accent} text-sm font-medium`}>
-                    <span>Baca</span>
+                    <span>Baca Selengkapnya</span>
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                 </motion.article>
@@ -653,7 +672,7 @@ export default function DiBalikBarPage() {
             <Link href="/jelajahi">
               <motion.button
                 whileHover={{ scale: 1.02 }}
-                className={`px-6 py-3 ${theme.card} border ${theme.border} rounded-full ${theme.hover} transition-all text-sm ${theme.textMuted}`}
+                className={`px-8 py-4 ${theme.card} border ${theme.border} rounded-full ${theme.hover} transition-all text-sm ${theme.textMuted} font-medium`}
               >
                 Lihat Semua Cerita →
               </motion.button>
