@@ -45,6 +45,7 @@ export default function DiBalikBarPage() {
     text: 'text-stone-400',
     textMuted: 'text-stone-600',
     textHeading: 'text-stone-200',
+    textSecondary: 'text-stone-500',
     border: 'border-stone-800',
     borderLight: 'border-stone-700',
     accent: 'text-amber-600',
@@ -60,6 +61,7 @@ export default function DiBalikBarPage() {
     text: 'text-stone-600',
     textMuted: 'text-stone-400',
     textHeading: 'text-stone-800',
+    textSecondary: 'text-stone-500',
     border: 'border-stone-200',
     borderLight: 'border-stone-300',
     accent: 'text-amber-700',
@@ -165,8 +167,12 @@ export default function DiBalikBarPage() {
             key={i}
             animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
             transition={{ duration: 100 + i * 20, repeat: Infinity, ease: "linear" }}
-            className={`absolute ${i === 0 ? 'top-1/4 left-[8%]' : i === 1 ? 'bottom-1/3 right-[12%]' : 'top-2/3 left-[15%]'} w-${4 + i} h-${8 + i * 2} ${theme.coffee} rounded-full opacity-20 blur-[1px]`}
-            style={{ transform: `rotate(${45 + i * 15}deg)` }}
+            className={`absolute ${i === 0 ? 'top-1/4 left-[8%]' : i === 1 ? 'bottom-1/3 right-[12%]' : 'top-2/3 left-[15%]'} ${theme.coffee} rounded-full opacity-20 blur-[1px]`}
+            style={{ 
+              transform: `rotate(${45 + i * 15}deg)`,
+              width: `${4 + i * 2}px`,
+              height: `${8 + i * 3}px`
+            }}
           />
         ))}
       </div>
@@ -301,7 +307,7 @@ export default function DiBalikBarPage() {
             </motion.p>
 
             <motion.p variants={fadeInUp} className={`${fontSizeClasses.body} font-light leading-relaxed`}>
-              Pelanggan berbicara melewatiku. Bukan ke aku. Atasan membetulkan ucapanku di depan orang lain, seolah-olah aku tidak bisa berbahasa dengan benar. Padahal aku hanya bicara pelan. Karena bicara keras membutuhkan energi, dan energiku sudah habis untuk menyeduh.
+              Pelanggan berbicara melewatku. Bukan ke aku. Atasan membetulkan ucapanku di depan orang lain, seolah-olah aku tidak bisa berbahasa dengan benar. Padahal aku hanya bicara pelan. Karena bicara keras membutuhkan energi, dan energiku sudah habis untuk menyeduh.
             </motion.p>
           </motion.div>
 
@@ -312,8 +318,7 @@ export default function DiBalikBarPage() {
               <p className={`${theme.accent} ${fontSizeClasses.subheading} font-serif italic`}>Cukup untuk bertahan.</p>
               <p className={`${theme.textMuted} text-sm mt-3 leading-relaxed`}>Tidak cukup untuk hidup. Tidak cukup untuk impian. Cukup untuk datang lagi besok.</p>
             </div>
-            <div className={`p-6 ${theme.card} border ${theme.border} rounded-lg ${theme.hover} transition-all duration-3
-00`}>
+            <div className={`p-6 ${theme.card} border ${theme.border} rounded-lg ${theme.hover} transition-all duration-300`}>
               <p className={`${theme.textMuted} text-sm mb-2 uppercase tracking-wider`}>Jam Kerja</p>
               <p className={`${theme.textHeading} ${fontSizeClasses.subheading} font-serif italic`}>Panjang. Terlalu panjang.</p>
               <p className={`${theme.textMuted} text-sm mt-3 leading-relaxed`}>Berdiri delapan jam. Tersenyum delapan jam. Menjadi versi terbaik dari diriku — delapan jam.</p>
