@@ -1,25 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 
 export default function TentangPage() {
-  const containerRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
-  const essenceRef = useRef<HTMLDivElement>(null);
   const isHeroInView = useInView(heroRef, { once: true });
-  const isEssenceInView = useInView(essenceRef, { once: true, margin: "-200px" });
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -150]);
-  const opacityLayer1 = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const opacityLayer2 = useTransform(scrollYProgress, [0.2, 0.5], [0, 1]);
   
   const [typedText, setTypedText] = useState("");
   const fullText = "Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.";
@@ -49,7 +37,6 @@ export default function TentangPage() {
     textSecondary: isDark ? "text-[#d6d3d1]" : "text-[#57534e]",
     accent: isDark ? "text-[#8b7355]" : "text-[#a16207]",
     accentMuted: isDark ? "text-[#8b7355]/60" : "text-[#a16207]/60",
-    accentLight: isDark ? "text-[#8b7355]/30" : "text-[#a16207]/30",
     accentBorder: isDark ? "border-[#8b7355]/30" : "border-[#a16207]/30",
     accentBg: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
     accentBgLight: isDark ? "bg-[#8b7355]/10" : "bg-[#a16207]/10",
@@ -58,28 +45,28 @@ export default function TentangPage() {
   };
 
   const fadeInUp = {
-    hidden: { opacity: 0, y: 60, filter: "blur(10px)" },
+    hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
       transition: {
-        delay: i * 0.15,
-        duration: 1.2,
+        delay: i * 0.1,
+        duration: 0.8,
         ease: [0.22, 1, 0.36, 1]
       }
     })
   };
 
   const letterAnimation = {
-    hidden: { opacity: 0, y: 100, rotateX: -90 },
+    hidden: { opacity: 0, y: 50, rotateX: -90 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       rotateX: 0,
       transition: {
-        delay: 0.5 + (i * 0.08),
-        duration: 1,
+        delay: 0.3 + (i * 0.05),
+        duration: 0.8,
         ease: [0.22, 1, 0.36, 1]
       }
     })
@@ -90,444 +77,369 @@ export default function TentangPage() {
     visible: {
       scaleX: 1,
       opacity: 1,
-      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
-  const words = ["Tentang"];
-  const letters = words[0].split("");
-
   return (
-    <section 
-      ref={containerRef}
-      className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}
-    >
+    <section className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}>
       {/* Noise texture */}
       <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]`}></div>
 
       {/* Floating particles */}
-      <motion.div 
-        className="absolute inset-0 pointer-events-none"
-        style={{ y: backgroundY }}
-      >
-        {[...Array(8)].map((_, i) => (
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className={`absolute w-[1px] h-[1px] ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'} rounded-full`}
             style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + (i % 4) * 20}%`,
+              left: `${15 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
             }}
             animate={{
-              y: [0, -40, 0],
-              opacity: isDark ? [0.1, 0.4, 0.1] : [0.05, 0.2, 0.05],
-              scale: [1, 2, 1]
+              y: [0, -30, 0],
+              opacity: isDark ? [0.1, 0.3, 0.1] : [0.05, 0.15, 0.05],
             }}
             transition={{
-              duration: 5 + i * 0.5,
+              duration: 6 + i * 0.8,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.3
+              delay: i * 0.4
             }}
           />
         ))}
-      </motion.div>
+      </div>
 
-      {/* LAYER 1: The Original Essence (Your Core Story) */}
-      <motion.div 
-        style={{ opacity: opacityLayer1 }}
-        className="relative z-10"
+      {/* HERO SECTION */}
+      <div 
+        ref={heroRef}
+        className="relative z-10 min-h-[85vh] flex flex-col justify-center items-center px-6 pt-24 pb-16"
       >
-        <div 
-          ref={heroRef}
-          className="min-h-screen flex flex-col justify-center items-center px-6 pt-24 pb-12"
+        <motion.div 
+          className="max-w-3xl mx-auto text-center"
+          initial={{ opacity: 0 }}
+          animate={isHeroInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
         >
+          {/* Label */}
           <motion.div 
-            className="max-w-3xl mx-auto text-center"
-            initial={{ opacity: 0 }}
-            animate={isHeroInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.5 }}
+            className="flex items-center justify-center gap-4 mb-8"
+            initial="hidden"
+            animate={isHeroInView ? "visible" : "hidden"}
           >
-            {/* Label */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-8"
-              initial="hidden"
-              animate={isHeroInView ? "visible" : "hidden"}
-            >
-              <motion.div 
-                className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-right`}
-                variants={lineExpand}
-              />
-              <motion.span 
-                className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}
-                initial={{ opacity: 0 }}
-                animate={isHeroInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.8, duration: 1 }}
-              >
-                Arsip Pikiran
-              </motion.span>
-              <motion.div 
-                className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 origin-left`}
-                variants={lineExpand}
-              />
-            </motion.div>
-
-            {/* Context */}
-            <motion.p
-              className={`font-serif italic ${colors.accent} text-xl mb-6 opacity-80`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 1 }}
-            >
-              ruang bagi
-            </motion.p>
-
-            {/* Main Title */}
-            <div className="overflow-hidden mb-8">
-              <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl ${colors.text} flex justify-center perspective-1000`}>
-                {letters.map((letter, i) => (
-                  <motion.span
-                    key={i}
-                    custom={i}
-                    variants={letterAnimation}
-                    initial="hidden"
-                    animate={isHeroInView ? "visible" : "hidden"}
-                    className="inline-block"
-                    style={{ 
-                      transformStyle: "preserve-3d",
-                      textShadow: isDark ? "0 0 80px rgba(139,115,85,0.15)" : "0 0 60px rgba(161,98,7,0.1)"
-                    }}
-                  >
-                    {letter}
-                  </motion.span>
-                ))}
-              </h1>
-            </div>
-
-            {/* Your Original Subtitle - Typewriter */}
-            <motion.div 
-              className="max-w-2xl mx-auto mt-8"
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-12 origin-right`}
+              variants={lineExpand}
+            />
+            <motion.span 
+              className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}
               initial={{ opacity: 0 }}
               animate={isHeroInView ? { opacity: 1 } : {}}
-              transition={{ delay: 1.5, duration: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <p className={`text-[15px] md:text-base leading-[1.8] ${colors.textMuted} font-light`}>
-                {typedText}
-                <motion.span
-                  className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                />
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Your Original Manifesto Content - PRESERVED EXACTLY */}
-        <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
-          {/* Opening with Drop Cap */}
-          <motion.div
-            custom={0}
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="mb-12"
-          >
-            <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
-              <motion.span 
-                className={`float-left text-7xl font-serif ${colors.accent} mr-4 mt-2 leading-none`}
-                initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                K
-              </motion.span>
-              ita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Namun di sudut terdalam kesadaran, kita tahu: yang benar-benar berarti justru datang dari proses yang lambat, menyakitkan, dan seringkali tanpa tujuan jelas.
-            </p>
+              Arsip Pikiran
+            </motion.span>
+            <motion.div 
+              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-12 origin-left`}
+              variants={lineExpand}
+            />
           </motion.div>
 
-          {/* Your Original Body Paragraphs */}
-          <motion.div 
-            className="space-y-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+          {/* Context */}
+          <motion.p
+            className={`font-serif italic ${colors.accent} text-lg md:text-xl mb-6 opacity-80`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <motion.p 
-              custom={1}
-              variants={fadeInUp}
-              className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
-            >
-              Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Mereka tidak mengklaim kebenaran. Mereka hanya mengakui keberadaan: bahwa seseorang, di suatu tempat, pernah merasa sesuatu yang terlalu kompleks untuk diungkapkan dalam percakapan sehari-hari.
-            </motion.p>
-
-            <motion.p 
-              custom={2}
-              variants={fadeInUp}
-              className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
-            >
-              Tentang kopi yang bukan sekadar minuman, melainkan ritual penundaan— cara kita memberontak terhadap waktu. Tentang kerja yang memakan hari-hari kita, lalu kita bertanya: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya?</em> Tentang keheningan yang mengganggu, karena di dalamnya kita terpaksa berhadapan dengan diri sendiri.
-            </motion.p>
-          </motion.div>
-
-          {/* Your Original Quote */}
-          <motion.div
-            className={`my-16 pl-6 border-l-2 ${colors.accentBorder}`}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            <motion.blockquote 
-              className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.6]`}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 0.9 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-            >
-              &ldquo;Menulis adalah cara kita memberi makna pada kekosongan. Bukan untuk mengisinya, tetapi untuk mengenalinya. Seperti menatap ke dalam sumur yang gelap dan akhirnya melihat bayangan diri sendiri.&rdquo;
-            </motion.blockquote>
-          </motion.div>
-
-          {/* Your Original Closing Paragraph */}
-          <motion.p 
-            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            Mungkin ini semua hanya monolog yang tak pernah dimaksudkan untuk didengar. Tapi jika kamu menemukan dirimu di sini, di antara kata-kata yang tercecer—selamat datang. Kita adalah orang-orang yang sama: yang mencari arti di tempat-tempat yang orang lain lewati begitu saja.
+            ruang bagi
           </motion.p>
 
-          {/* Divider */}
-          <motion.div 
-            className="flex items-center justify-center gap-4 py-12"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <motion.div 
-              className={`h-px ${colors.divider} w-24`}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-            <motion.div 
-              className={`w-2 h-2 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#a16207]/40'} rotate-45`}
-              animate={{ rotate: [45, 225, 45] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div 
-              className={`h-px ${colors.divider} w-24`}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            />
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* LAYER 2: The Human Connection (New Personal Layer) */}
-      <motion.div 
-        ref={essenceRef}
-        style={{ opacity: opacityLayer2 }}
-        className="relative z-20 min-h-screen flex items-center justify-center px-6 py-32"
-      >
-        <div className="max-w-3xl mx-auto w-full">
-          {/* Transition Label */}
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-          >
-            <span className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}>
-              Tapi Kenapa Website Ini Ada?
-            </span>
-          </motion.div>
-
-          {/* Personal Story Integration */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
-            className="space-y-8"
-          >
-            <p className={`text-[18px] md:text-[20px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
-              Tulisan-tulisan di atas bukan sekadar filosofi. Mereka datang dari <span className={colors.accent}>pengalaman</span> — dari hari-hari where gue duduk di kafe, menatap cangkir kopi yang menghangat, dan bertanya: <em className={`${colors.accent} not-italic`}>untuk apa gue kerja sekeras ini?</em>
-            </p>
-
-            <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}>
-              Gue pernah kerja di tempat yang semuanya "tepat" di atas kertas — gaji oke, nama company bagus, posisi stabil. Tapi tiap pagi, gue harus paksa diri sendiri buat bangkit dari kasur. Bukan karena malas. Karena ada yang <span className={colors.accent}>salah</span>, tapi gue gak bisa jelasin apa.
-            </p>
-
-            <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}>
-              Gue cari tempat buat cerita. Bukan di LinkedIn (terlalu publik). Bukan di Twitter (terlalu cepat). Gue butuh ruang yang <span className={colors.accent}>lambat</span>, yang ngasih izin buat gak sempurna, yang ngerti bahwa beberapa pengalaman cuma bisa diungkapin lewat tulisan yang mengalir tanpa struktur jelas.
-            </p>
-          </motion.div>
-
-          {/* The Bridge */}
-          <motion.div
-            className={`my-16 pl-8 md:pl-12 border-l-2 ${colors.accentBorder}`}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            <p className={`font-serif italic text-2xl md:text-3xl ${colors.accent} leading-[1.5]`}>
-              &ldquo;Gue bikin website ini bukan karena gue udah figured it out. Gue bikin ini karena gue masih mencari, dan gue tahu gue gak sendiri.&rdquo;
-            </p>
-          </motion.div>
-
-          {/* What This Is For */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="mb-16"
-          >
-            <h3 className={`font-serif text-2xl ${colors.text} mb-8 text-center`}>
-              Jadi, Ini untuk Siapa?
-            </h3>
-
-            <div className="space-y-6">
-              {[
-                {
-                  title: "Yang merasa sendiri di tempat kerja",
-                  desc: "Padahal di sekitar lo ada puluhan orang, tapi gak ada yang ngerti."
-                },
-                {
-                  title: "Yang punya cerita tapi gak tau cerita ke siapa",
-                  desc: "Takut dianggap lemah, takut dianggap gak bersyukur, takut di-judge."
-                },
-                {
-                  title: "Yang lagi bingung: ini gue yang salah, atau memang tempatnya?",
-                  desc: "Gue pernah di posisi itu. Dan gak ada yang salah dengan bingung."
-                }
-              ].map((item, index) => (
-                <motion.div 
-                  key={index}
-                  className={`flex gap-4 p-6 ${isDark ? 'bg-[#1c1917]/20' : 'bg-[#f5f5f4]/60'} border-l-2 ${colors.accentBorder}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + (index * 0.15), duration: 0.6 }}
-                  whileHover={{ x: 8, transition: { duration: 0.3 } }}
+          {/* Main Title */}
+          <div className="overflow-hidden mb-8">
+            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center perspective-1000`}>
+              {"Tentang".split("").map((letter, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={letterAnimation}
+                  initial="hidden"
+                  animate={isHeroInView ? "visible" : "hidden"}
+                  className="inline-block"
+                  style={{ 
+                    transformStyle: "preserve-3d",
+                    textShadow: isDark ? "0 0 60px rgba(139,115,85,0.12)" : "0 0 40px rgba(161,98,7,0.08)"
+                  }}
                 >
-                  <span className={`${colors.accent} font-serif text-2xl leading-none mt-1`}>0{index + 1}</span>
-                  <div>
-                    <h4 className={`${colors.textSecondary} font-medium mb-2 text-[15px]`}>{item.title}</h4>
-                    <p className={`text-[14px] ${colors.textMuted} leading-relaxed`}>{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Positioning Statement */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className={`p-8 ${colors.accentBgLight} border ${colors.accentBorder} text-center mb-16`}
-          >
-            <p className={`text-[15px] md:text-[16px] leading-[1.8] ${colors.textSecondary}`}>
-              Ini bukan platform review kerja profesional. Ini <span className={`${colors.accent} font-medium`}>tempat orang jujur tentang dunia kerja</span> — yang baik, yang buruk, yang confusing, yang bikin kita tumbuh, yang bikin kita hancur, dan semua yang di antaranya.
-            </p>
-          </motion.div>
-
-          {/* CTA - No Archive Mentioned */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
-            className="text-center py-12"
-          >
-            <motion.div 
-              className={`h-px ${colors.divider} w-24 mx-auto mb-12`}
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5 }}
-            />
-
-            <h3 className={`font-serif text-3xl md:text-4xl ${colors.text} mb-6`}>
-              Punya cerita yang perlu keluar?
-            </h3>
-            
-            <p className={`text-[15px] ${colors.textMuted} max-w-lg mx-auto mb-10 leading-relaxed`}>
-              Gak harus sempurna. Gak harus panjang. Gak harus punya moral lesson. Yang penting: <span className={colors.accent}>jujur</span>.
-            </p>
-
-            <Link href="/tulis">
-              <motion.button
-                className={`group relative px-10 py-5 ${colors.accentBg} ${colors.accentBorder} border-2 overflow-hidden`}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span className={`relative z-10 text-[14px] tracking-[0.25em] uppercase ${colors.accent} font-medium`}>
-                  Tulis Sekarang
-                </span>
-                <motion.div
-                  className={`absolute inset-0 ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'}`}
-                  initial={{ y: "100%" }}
-                  whileHover={{ y: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                />
-                <motion.span 
-                  className={`absolute inset-0 flex items-center justify-center text-[14px] tracking-[0.25em] uppercase font-medium ${isDark ? 'text-[#0a0908]' : 'text-[#fafaf9]'} opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20`}
-                >
-                  Tulis Sekarang
+                  {letter}
                 </motion.span>
-              </motion.button>
-            </Link>
+              ))}
+            </h1>
+          </div>
 
-            <motion.p 
-              className={`mt-8 text-[12px] ${colors.subtleText} italic max-w-md mx-auto leading-relaxed`}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-            >
-              &ldquo;Tulisan yang paling jujur adalah yang ditulis tanpa penonton, hanya untuk meyakinkan diri sendiri bahwa kita pernah merasa.&rdquo;
-            </motion.p>
-          </motion.div>
-
-          {/* Final */}
+          {/* Original Subtitle - Typewriter */}
           <motion.div 
-            className="mt-24 text-center pb-20"
+            className="max-w-2xl mx-auto mt-8"
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 0.5 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ delay: 1, duration: 0.8 }}
           >
-            <motion.div 
-              className="flex items-center justify-center gap-3"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1, duration: 1 }}
-            >
-              <div className={`h-px ${colors.accentBg} w-8`}></div>
-              <span className={`text-[9px] tracking-[0.4em] uppercase ${isDark ? 'text-[#44403c]' : 'text-[#d6d3d1]'}`}>
-                Ditulis perlahan, seperti menyeduh kopi di pagi yang belum yakin ingin dimulai
-              </span>
-              <div className={`h-px ${colors.accentBg} w-8`}></div>
-            </motion.div>
+            <p className={`text-[15px] md:text-[17px] leading-[1.9] ${colors.textMuted} font-light`}>
+              {typedText}
+              <motion.span
+                className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+              />
+            </p>
           </motion.div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
+
+      {/* MAIN CONTENT - Continuous Scroll, No Fade Out */}
+      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
+        
+        {/* === YOUR ORIGINAL MANIFESTO - FULLY PRESERVED === */}
+        <motion.div
+          custom={0}
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="mb-12"
+        >
+          <p className={`text-[16px] md:text-[18px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
+            <motion.span 
+              className={`float-left text-6xl md:text-7xl font-serif ${colors.accent} mr-4 mt-1 leading-none`}
+              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              K
+            </motion.span>
+            ita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Namun di sudut terdalam kesadaran, kita tahu: yang benar-benar berarti justru datang dari proses yang lambat, menyakitkan, dan seringkali tanpa tujuan jelas.
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="space-y-8 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <motion.p 
+            custom={1}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Mereka tidak mengklaim kebenaran. Mereka hanya mengakui keberadaan: bahwa seseorang, di suatu tempat, pernah merasa sesuatu yang terlalu kompleks untuk diungkapkan dalam percakapan sehari-hari.
+          </motion.p>
+
+          <motion.p 
+            custom={2}
+            variants={fadeInUp}
+            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
+          >
+            Tentang kopi yang bukan sekadar minuman, melainkan ritual penundaan— cara kita memberontak terhadap waktu. Tentang kerja yang memakan hari-hari kita, lalu kita bertanya: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya?</em> Tentang keheningan yang mengganggu, karena di dalamnya kita terpaksa berhadapan dengan diri sendiri.
+          </motion.p>
+        </motion.div>
+
+        {/* Your Original Quote */}
+        <motion.div
+          className={`my-16 pl-6 md:pl-8 border-l-2 ${colors.accentBorder}`}
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <blockquote 
+            className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.7]`}
+          >
+            &ldquo;Menulis adalah cara kita memberi makna pada kekosongan. Bukan untuk mengisinya, tetapi untuk mengenalinya. Seperti menatap ke dalam sumur yang gelap dan akhirnya melihat bayangan diri sendiri.&rdquo;
+          </blockquote>
+        </motion.div>
+
+        <motion.p 
+          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          Mungkin ini semua hanya monolog yang tak pernah dimaksudkan untuk didengar. Tapi jika kamu menemukan dirimu di sini, di antara kata-kata yang tercecer—selamat datang. Kita adalah orang-orang yang sama: yang mencari arti di tempat-tempat yang orang lain lewati begitu saja.
+        </motion.p>
+
+        {/* Divider */}
+        <motion.div 
+          className="flex items-center justify-center gap-4 py-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className={`h-px ${colors.divider} w-16 md:w-24`}></div>
+          <div className={`w-1.5 h-1.5 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#a16207]/40'} rotate-45`}></div>
+          <div className={`h-px ${colors.divider} w-16 md:w-24`}></div>
+        </motion.div>
+
+        {/* === BRIDGE: Why This Exists (Personal Layer) === */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="pt-8 pb-12"
+        >
+          <div className="text-center mb-12">
+            <span className={`text-[10px] tracking-[0.4em] uppercase ${colors.accentMuted}`}>
+              Tapi Mengapa Ini Ada?
+            </span>
+          </div>
+
+          <p className={`text-[17px] md:text-[19px] leading-[2] ${colors.textSecondary} font-light text-justify mb-8`}>
+            Semua tulisan di atas bukan sekadar filosofi yang gue angkat dari buku. Mereka datang dari <span className={colors.accent}>pengalaman hidup</span> — dari hari-hari di mana gue duduk sendirian di sudut kafe, menatap cangkir kopi yang tengah menghangat, dan bertanya dalam hati: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya gue bekerja sekeras ini?</em>
+          </p>
+
+          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-8`}>
+            Gue pernah berada di tempat kerja yang di atas kertas terlihat "sempurna" — gaji cukup, nama perusahaan terdengar bagus, posisi stabil. Tapi setiap pagi, gue harus memaksa diri sendiri untuk bangkit dari tempat tidur. Bukan karena malas. Karena ada sesuatu yang <span className={colors.accent}>salah</span>, tapi gue tidak bisa menjelaskan apa. Dan yang lebih buruk: gue tidak punya tempat untuk bercerita.
+          </p>
+
+          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}>
+            Gue butuh ruang yang <span className={colors.accent}>lambat</span>. Yang tidak menuntut jawaban instan. Yang memberi izin untuk tidak sempurna, untuk bingung, untuk merasa tanpa harus memahami. Website ini lahir dari kebutuhan itu — dan dari keyakinan bahwa gue tidak sendirian.
+          </p>
+        </motion.div>
+
+        {/* Personal Quote */}
+        <motion.div
+          className={`my-14 pl-6 md:pl-8 border-l-2 ${colors.accentBorder}`}
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.7]`}>
+            &ldquo;Gue bikin ini bukan karena gue sudah menemukan jawabannya. Gue bikin ini karena gue masih mencari — dan gue tahu ada orang lain di luar sana yang juga mencari.&rdquo;
+          </p>
+        </motion.div>
+
+        {/* Who Is This For */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-16"
+        >
+          <h3 className={`font-serif text-xl md:text-2xl ${colors.text} mb-8 text-center`}>
+            Ini Untuk Kamu Yang...
+          </h3>
+
+          <div className="space-y-4">
+            {[
+              {
+                title: "Merasa sendiri di tengah keramaian kantor",
+                desc: "Di sekitarmu ada puluhan rekan kerja, tapi tidak satu pun yang benar-benar mengerti apa yang kamu rasakan."
+              },
+              {
+                title: "Punya cerita tapi tidak tahu harus cerita ke siapa",
+                desc: "Takut dianggap lemah, takut dianggap tidak bersyukur, takut di-judge oleh orang yang tidak mengerti konteksnya."
+              },
+              {
+                title: "Sedang bertanya-tanya: ini salahku, atau memang tempatnya?",
+                desc: "Kebingungan yang valid. Gue pernah di sana, dan tidak ada yang salah dengan merasa bingung."
+              }
+            ].map((item, index) => (
+              <motion.div 
+                key={index}
+                className={`flex gap-4 p-5 ${isDark ? 'bg-[#1c1917]/30' : 'bg-[#f5f5f4]/70'} border-l-2 ${colors.accentBorder}`}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * index, duration: 0.5 }}
+                whileHover={{ x: 6, transition: { duration: 0.2 } }}
+              >
+                <span className={`${colors.accent} font-serif text-xl leading-none mt-0.5`}>0{index + 1}</span>
+                <div>
+                  <h4 className={`${colors.textSecondary} font-medium mb-1 text-[15px]`}>{item.title}</h4>
+                  <p className={`text-[14px] ${colors.textMuted} leading-relaxed`}>{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Positioning Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className={`p-6 md:p-8 ${colors.accentBgLight} border ${colors.accentBorder} text-center mb-16`}
+        >
+          <p className={`text-[15px] md:text-[16px] leading-[1.9] ${colors.textSecondary}`}>
+            Ini bukan platform review kerja profesional. Ini <span className={`${colors.accent} font-medium`}>tempat orang jujur tentang dunia kerja</span> — yang baik, yang buruk, yang membingungkan, yang membuat kita tumbuh, yang membuat kita hancur, dan semua nuansa di antaranya.
+          </p>
+        </motion.div>
+
+        {/* CTA Section - No Archive */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center py-12"
+        >
+          <div className={`h-px ${colors.divider} w-20 mx-auto mb-10`}></div>
+
+          <h3 className={`font-serif text-2xl md:text-3xl ${colors.text} mb-5`}>
+            Punya cerita yang perlu keluar?
+          </h3>
+          
+          <p className={`text-[15px] ${colors.textMuted} max-w-md mx-auto mb-8 leading-relaxed`}>
+            Tidak harus sempurna. Tidak harus panjang. Tidak harus punya pelajaran moral. Yang penting: <span className={colors.accent}>jujur</span>.
+          </p>
+
+          <Link href="/tulis">
+            <motion.button
+              className={`group relative px-8 py-4 ${colors.accentBg} ${colors.accentBorder} border overflow-hidden`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className={`relative z-10 text-[13px] tracking-[0.2em] uppercase ${colors.accent} font-medium transition-colors duration-300 group-hover:text-white`}>
+                Tulis Sekarang
+              </span>
+              <motion.div
+                className={`absolute inset-0 ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'}`}
+                initial={{ y: "100%" }}
+                whileHover={{ y: 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </motion.button>
+          </Link>
+
+          <p className={`mt-8 text-[12px] ${colors.subtleText} italic max-w-sm mx-auto leading-relaxed`}>
+            &ldquo;Tulisan yang paling jujur adalah yang ditulis tanpa penonton, hanya untuk meyakinkan diri sendiri bahwa kita pernah merasa.&rdquo;
+          </p>
+        </motion.div>
+
+        {/* Final Footer */}
+        <motion.div 
+          className="mt-20 text-center pb-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="flex items-center justify-center gap-3">
+            <div className={`h-px ${colors.accentBg} w-6`}></div>
+            <span className={`text-[9px] tracking-[0.4em] uppercase ${isDark ? 'text-[#44403c]' : 'text-[#d6d3d1]'}`}>
+              Ditulis perlahan, seperti menyeduh kopi di pagi yang belum yakin ingin dimulai
+            </span>
+            <div className={`h-px ${colors.accentBg} w-6`}></div>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }
