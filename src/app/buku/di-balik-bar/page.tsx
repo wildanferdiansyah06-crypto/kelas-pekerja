@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
+import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles, Phone } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DiBalikBarPage() {
@@ -188,7 +188,7 @@ export default function DiBalikBarPage() {
       {/* Main Content */}
       <main className={`relative max-w-3xl mx-auto px-6 md:px-12 ${fontSize === 'large' ? 'py-20 md:py-28' : 'py-16 md:py-24'}`}>
 
-        {/* Story Identity Badge - IDENTITAS CERITA */}
+        {/* Story Identity Badge */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -214,7 +214,7 @@ export default function DiBalikBarPage() {
               Di Balik <span className={`italic ${theme.accent} font-light`}>Bar</span>
             </h1>
             
-            {/* BRUTAL OPENING - NANGKEP LEHER */}
+            {/* BRUTAL OPENING */}
             <motion.div 
               variants={fadeInUp}
               className={`${theme.accentBg} ${theme.accentBorder} border-l-4 p-6 rounded-r-lg mb-6`}
@@ -233,7 +233,7 @@ export default function DiBalikBarPage() {
           </motion.div>
         </motion.header>
 
-        {/* Section: 11 P.M. - Expanded & Poetic */}
+        {/* Section: 11 P.M. */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className="flex items-center gap-3 mb-10">
             <Clock size={fontSize === 'large' ? 20 : 16} className={theme.accent} strokeWidth={1.5} />
@@ -272,7 +272,7 @@ export default function DiBalikBarPage() {
             </p>
           </motion.div>
 
-          {/* Highlight Moment - KOPI TUBRUK */}
+          {/* Highlight Moment */}
           <motion.div 
             variants={scaleIn}
             whileHover={{ scale: 1.02 }}
@@ -295,7 +295,7 @@ export default function DiBalikBarPage() {
           </motion.div>
         </motion.section>
 
-        {/* Section: Barista Rendahan - Deepened */}
+        {/* Section: Barista Rendahan */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Barista Rendahan</span>
@@ -348,7 +348,7 @@ export default function DiBalikBarPage() {
           </motion.div>
         </motion.section>
 
-        {/* Section: Terlihat, Sebentar - Expanded */}
+        {/* Section: Terlihat, Sebentar */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Terlihat, Sebentar</span>
@@ -388,19 +388,30 @@ export default function DiBalikBarPage() {
           </motion.p>
         </motion.section>
 
-        {/* Section: Rekaman - Deepened with Emotion */}
+        {/* Section: Suara dari Ruang Tamu - KOREKSI: LAGI CALL SAMA PACAR */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
-            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Rekaman</span>
+            <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Suara dari Ruang Tamu</span>
           </motion.div>
 
           <motion.div variants={staggerContainer} className="space-y-6 mb-10">
             <motion.p variants={fadeInUp} className={`${fontSizeClasses.body} font-light leading-relaxed`}>
-              Aku duduk di kamar setelah pulang kerja. Masih memakai kaos yang sama sejak pagi — sekarang bau campuran kopi, keringat, dan sedikit harapan yang terkikis. Kipas berputar pelan. Udara lembap. Segelas air di meja, tapi aku terlalu lelah untuk minum.
+              Aku di kamar sendirian. Sudah berganti pakaian — kaos kerja yang bau kopi dan keringat sekarang terlipat rapi di sudut. Kipas angin berputar pelan, tapi aku masih merasa panas. Bukan panas cuaca. Panas dari dalam.
             </motion.p>
 
+            {/* KONTEKS CALL */}
+            <motion.div variants={fadeInUp} className={`p-6 ${theme.accentBg} ${theme.accentBorder} border rounded-lg flex items-start gap-4`}>
+              <Phone size={24} className={`${theme.accent} flex-shrink-0 mt-1`} />
+              <div>
+                <p className={`${theme.textHeading} ${fontSizeClasses.body} font-medium mb-2`}>Lagi video call sama pacar</p>
+                <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
+                  Dia di rumahnya, aku di kosan. Kami bicara tentang hari ini, tentang capek, tentang rencana besok. Suasana biasa. Hangat. Sampai suara lain masuk dari speaker-nya.
+                </p>
+              </div>
+            </motion.div>
+
             <motion.p variants={fadeInUp} className={`${theme.textMuted} ${fontSizeClasses.body} italic leading-relaxed`}>
-              Ponselku menyala. Rekaman suara dari orang tua. Aku tidak ingat kapan terakhir kali mereka bertanya "bagaimana harimu?" dengan tulus. Biasanya hanya "sudah makan?" dan "jangan begadang."
+              Dari ujung telepon, suara ibunya terdengar. Mereka pikir aku tidak mendengar. Atau mungkin mereka pikir jarak akan meredam suara. Tapi malam itu sunyi, dan setiap kata masuk — jelas, tajam, menusuk.
             </motion.p>
           </motion.div>
 
@@ -413,42 +424,51 @@ export default function DiBalikBarPage() {
             />
             
             <div className="relative z-10 space-y-6">
-              <div className="space-y-3">
-                <p className={`${theme.textMuted} ${fontSizeClasses.small} uppercase tracking-widest`}>Suara orang tua itu terdengar tenang.</p>
-                <p className={`${theme.textMuted} ${fontSizeClasses.body}`}>Seperti sedang memberi nasihat biasa.</p>
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`w-3 h-3 rounded-full ${darkMode ? 'bg-red-700/60' : 'bg-red-400/60'} animate-pulse`} />
+                <p className={`${theme.textMuted} ${fontSizeClasses.small} uppercase tracking-widest`}>Suara ibu pacarku, dari ruang tamu, masuk ke speaker</p>
               </div>
               
               {/* HIGHLIGHT MOMENT - QUOTE BRUTAL */}
               <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
-                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan sampai kamu jadi seperti itu."
+                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan sampai dia jadi seperti itu, ya."
               </blockquote>
               
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
-                  Aku tidak marah. Aku sudah terlalu lelah untuk marah. Hanya... sedih. Sedih karena mereka tidak tahu betapa kerasnya aku bekerja untuk tetap menjadi versi terbaik dari diriku. 
+                  Aku membeku. Tangan yang sedang memegang ponsel bergetar perlahan. Bukan karena marah. Marah terlalu mewah untuk dirasakan saat itu. Yang kurasakan adalah <span className={`${theme.textHeading} font-medium`}>malu</span> — yang menusuk, yang membuat wajah terbakar, yang ingin membuatku menghilang dari muka bumi.
+                </p>
+                
+                {/* DINAMIKA PACAR DI TELEPON */}
+                <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
+                  Di layar, wajah pacarku berubah. Dia mendengar juga, tentu saja. Speaker-nya menyala. Suara ibunya masuk ke telingaku, juga ke telinganya. Dia menatapku, aku menatapnya. <span className={`${theme.textHeading} font-medium italic`}>Diam.</span>
+                </p>
+                
+                <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed pl-6 border-l-2 ${theme.borderLight}`}>
+                  Dia tidak menutup speaker. Dia tidak membela. Dia hanya... diam. Seolah-olah kata-kata itu tidak cukup penting untuk disanggah. Atau mungkin, di dalam hatinya, dia juga berpikir sama?
                 </p>
                 
                 {/* HIGHLIGHT MOMENT - BOLD */}
                 <p className={`${theme.textMuted} italic ${fontSizeClasses.body}`}>
-                  Sedih karena mereka melihat profesi ini dengan cara yang sama seperti orang-orang yang melewatku di café — <span className={`${theme.textHeading} font-medium not-italic`}>sebagai sesuatu yang rendah, yang tidak perlu dihormati.</span>
+                  Aku pikir, mungkin ini yang mereka lihat: <span className={`${theme.textHeading} font-medium not-italic`}>bukan seseorang yang bekerja keras, bukan seseorang yang mencoba bertahan, tapi hanya profesi yang rendah, yang tidak layak dihormati, yang harus diwaspadai — bahkan oleh orang yang katanya mencintaimu.</span>
                 </p>
               </div>
 
               <div className={`mt-8 pt-6 border-t ${theme.borderLight}`}>
                 <p className={`${theme.accent} ${fontSizeClasses.small} uppercase tracking-widest mb-2`}>Yang Ingin Kukatakan</p>
                 <p className={`${theme.textHeading} ${fontSizeClasses.body} italic`}>
-                  "Aku hanya membuat kopi, Bu. Aku hanya berusaha bertahan. Aku tidak menjadi apa-apa kecuali lelah."
+                  "Aku hanya membuat kopi, Bu. Aku hanya berusaha menjadi baik. Aku tidak menjadi apa-apa kecuali lelah."
                 </p>
               </div>
             </div>
           </motion.div>
 
           <motion.p variants={fadeInUp} className={`${theme.textMuted} ${fontSizeClasses.body} text-center italic leading-relaxed max-w-2xl mx-auto`}>
-            Tapi aku tidak mengirim balasan itu. Aku hanya mendengarkan rekaman itu lagi. Dan lagi. Sampai suaranya menjadi bagian dari keheningan malam.
+            Call itu berakhir cepat. Aku pura-pura sinyal jelek. Pura-pura tidak mendengar. Pura-pura tidak merasa. Tapi malam itu, aku benar-benar tidak bisa tidur. Bukan karena kata-kata ibunya. Tapi karena <span className={`${theme.textHeading} font-medium`}>diamnya dia.</span>
           </motion.p>
         </motion.section>
 
-        {/* New Section: Tengah Malam - Added Depth */}
+        {/* New Section: Tengah Malam */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Tengah Malam</span>
@@ -483,7 +503,7 @@ export default function DiBalikBarPage() {
           </motion.div>
         </motion.section>
 
-        {/* Section: Masih Berdiri - Climax dengan HIGHLIGHT */}
+        {/* Section: Masih Berdiri - Climax */}
         <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Masih Berdiri</span>
@@ -565,7 +585,7 @@ export default function DiBalikBarPage() {
           </div>
         </motion.section>
 
-        {/* CTA Section - GROWTH FATAL FIX */}
+        {/* CTA Section */}
         <motion.section
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -616,7 +636,7 @@ export default function DiBalikBarPage() {
           </div>
         </motion.section>
 
-        {/* Related Stories - DEAD END FIX */}
+        {/* Related Stories */}
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -652,7 +672,6 @@ export default function DiBalikBarPage() {
                     {story.excerpt}
                   </p>
                   
-                  {/* HIGHLIGHT di Card */}
                   <div className={`mt-auto pt-4 border-t ${theme.borderLight}`}>
                     <p className={`${theme.accent} text-xs italic leading-relaxed`}>
                       "{story.highlight}"
