@@ -1269,7 +1269,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* === LANJUT BACA: PENGALAMAN NYATA === */}
+                        {/* === LANJUT BACA: PENGALAMAN NYATA === */}
             <motion.section
               initial={prefersReducedMotion ? {} : { opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1292,19 +1292,19 @@ export default function CoffeeBookPage() {
                     { 
                       title: "Di Balik Bar", 
                       desc: "Capek yang tidak terlihat, senyum yang dipaksakan, dan kebanggaan kecil yang tidak ada yang lihat.",
-                      link: "/cerita/di-balik-bar",
+                      link: "/buku/di-balik-bar",  // ✅ FIX: dari /cerita/ ke /buku/
                       highlight: "Capeknya bukan di tangan. Capeknya di kepala."
                     },
                     { 
                       title: "Di Ujung Shift", 
                       desc: "Jam-jam terakhir ketika kaki sudah tidak merasa, tapi senyum harus tetap ada.",
-                      link: "/cerita/di-ujung-shift",
+                      link: "/cerita/di-ujung-shift",  // ✅ SUDAH BENAR
                       highlight: "Delapan jam berdiri. Delapan jam tersenyum."
                     },
                     { 
                       title: "Racikan Pertama", 
                       desc: "Ketika kopi pertama yang lo buat bukan untuk pelanggan, tapi untuk nenek yang tidak pernah datang lagi.",
-                      link: "/cerita/racikan-pertama",
+                      link: "/cerita/racikan-pertama",  // ✅ SUDAH BENAR
                       highlight: "Setiap racikan adalah doa yang tidak kita sadari."
                     }
                   ].map((story, idx) => (
