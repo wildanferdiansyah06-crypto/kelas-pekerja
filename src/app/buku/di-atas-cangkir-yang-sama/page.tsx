@@ -16,11 +16,10 @@ export default function CoffeeBookPage() {
   const [readingProgress, setReadingProgress] = useState(0);
   const [completedChapters, setCompletedChapters] = useState<number[]>([]);
   
-  // ✅ FIX: Pindahin useScroll dan useTransform ke ATAS sebelum kondisi apapun
+  // FIX: Hooks di top level
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Optimasi: Reduced motion check
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,19 +47,18 @@ export default function CoffeeBookPage() {
         const rect = chapter.getBoundingClientRect();
         const chapterNum = Number(chapter.getAttribute('data-chapter'));
         
-        // Mark as completed if scrolled past
         if (rect.top < window.innerHeight * 0.5) {
           newlyCompleted.push(chapterNum);
         }
         
-        // Set active chapter
         if (rect.top <= 100 && rect.bottom >= 100) {
           currentChapter = chapterNum;
         }
       });
       
       setActiveChapter(currentChapter);
-      setCompletedChapters(prev => [...new Set([...prev, ...newlyCompleted])]);
+      // ✅ FIX: Gunakan Array.from() untuk convert Set ke array
+      setCompletedChapters(prev => Array.from(new Set([...prev, ...newlyCompleted])));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -71,7 +69,6 @@ export default function CoffeeBookPage() {
     };
   }, [mounted]);
 
-  // ✅ FIX: Pindahin semua hooks sebelum early return ini!
   if (!mounted) return null;
 
   const darkMode = globalTheme === 'dark';
@@ -108,7 +105,6 @@ export default function CoffeeBookPage() {
     float: 'bg-white/90'
   };
 
-  // DAFTAR BAB YANG SUDAH DIOPTIMALKASI - 12 bab utama
   const chapters = [
     { num: 1, title: "Coffee Species", subtitle: "Arabica vs Robusta, Genus Coffea" },
     { num: 2, title: "Coffee Processing", subtitle: "Washed, Natural, Honey, Fermentasi" },
@@ -141,7 +137,6 @@ export default function CoffeeBookPage() {
     }
   };
 
-  // Cek apakah bab sudah selesai dibaca
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
@@ -164,7 +159,6 @@ export default function CoffeeBookPage() {
             exit={prefersReducedMotion ? { opacity: 0 } : { x: -100, opacity: 0 }}
             className={`fixed bottom-6 left-6 z-40 flex flex-col gap-3`}
           >
-            {/* Main Menu Button */}
             <motion.button
               whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
               whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
@@ -181,7 +175,6 @@ export default function CoffeeBookPage() {
               </div>
             </motion.button>
 
-            {/* Secondary Actions */}
             <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
               <motion.button
                 whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
@@ -351,7 +344,6 @@ export default function CoffeeBookPage() {
                   A Serious Guide
                 </motion.p>
                 
-                {/* HUMAN TOUCH - Quote Personal */}
                 <motion.p 
                   initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -361,7 +353,6 @@ export default function CoffeeBookPage() {
                   "Gue dulu mikir kopi cuma pahit. Sampai akhirnya ngerti — setiap cangkir punya cerita, dan setiap cerita punya makna."
                 </motion.p>
 
-                {/* TAGLINE EMOSIONAL */}
                 <motion.p 
                   initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1087,7 +1078,7 @@ export default function CoffeeBookPage() {
                 </div>
               </div>
             </motion.section>
-
+            
                         {/* === BAB 10: MILK SCIENCE (LANJUTAN) === */}
             <motion.section 
               id="bab-10"
