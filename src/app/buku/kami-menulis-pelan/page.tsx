@@ -19,7 +19,7 @@ export default function KamiMenulisPelanPage() {
   const sections = [
     { id: 'pembuka', title: 'Pembuka' },
     { id: 'sisa', title: 'Menulis dari Sisa' },
-    { id: 'berhenti', title: 'Titik Berhenti' }, // ✅ Bagian baru: konflik/klimaks
+    { id: 'berhenti', title: 'Titik Berhenti' },
     { id: 'dekat', title: 'Yang Terdekat' },
     { id: 'dunia', title: 'Dunia yang Lewat' },
     { id: 'menulis', title: 'Mengapa Menulis' },
@@ -103,8 +103,13 @@ export default function KamiMenulisPelanPage() {
 
   const darkMode = globalTheme === 'dark';
 
+  // ✅ THEME COLORS dengan depth
   const theme = {
-    bg: darkMode ? "bg-[#0a0908]" : "bg-[#fafaf9]",
+    // Background dengan gradient depth
+    bg: darkMode ? "bg-[#0c0b0a]" : "bg-[#fafaf9]",
+    bgGradient: darkMode 
+      ? "bg-gradient-to-b from-[#0a0908] via-[#11100f] to-[#0a0908]" 
+      : "bg-gradient-to-b from-[#fafaf9] via-[#f5f5f4] to-[#fafaf9]",
     text: darkMode ? "text-[#e7e5e4]" : "text-[#1c1917]",
     textMuted: darkMode ? "text-[#a8a29e]" : "text-[#78716c]",
     textSecondary: darkMode ? "text-[#d6d3d1]" : "text-[#57534e]",
@@ -117,10 +122,14 @@ export default function KamiMenulisPelanPage() {
     divider: darkMode ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
     subtleText: darkMode ? "text-[#57534e]" : "text-[#a8a29e]",
     emptyState: darkMode ? "text-[#44403c]" : "text-[#d6d3d1]",
-    noise: darkMode ? "opacity-[0.03]" : "opacity-[0.02]",
+    noise: darkMode ? "opacity-[0.04]" : "opacity-[0.02]",
     particle: darkMode ? "bg-[#8b7355]/30" : "bg-[#a16207]/20",
-    popup: darkMode ? "bg-[#141210] border-[#8b7355]/20" : "bg-white border-[#a16207]/20",
-    popupHover: darkMode ? "hover:bg-[#1c1917]" : "hover:bg-stone-50"
+    popup: darkMode ? "bg-[#141210]/90 border-[#8b7355]/20" : "bg-white/90 border-[#a16207]/20",
+    popupHover: darkMode ? "hover:bg-[#1c1917]/80" : "hover:bg-stone-50/80",
+    // ✅ Radial glow untuk fokus
+    radialGlow: darkMode 
+      ? "radial-gradient(circle at 50% 0%, rgba(139, 115, 85, 0.08), transparent 50%)" 
+      : "radial-gradient(circle at 50% 0%, rgba(161, 98, 7, 0.06), transparent 50%)"
   };
 
   const title = "Kami Menulis Pelan";
@@ -162,13 +171,53 @@ export default function KamiMenulisPelanPage() {
   return (
     <div ref={mainRef} className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
       
-      {/* Noise Texture */}
-      <div className={`absolute inset-0 ${theme.noise} pointer-events-none`} style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+      {/* ✅ BACKGROUND LAYERS - Depth System */}
+      
+      {/* Layer 1: Base Gradient */}
+      <div className={`absolute inset-0 ${theme.bgGradient} pointer-events-none`} />
+      
+      {/* Layer 2: Radial Glow (fokus ke hero) */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-1000"
+        style={{ 
+          background: theme.radialGlow,
+          opacity: Math.max(0, 1 - scrollY / 800) // Fade out saat scroll
+        }} 
+      />
+      
+      {/* Layer 3: Section-based depth (subtle zones) */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Zone untuk section klimaks (Titik Berhenti) - sedikit lebih terang */}
+        <div 
+          className={`absolute w-full h-[800px] transition-opacity duration-1000 ${darkMode ? 'bg-[#8b7355]/[0.02]' : 'bg-[#a16207]/[0.015]'}`}
+          style={{ 
+            top: '1800px',
+            opacity: scrollY > 1500 && scrollY < 2800 ? 1 : 0 
+          }}
+        />
+      </div>
+
+      {/* Layer 4: Noise Texture (grain) */}
+      <div className={`absolute inset-0 ${theme.noise} pointer-events-none mix-blend-overlay`} style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        backgroundSize: '200px 200px'
       }} />
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 pointer-events-none" style={{ transform: `translateY(${backgroundOffset}px)` }}>
+      {/* Layer 5: Vignette (gelap di pinggir) */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-[1]"
+        style={{
+          background: darkMode 
+            ? 'radial-gradient(circle at center, transparent 0%, rgba(10, 9, 8, 0.4) 100%)' 
+            : 'radial-gradient(circle at center, transparent 0%, rgba(250, 250, 249, 0.3) 100%)',
+          boxShadow: darkMode 
+            ? 'inset 0 0 150px rgba(0,0,0,0.5)' 
+            : 'inset 0 0 150px rgba(0,0,0,0.03)'
+        }}
+      />
+
+      {/* Floating Particles dengan depth */}
+      <div className="absolute inset-0 pointer-events-none z-[2]" style={{ transform: `translateY(${backgroundOffset}px)` }}>
         {[0, 1, 2, 3, 4, 5, 6].map((i) => (
           <div
             key={i}
@@ -177,23 +226,32 @@ export default function KamiMenulisPelanPage() {
               left: `${10 + i * 14}%`,
               top: `${15 + (i % 4) * 22}%`,
               animationDelay: `${i * 0.7}s`,
-              animationDuration: `${7 + i * 0.6}s`
+              animationDuration: `${7 + i * 0.6}s`,
+              opacity: 0.3 + (i % 3) * 0.2 // Varied opacity untuk depth
             }}
           />
         ))}
       </div>
 
-      {/* Progress Bar */}
+      {/* Progress Bar dengan glow */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#1c1917]' : 'bg-[#e7e5e4]'}`}>
         <div 
-          className={`h-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} transition-all duration-300`} 
-          style={{ width: `${Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)}%` }}
+          className={`h-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]} transition-all duration-300 relative`}
+          style={{ 
+            width: `${Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)}%`,
+            boxShadow: darkMode ? '0 0 10px rgba(139, 115, 85, 0.5)' : 'none'
+          }} 
         />
       </div>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION dengan depth */}
       <section id="pembuka" className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12">
-        <div className="max-w-3xl mx-auto text-center animate-fade-in">
+        {/* Subtle glow di belakang title */}
+        <div 
+          className={`absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000 ${darkMode ? 'bg-[#8b7355]/10' : 'bg-[#a16207]/8'}`}
+        />
+        
+        <div className="max-w-3xl mx-auto text-center animate-fade-in relative z-10">
           
           {/* Label Suasana */}
           <div className="flex items-center justify-center gap-2 mb-6">
@@ -210,13 +268,13 @@ export default function KamiMenulisPelanPage() {
             </span>
           </div>
 
-          {/* Top Line */}
+          {/* Top Line dengan glow */}
           <div className="flex items-center justify-center gap-4 mb-8">
-            <div className={`h-px ${darkMode ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 animate-expand`} />
+            <div className={`h-px ${darkMode ? 'bg-gradient-to-r from-transparent via-[#8b7355]/40 to-transparent' : 'bg-gradient-to-r from-transparent via-[#a16207]/40 to-transparent'} w-16 animate-expand`} />
             <span className={`text-[10px] tracking-[0.5em] uppercase ${theme.accentMuted} animate-fade-in-delayed`}>
               Arsip Pribadi
             </span>
-            <div className={`h-px ${darkMode ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 animate-expand`} />
+            <div className={`h-px ${darkMode ? 'bg-gradient-to-r from-transparent via-[#8b7355]/40 to-transparent' : 'bg-gradient-to-r from-transparent via-[#a16207]/40 to-transparent'} w-16 animate-expand`} />
           </div>
 
           {/* Subtitle */}
@@ -224,9 +282,14 @@ export default function KamiMenulisPelanPage() {
             sebuah pengakuan
           </p>
 
-          {/* Main Title */}
+          {/* Main Title dengan text shadow untuk depth */}
           <div className="overflow-hidden mb-8">
-            <h1 className={`font-serif text-4xl md:text-6xl lg:text-7xl ${theme.text} flex justify-center flex-wrap`}>
+            <h1 
+              className={`font-serif text-4xl md:text-6xl lg:text-7xl ${theme.text} flex justify-center flex-wrap`}
+              style={{
+                textShadow: darkMode ? '0 2px 20px rgba(139, 115, 85, 0.15)' : 'none'
+              }}
+            >
               {letters.map((letter, i) => (
                 <span
                   key={i}
@@ -247,11 +310,18 @@ export default function KamiMenulisPelanPage() {
             </p>
           </div>
 
-          {/* ✅ KALIMAT NUSUK #1 - Pembuka luka */}
+          {/* Kalimat Nusuk dengan backdrop blur */}
           <div className="mt-12 max-w-xl mx-auto animate-fade-in-delayed-2">
-            <div className={`p-6 ${theme.accentBg} ${theme.accentBorder} border-l-4 border-l-${darkMode ? '[#8b7355]' : '[#a16207]'} relative`}>
-              <span className={`absolute -top-3 -left-2 text-4xl ${theme.accent} opacity-30`}>❝</span>
-              <p className={`text-lg md:text-xl leading-[1.8] ${theme.text} font-serif italic text-left pl-4`}>
+            <div 
+              className={`p-6 ${theme.accentBg} ${theme.accentBorder} border-l-4 backdrop-blur-sm relative overflow-hidden`}
+              style={{
+                borderLeftColor: darkMode ? 'rgba(139, 115, 85, 0.6)' : 'rgba(161, 98, 7, 0.6)'
+              }}
+            >
+              {/* Subtle inner glow */}
+              <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-r from-[#8b7355]/5 to-transparent' : 'bg-gradient-to-r from-[#a16207]/5 to-transparent'}`} />
+              <span className={`absolute -top-3 -left-2 text-4xl ${theme.accent} opacity-20`}>❝</span>
+              <p className={`text-lg md:text-xl leading-[1.8] ${theme.text} font-serif italic text-left pl-4 relative z-10`}>
                 Kadang kita berhenti nulis… bukan karena gak punya kata.
                 <br/>
                 <span className={theme.accent}>Tapi karena takut gak ada yang peduli.</span>
@@ -261,7 +331,7 @@ export default function KamiMenulisPelanPage() {
 
           {/* Scroll Indicator */}
           <div className="mt-16 animate-bounce-slow">
-            <div className={`w-6 h-10 rounded-full border-2 ${theme.accentBorder} flex justify-center pt-2 mx-auto`}>
+            <div className={`w-6 h-10 rounded-full border-2 ${theme.accentBorder} flex justify-center pt-2 mx-auto backdrop-blur-sm`}>
               <div className={`w-1 h-2 rounded-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} animate-scroll-down`} />
             </div>
           </div>
@@ -295,6 +365,7 @@ export default function KamiMenulisPelanPage() {
               Kelas pekerja menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak. Sisa waktu yang tidak dimiliki siapa-siapa. Sisa pikiran yang belum habis dipakai bekerja. Kami menulis bukan karena yakin, tapi karena diam-diam tahu: kalau tidak ditulis, hari ini akan hilang.
             </p>
 
+            {/* Cards dengan hover depth */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-14">
               {[
                 { id: 'sisa-card-1', title: 'Sisa tenaga.', desc: 'Yang tidak cukup untuk tidur nyenyak' },
@@ -305,8 +376,11 @@ export default function KamiMenulisPelanPage() {
                   key={item.id}
                   data-reveal={item.id}
                   id={item.id}
-                  className={`p-6 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 hover:${theme.accentBgHeavy} ${isVisible(item.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                  style={{ transitionDelay: `${i * 150}ms` }}
+                  className={`p-6 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-500 hover:${theme.accentBgHeavy} hover:scale-[1.02] hover:shadow-lg ${isVisible(item.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                  style={{ 
+                    transitionDelay: `${i * 150}ms`,
+                    boxShadow: darkMode ? '0 4px 20px rgba(0,0,0,0.3)' : '0 4px 20px rgba(0,0,0,0.05)'
+                  }}
                 >
                   <p className={`font-serif italic ${theme.accent} text-lg mb-2`}>{item.title}</p>
                   <p className={`text-xs ${theme.textMuted}`}>{item.desc}</p>
@@ -320,8 +394,11 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* ✅ SECTION BARU: Titik Berhenti (Klimaks) */}
-        <section id="berhenti" className="mb-24 scroll-mt-24">
+        {/* Section: Titik Berhenti (Klimaks) - dengan background zone */}
+        <section id="berhenti" className="mb-24 scroll-mt-24 relative">
+          {/* Subtle zone indicator */}
+          <div className={`absolute -inset-x-8 -inset-y-4 ${darkMode ? 'bg-[#8b7355]/[0.02]' : 'bg-[#a16207]/[0.015]'} rounded-2xl -z-10`} />
+          
           <div data-reveal="berhenti-header" id="berhenti-header" className={`flex items-center gap-4 mb-12 pb-4 border-b ${theme.accentBorder} transition-all duration-1000 ${isVisible('berhenti-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className={`text-5xl font-serif ${theme.accentLight}`}>02</span>
             <div>
@@ -331,8 +408,17 @@ export default function KamiMenulisPelanPage() {
           </div>
 
           <div className="space-y-8">
-            {/* ✅ KALIMAT NUSUK #2 - Inti konflik */}
-            <div data-reveal="berhenti-punch" id="berhenti-punch" className={`my-16 py-12 px-8 ${darkMode ? 'bg-[#1a1816]' : 'bg-[#f5f5f4]'} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('berhenti-punch') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            {/* Punchline dengan depth */}
+            <div 
+              data-reveal="berhenti-punch" 
+              id="berhenti-punch" 
+              className={`my-16 py-12 px-8 ${darkMode ? 'bg-[#141210]' : 'bg-white'} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('berhenti-punch') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              style={{
+                boxShadow: darkMode 
+                  ? '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(139, 115, 85, 0.1)' 
+                  : '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(161, 98, 7, 0.1)'
+              }}
+            >
               <p className={`font-serif text-2xl md:text-3xl ${theme.text} italic leading-[1.8] text-center mb-6`}>
                 "Kita berhenti bukan karena lelah menulis."
               </p>
@@ -350,8 +436,16 @@ export default function KamiMenulisPelanPage() {
               Titik berhenti bukan saat pena kering. Titik berhenti adalah saat kita mulai menghitung: berapa lama lagi sampai ada yang peduli? Dan jawabannya terlalu sering: mungkin tidak pernah.
             </p>
 
-            {/* Quote yang menusuk */}
-            <div data-reveal="berhenti-quote" id="berhenti-quote" className={`my-16 pl-8 border-l-4 ${darkMode ? 'border-[#8b7355]' : 'border-[#a16207]'} transition-all duration-1000 ${isVisible('berhenti-quote') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+            {/* Quote dengan border glow */}
+            <div 
+              data-reveal="berhenti-quote" 
+              id="berhenti-quote" 
+              className={`my-16 pl-8 border-l-4 transition-all duration-1000 ${isVisible('berhenti-quote') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+              style={{
+                borderLeftColor: darkMode ? 'rgba(139, 115, 85, 0.5)' : 'rgba(161, 98, 7, 0.5)',
+                boxShadow: darkMode ? '-4px 0 20px rgba(139, 115, 85, 0.1)' : 'none'
+              }}
+            >
               <blockquote className={`font-serif text-xl md:text-2xl ${theme.text} leading-[1.7] italic`}>
                 &ldquo;Paling sakit bukan saat tulisan gak dibaca.
                 <br/>
@@ -380,7 +474,16 @@ export default function KamiMenulisPelanPage() {
               Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan. Buku itu ada di sana, berbulan-bulan. Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan.
             </p>
 
-            <div data-reveal="dekat-poetic" id="dekat-poetic" className={`my-16 py-12 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dekat-poetic') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            <div 
+              data-reveal="dekat-poetic" 
+              id="dekat-poetic" 
+              className={`my-16 py-12 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dekat-poetic') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              style={{
+                background: darkMode 
+                  ? 'linear-gradient(135deg, rgba(139, 115, 85, 0.08) 0%, rgba(139, 115, 85, 0.02) 100%)' 
+                  : 'linear-gradient(135deg, rgba(161, 98, 7, 0.06) 0%, rgba(161, 98, 7, 0.02) 100%)'
+              }}
+            >
               <p className={`font-serif text-2xl md:text-3xl ${theme.textSecondary} italic leading-[1.8]`}>
                 Kadang, yang paling sunyi bukan tidak dibaca, tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
               </p>
@@ -407,8 +510,17 @@ export default function KamiMenulisPelanPage() {
               Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
             </p>
 
-            {/* ✅ KALIMAT DIBAWA PULANG #1 */}
-            <div data-reveal="dunia-highlight" id="dunia-highlight" className={`my-12 py-8 px-6 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dunia-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            {/* Highlight dengan depth */}
+            <div 
+              data-reveal="dunia-highlight" 
+              id="dunia-highlight" 
+              className={`my-12 py-8 px-6 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dunia-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              style={{
+                boxShadow: darkMode 
+                  ? 'inset 0 1px 0 rgba(139, 115, 85, 0.2), 0 4px 20px rgba(0,0,0,0.2)' 
+                  : 'inset 0 1px 0 rgba(161, 98, 7, 0.2), 0 4px 20px rgba(0,0,0,0.05)'
+              }}
+            >
               <p className={`font-serif text-2xl md:text-3xl ${theme.text} font-medium leading-[1.6]`}>
                 "Menulis pelan itu gak masalah.
                 <br/>
@@ -436,7 +548,16 @@ export default function KamiMenulisPelanPage() {
             </div>
           </div>
 
-          <div data-reveal="menulis-highlight" id="menulis-highlight" className={`mb-12 p-8 md:p-10 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('menulis-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div 
+            data-reveal="menulis-highlight" 
+            id="menulis-highlight" 
+            className={`mb-12 p-8 md:p-10 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('menulis-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+            style={{
+              background: darkMode 
+                ? 'linear-gradient(to bottom, rgba(139, 115, 85, 0.1), rgba(139, 115, 85, 0.05))' 
+                : 'linear-gradient(to bottom, rgba(161, 98, 7, 0.08), rgba(161, 98, 7, 0.04))'
+            }}
+          >
             <p className={`text-lg md:text-xl leading-[2] ${theme.text} font-light text-center italic`}>
               Aku tetap menulis bukan karena yakin akan dibaca. Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi.
             </p>
@@ -447,9 +568,16 @@ export default function KamiMenulisPelanPage() {
               Ada yang menulis untuk mengubah dunia. Ada yang menulis untuk mengubah orang. Aku menulis untuk mengubah satu hal saja: kesadaran diri sendiri bahwa aku masih hidup.
             </p>
 
-            {/* ✅ KALIMAT DIBAWA PULANG #2 */}
+            {/* Quote dengan depth */}
             <div data-reveal="menulis-quote" id="menulis-quote" className={`my-16 text-center transition-all duration-1000 ${isVisible('menulis-quote') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <div className={`inline-block p-8 ${theme.accentBg} ${theme.accentBorder} border`}>
+              <div 
+                className={`inline-block p-8 ${theme.accentBg} ${theme.accentBorder} border`}
+                style={{
+                  boxShadow: darkMode 
+                    ? '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(139, 115, 85, 0.2)' 
+                    : '0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(161, 98, 7, 0.2)'
+                }}
+              >
                 <p className={`font-serif text-2xl md:text-3xl ${theme.accent} italic leading-[1.7]`}>
                   &ldquo;Gak semua tulisan harus cepat.
                   <br/>
@@ -487,8 +615,20 @@ export default function KamiMenulisPelanPage() {
               Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, dalam keadaan tidak yakin akan apa-apa—itu sudah cukup.
             </p>
 
-            {/* ✅ ENDING YANG NEMPEL */}
-            <div data-reveal="penutup-final" id="penutup-final" className={`py-16 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('penutup-final') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            {/* Final dengan depth */}
+            <div 
+              data-reveal="penutup-final" 
+              id="penutup-final" 
+              className={`py-16 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('penutup-final') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              style={{
+                background: darkMode 
+                  ? 'linear-gradient(135deg, rgba(139, 115, 85, 0.12) 0%, rgba(139, 115, 85, 0.04) 100%)' 
+                  : 'linear-gradient(135deg, rgba(161, 98, 7, 0.1) 0%, rgba(161, 98, 7, 0.04) 100%)',
+                boxShadow: darkMode 
+                  ? '0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(139, 115, 85, 0.3)' 
+                  : '0 8px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(161, 98, 7, 0.3)'
+              }}
+            >
               <p className={`font-serif text-2xl md:text-3xl ${theme.text} italic leading-[1.6] mb-6`}>
                 "Kalau hari ini lo cuma bisa nulis satu kalimat…
                 <br/>
@@ -514,8 +654,8 @@ export default function KamiMenulisPelanPage() {
           <div className={`w-20 h-px ${theme.divider} mx-auto mt-10`} />
         </section>
 
-        {/* ✅ EMOTIONAL LOOP - Tulisan Lain */}
-        <section className="mt-32 mb-24">
+        {/* Related Articles */}
+                <section className="mt-32 mb-24">
           <div data-reveal="lain-header" id="lain-header" className={`mb-12 transition-all duration-1000 ${isVisible('lain-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">🌿</span>
@@ -534,10 +674,23 @@ export default function KamiMenulisPelanPage() {
                 onMouseEnter={() => setHoveredCard(i)}
                 onMouseLeave={() => setHoveredCard(null)}
                 className={`group flex items-center gap-6 p-6 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-500 hover:${theme.accentBgHeavy} relative overflow-hidden`}
+                style={{
+                  boxShadow: darkMode 
+                    ? '0 4px 20px rgba(0,0,0,0.2)' 
+                    : '0 4px 20px rgba(0,0,0,0.05)'
+                }}
               >
-                <div className={`absolute left-0 top-0 bottom-0 w-1 ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} transition-all duration-500 ${hoveredCard === i ? 'opacity-100' : 'opacity-0'}`} />
+                <div 
+                  className={`absolute left-0 top-0 bottom-0 w-1 transition-all duration-500 ${hoveredCard === i ? 'opacity-100' : 'opacity-0'}`}
+                  style={{ backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.6)' : 'rgba(161, 98, 7, 0.6)' }}
+                />
                 
-                <span className={`text-4xl font-serif ${theme.accentLight} transition-all duration-300 ${hoveredCard === i ? 'scale-110 ' + theme.accent : ''}`}>
+                <span 
+                  className={`text-4xl font-serif ${theme.accentLight} transition-all duration-300 ${hoveredCard === i ? 'scale-110 ' + theme.accent : ''}`}
+                  style={{
+                    textShadow: hoveredCard === i && darkMode ? '0 0 20px rgba(139, 115, 85, 0.3)' : 'none'
+                  }}
+                >
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 
@@ -546,7 +699,9 @@ export default function KamiMenulisPelanPage() {
                     <h4 className={`font-serif text-xl ${theme.text} group-hover:${theme.accent} transition-colors duration-300`}>
                       {article.title}
                     </h4>
-                    <span className={`text-[10px] px-2 py-1 rounded-full ${theme.accentBg} ${theme.accent} uppercase tracking-wider`}>
+                    <span 
+                      className={`text-[10px] px-2 py-1 rounded-full uppercase tracking-wider transition-all duration-300 ${hoveredCard === i ? theme.accentBg + ' ' + theme.accent : theme.accentBg + ' ' + theme.accentMuted}`}
+                    >
                       {article.mood}
                     </span>
                   </div>
@@ -575,15 +730,32 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* ✅ CTA FINAL - Trigger Menulis */}
+        {/* CTA FINAL - Trigger Menulis dengan depth */}
         <section data-reveal="cta-section" id="cta-section" className={`mb-32 transition-all duration-1000 ${isVisible('cta-section') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="flex items-center justify-center gap-4 mb-12">
             <div className={`h-px ${theme.divider} w-24`} />
-            <div className={`w-2 h-2 rounded-full ${theme.accentBgHeavy} ${theme.accentBorder} border`} />
+            <div 
+              className={`w-2 h-2 rounded-full ${theme.accentBorder} border transition-all duration-500`}
+              style={{
+                backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.3)' : 'rgba(161, 98, 7, 0.3)',
+                boxShadow: darkMode ? '0 0 10px rgba(139, 115, 85, 0.3)' : 'none'
+              }}
+            />
             <div className={`h-px ${theme.divider} w-24`} />
           </div>
 
-          <div className={`relative p-8 md:p-12 ${theme.accentBg} ${theme.accentBorder} border`}>
+          <div 
+            className={`relative p-8 md:p-12 ${theme.accentBg} ${theme.accentBorder} border`}
+            style={{
+              background: darkMode 
+                ? 'linear-gradient(135deg, rgba(20, 18, 16, 0.8) 0%, rgba(28, 25, 23, 0.6) 100%)' 
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 250, 249, 0.8) 100%)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: darkMode 
+                ? '0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(139, 115, 85, 0.2)' 
+                : '0 8px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(161, 98, 7, 0.2)'
+            }}
+          >
             <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 ${theme.accentBorder}`} />
             <div className={`absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 ${theme.accentBorder}`} />
             <div className={`absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 ${theme.accentBorder}`} />
@@ -608,11 +780,26 @@ export default function KamiMenulisPelanPage() {
 
               <a 
                 href="/tulis"
-                className={`inline-flex items-center gap-3 px-8 py-4 ${darkMode ? 'bg-[#8b7355] hover:bg-[#9a8264]' : 'bg-[#a16207] hover:bg-[#b87309]'} text-white font-medium rounded-none transition-all duration-500 hover:scale-105 shadow-lg group`}
+                className={`inline-flex items-center gap-3 px-8 py-4 transition-all duration-500 hover:scale-105 group relative overflow-hidden`}
+                style={{
+                  backgroundColor: darkMode ? '#8b7355' : '#a16207',
+                  boxShadow: darkMode 
+                    ? '0 4px 20px rgba(139, 115, 85, 0.3), 0 8px 30px rgba(0,0,0,0.3)' 
+                    : '0 4px 20px rgba(161, 98, 7, 0.2), 0 8px 30px rgba(0,0,0,0.1)'
+                }}
               >
-                <span>Mulai Nulis</span>
+                {/* Hover glow effect */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: darkMode 
+                      ? 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)' 
+                      : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)'
+                  }}
+                />
+                <span className="relative z-10 text-white font-medium">Mulai Nulis</span>
                 <svg 
-                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                  className="w-4 h-4 text-white relative z-10 transition-transform duration-300 group-hover:translate-x-1" 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -636,7 +823,7 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* Quote Footer */}
+        {/* Quote Footer dengan depth */}
         <div data-reveal="footer-quote" id="footer-quote" className={`mt-32 text-center transition-all duration-1000 ${isVisible('footer-quote') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className={`w-16 h-px ${theme.divider} mx-auto mb-10 animate-expand`} />
           <p className={`font-serif italic text-lg md:text-xl ${theme.accentMuted} max-w-2xl mx-auto leading-[1.9] mb-6`}>
@@ -647,9 +834,19 @@ export default function KamiMenulisPelanPage() {
           </p>
         </div>
 
-        {/* Final Footer */}
+        {/* Final Footer dengan depth */}
         <div data-reveal="footer-final" id="footer-final" className={`mt-32 text-center pb-24 transition-all duration-1000 ${isVisible('footer-final') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <p className={`font-serif italic ${theme.accentMuted} text-sm md:text-base leading-[1.8] animate-pulse`}>
+          {/* Subtle glow di belakang footer text */}
+          <div 
+            className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full blur-[100px] pointer-events-none -z-10 ${darkMode ? 'bg-[#8b7355]/5' : 'bg-[#a16207]/5'}`}
+          />
+          
+          <p 
+            className={`font-serif italic ${theme.accentMuted} text-sm md:text-base leading-[1.8] animate-pulse`}
+            style={{
+              textShadow: darkMode ? '0 2px 10px rgba(139, 115, 85, 0.1)' : 'none'
+            }}
+          >
             Ditulis setelah kerja selesai,<br />
             di malam yang tidak yakin ingin dihabiskan,<br />
             oleh tubuh yang ingin rebah tapi masih memaksa duduk.
@@ -667,30 +864,53 @@ export default function KamiMenulisPelanPage() {
         </div>
       </div>
 
-      {/* Navigation Popup */}
+      {/* Navigation Popup dengan depth */}
       <div className="fixed bottom-6 left-6 z-50">
         <button
           onClick={() => setShowGooglePopup(!showGooglePopup)}
-          className={`flex items-center gap-3 px-5 py-3 rounded-full ${theme.popup} border shadow-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105`}
+          className={`flex items-center gap-3 px-5 py-3 rounded-full border shadow-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105`}
+          style={{
+            backgroundColor: darkMode ? 'rgba(20, 18, 16, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+            borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)',
+            boxShadow: darkMode 
+              ? '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(139, 115, 85, 0.1)' 
+              : '0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(161, 98, 7, 0.1)'
+          }}
         >
-          <div className={`w-8 h-8 rounded-full ${theme.accentBg} flex items-center justify-center`}>
+          <div 
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300`}
+            style={{ backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.15)' : 'rgba(161, 98, 7, 0.15)' }}
+          >
             <svg className={`w-4 h-4 ${theme.accent}`} viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
             </svg>
           </div>
           <span className={`text-sm font-medium ${theme.text}`}>Menu</span>
-          <div className={`w-5 h-5 rounded-full ${theme.accentBg} flex items-center justify-center text-[10px] ${theme.accent} font-bold`}>
+          <div 
+            className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${theme.accent}`}
+            style={{ backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}
+          >
             {activeSection + 1}
           </div>
         </button>
 
         {showGooglePopup && (
-          <div className={`absolute bottom-full left-0 mb-3 w-72 ${theme.popup} border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden animate-popup-up`}>
-            <div className={`p-4 border-b ${theme.accentBorder} flex items-center justify-between`}>
+          <div 
+            className={`absolute bottom-full left-0 mb-3 w-72 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden animate-popup-up border`}
+            style={{
+              backgroundColor: darkMode ? 'rgba(20, 18, 16, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+              borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)',
+              boxShadow: darkMode 
+                ? '0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(139, 115, 85, 0.1)' 
+                : '0 8px 32px rgba(0,0,0,0.15), 0 0 0 1px rgba(161, 98, 7, 0.1)'
+            }}
+          >
+            <div className={`p-4 border-b flex items-center justify-between`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
               <span className={`text-xs tracking-[0.2em] uppercase ${theme.accentMuted} font-semibold`}>Navigasi</span>
               <button 
                 onClick={() => setShowGooglePopup(false)}
-                className={`p-1 rounded-full ${theme.popupHover} transition-colors`}
+                className={`p-1 rounded-full transition-colors`}
+                style={{ backgroundColor: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}
               >
                 <svg className={`w-4 h-4 ${theme.textMuted}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -705,8 +925,8 @@ export default function KamiMenulisPelanPage() {
                   onClick={() => scrollToSection(section.id)}
                   className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all duration-200 ${
                     activeSection === index 
-                      ? `${theme.accentBg} ${theme.accent}` 
-                      : `${theme.popupHover} ${theme.textMuted}`
+                      ? theme.accentBg + ' ' + theme.accent 
+                      : theme.popupHover + ' ' + theme.textMuted
                   }`}
                 >
                   <span className={`text-xs font-mono w-6 ${activeSection === index ? theme.accent : theme.textMuted}`}>
@@ -716,18 +936,25 @@ export default function KamiMenulisPelanPage() {
                     {section.title}
                   </span>
                   {activeSection === index && (
-                    <div className={`ml-auto w-1.5 h-1.5 rounded-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'}`} />
+                    <div 
+                      className={`ml-auto w-1.5 h-1.5 rounded-full`}
+                      style={{ backgroundColor: darkMode ? '#8b7355' : '#a16207' }}
+                    />
                   )}
                 </button>
               ))}
             </div>
 
-            <div className={`p-3 border-t ${theme.accentBorder}`}>
+            <div className={`p-3 border-t`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
               <button
                 onClick={toggleTheme}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl ${theme.popupHover} transition-colors`}
+                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors`}
+                style={{ backgroundColor: darkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)' }}
               >
-                <div className={`w-8 h-8 rounded-full ${theme.accentBg} flex items-center justify-center`}>
+                <div 
+                  className={`w-8 h-8 rounded-full flex items-center justify-center`}
+                  style={{ backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.15)' : 'rgba(161, 98, 7, 0.15)' }}
+                >
                   {darkMode ? (
                     <svg className={`w-4 h-4 ${theme.accent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -747,11 +974,15 @@ export default function KamiMenulisPelanPage() {
               </button>
             </div>
 
-            <div className={`px-4 py-3 border-t ${theme.accentBorder} bg-opacity-50`}>
-              <div className={`h-1 ${darkMode ? 'bg-[#1c1917]' : 'bg-[#e7e5e4]'} rounded-full overflow-hidden`}>
+            <div className={`px-4 py-3 border-t bg-opacity-50`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
+              <div className={`h-1 rounded-full overflow-hidden`} style={{ backgroundColor: darkMode ? 'rgba(28, 25, 23, 0.5)' : 'rgba(231, 229, 228, 0.5)' }}>
                 <div 
-                  className={`h-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} transition-all duration-300`} 
-                  style={{ width: `${((activeSection + 1) / sections.length) * 100}%` }}
+                  className={`h-full transition-all duration-300`}
+                  style={{ 
+                    width: `${((activeSection + 1) / sections.length) * 100}%`,
+                    backgroundColor: darkMode ? '#8b7355' : '#a16207',
+                    boxShadow: darkMode ? '0 0 10px rgba(139, 115, 85, 0.5)' : 'none'
+                  }} 
                 />
               </div>
               <p className={`text-[10px] ${theme.textMuted} mt-2 text-center`}>
