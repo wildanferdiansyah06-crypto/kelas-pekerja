@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
+import Link from 'next/link';
 
 export default function CoffeeBookPage() {
-  // PERBAIKAN: Ambil tema global dari navbar
   const { theme: globalTheme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
@@ -14,6 +14,14 @@ export default function CoffeeBookPage() {
   const [activeChapter, setActiveChapter] = useState(1);
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
+  const [completedChapters, setCompletedChapters] = useState<number[]>([]);
+  const { scrollYProgress } = useScroll();
+
+  // Optimasi: Reduced motion check
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -30,15 +38,29 @@ export default function CoffeeBookPage() {
       setShowFloatingMenu(scrollTop > 300);
       
       const chapters = document.querySelectorAll('[data-chapter]');
-      chapters.forEach((chapter) => {
+      let currentChapter = 1;
+      const newlyCompleted: number[] = [];
+      
+      chapters.forEach((chapter, index) => {
         const rect = chapter.getBoundingClientRect();
-        if (rect.top <= 80 && rect.bottom >= 80) {
-          setActiveChapter(Number(chapter.getAttribute('data-chapter')));
+        const chapterNum = Number(chapter.getAttribute('data-chapter'));
+        
+        // Mark as completed if scrolled past
+        if (rect.top < window.innerHeight * 0.5) {
+          newlyCompleted.push(chapterNum);
+        }
+        
+        // Set active chapter
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          currentChapter = chapterNum;
         }
       });
+      
+      setActiveChapter(currentChapter);
+      setCompletedChapters(prev => [...new Set([...prev, ...newlyCompleted])]);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     
     return () => {
@@ -48,10 +70,8 @@ export default function CoffeeBookPage() {
 
   if (!mounted) return null;
 
-  // PERBAIKAN: Derive darkMode dari global theme
   const darkMode = globalTheme === 'dark';
 
-  // Theme classes - original colors (teman yang warna oren di atas)
   const theme = darkMode ? {
     bg: 'bg-[#0a0a0a]',
     text: 'text-neutral-300',
@@ -84,31 +104,24 @@ export default function CoffeeBookPage() {
     float: 'bg-white/90'
   };
 
+  // DAFTAR BAB YANG SUDAH DIOPTIMALKASI - 12 bab utama
   const chapters = [
-    { num: 1, title: "Coffee Species", subtitle: "Genus Coffea dan Posisi Botani" },
-    { num: 2, title: "Coffee Processing", subtitle: "Anatomi Buah dan Fermentasi" },
-    { num: 3, title: "Roast Level & Flavor", subtitle: "Maillard Reaction & Development" },
-    { num: 4, title: "Grind Size & Extraction", subtitle: "Teori Ekstraksi dan Partikel" },
-    { num: 5, title: "Espresso Fundamentals", subtitle: "Tekanan 9 Bar dan Suhu" },
-    { num: 6, title: "Taste & Sensory Science", subtitle: "Sistem Sensorik Manusia" },
-    { num: 7, title: "Manual Brew Methods", subtitle: "Immersion vs Percolation" },
-    { num: 8, title: "Espresso Troubleshooting", subtitle: "Diagnosa dan Koreksi" },
-    { num: 9, title: "Water Chemistry", subtitle: "Mineral dan Ekstraksi" },
-    { num: 10, title: "Extraction Yield", subtitle: "EY dan TDS Control" },
-    { num: 11, title: "Arabica Varieties", subtitle: "Genetika dan Keturunan" },
-    { num: 12, title: "Terroir & Altitude", subtitle: "Lingkungan dan Metabolisme" },
-    { num: 13, title: "Freshness & Storage", subtitle: "Degassing dan Oksidasi" },
-    { num: 14, title: "Milk Science", subtitle: "Protein dan Microfoam" },
-    { num: 15, title: "Cafe Workflow", subtitle: "Speed dan Consistency" },
-    { num: 16, title: "Grinder Technology", subtitle: "Burr Geometry dan RPM" },
-    { num: 17, title: "Espresso Machine", subtitle: "Boiler dan Pressure Profiling" },
-    { num: 18, title: "Cupping & QC", subtitle: "Defect Detection" },
-    { num: 19, title: "Coffee Economics", subtitle: "Pricing dan Ethics" },
-    { num: 20, title: "Professional Mindset", subtitle: "Manifesto Barista" },
+    { num: 1, title: "Coffee Species", subtitle: "Arabica vs Robusta, Genus Coffea" },
+    { num: 2, title: "Coffee Processing", subtitle: "Washed, Natural, Honey, Fermentasi" },
+    { num: 3, title: "Roast Level & Flavor", subtitle: "Maillard, Karamelisasi, Crack" },
+    { num: 4, title: "Grind Size & Extraction", subtitle: "Partikel, Fines, Boulders" },
+    { num: 5, title: "Espresso Fundamentals", subtitle: "9 Bar, 25-30s, 1:2 Ratio" },
+    { num: 6, title: "Taste & Sensory Science", subtitle: "Taste, Smell, Mouthfeel" },
+    { num: 7, title: "Manual Brew Methods", subtitle: "V60, French Press, Aeropress" },
+    { num: 8, title: "Water Chemistry", subtitle: "TDS, Magnesium, Kalsium" },
+    { num: 9, title: "Extraction Yield", subtitle: "EY 18-22%, TDS Control" },
+    { num: 10, title: "Milk Science", subtitle: "Protein, Microfoam, Latte Art" },
+    { num: 11, title: "Cafe Workflow", subtitle: "Speed, Consistency, Multi-tasking" },
+    { num: 12, title: "Professional Mindset", subtitle: "Etika, Dedikasi, Manifesto Barista" },
   ];
 
   const fadeIn = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0, 
@@ -123,6 +136,11 @@ export default function CoffeeBookPage() {
       transition: { staggerChildren: 0.1 }
     }
   };
+
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  // Cek apakah bab sudah selesai dibaca
+  const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
@@ -139,15 +157,15 @@ export default function CoffeeBookPage() {
       <AnimatePresence>
         {showFloatingMenu && (
           <motion.div
-            initial={{ x: -100, opacity: 0 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { x: -100, opacity: 0 }}
             className={`fixed bottom-6 left-6 z-40 flex flex-col gap-3`}
           >
             {/* Main Menu Button */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
               onClick={() => setSidebarOpen(true)}
               className={`flex items-center gap-3 px-5 py-3 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl ${theme.accent} font-medium`}
             >
@@ -156,16 +174,16 @@ export default function CoffeeBookPage() {
               <span className="sm:hidden">Menu</span>
               <div className={`flex items-center gap-2 ml-2 pl-2 border-l ${theme.border}`}>
                 <span className={`text-xs font-mono ${theme.textMuted}`}>
-                  {String(activeChapter).padStart(2, '0')}/20
+                  {String(activeChapter).padStart(2, '0')}/{chapters.length}
                 </span>
               </div>
             </motion.button>
 
-            {/* Secondary Actions - PERBAIKAN: Toggle theme pakai global */}
+            {/* Secondary Actions */}
             <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
                 onClick={toggleTheme}
                 className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
               >
@@ -176,8 +194,8 @@ export default function CoffeeBookPage() {
 
               <motion.a
                 href="#bab-1"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
                 className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
               >
                 <Compass size={20} className={theme.textMuted} />
@@ -187,7 +205,7 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar Navigation - PERTAHANKAN POSISI (sudah bagus) */}
+      {/* Sidebar Navigation dengan Progress & Checkmarks */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -205,7 +223,6 @@ export default function CoffeeBookPage() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed left-0 top-0 bottom-0 w-full sm:w-[480px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              {/* Pertahankan: Daftar bab diturunkan */}
               <div className="pt-28 sm:pt-32 p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
@@ -214,7 +231,7 @@ export default function CoffeeBookPage() {
                     </div>
                     <div>
                       <h2 className={`font-bold text-lg ${theme.textHeading}`}>Daftar Isi</h2>
-                      <p className={`text-sm ${theme.textMuted}`}>20 Bab Lengkap</p>
+                      <p className={`text-sm ${theme.textMuted}`}>{chapters.length} Bab Lengkap</p>
                     </div>
                   </div>
                   <button 
@@ -225,37 +242,66 @@ export default function CoffeeBookPage() {
                   </button>
                 </div>
 
+                {/* Progress Overview */}
+                <div className={`mb-6 p-4 rounded-xl ${theme.card} border ${theme.border}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-sm ${theme.textMuted}`}>Progress Membaca</span>
+                    <span className={`text-sm font-bold ${theme.accent}`}>
+                      {Math.round((completedChapters.length / chapters.length) * 100)}%
+                    </span>
+                  </div>
+                  <div className={`w-full h-2 rounded-full ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
+                    <div 
+                      className={`h-full rounded-full ${theme.accent.replace('text-', 'bg-')}`}
+                      style={{ width: `${(completedChapters.length / chapters.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
                 <nav className="space-y-2 pb-20">
-                  {chapters.map((chapter, idx) => (
-                    <motion.a
-                      key={chapter.num}
-                      href={`#bab-${chapter.num}`}
-                      onClick={() => setSidebarOpen(false)}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                      className={`group flex items-center gap-4 p-4 rounded-xl text-sm transition-all duration-300 ${
-                        activeChapter === chapter.num 
-                          ? `${theme.accentBg} ${theme.accent} font-semibold border ${theme.accentBorder}` 
-                          : `${darkMode ? 'hover:bg-neutral-800/50' : 'hover:bg-stone-100'} ${theme.textMuted} hover:text-current`
-                      }`}
-                    >
-                      <span className={`text-lg font-mono font-bold ${activeChapter === chapter.num ? theme.accent : theme.textMuted}`}>
-                        {String(chapter.num).padStart(2, '0')}
-                      </span>
-                      <div className="flex-1">
-                        <p className={`font-medium text-base ${activeChapter === chapter.num ? theme.textHeading : theme.text}`}>
-                          {chapter.title}
-                        </p>
-                        <p className={`text-xs mt-1 ${theme.textMuted}`}>{chapter.subtitle}</p>
-                      </div>
-                      {activeChapter === chapter.num && (
-                        <motion.div layoutId="activeIndicator">
-                          <ChevronRight size={20} />
-                        </motion.div>
-                      )}
-                    </motion.a>
-                  ))}
+                  {chapters.map((chapter, idx) => {
+                    const isCompleted = isChapterCompleted(chapter.num);
+                    const isActive = activeChapter === chapter.num;
+                    
+                    return (
+                      <motion.a
+                        key={chapter.num}
+                        href={`#bab-${chapter.num}`}
+                        onClick={() => setSidebarOpen(false)}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className={`group flex items-center gap-4 p-4 rounded-xl text-sm transition-all duration-300 ${
+                          isActive 
+                            ? `${theme.accentBg} ${theme.accent} font-semibold border ${theme.accentBorder}` 
+                            : isCompleted
+                              ? `${darkMode ? 'bg-green-950/20' : 'bg-green-50'} ${darkMode ? 'text-green-400' : 'text-green-700'} border ${darkMode ? 'border-green-900/30' : 'border-green-200'}`
+                              : `${darkMode ? 'hover:bg-neutral-800/50' : 'hover:bg-stone-100'} ${theme.textMuted} hover:text-current`
+                        }`}
+                      >
+                        <span className={`text-lg font-mono font-bold flex-shrink-0 w-8 text-center ${
+                          isCompleted 
+                            ? 'text-green-500' 
+                            : isActive 
+                              ? theme.accent 
+                              : theme.textMuted
+                        }`}>
+                          {isCompleted ? <Check size={20} /> : String(chapter.num).padStart(2, '0')}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className={`font-medium text-base truncate ${isActive ? theme.textHeading : isCompleted ? theme.textHeading : theme.text}`}>
+                            {chapter.title}
+                          </p>
+                          <p className={`text-xs mt-1 truncate ${theme.textMuted}`}>{chapter.subtitle}</p>
+                        </div>
+                        {isActive && (
+                          <motion.div layoutId="activeIndicator">
+                            <ChevronRight size={20} />
+                          </motion.div>
+                        )}
+                      </motion.a>
+                    );
+                  })}
                 </nav>
               </div>
             </motion.aside>
@@ -263,9 +309,9 @@ export default function CoffeeBookPage() {
         )}
       </AnimatePresence>
 
-      {/* Main Content - PERBAIKAN: Buku NAIK KE ATAS, hapus gap hitam */}
+      {/* Main Content */}
       <main className="min-h-screen pt-0 pb-20">
-        {/* Hero Section - PERBAIKAN: Hapus min-h dan gap hitam */}
+        {/* Hero Section dengan Human Touch */}
         <motion.section 
           initial="hidden"
           animate="visible"
@@ -276,7 +322,7 @@ export default function CoffeeBookPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <motion.div 
-                  initial={{ scale: 0 }}
+                  initial={prefersReducedMotion ? { scale: 1 } : { scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring" }}
                   className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl ${theme.accentBg} border ${theme.accentBorder} mb-8 shadow-xl`}
@@ -285,7 +331,7 @@ export default function CoffeeBookPage() {
                 </motion.div>
                 
                 <motion.h1 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                   className={`text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold ${theme.textHeading} mb-6 tracking-tight leading-[0.9]`}
@@ -295,25 +341,45 @@ export default function CoffeeBookPage() {
                 </motion.h1>
                 
                 <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className={`text-2xl sm:text-3xl ${theme.textSubheading} italic mb-8 font-light`}
+                  className={`text-2xl sm:text-3xl ${theme.textSubheading} italic mb-4 font-light`}
                 >
                   A Serious Guide
                 </motion.p>
                 
+                {/* HUMAN TOUCH - Quote Personal */}
                 <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className={`text-lg ${theme.textMuted} italic mb-4 max-w-xl leading-relaxed`}
+                >
+                  "Gue dulu mikir kopi cuma pahit. Sampai akhirnya ngerti — setiap cangkir punya cerita, dan setiap cerita punya makna."
+                </motion.p>
+
+                {/* TAGLINE EMOSIONAL */}
+                <motion.p 
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
+                  className={`text-lg ${theme.accent} font-medium mb-6 max-w-xl leading-relaxed`}
+                >
+                  Ini bukan cuma tentang kopi. Ini tentang cara lo melihat pekerjaan, dedikasi, dan makna di balik setiap hal kecil.
+                </motion.p>
+                
+                <motion.p 
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
                   className={`text-lg ${theme.textMuted} mb-8`}
                 >
                   oleh <span className={`font-semibold ${theme.textHeading}`}>Wildan Ferdiansyah</span>
                 </motion.p>
 
                 <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                   className={`p-6 sm:p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg max-w-2xl`}
@@ -325,7 +391,7 @@ export default function CoffeeBookPage() {
                 </motion.div>
 
                 <motion.div 
-                  initial={{ opacity: 0 }}
+                  initial={prefersReducedMotion ? {} : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
                   className="mt-12 flex items-center gap-4"
@@ -342,7 +408,7 @@ export default function CoffeeBookPage() {
               </div>
 
               <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 }}
                 className="hidden lg:block relative"
@@ -373,7 +439,7 @@ export default function CoffeeBookPage() {
           </div>
 
           <motion.div 
-            animate={{ y: [0, 10, 0] }}
+            animate={prefersReducedMotion ? {} : { y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
             className={`absolute bottom-8 left-1/2 -translate-x-1/2 ${theme.textMuted}`}
           >
@@ -469,7 +535,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Bab 1 */}
+            {/* === BAB 1: COFFEE SPECIES === */}
             <motion.section 
               id="bab-1"
               data-chapter={1}
@@ -483,13 +549,13 @@ export default function CoffeeBookPage() {
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>01</span>
                 <div className="flex-1">
                   <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Coffee Species</h2>
-                  <p className={`text-xl ${theme.textMuted}`}>Genus Coffea dan Posisi Botani Kopi</p>
+                  <p className={`text-xl ${theme.textMuted}`}>Arabica vs Robusta, Genus Coffea</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
-                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>1.1 Genus Coffea</h3>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Genus Coffea</h3>
                   <p className={`${theme.text} text-lg lg:text-xl leading-relaxed mb-6`}>
                     Tanaman kopi berasal dari genus <em className={theme.accent}>Coffea</em>, sebuah genus tumbuhan berbunga dalam famili Rubiaceae. 
                     Hingga saat ini, lebih dari <strong className={theme.textHeading}>120 spesies Coffea</strong> telah diidentifikasi oleh para botanis.
@@ -517,10 +583,6 @@ export default function CoffeeBookPage() {
                         <span className="font-semibold">15–24°C</span>
                       </li>
                       <li className="flex justify-between border-b border-dashed border-current/20 pb-3">
-                        <span className={theme.textMuted}>Metabolisme</span>
-                        <span className="font-semibold">Lambat</span>
-                      </li>
-                      <li className="flex justify-between border-b border-dashed border-current/20 pb-3">
                         <span className={theme.textMuted}>Kafein</span>
                         <span className="font-semibold">1.2–1.5%</span>
                       </li>
@@ -545,10 +607,6 @@ export default function CoffeeBookPage() {
                         <span className="font-semibold">24–30°C</span>
                       </li>
                       <li className="flex justify-between border-b border-dashed border-current/20 pb-3">
-                        <span className={theme.textMuted}>Metabolisme</span>
-                        <span className="font-semibold">Cepat</span>
-                      </li>
-                      <li className="flex justify-between border-b border-dashed border-current/20 pb-3">
                         <span className={theme.textMuted}>Kafein</span>
                         <span className="font-semibold">2.2–2.7%</span>
                       </li>
@@ -560,21 +618,6 @@ export default function CoffeeBookPage() {
                   </div>
                 </div>
 
-                <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border}`}>
-                  <h4 className={`font-bold text-xl ${theme.textHeading} mb-5`}>1.3 Kimia Rasa Arabica</h4>
-                  <p className={`${theme.text} text-lg leading-relaxed mb-6`}>
-                    Saat proses roasting, <strong className={theme.textHeading}>sukrosa</strong> terurai melalui reaksi karamelisasi dan Maillard. 
-                    Reaksi ini menghasilkan ratusan senyawa volatil yang bertanggung jawab atas aroma:
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    {['caramel', 'honey', 'toffee', 'cokelat', 'fruity', 'floral'].map((aroma) => (
-                      <span key={aroma} className={`px-5 py-2.5 rounded-full text-base font-medium ${theme.accentBg} ${theme.accent} border ${theme.accentBorder} shadow-sm`}>
-                        {aroma}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
                 <blockquote className={`pl-8 border-l-4 ${theme.accentBorder} italic ${theme.textSubheading} text-xl lg:text-2xl leading-relaxed`}>
                   "Arabica tidak otomatis enak dan Robusta tidak otomatis buruk. 
                   Kualitas akhir ditentukan oleh keseluruhan rantai produksi."
@@ -582,7 +625,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Bab 2 */}
+            {/* === BAB 2: COFFEE PROCESSING === */}
             <motion.section 
               id="bab-2"
               data-chapter={2}
@@ -596,15 +639,15 @@ export default function CoffeeBookPage() {
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>02</span>
                 <div className="flex-1">
                   <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Coffee Processing</h2>
-                  <p className={`text-xl ${theme.textMuted}`}>Anatomi Buah dan Fermentasi</p>
+                  <p className={`text-xl ${theme.textMuted}`}>Washed, Natural, Honey, Fermentasi</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <p className={`${theme.text} leading-relaxed text-xl lg:text-2xl`}>
-                  <strong className={`text-2xl lg:text-3xl ${theme.textHeading}`}>2.1 Anatomi Buah Kopi</strong> — Buah kopi secara botani disebut <em className={theme.accent}>coffee cherry</em>. 
-                  Ia terdiri dari beberapa lapisan utama: kulit luar (exocarp), daging buah (mesocarp), 
-                  lapisan lendir lengket yang kaya gula (mucilage), kulit tanduk (parchment), dan biji kopi itu sendiri.
+                  <strong className={`text-2xl lg:text-3xl ${theme.textHeading}`}>Anatomi Buah Kopi</strong> — Buah kopi secara botani disebut <em className={theme.accent}>coffee cherry</em>. 
+                  Ia terdiri dari beberapa lapisan: kulit luar (exocarp), daging buah (mesocarp), 
+                  mucilage (lendir kaya gula), kulit tanduk (parchment), dan biji kopi.
                 </p>
 
                 <div className="grid gap-4">
@@ -616,7 +659,7 @@ export default function CoffeeBookPage() {
                   ].map((process, idx) => (
                     <motion.div 
                       key={process.name} 
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={prefersReducedMotion ? {} : { opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 }}
@@ -632,7 +675,7 @@ export default function CoffeeBookPage() {
                 </div>
 
                 <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
-                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>2.2 Apa Itu Fermentasi?</h3>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Apa Itu Fermentasi?</h3>
                   <p className={`${theme.text} text-lg lg:text-xl leading-relaxed`}>
                     Fermentasi dalam kopi adalah proses metabolisme mikroorganisme—terutama ragi dan bakteri asam laktat—
                     yang memakan gula dalam mucilage dan menghasilkan asam organik, alkohol, dan senyawa aroma. 
@@ -642,7 +685,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* Bab 3 */}
+            {/* === BAB 3: ROAST LEVEL === */}
             <motion.section 
               id="bab-3"
               data-chapter={3}
@@ -656,7 +699,7 @@ export default function CoffeeBookPage() {
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>03</span>
                 <div className="flex-1">
                   <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Roast Level & Flavor</h2>
-                  <p className={`text-xl ${theme.textMuted}`}>Maillard Reaction & Development</p>
+                  <p className={`text-xl ${theme.textMuted}`}>Maillard, Karamelisasi, First & Second Crack</p>
                 </div>
               </div>
 
@@ -716,14 +759,14 @@ export default function CoffeeBookPage() {
                     </div>
                     <div className={`flex items-start gap-4 p-5 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
                       <span className={`font-mono font-bold text-lg ${theme.accent} min-w-[100px]`}>2nd CRACK</span>
-                      <span className={`${theme.text} text-lg leading-relaxed`}>Degradasi struktur sel, pelepasan minyak ke permukaan. Rasa pahit dan smoky mulai dominan. Batas untuk dark roast.</span>
+                      <span className={`${theme.text} text-lg leading-relaxed`}>Degradasi struktur sel, pelepasan minyak ke permukaan. Rasa pahit dan smoky mulai dominan.</span>
                     </div>
                   </div>
                 </div>
               </div>
             </motion.section>
 
-            {/* Bab 4 */}
+            {/* === BAB 4: GRIND SIZE === */}
             <motion.section 
               id="bab-4"
               data-chapter={4}
@@ -737,17 +780,16 @@ export default function CoffeeBookPage() {
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>04</span>
                 <div className="flex-1">
                   <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Grind Size & Extraction</h2>
-                  <p className={`text-xl ${theme.textMuted}`}>Teori Ekstraksi dan Partikel</p>
+                  <p className={`text-xl ${theme.textMuted}`}>Partikel, Fines, Boulders</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
-                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>4.1 Apa Itu Ekstraksi?</h3>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Apa Itu Ekstraksi?</h3>
                   <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed`}>
                     Ekstraksi kopi adalah proses pelarutan senyawa kimia dari partikel kopi ke dalam air panas. 
-                    Air bertindak sebagai pelarut yang mengambil asam organik, gula terlarut, lipid, dan senyawa pahit 
-                    dari jaringan sel kopi. Tujuan ekstraksi bukan mengambil semua senyawa, tetapi mengambilnya dalam 
+                    Tujuan ekstraksi bukan mengambil semua senyawa, tetapi mengambilnya dalam 
                     <strong className={theme.textHeading}> proporsi yang seimbang</strong>.
                   </p>
                 </div>
@@ -756,18 +798,15 @@ export default function CoffeeBookPage() {
                   <h4 className={`font-bold text-xl ${theme.textHeading} mb-6`}>Urutan Pelarutan Senyawa</h4>
                   <div className="space-y-4">
                     {[
-                      { phase: '0-20%', compound: 'Asam & Senyawa Aromatik', taste: 'Acidity, Aroma', color: 'text-yellow-500', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30' },
-                      { phase: '20-60%', compound: 'Gula & Senyawa Manis', taste: 'Sweetness', color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-                      { phase: '60-100%', compound: 'Senyawa Pahit & Astringent', taste: 'Bitterness', color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/30' },
+                      { phase: '0-20%', compound: 'Asam & Aromatik', taste: 'Acidity', color: 'text-yellow-500', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30' },
+                      { phase: '20-60%', compound: 'Gula & Manis', taste: 'Sweetness', color: 'text-amber-500', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
+                      { phase: '60-100%', compound: 'Pahit & Astringent', taste: 'Bitterness', color: 'text-red-500', bg: 'bg-red-500/10', border: 'border-red-500/30' },
                     ].map((item) => (
                       <div key={item.phase} className={`flex items-center gap-6 p-5 rounded-xl ${item.bg} border ${item.border}`}>
                         <span className={`font-mono text-2xl font-bold ${item.color} w-24`}>{item.phase}</span>
                         <div className="flex-1">
                           <p className={`font-bold text-lg ${theme.textHeading}`}>{item.compound}</p>
                           <p className={`text-base ${theme.textMuted}`}>{item.taste}</p>
-                        </div>
-                        <div className={`w-32 h-3 rounded-full ${item.color.replace('text-', 'bg-')} opacity-30`}>
-                          <div className={`h-full rounded-full ${item.color.replace('text-', 'bg-')}`} style={{ width: item.phase }} />
                         </div>
                       </div>
                     ))}
@@ -779,23 +818,23 @@ export default function CoffeeBookPage() {
                   <div className="grid md:grid-cols-2 gap-6 text-lg">
                     <div className={`p-6 rounded-xl border ${theme.border} ${darkMode ? 'bg-red-950/20' : 'bg-red-50'} shadow-lg`}>
                       <p className={`font-bold text-red-600 mb-3 text-xl`}>FINES ⚠️</p>
-                      <p className={`${theme.text} leading-relaxed`}>Partikel sangat halus (&lt;100μm) yang mengekstraksi sangat cepat dan mudah over-extract. Menyebabkan rasa pahit dan astringent.</p>
+                      <p className={`${theme.text} leading-relaxed`}>Partikel sangat halus (&lt;100μm) yang mengekstraksi sangat cepat dan mudah over-extract.</p>
                     </div>
                     <div className={`p-6 rounded-xl border ${theme.border} ${darkMode ? 'bg-blue-950/20' : 'bg-blue-50'} shadow-lg`}>
                       <p className={`font-bold text-blue-600 mb-3 text-xl`}>BOULDERS ⚠️</p>
-                      <p className={`${theme.text} leading-relaxed`}>Partikel besar (&gt;800μm) yang mengekstraksi sangat lambat dan mudah under-extract. Menyebabkan rasa asam dan kurang body.</p>
+                      <p className={`${theme.text} leading-relaxed`}>Partikel besar (&gt;800μm) yang mengekstraksi sangat lambat dan mudah under-extract.</p>
                     </div>
                   </div>
                 </div>
 
                 <blockquote className={`pl-8 border-l-4 ${theme.accentBorder} ${theme.accent} font-semibold text-2xl lg:text-3xl leading-relaxed`}>
                   "Grind size adalah kenop utama untuk mengontrol rasa kopi. 
-                  Ia menghubungkan fisika, kimia, dan sensorik dalam satu variabel sederhana."
+                  Ia menghubungkan fisika, kimia, dan sensorik dalam satu variabel."
                 </blockquote>
               </div>
             </motion.section>
 
-            {/* Bab 5 */}
+            {/* === BAB 5: ESPRESSO FUNDAMENTALS === */}
             <motion.section 
               id="bab-5"
               data-chapter={5}
@@ -809,16 +848,16 @@ export default function CoffeeBookPage() {
                 <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>05</span>
                 <div className="flex-1">
                   <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Espresso Fundamentals</h2>
-                  <p className={`text-xl ${theme.textMuted}`}>Tekanan 9 Bar dan Parameter Kritis</p>
+                  <p className={`text-xl ${theme.textMuted}`}>9 Bar, 25-30s, 1:2 Ratio</p>
                 </div>
               </div>
 
               <div className="space-y-8">
                 <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
-                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-8 text-center`}>5.1 Definisi Ilmiah Espresso</h3>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-8 text-center`}>Definisi Ilmiah Espresso</h3>
                   <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed mb-10 text-center max-w-4xl mx-auto`}>
                     Espresso adalah metode ekstraksi kopi menggunakan <strong className={theme.textHeading}>air panas bertekanan tinggi</strong> yang dipaksa 
-                    melewati bed kopi yang dipadatkan. Secara teknis, espresso didefinisikan sebagai:
+                    melewati bed kopi yang dipadatkan.
                   </p>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {[
@@ -838,7 +877,7 @@ export default function CoffeeBookPage() {
                 </div>
 
                 <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border}`}>
-                  <h4 className={`font-bold text-xl ${theme.textHeading} mb-5`}>5.9 Crema Science</h4>
+                  <h4 className={`font-bold text-xl ${theme.textHeading} mb-5`}>Crema Science</h4>
                   <p className={`${theme.text} text-lg leading-relaxed mb-6`}>
                     Crema adalah <strong className={theme.textHeading}>emulsi gas CO2, minyak kopi, dan air</strong>. 
                     Crema bukan indikator rasa enak, tetapi indikator kesegaran kopi dan tekanan ekstraksi.
@@ -856,40 +895,474 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* DIHAPUS: Quick Navigation (bagian coklat/oren yang berasa double footer) */}
+            {/* === BAB 6: TASTE & SENSORY === */}
+            <motion.section 
+              id="bab-6"
+              data-chapter={6}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>06</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Taste & Sensory Science</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>Taste, Smell, Mouthfeel</p>
+                </div>
+              </div>
 
-            {/* Sample chapters */}
-            {[
-              { id: 6, title: "Taste & Sensory Science", subtitle: "Sistem Sensorik Manusia", content: "Persepsi rasa kopi adalah hasil integrasi antara indera pengecap (taste), penciuman (smell), dan sensasi taktil di mulut (mouthfeel). Sebagian besar kompleksitas rasa kopi sebenarnya berasal dari aroma yang terdeteksi oleh hidung melalui jalur retronasal." },
-              { id: 9, title: "Water Chemistry", subtitle: "Mineral dan Ekstraksi", content: "Lebih dari 98% isi secangkir kopi adalah air. Mineral terlarut berfungsi sebagai ion yang berinteraksi dengan senyawa rasa. Magnesium meningkatkan sweetness, kalsium berkontribusi terhadap body. TDS ideal: 75-150 ppm." },
-              { id: 10, title: "Extraction Yield", subtitle: "EY dan TDS Control", content: "Extraction yield (EY) adalah persentase massa senyawa kopi yang berhasil diekstraksi. Golden zone berada pada 18-22%. Di bawah ini: under-extracted (asam). Di atas ini: over-extracted (pahit)." },
-              { id: 20, title: "The Professional Barista Mindset", subtitle: "Manifesto Penutup", content: "Menjadi barista berarti memilih jalan presisi, kerendahan hati, dan dedikasi seumur hidup terhadap kualitas. Profesionalisme berarti melakukan hal yang benar bahkan ketika tidak ada yang melihat." },
-            ].map((chapter) => (
-              <motion.section
-                key={chapter.id}
-                id={`bab-${chapter.id}`}
-                data-chapter={chapter.id}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-150px" }}
-                variants={fadeIn}
-                className="mb-32 scroll-mt-16"
-              >
-                <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
-                  <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>
-                    {String(chapter.id).padStart(2, '0')}
-                  </span>
-                  <div className="flex-1">
-                    <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>{chapter.title}</h2>
-                    <p className={`text-xl ${theme.textMuted}`}>{chapter.subtitle}</p>
+              <div className="space-y-8">
+                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Tiga Pilar Persepsi Rasa</h3>
+                  <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed mb-8`}>
+                    Persepsi rasa kopi adalah hasil integrasi antara <strong className={theme.textHeading}>indera pengecap (taste)</strong>, 
+                    <strong className={theme.textHeading}> penciuman (smell)</strong>, dan <strong className={theme.textHeading}>sensasi taktil di mulut (mouthfeel)</strong>.
+                    Sebagian besar kompleksitas rasa kopi sebenarnya berasal dari aroma yang terdeteksi oleh hidung melalui jalur retronasal.
+                  </p>
+                  
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className="text-4xl mb-4">👅</div>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Taste</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Manis, asam, pahit, asin, umami — terdeteksi oleh lidah</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className="text-4xl mb-4">👃</div>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Smell</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Aroma kompleks — 80% dari "rasa" kopi</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className="text-4xl mb-4">💋</div>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Mouthfeel</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Body, tekstur, astringensi — sensasi fisik</p>
+                    </div>
                   </div>
                 </div>
-                
-                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
-                  <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed`}>{chapter.content}</p>
+              </div>
+            </motion.section>
+
+            {/* === BAB 7: MANUAL BREW === */}
+            <motion.section 
+              id="bab-7"
+              data-chapter={7}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>07</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Manual Brew Methods</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>V60, French Press, Aeropress</p>
                 </div>
-              </motion.section>
-            ))}
+              </div>
+
+              <div className="space-y-8">
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                    <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>☕ V60 (Pour Over)</h4>
+                    <ul className={`space-y-3 text-base ${theme.text}`}>
+                      <li>• <strong>Metode:</strong> Percolation</li>
+                      <li>• <strong>Grind:</strong> Medium-fine</li>
+                      <li>• <strong>Waktu:</strong> 2:30–3:00</li>
+                      <li>• <strong>Karakter:</strong> Clean, bright, clarity tinggi</li>
+                    </ul>
+                  </div>
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                    <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🫖 French Press</h4>
+                    <ul className={`space-y-3 text-base ${theme.text}`}>
+                      <li>• <strong>Metode:</strong> Immersion</li>
+                      <li>• <strong>Grind:</strong> Coarse</li>
+                      <li>• <strong>Waktu:</strong> 4:00</li>
+                      <li>• <strong>Karakter:</strong> Full body, rich, oily</li>
+                    </ul>
+                  </div>
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                    <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🔧 Aeropress</h4>
+                    <ul className={`space-y-3 text-base ${theme.text}`}>
+                      <li>• <strong>Metode:</strong> Pressure + Immersion</li>
+                      <li>• <strong>Grind:</strong> Medium</li>
+                      <li>• <strong>Waktu:</strong> 1:30–2:00</li>
+                      <li>• <strong>Karakter:</strong> Versatile, clean, strong</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === BAB 8: WATER CHEMISTRY === */}
+            <motion.section 
+              id="bab-8"
+              data-chapter={8}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>08</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Water Chemistry</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>TDS, Magnesium, Kalsium, Bicarbonate</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Air: Pelarut Terpenting</h3>
+                  <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed mb-6`}>
+                    Lebih dari <strong className={theme.textHeading}>98% isi secangkir kopi adalah air</strong>. 
+                    Mineral terlarut berfungsi sebagai ion yang berinteraksi dengan senyawa rasa.
+                  </p>
+                  
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border}`}>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Magnesium (Mg²⁺)</h4>
+                      <p className={`text-base ${theme.textMuted}`}>Meningkatkan sweetness dan extraction efficiency</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border}`}>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Kalsium (Ca²⁺)</h4>
+                      <p className={`text-base ${theme.textMuted}`}>Berkontribusi terhadap body dan mouthfeel</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border}`}>
+                      <h4 className={`font-bold text-lg ${theme.accent} mb-2`}>Bicarbonate (HCO₃⁻)</h4>
+                      <p className={`text-base ${theme.textMuted}`}>Buffer acidity, stabilkan pH ekstraksi</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border} text-center`}>
+                  <p className={`text-lg ${theme.textMuted} mb-4`}>Total Dissolved Solids (TDS) Ideal</p>
+                  <p className={`text-6xl font-black ${theme.accent} mb-4`}>75–150 ppm</p>
+                  <p className={`text-base ${theme.text}`}>Terlalu rendah = under-extract. Terlalu tinggi = over-extract & scale.</p>
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === BAB 9: EXTRACTION YIELD === */}
+            <motion.section 
+              id="bab-9"
+              data-chapter={9}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>09</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Extraction Yield</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>EY 18-22%, TDS Control</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg text-center`}>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-8`}>Golden Zone Ekstraksi</h3>
+                  
+                  <div className={`inline-block p-12 rounded-3xl ${theme.card} border ${theme.border} shadow-2xl mb-8`}>
+                    <p className={`text-lg ${theme.textMuted} mb-4`}>Extraction Yield Target</p>
+                    <p className={`text-8xl font-black ${theme.accent} mb-4`}>18–22%</p>
+                    <p className={`text-base ${theme.text}`}>Persentase massa kopi yang berhasil diekstraksi</p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                    <div className={`p-6 rounded-xl border ${theme.border} ${darkMode ? 'bg-yellow-950/20' : 'bg-yellow-50'}`}>
+                      <p className={`font-bold text-yellow-600 mb-2`}>Under-extracted (&lt;18%)</p>
+                      <p className={`text-sm ${theme.textMuted}`}>Asam, kurang manis, kurang body, "kurang matang"</p>
+                    </div>
+                    <div className={`p-6 rounded-xl border ${theme.border} ${darkMode ? 'bg-red-950/20' : 'bg-red-50'}`}>
+                      <p className={`font-bold text-red-600 mb-2`}>Over-extracted (&gt;22%)</p>
+                      <p className={`text-sm ${theme.textMuted}`}>Pahit, astringent, "terbakar", tidak enak</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === BAB 10: MILK SCIENCE === */}
+            <motion.section 
+              id="bab-10"
+              data-chapter={10}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>10</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Milk Science</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>Protein, Microfoam, Latte Art</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                    <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🥛 Komposisi Susu</h4>
+                    <ul className={`space-y-3 text-base ${theme.text}`}>
+                      <li>• <strong>Air:</strong> ~87%</li>
+                      <li>• <strong>Laktosa:</strong> ~5% (manis alami)</li>
+                      <li>• <strong>Lemak:</strong> ~3-4% (body, creamy)</li>
+                      <li>• <strong>Protein:</strong> ~3% (casein & whey)</li>
+                    </ul>
+                  </div>
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                                        <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🫧 Microfoam</h4>
+                    <ul className={`space-y-3 text-base ${theme.text}`}>
+                      <li>• <strong>Steaming:</strong> 55–65°C ideal</li>
+                      <li>• <strong>Protein denaturasi:</strong> 60°C+</li>
+                      <li>• <strong>Velvet texture:</strong> bubble halus & silky</li>
+                      <li>• <strong>Latte art:</strong> requires proper foam density</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border}`}>
+                  <h4 className={`font-bold text-xl ${theme.textHeading} mb-5`}>Teknik Steaming yang Benar</h4>
+                  <div className="space-y-4">
+                    <div className={`flex items-start gap-4 p-4 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                      <span className={`font-bold ${theme.accent}`}>1</span>
+                      <span className={`${theme.text}`}>Purging wand untuk buang air kondensasi</span>
+                    </div>
+                    <div className={`flex items-start gap-4 p-4 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                      <span className={`font-bold ${theme.accent}`}>2</span>
+                      <span className={`${theme.text}`}>Position tip di surface milk untuk stretching (bikin foam)</span>
+                    </div>
+                    <div className={`flex items-start gap-4 p-4 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                      <span className={`font-bold ${theme.accent}`}>3</span>
+                      <span className={`${theme.text}`}>Submerge tip untuk heating setelah cukup foam</span>
+                    </div>
+                    <div className={`flex items-start gap-4 p-4 rounded-xl ${darkMode ? 'bg-neutral-800' : 'bg-white'} shadow-sm`}>
+                      <span className={`font-bold ${theme.accent}`}>4</span>
+                      <span className={`${theme.text}`}>Stop di 55–65°C, tap & swirl untuk polish</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === BAB 11: CAFE WORKFLOW === */}
+            <motion.section 
+              id="bab-11"
+              data-chapter={11}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>11</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Cafe Workflow</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>Speed, Consistency, Multi-tasking</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Efisiensi di Balik Bar</h3>
+                  <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed mb-8`}>
+                    Workflow yang baik bukan cuma soal <strong className={theme.textHeading}>cepat</strong>, tapi 
+                    <strong className={theme.textHeading}> konsisten</strong> dan <strong className={theme.textHeading}>sustainable</strong>. 
+                    Barista yang baik bisa mengelola multiple order tanpa mengorbankan kualitas.
+                  </p>
+
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className={`text-4xl mb-4 ${theme.accent}`}>⚡</div>
+                      <h4 className={`font-bold text-lg mb-2`}>Speed</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Waktu respon cepat, gerakan efisien, minimal waste motion</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className={`text-4xl mb-4 ${theme.accent}`}>🎯</div>
+                      <h4 className={`font-bold text-lg mb-2`}>Consistency</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Setiap cangkir sama kualitasnya, regardless siapa yang bikin</p>
+                    </div>
+                    <div className={`p-6 rounded-xl ${theme.card} border ${theme.border} text-center`}>
+                      <div className={`text-4xl mb-4 ${theme.accent}`}>🧠</div>
+                      <h4 className={`font-bold text-lg mb-2`}>Multi-tasking</h4>
+                      <p className={`text-sm ${theme.textMuted}`}>Brew sambil steam, prep sambil extract, komunikasi tim</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`p-8 rounded-2xl ${theme.code} border ${theme.border}`}>
+                  <h4 className={`font-bold text-xl ${theme.textHeading} mb-5`}>Sequence Ideal (Single Order)</h4>
+                  <div className="flex flex-wrap items-center justify-center gap-3 text-base">
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Grind</span>
+                    <ArrowRight size={16} className={theme.textMuted} />
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Dose & Tamp</span>
+                    <ArrowRight size={16} className={theme.textMuted} />
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Extract</span>
+                    <ArrowRight size={16} className={theme.textMuted} />
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Steam Milk</span>
+                    <ArrowRight size={16} className={theme.textMuted} />
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Pour</span>
+                    <ArrowRight size={16} className={theme.textMuted} />
+                    <span className={`px-4 py-2 rounded-lg ${theme.accentBg} ${theme.accent} font-semibold`}>Serve</span>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === BAB 12: PROFESSIONAL MINDSET === */}
+            <motion.section 
+              id="bab-12"
+              data-chapter={12}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-150px" }}
+              variants={fadeIn}
+              className="mb-32 scroll-mt-16"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-12 pb-6 border-b-2 ${theme.border}`}>
+                <span className={`text-8xl sm:text-9xl font-black ${theme.accent} opacity-20 leading-none`}>12</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-3`}>Professional Mindset</h2>
+                  <p className={`text-xl ${theme.textMuted}`}>Etika, Dedikasi, Manifesto Barista</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className={`p-8 lg:p-12 rounded-3xl ${theme.highlight} border ${theme.border} shadow-lg`}>
+                  <h3 className={`font-bold text-2xl lg:text-3xl ${theme.textHeading} mb-6`}>Manifesto Seorang Barista</h3>
+                  <p className={`${theme.text} text-xl lg:text-2xl leading-relaxed mb-8`}>
+                    Menjadi barista berarti memilih jalan <strong className={theme.textHeading}>presisi</strong>, 
+                    <strong className={theme.textHeading}> kerendahan hati</strong>, dan 
+                    <strong className={theme.textHeading}> dedikasi seumur hidup</strong> terhadap kualitas. 
+                    Profesionalisme berarti melakukan hal yang benar bahkan ketika tidak ada yang melihat.
+                  </p>
+
+                  <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
+                    <ul className={`space-y-4 text-lg ${theme.text}`}>
+                      <li className="flex items-start gap-4">
+                        <span className={`text-2xl ${theme.accent}`}>◆</span>
+                        <span>Saya menghormati setiap biji kopi yang telah melewati perjalanan panjang dari petani ke cangkir.</span>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <span className={`text-2xl ${theme.accent}`}>◆</span>
+                        <span>Saya berkomitmen untuk belajar terus-menerus, karena ilmu kopi tidak pernah berakhir.</span>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <span className={`text-2xl ${theme.accent}`}>◆</span>
+                        <span>Saya mengutamakan konsistensi di atas ego — teknik yang benar lebih penting dari gaya pribadi.</span>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <span className={`text-2xl ${theme.accent}`}>◆</span>
+                        <span>Saya memperlakukan setiap pelanggan dengan hormat, karena mereka mempercayai saya untuk hari mereka.</span>
+                      </li>
+                      <li className="flex items-start gap-4">
+                        <span className={`text-2xl ${theme.accent}`}>◆</span>
+                        <span>Saya ingat bahwa di balik setiap order, ada manusia dengan cerita dan kebutuhan mereka sendiri.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <blockquote className={`pl-8 border-l-4 ${theme.accentBorder} italic ${theme.textSubheading} text-2xl lg:text-3xl leading-relaxed`}>
+                  "Kopi yang bagus tidak datang dari mesin yang mahal. 
+                  Ia datang dari tangan yang peduli, pikiran yang fokus, dan hati yang menghormati prosesnya."
+                </blockquote>
+              </div>
+            </motion.section>
+
+            {/* === LANJUT BACA: PENGALAMAN NYATA === */}
+            <motion.section
+              initial={prefersReducedMotion ? {} : { opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className={`mt-32 py-20 ${theme.accentBg} ${theme.accentBorder} border-y-2`}
+            >
+              <div className="max-w-4xl mx-auto px-6 text-center">
+                <h3 className={`text-3xl sm:text-4xl font-bold ${theme.textHeading} mb-6 italic`}>
+                  Lanjut Baca: Pengalaman Nyata di Balik Kopi
+                </h3>
+                <p className={`${theme.textMuted} text-lg mb-12 max-w-2xl mx-auto`}>
+                  Ilmu penting, tapi pengalaman manusia yang bikin kita mengerti. 
+                  <span className={`${theme.textHeading} font-medium block mt-2`}>
+                    Dari teori ke praktik, dari praktik ke makna hidup.
+                  </span>
+                </p>
+                
+                <div className="grid md:grid-cols-3 gap-6">
+                  {[
+                    { 
+                      title: "Di Balik Bar", 
+                      desc: "Capek yang tidak terlihat, senyum yang dipaksakan, dan kebanggaan kecil yang tidak ada yang lihat.",
+                      link: "/cerita/di-balik-bar",
+                      highlight: "Capeknya bukan di tangan. Capeknya di kepala."
+                    },
+                    { 
+                      title: "Di Ujung Shift", 
+                      desc: "Jam-jam terakhir ketika kaki sudah tidak merasa, tapi senyum harus tetap ada.",
+                      link: "/cerita/di-ujung-shift",
+                      highlight: "Delapan jam berdiri. Delapan jam tersenyum."
+                    },
+                    { 
+                      title: "Racikan Pertama", 
+                      desc: "Ketika kopi pertama yang lo buat bukan untuk pelanggan, tapi untuk nenek yang tidak pernah datang lagi.",
+                      link: "/cerita/racikan-pertama",
+                      highlight: "Setiap racikan adalah doa yang tidak kita sadari."
+                    }
+                  ].map((story, idx) => (
+                    <Link href={story.link} key={story.title}>
+                      <motion.div
+                        whileHover={prefersReducedMotion ? {} : { y: -8 }}
+                        className={`group p-6 ${theme.card} border ${theme.border} rounded-2xl text-left shadow-lg hover:shadow-xl transition-all h-full`}
+                      >
+                        <h4 className={`font-bold text-xl ${theme.accent} mb-3 group-hover:underline`}>
+                          {story.title}
+                        </h4>
+                        <p className={`${theme.textMuted} text-sm mb-4 leading-relaxed`}>
+                          {story.desc}
+                        </p>
+                        <div className={`pt-4 border-t ${theme.borderLight} mt-auto`}>
+                          <p className={`${theme.accent} text-xs italic`}>
+                            "{story.highlight}"
+                          </p>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </motion.section>
+
+            {/* === CTA SECTION === */}
+            <motion.section
+              initial={prefersReducedMotion ? {} : { opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-32 mb-20 text-center"
+            >
+              <div className={`inline-block p-12 rounded-3xl ${theme.card} border ${theme.border} shadow-2xl max-w-2xl w-full mx-4`}>
+                <PenLine size={48} className={`${theme.accent} mx-auto mb-6`} />
+                <h3 className={`text-2xl sm:text-3xl font-bold ${theme.textHeading} mb-4`}>
+                  Punya pengalaman kerja sendiri?
+                </h3>
+                <p className={`${theme.textMuted} mb-8 leading-relaxed`}>
+                  Ilmu ini penting, tapi cerita lo juga berharga. 
+                  Bagikan pengalaman di balik bar, di dapur, atau di tempat kerja lo.
+                </p>
+                <Link 
+                  href="/tulis" 
+                  className={`inline-flex items-center gap-2 px-8 py-4 rounded-full ${theme.accentBg} ${theme.accent} font-bold border ${theme.accentBorder} hover:shadow-lg transition-all`}
+                >
+                  <span>Tulis Cerita Lo</span>
+                  <ChevronRight size={20} />
+                </Link>
+              </div>
+            </motion.section>
 
           </div>
         </div>
