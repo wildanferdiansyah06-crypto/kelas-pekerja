@@ -15,7 +15,10 @@ export default function CoffeeBookPage() {
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [completedChapters, setCompletedChapters] = useState<number[]>([]);
+  
+  // ✅ FIX: Pindahin useScroll dan useTransform ke ATAS sebelum kondisi apapun
   const { scrollYProgress } = useScroll();
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   // Optimasi: Reduced motion check
   const prefersReducedMotion = useMemo(() => {
@@ -68,6 +71,7 @@ export default function CoffeeBookPage() {
     };
   }, [mounted]);
 
+  // ✅ FIX: Pindahin semua hooks sebelum early return ini!
   if (!mounted) return null;
 
   const darkMode = globalTheme === 'dark';
@@ -136,8 +140,6 @@ export default function CoffeeBookPage() {
       transition: { staggerChildren: 0.1 }
     }
   };
-
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   // Cek apakah bab sudah selesai dibaca
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
@@ -1086,7 +1088,7 @@ export default function CoffeeBookPage() {
               </div>
             </motion.section>
 
-            {/* === BAB 10: MILK SCIENCE === */}
+                        {/* === BAB 10: MILK SCIENCE (LANJUTAN) === */}
             <motion.section 
               id="bab-10"
               data-chapter={10}
@@ -1116,7 +1118,7 @@ export default function CoffeeBookPage() {
                     </ul>
                   </div>
                   <div className={`p-8 rounded-2xl ${theme.card} border ${theme.border} shadow-lg`}>
-                                        <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🫧 Microfoam</h4>
+                    <h4 className={`font-bold text-xl ${theme.accent} mb-4`}>🫧 Microfoam</h4>
                     <ul className={`space-y-3 text-base ${theme.text}`}>
                       <li>• <strong>Steaming:</strong> 55–65°C ideal</li>
                       <li>• <strong>Protein denaturasi:</strong> 60°C+</li>
@@ -1326,7 +1328,7 @@ export default function CoffeeBookPage() {
                         <p className={`${theme.textMuted} text-sm mb-4 leading-relaxed`}>
                           {story.desc}
                         </p>
-                        <div className={`pt-4 border-t ${theme.borderLight} mt-auto`}>
+                        <div className={`pt-4 border-t ${theme.border} mt-auto`}>
                           <p className={`${theme.accent} text-xs italic`}>
                             "{story.highlight}"
                           </p>
