@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme } from "@/src/components/ThemeProvider";
 
-export default function LewatBegituSajaPage() {
+export default function KamiMenulisPelanPage() {
   const { theme: globalTheme, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [subtitleText, setSubtitleText] = useState("");
@@ -24,11 +24,10 @@ export default function LewatBegituSajaPage() {
     { id: 'penutup', title: 'Penutup' }
   ];
 
-  // Memoize the check function
   const isVisible = useCallback(
-  (id: string) => visibleItems.has(id) || visibleItems.size === 0,
-  [visibleItems]
-);
+    (id: string) => visibleItems.has(id) || visibleItems.size === 0,
+    [visibleItems]
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -41,7 +40,6 @@ export default function LewatBegituSajaPage() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     
-    // Intersection Observer for scroll reveal
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -57,11 +55,10 @@ export default function LewatBegituSajaPage() {
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    // Observe all elements with data-reveal
     setTimeout(() => {
-  const elements = document.querySelectorAll('[data-reveal]');
-  elements.forEach((el) => observer.observe(el));
-}, 100);
+      const elements = document.querySelectorAll('[data-reveal]');
+      elements.forEach((el) => observer.observe(el));
+    }, 100);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -69,7 +66,6 @@ export default function LewatBegituSajaPage() {
     };
   }, []);
 
-  // Update active section based on scroll
   useEffect(() => {
     if (!mounted) return;
     
@@ -125,7 +121,8 @@ export default function LewatBegituSajaPage() {
     popupHover: darkMode ? "hover:bg-[#1c1917]" : "hover:bg-stone-50"
   };
 
-  const title = "Lewat Begitu Saja";
+  // ✅ KOREKSI: Judul sekarang "Kami Menulis Pelan"
+  const title = "Kami Menulis Pelan";
   const letters = title.split("");
   const backgroundOffset = scrollY * -0.08;
 
@@ -136,6 +133,12 @@ export default function LewatBegituSajaPage() {
     }
     setShowGooglePopup(false);
   };
+
+  const relatedArticles = [
+    { title: "Di Balik Bar", desc: "Realita keras pekerja malam", link: "/buku/di-balik-bar" },
+    { title: "Di Atas Cangkir", desc: "Refleksi di ujung lidah", link: "/buku/di-atas-cangkir" },
+    { title: "Sisa Shift", desc: "Catatan dari yang tersisa", link: "/buku/sisa-shift" }
+  ];
 
   return (
     <div ref={mainRef} className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
@@ -169,10 +172,25 @@ export default function LewatBegituSajaPage() {
         />
       </div>
 
-      {/* Hero Section */}
+      {/* ✅ HERO SECTION - Judul dikoreksi */}
       <section id="pembuka" className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12">
         <div className="max-w-3xl mx-auto text-center animate-fade-in">
           
+          {/* Label Suasana */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <span className={`text-[10px] tracking-[0.2em] uppercase ${theme.accentMuted}`}>
+              Refleksi
+            </span>
+            <span className={theme.accentMuted}>•</span>
+            <span className={`text-[10px] tracking-[0.2em] uppercase ${theme.accentMuted}`}>
+              Tulisan Pelan
+            </span>
+            <span className={theme.accentMuted}>•</span>
+            <span className={`text-[10px] tracking-[0.2em] uppercase ${theme.accentMuted}`}>
+              7 menit baca
+            </span>
+          </div>
+
           {/* Top Line */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className={`h-px ${darkMode ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-16 animate-expand`} />
@@ -187,7 +205,7 @@ export default function LewatBegituSajaPage() {
             sebuah pengakuan
           </p>
 
-          {/* Main Title */}
+          {/* ✅ Main Title - "Kami Menulis Pelan" */}
           <div className="overflow-hidden mb-8">
             <h1 className={`font-serif text-4xl md:text-6xl lg:text-7xl ${theme.text} flex justify-center flex-wrap`}>
               {letters.map((letter, i) => (
@@ -207,6 +225,13 @@ export default function LewatBegituSajaPage() {
             <p className={`text-sm md:text-base leading-[1.9] ${theme.textMuted} font-light tracking-wide`}>
               {subtitleText}
               <span className={`inline-block w-[2px] h-[1.2em] ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle animate-blink`} />
+            </p>
+          </div>
+
+          {/* ✅ Kalimat Nusuk - Tambahan */}
+          <div className="mt-12 max-w-xl mx-auto animate-fade-in-delayed-2">
+            <p className={`text-lg md:text-xl leading-[1.8] ${theme.accent} font-serif italic border-l-2 ${theme.accentBorder} pl-6 text-left`}>
+              "Ternyata yang bikin kita berhenti nulis… bukan karena gak bisa. Tapi karena takut gak cukup baik."
             </p>
           </div>
 
@@ -339,6 +364,14 @@ export default function LewatBegituSajaPage() {
               Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
             </p>
 
+            {/* ✅ Highlight Moment - Quote Bold */}
+            <div data-reveal="dunia-highlight" id="dunia-highlight" className={`my-12 py-8 px-6 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dunia-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+              <p className={`font-serif text-2xl md:text-3xl ${theme.text} font-medium leading-[1.6]`}>
+                "Menulis pelan…<br/>
+                <span className={theme.accent}>bukan berarti berhenti.</span>"
+              </p>
+            </div>
+
             <p data-reveal="dunia-2" id="dunia-2" className={`text-base md:text-lg leading-[2.2] ${theme.textMuted} font-light text-justify transition-all duration-1000 ${isVisible('dunia-2') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               Algoritma tidak mengenal lelah. Feed terus bergulir, notifikasi terus berdering, konten terus lahir dan mati dalam hitungan detik. Di tengah laju itu, sebuah tulisan yang lahir dari kopi dingin dan mata lelah adalah hal yang paling tidak relevan—dan karena itu, paling jujur.
             </p>
@@ -459,20 +492,52 @@ export default function LewatBegituSajaPage() {
           </div>
         </section>
 
-        {/* Tulisan Lain */}
+        {/* ✅ Closing Kuat - Aftertaste */}
+        <section data-reveal="closing-kuat" id="closing-kuat" className={`mb-20 py-16 text-center transition-all duration-1000 ${isVisible('closing-kuat') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className={`w-20 h-px ${theme.divider} mx-auto mb-10`} />
+          <p className={`font-serif text-3xl md:text-4xl ${theme.text} font-medium leading-[1.5] mb-6`}>
+            Gak apa-apa pelan.
+          </p>
+          <p className={`font-serif text-2xl md:text-3xl ${theme.accent} italic leading-[1.5]`}>
+            Yang penting lo gak berhenti.
+          </p>
+          <div className={`w-20 h-px ${theme.divider} mx-auto mt-10`} />
+        </section>
+
+        {/* ✅ Tulisan Lain - Related Articles */}
         <section className="mt-32 mb-24">
           <div data-reveal="lain-header" id="lain-header" className={`flex items-center justify-between mb-12 pb-4 border-b ${theme.accentBgHeavy} transition-all duration-1000 ${isVisible('lain-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h3 className={`font-serif italic text-xl md:text-2xl ${theme.text}`}>Tulisan-tulisan Lain</h3>
-            <span className={`text-[10px] tracking-[0.3em] uppercase ${theme.accentMuted}`}>Segera</span>
+            <h3 className={`font-serif italic text-xl md:text-2xl ${theme.text}`}>🌿 Tulisan Lain yang Mungkin Lo Butuhin</h3>
           </div>
 
-          <div data-reveal="lain-content" id="lain-content" className={`text-center py-20 transition-all duration-1000 ${isVisible('lain-content') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className={`font-serif italic text-xl ${theme.accentMuted} mb-4 animate-pulse`}>
-              Keheningan yang menunggu
-            </p>
-            <p className={`text-base ${theme.emptyState} mb-2`}>Belum ada kata yang berani keluar.</p>
-            <p className={`text-sm ${theme.subtleText} italic`}>Mungkin besok. Mungkin tidak.</p>
+          <div data-reveal="lain-content" id="lain-content" className={`grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-1000 ${isVisible('lain-content') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {relatedArticles.map((article, i) => (
+              <a 
+                key={i}
+                href={article.link}
+                className={`p-6 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-300 hover:${theme.accentBgHeavy} group`}
+              >
+                <h4 className={`font-serif text-lg ${theme.text} mb-2 group-hover:${theme.accent} transition-colors`}>
+                  {article.title}
+                </h4>
+                <p className={`text-sm ${theme.textMuted}`}>{article.desc}</p>
+              </a>
+            ))}
           </div>
+        </section>
+
+        {/* ✅ CTA - Mulai Nulis */}
+        <section data-reveal="cta-section" id="cta-section" className={`mb-32 py-16 px-8 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('cta-section') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <p className={`text-lg md:text-xl ${theme.textSecondary} italic mb-8 leading-[1.8]`}>
+            "Kalau lo lagi ngerasain hal yang sama…<br/>
+            tulis aja pelan-pelan di sini."
+          </p>
+          <button className={`px-8 py-4 ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} text-white font-medium rounded-full hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg`}>
+            ✍️ Mulai Nulis
+          </button>
+          <p className={`mt-4 text-xs ${theme.textMuted}`}>
+            Gak perlu sempurna. Yang penting jujur.
+          </p>
         </section>
 
         {/* Quote Footer */}
