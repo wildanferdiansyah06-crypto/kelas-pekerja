@@ -95,6 +95,12 @@ export default function MejaKosongPage() {
     visible: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
   };
 
+  // TAMBAHKAN INI - scaleIn yang hilang
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.92 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+  };
+
   const viewportConfig = { once: true, amount: 0.2 };
 
   return (
