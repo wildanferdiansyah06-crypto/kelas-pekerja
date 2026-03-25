@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles, Phone } from 'lucide-react';
+import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DiBalikBarPage() {
@@ -117,10 +117,11 @@ export default function DiBalikBarPage() {
 
   const viewportConfig = { once: true, amount: 0.2 };
 
-  // Related stories data
+  // Related stories data - SUDAH DILENGKAPI SLUG
   const relatedStories = [
     {
       title: "Di Ujung Shift",
+      slug: "di-ujung-shift",
       category: "Barista",
       readTime: "5 menit",
       excerpt: "Tentang jam-jam terakhir ketika kaki sudah tidak merasa, tapi senyum harus tetap ada.",
@@ -128,6 +129,7 @@ export default function DiBalikBarPage() {
     },
     {
       title: "Racikan Pertama",
+      slug: "racikan-pertama",
       category: "Barista",
       readTime: "4 menit",
       excerpt: "Ketika kopi pertama yang lo buat bukan untuk pelanggan, tapi untuk nenek yang tidak pernah datang lagi.",
@@ -135,6 +137,7 @@ export default function DiBalikBarPage() {
     },
     {
       title: "Meja Kosong",
+      slug: "meja-kosong",
       category: "Bartender",
       readTime: "6 menit",
       excerpt: "Cerita tentang meja favorit yang ditinggalkan, dan orang yang selalu duduk di sana setiap Kamis malam.",
@@ -401,7 +404,9 @@ export default function DiBalikBarPage() {
 
             {/* KONTEKS CALL */}
             <motion.div variants={fadeInUp} className={`p-6 ${theme.accentBg} ${theme.accentBorder} border rounded-lg flex items-start gap-4`}>
-              <Phone size={24} className={`${theme.accent} flex-shrink-0 mt-1`} />
+              <div className={`w-10 h-10 rounded-full ${theme.card} flex items-center justify-center flex-shrink-0`}>
+                <span className={theme.accent}>📱</span>
+              </div>
               <div>
                 <p className={`${theme.textHeading} ${fontSizeClasses.body} font-medium mb-2`}>Lagi video call sama pacar</p>
                 <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
@@ -431,7 +436,7 @@ export default function DiBalikBarPage() {
               
               {/* HIGHLIGHT MOMENT - QUOTE BRUTAL */}
               <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
-                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan lanjut sama dia, ya."
+                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan sampai dia jadi seperti itu, ya."
               </blockquote>
               
               <div className="space-y-4">
@@ -636,7 +641,7 @@ export default function DiBalikBarPage() {
           </div>
         </motion.section>
 
-        {/* Related Stories */}
+        {/* Related Stories - SUDAH FIX DENGAN LINK */}
         <motion.section
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -653,7 +658,7 @@ export default function DiBalikBarPage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {relatedStories.map((story, index) => (
-              <Link href={`/cerita/${story.title.toLowerCase().replace(/\s+/g, '-')}`} key={index}>
+              <Link href={`/cerita/${story.slug}`} key={index}>
                 <motion.article
                   whileHover={{ y: -8, transition: { duration: 0.3 } }}
                   className={`group p-6 ${theme.card} border ${theme.border} rounded-lg cursor-pointer h-full flex flex-col`}
