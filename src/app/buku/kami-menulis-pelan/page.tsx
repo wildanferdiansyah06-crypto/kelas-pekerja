@@ -11,6 +11,7 @@ export default function KamiMenulisPelanPage() {
   const [showGooglePopup, setShowGooglePopup] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
   const [visibleItems, setVisibleItems] = useState<Set<string>>(new Set());
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   
   const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
@@ -121,7 +122,6 @@ export default function KamiMenulisPelanPage() {
     popupHover: darkMode ? "hover:bg-[#1c1917]" : "hover:bg-stone-50"
   };
 
-  // ✅ KOREKSI: Judul sekarang "Kami Menulis Pelan"
   const title = "Kami Menulis Pelan";
   const letters = title.split("");
   const backgroundOffset = scrollY * -0.08;
@@ -134,10 +134,29 @@ export default function KamiMenulisPelanPage() {
     setShowGooglePopup(false);
   };
 
+  // ✅ KOREKSI: Link related articles yang bener
   const relatedArticles = [
-    { title: "Di Balik Bar", desc: "Realita keras pekerja malam", link: "/buku/di-balik-bar" },
-    { title: "Di Atas Cangkir", desc: "Refleksi di ujung lidah", link: "/buku/di-atas-cangkir" },
-    { title: "Sisa Shift", desc: "Catatan dari yang tersisa", link: "/buku/sisa-shift" }
+    { 
+      title: 'Di Balik Bar', 
+      desc: 'Realita keras pekerja malam yang tak pernah tidur', 
+      link: '/buku/di-balik-bar',
+      readTime: '6 menit',
+      mood: 'keras'
+    },
+    { 
+      title: 'Di Atas Cangkir', 
+      desc: 'Refleksi di ujung lidah sebelum kopi dingin', 
+      link: '/buku/di-atas-cangkir-yang-sama',
+      readTime: '5 menit',
+      mood: 'filosofis'
+    },
+    { 
+      title: 'Di Ujung Shift', 
+      desc: 'Catatan dari yang tersisa di penghujung hari', 
+      link: '/cerita/di-ujung-shift',
+      readTime: '4 menit',
+      mood: 'lelah'
+    }
   ];
 
   return (
@@ -172,7 +191,7 @@ export default function KamiMenulisPelanPage() {
         />
       </div>
 
-      {/* ✅ HERO SECTION - Judul dikoreksi */}
+      {/* Hero Section */}
       <section id="pembuka" className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12">
         <div className="max-w-3xl mx-auto text-center animate-fade-in">
           
@@ -205,7 +224,7 @@ export default function KamiMenulisPelanPage() {
             sebuah pengakuan
           </p>
 
-          {/* ✅ Main Title - "Kami Menulis Pelan" */}
+          {/* Main Title */}
           <div className="overflow-hidden mb-8">
             <h1 className={`font-serif text-4xl md:text-6xl lg:text-7xl ${theme.text} flex justify-center flex-wrap`}>
               {letters.map((letter, i) => (
@@ -228,7 +247,7 @@ export default function KamiMenulisPelanPage() {
             </p>
           </div>
 
-          {/* ✅ Kalimat Nusuk - Tambahan */}
+          {/* Kalimat Nusuk */}
           <div className="mt-12 max-w-xl mx-auto animate-fade-in-delayed-2">
             <p className={`text-lg md:text-xl leading-[1.8] ${theme.accent} font-serif italic border-l-2 ${theme.accentBorder} pl-6 text-left`}>
               "Ternyata yang bikin kita berhenti nulis… bukan karena gak bisa. Tapi karena takut gak cukup baik."
@@ -257,7 +276,6 @@ export default function KamiMenulisPelanPage() {
             </div>
           </div>
 
-          {/* Opening Paragraph */}
           <div data-reveal="sisa-open" id="sisa-open" className={`mb-12 transition-all duration-1000 delay-100 ${isVisible('sisa-open') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <p className={`text-base md:text-lg leading-[2.2] ${theme.textSecondary} font-light text-justify`}>
               <span className={`float-left text-6xl md:text-7xl font-serif ${theme.accent} mr-4 mt-2 leading-none`}>
@@ -272,7 +290,6 @@ export default function KamiMenulisPelanPage() {
               Kelas pekerja menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak. Sisa waktu yang tidak dimiliki siapa-siapa. Sisa pikiran yang belum habis dipakai bekerja. Kami menulis bukan karena yakin, tapi karena diam-diam tahu: kalau tidak ditulis, hari ini akan hilang.
             </p>
 
-            {/* Three Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-14">
               {[
                 { id: 'sisa-card-1', title: 'Sisa tenaga.', desc: 'Yang tidak cukup untuk tidur nyenyak' },
@@ -296,7 +313,6 @@ export default function KamiMenulisPelanPage() {
               Tulisan kami lahir dari tubuh yang ingin rebah tapi masih memaksa duduk. Karena itu, ia tidak pandai meminta perhatian. Ia hanya diam, menunggu, dan kadang—ketika dunia luar melewatinya begitu saja—rasanya masih bisa diterima.
             </p>
 
-            {/* Quote Block */}
             <div data-reveal="sisa-quote" id="sisa-quote" className={`my-16 pl-8 border-l-2 ${theme.accentBorder} transition-all duration-1000 ${isVisible('sisa-quote') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
               <blockquote className={`font-serif italic text-xl md:text-2xl ${theme.accent} leading-[1.7]`}>
                 &ldquo;Karya itu seperti bekal yang dimakan dingin di sela jam kerja. Tidak mewah. Tidak istimewa. Ia hanya ingin dibuka, meski hanya untuk memastikan bahwa ia belum basi.&rdquo;
@@ -325,7 +341,6 @@ export default function KamiMenulisPelanPage() {
               Ada orang yang paling dekat. Yang melihat lelahku tanpa perlu aku jelaskan. Buku itu ada di sana, berbulan-bulan. Aku tidak pernah bertanya. Karena aku tahu, jawabannya akan lebih menyakitkan jika diucapkan.
             </p>
 
-            {/* Poetic Centerpiece */}
             <div data-reveal="dekat-poetic" id="dekat-poetic" className={`my-16 py-12 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dekat-poetic') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
               <p className={`font-serif text-2xl md:text-3xl ${theme.textSecondary} italic leading-[1.8]`}>
                 Kadang, yang paling sunyi bukan tidak dibaca, tapi disadari bahwa bahkan yang terdekat pun tidak sempat berhenti.
@@ -340,7 +355,6 @@ export default function KamiMenulisPelanPage() {
               Aku tidak menyalahkan siapa-siapa. Dunia ini berputar terlalu cepat untuk berhenti membaca tulisan seseorang yang sedang lelah. Yang terdekat pun punya lelahnya sendiri, punya tautan-tautan yang mereka kirim dan tidak dibalas, punya buku-buku yang mereka tulis dan tidak dibaca.
             </p>
 
-            {/* Nested Quote */}
             <div data-reveal="dekat-quote" id="dekat-quote" className={`my-14 pl-6 border-l ${theme.accentBorder} transition-all duration-1000 ${isVisible('dekat-quote') ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
               <p className={`text-base md:text-lg leading-[2] ${theme.textSecondary} italic`}>
                 &ldquo;Yang paling dekat adalah yang paling tahu cara melukai tanpa terlihat melukai. Bukan karena mereka jahat, tapi karena mereka dekat—dan jarak nol adalah jarak yang paling sulit untuk dilihat.&rdquo;
@@ -364,7 +378,6 @@ export default function KamiMenulisPelanPage() {
               Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
             </p>
 
-            {/* ✅ Highlight Moment - Quote Bold */}
             <div data-reveal="dunia-highlight" id="dunia-highlight" className={`my-12 py-8 px-6 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('dunia-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
               <p className={`font-serif text-2xl md:text-3xl ${theme.text} font-medium leading-[1.6]`}>
                 "Menulis pelan…<br/>
@@ -376,7 +389,6 @@ export default function KamiMenulisPelanPage() {
               Algoritma tidak mengenal lelah. Feed terus bergulir, notifikasi terus berdering, konten terus lahir dan mati dalam hitungan detik. Di tengah laju itu, sebuah tulisan yang lahir dari kopi dingin dan mata lelah adalah hal yang paling tidak relevan—dan karena itu, paling jujur.
             </p>
 
-            {/* Contrast Box */}
             <div data-reveal="dunia-box" id="dunia-box" className={`my-14 p-8 ${darkMode ? 'bg-[#141210]' : 'bg-white'} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('dunia-box') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <div className="flex items-start gap-6">
                 <div className={`text-4xl ${theme.accent}`}>⚡</div>
@@ -411,7 +423,6 @@ export default function KamiMenulisPelanPage() {
             </div>
           </div>
 
-          {/* Highlight Box */}
           <div data-reveal="menulis-highlight" id="menulis-highlight" className={`mb-12 p-8 md:p-10 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-1000 ${isVisible('menulis-highlight') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <p className={`text-lg md:text-xl leading-[2] ${theme.text} font-light text-center italic`}>
               Aku tetap menulis bukan karena yakin akan dibaca. Aku menulis karena jika tidak, hari-hari ini akan runtuh tanpa saksi. Menulis adalah caraku mengatakan pada diri sendiri bahwa aku pernah ada di hari ini.
@@ -423,7 +434,6 @@ export default function KamiMenulisPelanPage() {
               Ada yang menulis untuk mengubah dunia. Ada yang menulis untuk mengubah orang. Aku menulis untuk mengubah satu hal saja: kesadaran diri sendiri bahwa aku masih hidup. Bahwa di antara bangun dan tidur, ada sesuatu yang terjadi. Bahwa di antara kerja dan lelah, ada sesuatu yang dirasakan.
             </p>
 
-            {/* Numbered List */}
             <div className="my-14 space-y-6">
               {[
                 { id: 'menulis-reason-1', text: 'Untuk mengingat bahwa aku pernah merasa sesuatu hari ini' },
@@ -448,7 +458,6 @@ export default function KamiMenulisPelanPage() {
               Menulis adalah bentuk terendah hati dari pemberontakan. Pemberontakan melawan lupa. Melawan hilang. Melawan suara-suara yang bilang "tidak ada yang peduli" dengan cara yang paling sederhana: tetap menulis, meski tidak ada yang peduli.
             </p>
 
-            {/* Final Quote of Section */}
             <div data-reveal="menulis-quote" id="menulis-quote" className={`my-16 text-center transition-all duration-1000 ${isVisible('menulis-quote') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <p className={`font-serif text-2xl md:text-3xl ${theme.accent} italic leading-[1.7]`}>
                 &ldquo;Setiap tulisan adalah bukti eksistensi. Bukan eksistensi yang penting, tapi eksistensi yang pernah ada.&rdquo;
@@ -480,7 +489,6 @@ export default function KamiMenulisPelanPage() {
               Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, dalam keadaan tidak yakin akan apa-apa—itu sudah cukup. Jika tidak, tidak apa-apa.
             </p>
 
-            {/* Big Final Statement */}
             <div data-reveal="penutup-final" id="penutup-final" className={`py-16 px-8 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('penutup-final') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
               <p className={`font-serif text-3xl md:text-4xl ${theme.accent} italic leading-[1.6]`}>
                 Ia tetap ditulis.
@@ -492,7 +500,7 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* ✅ Closing Kuat - Aftertaste */}
+        {/* Closing Kuat */}
         <section data-reveal="closing-kuat" id="closing-kuat" className={`mb-20 py-16 text-center transition-all duration-1000 ${isVisible('closing-kuat') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className={`w-20 h-px ${theme.divider} mx-auto mb-10`} />
           <p className={`font-serif text-3xl md:text-4xl ${theme.text} font-medium leading-[1.5] mb-6`}>
@@ -504,40 +512,135 @@ export default function KamiMenulisPelanPage() {
           <div className={`w-20 h-px ${theme.divider} mx-auto mt-10`} />
         </section>
 
-        {/* ✅ Tulisan Lain - Related Articles */}
+        {/* ✅ TULISAN LAIN - Design yang lebih modern dan nyaman */}
         <section className="mt-32 mb-24">
-          <div data-reveal="lain-header" id="lain-header" className={`flex items-center justify-between mb-12 pb-4 border-b ${theme.accentBgHeavy} transition-all duration-1000 ${isVisible('lain-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h3 className={`font-serif italic text-xl md:text-2xl ${theme.text}`}>🌿 Tulisan Lain yang Mungkin Lo Butuhin</h3>
+          <div data-reveal="lain-header" id="lain-header" className={`mb-12 transition-all duration-1000 ${isVisible('lain-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">🌿</span>
+              <h3 className={`font-serif italic text-2xl md:text-3xl ${theme.text}`}>Tulisan Lain yang Mungkin Lo Butuhin</h3>
+            </div>
+            <p className={`text-sm ${theme.textMuted} ml-9`}>
+              Dari ruang yang sama, untuk hati yang sama
+            </p>
           </div>
 
-          <div data-reveal="lain-content" id="lain-content" className={`grid grid-cols-1 md:grid-cols-3 gap-4 transition-all duration-1000 ${isVisible('lain-content') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div data-reveal="lain-content" id="lain-content" className={`space-y-4 transition-all duration-1000 ${isVisible('lain-content') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             {relatedArticles.map((article, i) => (
               <a 
                 key={i}
                 href={article.link}
-                className={`p-6 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-300 hover:${theme.accentBgHeavy} group`}
+                onMouseEnter={() => setHoveredCard(i)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className={`group flex items-center gap-6 p-6 ${theme.accentBg} ${theme.accentBorder} border transition-all duration-500 hover:${theme.accentBgHeavy} relative overflow-hidden`}
               >
-                <h4 className={`font-serif text-lg ${theme.text} mb-2 group-hover:${theme.accent} transition-colors`}>
-                  {article.title}
-                </h4>
-                <p className={`text-sm ${theme.textMuted}`}>{article.desc}</p>
+                {/* Hover accent line */}
+                <div className={`absolute left-0 top-0 bottom-0 w-1 ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} transition-all duration-500 ${hoveredCard === i ? 'opacity-100' : 'opacity-0'}`} />
+                
+                {/* Number */}
+                <span className={`text-4xl font-serif ${theme.accentLight} transition-all duration-300 ${hoveredCard === i ? 'scale-110 ' + theme.accent : ''}`}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h4 className={`font-serif text-xl ${theme.text} group-hover:${theme.accent} transition-colors duration-300`}>
+                      {article.title}
+                    </h4>
+                    <span className={`text-[10px] px-2 py-1 rounded-full ${theme.accentBg} ${theme.accent} uppercase tracking-wider`}>
+                      {article.mood}
+                    </span>
+                  </div>
+                  <p className={`text-sm ${theme.textMuted} leading-relaxed`}>{article.desc}</p>
+                </div>
+                
+                {/* Meta */}
+                <div className="text-right hidden md:block">
+                  <span className={`text-xs ${theme.textMuted} block mb-1`}>{article.readTime}</span>
+                  <svg 
+                    className={`w-5 h-5 ${theme.accent} transition-all duration-300 ${hoveredCard === i ? 'translate-x-1' : ''}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </a>
             ))}
           </div>
+
+          {/* Additional context */}
+          <div data-reveal="lain-footer" id="lain-footer" className={`mt-8 text-center transition-all duration-1000 ${isVisible('lain-footer') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <p className={`text-sm ${theme.textMuted} italic`}>
+              "Setiap tulisan punya waktunya sendiri. Yang penting, kita tetap menulis."
+            </p>
+          </div>
         </section>
 
-        {/* ✅ CTA - Mulai Nulis */}
-        <section data-reveal="cta-section" id="cta-section" className={`mb-32 py-16 px-8 ${theme.accentBgHeavy} ${theme.accentBorder} border text-center transition-all duration-1000 ${isVisible('cta-section') ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <p className={`text-lg md:text-xl ${theme.textSecondary} italic mb-8 leading-[1.8]`}>
-            "Kalau lo lagi ngerasain hal yang sama…<br/>
-            tulis aja pelan-pelan di sini."
-          </p>
-          <button className={`px-8 py-4 ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} text-white font-medium rounded-full hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg`}>
-            ✍️ Mulai Nulis
-          </button>
-          <p className={`mt-4 text-xs ${theme.textMuted}`}>
-            Gak perlu sempurna. Yang penting jujur.
-          </p>
+        {/* ✅ CTA MULAI NULIS - Design yang lebih nyambung dengan tema */}
+        <section data-reveal="cta-section" id="cta-section" className={`mb-32 transition-all duration-1000 ${isVisible('cta-section') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {/* Top decorative element */}
+          <div className="flex items-center justify-center gap-4 mb-12">
+            <div className={`h-px ${theme.divider} w-24`} />
+            <div className={`w-2 h-2 rounded-full ${theme.accentBgHeavy} ${theme.accentBorder} border`} />
+            <div className={`h-px ${theme.divider} w-24`} />
+          </div>
+
+          <div className={`relative p-8 md:p-12 ${theme.accentBg} ${theme.accentBorder} border`}>
+            {/* Corner decorations */}
+            <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 ${theme.accentBorder}`} />
+            <div className={`absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 ${theme.accentBorder}`} />
+            <div className={`absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 ${theme.accentBorder}`} />
+            <div className={`absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 ${theme.accentBorder}`} />
+
+            <div className="text-center max-w-2xl mx-auto">
+              {/* Icon */}
+              <div className="mb-6">
+                <span className="text-4xl">✍️</span>
+              </div>
+
+              {/* Quote */}
+              <blockquote className={`font-serif text-xl md:text-2xl ${theme.text} italic leading-[1.8] mb-8`}>
+                "Kalau lo lagi ngerasain hal yang sama…<br/>
+                <span className={theme.accent}>tulis aja pelan-pelan.</span><br/>
+                Gak perlu sempurna.<br/>
+                Yang penting, <span className={theme.accent}>jujur.</span>"
+              </blockquote>
+
+              {/* Divider */}
+              <div className={`w-16 h-px ${theme.divider} mx-auto mb-8`} />
+
+              {/* CTA Button - ✅ Link ke /tulis */}
+              <a 
+                href="/tulis"
+                className={`inline-flex items-center gap-3 px-8 py-4 ${darkMode ? 'bg-[#8b7355] hover:bg-[#9a8264]' : 'bg-[#a16207] hover:bg-[#b87309]'} text-white font-medium rounded-none transition-all duration-500 hover:scale-105 shadow-lg group`}
+              >
+                <span>Mulai Nulis</span>
+                <svg 
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </a>
+
+              {/* Supporting text */}
+              <p className={`mt-6 text-sm ${theme.textMuted} italic`}>
+                Gak ada yang bakal nilai. Gak ada yang bakal judge.<br/>
+                Ini cuma buat lo. Dan mungkin, buat yang butuh dengar.
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom decorative element */}
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <div className={`h-px ${theme.divider} w-16`} />
+            <span className={`text-[10px] tracking-[0.3em] uppercase ${theme.accentMuted}`}>Dari sisa, untuk sisa</span>
+            <div className={`h-px ${theme.divider} w-16`} />
+          </div>
         </section>
 
         {/* Quote Footer */}
@@ -573,7 +676,6 @@ export default function KamiMenulisPelanPage() {
 
       {/* Google Popup - Bottom Left */}
       <div className="fixed bottom-6 left-6 z-50">
-        {/* Toggle Button */}
         <button
           onClick={() => setShowGooglePopup(!showGooglePopup)}
           className={`flex items-center gap-3 px-5 py-3 rounded-full ${theme.popup} border shadow-2xl backdrop-blur-xl transition-all duration-300 hover:scale-105`}
@@ -589,10 +691,8 @@ export default function KamiMenulisPelanPage() {
           </div>
         </button>
 
-        {/* Popup Menu */}
         {showGooglePopup && (
           <div className={`absolute bottom-full left-0 mb-3 w-72 ${theme.popup} border rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden animate-popup-up`}>
-            {/* Header */}
             <div className={`p-4 border-b ${theme.accentBorder} flex items-center justify-between`}>
               <span className={`text-xs tracking-[0.2em] uppercase ${theme.accentMuted} font-semibold`}>Navigasi</span>
               <button 
@@ -605,7 +705,6 @@ export default function KamiMenulisPelanPage() {
               </button>
             </div>
 
-            {/* Section List */}
             <div className="p-2">
               {sections.map((section, index) => (
                 <button
@@ -630,7 +729,6 @@ export default function KamiMenulisPelanPage() {
               ))}
             </div>
 
-            {/* Theme Toggle */}
             <div className={`p-3 border-t ${theme.accentBorder}`}>
               <button
                 onClick={toggleTheme}
@@ -656,7 +754,6 @@ export default function KamiMenulisPelanPage() {
               </button>
             </div>
 
-            {/* Progress */}
             <div className={`px-4 py-3 border-t ${theme.accentBorder} bg-opacity-50`}>
               <div className={`h-1 ${darkMode ? 'bg-[#1c1917]' : 'bg-[#e7e5e4]'} rounded-full overflow-hidden`}>
                 <div 
