@@ -103,9 +103,7 @@ export default function KamiMenulisPelanPage() {
 
   const darkMode = globalTheme === 'dark';
 
-  // ✅ THEME COLORS dengan depth
   const theme = {
-    // Background dengan gradient depth
     bg: darkMode ? "bg-[#0c0b0a]" : "bg-[#fafaf9]",
     bgGradient: darkMode 
       ? "bg-gradient-to-b from-[#0a0908] via-[#11100f] to-[#0a0908]" 
@@ -126,7 +124,6 @@ export default function KamiMenulisPelanPage() {
     particle: darkMode ? "bg-[#8b7355]/30" : "bg-[#a16207]/20",
     popup: darkMode ? "bg-[#141210]/90 border-[#8b7355]/20" : "bg-white/90 border-[#a16207]/20",
     popupHover: darkMode ? "hover:bg-[#1c1917]/80" : "hover:bg-stone-50/80",
-    // ✅ Radial glow untuk fokus
     radialGlow: darkMode 
       ? "radial-gradient(circle at 50% 0%, rgba(139, 115, 85, 0.08), transparent 50%)" 
       : "radial-gradient(circle at 50% 0%, rgba(161, 98, 7, 0.06), transparent 50%)"
@@ -171,23 +168,22 @@ export default function KamiMenulisPelanPage() {
   return (
     <div ref={mainRef} className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
       
-      {/* ✅ BACKGROUND LAYERS - Depth System */}
+      {/* BACKGROUND LAYERS - Depth System */}
       
       {/* Layer 1: Base Gradient */}
       <div className={`absolute inset-0 ${theme.bgGradient} pointer-events-none`} />
       
-      {/* Layer 2: Radial Glow (fokus ke hero) */}
+      {/* Layer 2: Radial Glow */}
       <div 
         className="absolute inset-0 pointer-events-none transition-opacity duration-1000"
         style={{ 
           background: theme.radialGlow,
-          opacity: Math.max(0, 1 - scrollY / 800) // Fade out saat scroll
+          opacity: Math.max(0, 1 - scrollY / 800)
         }} 
       />
       
-      {/* Layer 3: Section-based depth (subtle zones) */}
+      {/* Layer 3: Section-based depth */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Zone untuk section klimaks (Titik Berhenti) - sedikit lebih terang */}
         <div 
           className={`absolute w-full h-[800px] transition-opacity duration-1000 ${darkMode ? 'bg-[#8b7355]/[0.02]' : 'bg-[#a16207]/[0.015]'}`}
           style={{ 
@@ -197,13 +193,13 @@ export default function KamiMenulisPelanPage() {
         />
       </div>
 
-      {/* Layer 4: Noise Texture (grain) */}
+      {/* Layer 4: Noise Texture */}
       <div className={`absolute inset-0 ${theme.noise} pointer-events-none mix-blend-overlay`} style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         backgroundSize: '200px 200px'
       }} />
 
-      {/* Layer 5: Vignette (gelap di pinggir) */}
+      {/* Layer 5: Vignette */}
       <div 
         className="fixed inset-0 pointer-events-none z-[1]"
         style={{
@@ -216,7 +212,7 @@ export default function KamiMenulisPelanPage() {
         }}
       />
 
-      {/* Floating Particles dengan depth */}
+      {/* Floating Particles */}
       <div className="absolute inset-0 pointer-events-none z-[2]" style={{ transform: `translateY(${backgroundOffset}px)` }}>
         {[0, 1, 2, 3, 4, 5, 6].map((i) => (
           <div
@@ -227,16 +223,16 @@ export default function KamiMenulisPelanPage() {
               top: `${15 + (i % 4) * 22}%`,
               animationDelay: `${i * 0.7}s`,
               animationDuration: `${7 + i * 0.6}s`,
-              opacity: 0.3 + (i % 3) * 0.2 // Varied opacity untuk depth
+              opacity: 0.3 + (i % 3) * 0.2
             }}
           />
         ))}
       </div>
 
-      {/* Progress Bar dengan glow */}
+      {/* Progress Bar */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#1c1917]' : 'bg-[#e7e5e4]'}`}>
         <div 
-          className={`h-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]} transition-all duration-300 relative`}
+          className={`h-full ${darkMode ? 'bg-[#8b7355]' : 'bg-[#a16207]'} transition-all duration-300 relative`}
           style={{ 
             width: `${Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)}%`,
             boxShadow: darkMode ? '0 0 10px rgba(139, 115, 85, 0.5)' : 'none'
@@ -244,9 +240,8 @@ export default function KamiMenulisPelanPage() {
         />
       </div>
 
-      {/* HERO SECTION dengan depth */}
+      {/* HERO SECTION */}
       <section id="pembuka" className="relative z-10 min-h-[90vh] flex flex-col justify-center items-center px-6 pt-24 pb-12">
-        {/* Subtle glow di belakang title */}
         <div 
           className={`absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000 ${darkMode ? 'bg-[#8b7355]/10' : 'bg-[#a16207]/8'}`}
         />
@@ -268,7 +263,7 @@ export default function KamiMenulisPelanPage() {
             </span>
           </div>
 
-          {/* Top Line dengan glow */}
+          {/* Top Line */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className={`h-px ${darkMode ? 'bg-gradient-to-r from-transparent via-[#8b7355]/40 to-transparent' : 'bg-gradient-to-r from-transparent via-[#a16207]/40 to-transparent'} w-16 animate-expand`} />
             <span className={`text-[10px] tracking-[0.5em] uppercase ${theme.accentMuted} animate-fade-in-delayed`}>
@@ -282,7 +277,7 @@ export default function KamiMenulisPelanPage() {
             sebuah pengakuan
           </p>
 
-          {/* Main Title dengan text shadow untuk depth */}
+          {/* Main Title */}
           <div className="overflow-hidden mb-8">
             <h1 
               className={`font-serif text-4xl md:text-6xl lg:text-7xl ${theme.text} flex justify-center flex-wrap`}
@@ -310,7 +305,7 @@ export default function KamiMenulisPelanPage() {
             </p>
           </div>
 
-          {/* Kalimat Nusuk dengan backdrop blur */}
+          {/* Kalimat Nusuk */}
           <div className="mt-12 max-w-xl mx-auto animate-fade-in-delayed-2">
             <div 
               className={`p-6 ${theme.accentBg} ${theme.accentBorder} border-l-4 backdrop-blur-sm relative overflow-hidden`}
@@ -318,7 +313,6 @@ export default function KamiMenulisPelanPage() {
                 borderLeftColor: darkMode ? 'rgba(139, 115, 85, 0.6)' : 'rgba(161, 98, 7, 0.6)'
               }}
             >
-              {/* Subtle inner glow */}
               <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-r from-[#8b7355]/5 to-transparent' : 'bg-gradient-to-r from-[#a16207]/5 to-transparent'}`} />
               <span className={`absolute -top-3 -left-2 text-4xl ${theme.accent} opacity-20`}>❝</span>
               <p className={`text-lg md:text-xl leading-[1.8] ${theme.text} font-serif italic text-left pl-4 relative z-10`}>
@@ -365,7 +359,7 @@ export default function KamiMenulisPelanPage() {
               Kelas pekerja menulis dari sisa. Sisa tenaga yang tidak cukup untuk tidur nyenyak. Sisa waktu yang tidak dimiliki siapa-siapa. Sisa pikiran yang belum habis dipakai bekerja. Kami menulis bukan karena yakin, tapi karena diam-diam tahu: kalau tidak ditulis, hari ini akan hilang.
             </p>
 
-            {/* Cards dengan hover depth */}
+            {/* Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-14">
               {[
                 { id: 'sisa-card-1', title: 'Sisa tenaga.', desc: 'Yang tidak cukup untuk tidur nyenyak' },
@@ -376,7 +370,7 @@ export default function KamiMenulisPelanPage() {
                   key={item.id}
                   data-reveal={item.id}
                   id={item.id}
-                  className={`p-6 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-500 hover:${theme.accentBgHeavy} hover:scale-[1.02] hover:shadow-lg ${isVisible(item.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                  className={`p-6 ${theme.accentBg} ${theme.accentBorder} border text-center transition-all duration-500 hover:${theme.accentBgHeavy} hover:scale-[1.02] ${isVisible(item.id) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                   style={{ 
                     transitionDelay: `${i * 150}ms`,
                     boxShadow: darkMode ? '0 4px 20px rgba(0,0,0,0.3)' : '0 4px 20px rgba(0,0,0,0.05)'
@@ -394,9 +388,8 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* Section: Titik Berhenti (Klimaks) - dengan background zone */}
+        {/* Section: Titik Berhenti */}
         <section id="berhenti" className="mb-24 scroll-mt-24 relative">
-          {/* Subtle zone indicator */}
           <div className={`absolute -inset-x-8 -inset-y-4 ${darkMode ? 'bg-[#8b7355]/[0.02]' : 'bg-[#a16207]/[0.015]'} rounded-2xl -z-10`} />
           
           <div data-reveal="berhenti-header" id="berhenti-header" className={`flex items-center gap-4 mb-12 pb-4 border-b ${theme.accentBorder} transition-all duration-1000 ${isVisible('berhenti-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -408,7 +401,6 @@ export default function KamiMenulisPelanPage() {
           </div>
 
           <div className="space-y-8">
-            {/* Punchline dengan depth */}
             <div 
               data-reveal="berhenti-punch" 
               id="berhenti-punch" 
@@ -436,7 +428,6 @@ export default function KamiMenulisPelanPage() {
               Titik berhenti bukan saat pena kering. Titik berhenti adalah saat kita mulai menghitung: berapa lama lagi sampai ada yang peduli? Dan jawabannya terlalu sering: mungkin tidak pernah.
             </p>
 
-            {/* Quote dengan border glow */}
             <div 
               data-reveal="berhenti-quote" 
               id="berhenti-quote" 
@@ -510,7 +501,6 @@ export default function KamiMenulisPelanPage() {
               Kalau yang dekat saja tidak sempat, aku tidak tahu apa yang bisa kuharapkan dari dunia yang asing. Dunia tidak kejam. Ia hanya tidak berhenti. Dan yang tidak berhenti jarang sempat melihat apa yang lahir pelan.
             </p>
 
-            {/* Highlight dengan depth */}
             <div 
               data-reveal="dunia-highlight" 
               id="dunia-highlight" 
@@ -568,7 +558,6 @@ export default function KamiMenulisPelanPage() {
               Ada yang menulis untuk mengubah dunia. Ada yang menulis untuk mengubah orang. Aku menulis untuk mengubah satu hal saja: kesadaran diri sendiri bahwa aku masih hidup.
             </p>
 
-            {/* Quote dengan depth */}
             <div data-reveal="menulis-quote" id="menulis-quote" className={`my-16 text-center transition-all duration-1000 ${isVisible('menulis-quote') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <div 
                 className={`inline-block p-8 ${theme.accentBg} ${theme.accentBorder} border`}
@@ -615,7 +604,6 @@ export default function KamiMenulisPelanPage() {
               Dan jika suatu hari seseorang membacanya dalam keadaan lelah, dalam keadaan sepi, dalam keadaan tidak yakin akan apa-apa—itu sudah cukup.
             </p>
 
-            {/* Final dengan depth */}
             <div 
               data-reveal="penutup-final" 
               id="penutup-final" 
@@ -655,7 +643,7 @@ export default function KamiMenulisPelanPage() {
         </section>
 
         {/* Related Articles */}
-                <section className="mt-32 mb-24">
+        <section className="mt-32 mb-24">
           <div data-reveal="lain-header" id="lain-header" className={`mb-12 transition-all duration-1000 ${isVisible('lain-header') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">🌿</span>
@@ -730,7 +718,7 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* CTA FINAL - Trigger Menulis dengan depth */}
+        {/* CTA FINAL */}
         <section data-reveal="cta-section" id="cta-section" className={`mb-32 transition-all duration-1000 ${isVisible('cta-section') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="flex items-center justify-center gap-4 mb-12">
             <div className={`h-px ${theme.divider} w-24`} />
@@ -788,7 +776,6 @@ export default function KamiMenulisPelanPage() {
                     : '0 4px 20px rgba(161, 98, 7, 0.2), 0 8px 30px rgba(0,0,0,0.1)'
                 }}
               >
-                {/* Hover glow effect */}
                 <div 
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
@@ -823,7 +810,7 @@ export default function KamiMenulisPelanPage() {
           </div>
         </section>
 
-        {/* Quote Footer dengan depth */}
+        {/* Quote Footer */}
         <div data-reveal="footer-quote" id="footer-quote" className={`mt-32 text-center transition-all duration-1000 ${isVisible('footer-quote') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className={`w-16 h-px ${theme.divider} mx-auto mb-10 animate-expand`} />
           <p className={`font-serif italic text-lg md:text-xl ${theme.accentMuted} max-w-2xl mx-auto leading-[1.9] mb-6`}>
@@ -834,9 +821,8 @@ export default function KamiMenulisPelanPage() {
           </p>
         </div>
 
-        {/* Final Footer dengan depth */}
+        {/* Final Footer */}
         <div data-reveal="footer-final" id="footer-final" className={`mt-32 text-center pb-24 transition-all duration-1000 ${isVisible('footer-final') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          {/* Subtle glow di belakang footer text */}
           <div 
             className={`absolute left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full blur-[100px] pointer-events-none -z-10 ${darkMode ? 'bg-[#8b7355]/5' : 'bg-[#a16207]/5'}`}
           />
@@ -864,7 +850,7 @@ export default function KamiMenulisPelanPage() {
         </div>
       </div>
 
-      {/* Navigation Popup dengan depth */}
+      {/* Navigation Popup */}
       <div className="fixed bottom-6 left-6 z-50">
         <button
           onClick={() => setShowGooglePopup(!showGooglePopup)}
@@ -974,7 +960,7 @@ export default function KamiMenulisPelanPage() {
               </button>
             </div>
 
-            <div className={`px-4 py-3 border-t bg-opacity-50`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
+                        <div className={`px-4 py-3 border-t bg-opacity-50`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
               <div className={`h-1 rounded-full overflow-hidden`} style={{ backgroundColor: darkMode ? 'rgba(28, 25, 23, 0.5)' : 'rgba(231, 229, 228, 0.5)' }}>
                 <div 
                   className={`h-full transition-all duration-300`}
