@@ -436,7 +436,7 @@ export default function DiBalikBarPage() {
               
               {/* HIGHLIGHT MOMENT - QUOTE BRUTAL */}
               <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
-                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan sampai dia jadi seperti itu, ya."
+                "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan lanjutin sama anak itu, ya."
               </blockquote>
               
               <div className="space-y-4">
