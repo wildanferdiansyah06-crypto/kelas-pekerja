@@ -79,7 +79,7 @@ export default async function HomePage() {
           </h1>
           
           <p className="text-xl md:text-2xl text-[#c4b5a0] mb-4 max-w-2xl mx-auto leading-relaxed">
-            Tempat cerita orang-orang yang tetap jalan, meski capek.
+            Tempat cerita orang-orang yang tetap jalan, meski lelah.
           </p>
 
           <p className="text-sm md:text-base text-[#8b7355] max-w-md mx-auto mb-12 leading-relaxed opacity-80">
