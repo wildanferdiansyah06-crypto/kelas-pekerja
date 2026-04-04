@@ -4,14 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, ArrowUpRight, Clock, ArrowRight, Bookmark } from "lucide-react";
-import { Book } from "@/types/book";
+import { Book } from "@/src/types";
 
 interface BookCardProps {
   book: Book;
   index?: number;
   href?: string;
   onClick?: () => void;
-  variant?: "default" | "compact" | "featured";
+  variant?: "default" | "compact";
 }
 
 export default function BookCard({ 
@@ -33,14 +33,10 @@ export default function BookCard({
       : book.excerpt
     : "Belum ada deskripsi untuk buku ini.";
 
-  const author = book.author || "Kelas Pekerja";
-  
   // Animation delay calculation
   const animationDelay = `${index * 100}ms`;
   
-  // Variant-based styling
   const isCompact = variant === "compact";
-  const isFeatured = variant === "featured";
 
   const cardContent = (
     <article
@@ -60,8 +56,7 @@ export default function BookCard({
                    group-hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)]
                    group-hover:-translate-y-2
                    transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]
-                   ${isCompact ? 'aspect-[16/10]' : 'aspect-[16/10]'}
-                   ${isFeatured ? 'md:aspect-[16/9]' : ''}`}
+                   ${isCompact ? 'aspect-[16/10]' : 'aspect-[16/10]'}`}
       >
         <Image
           src={book.cover}
@@ -103,7 +98,7 @@ export default function BookCard({
           <div className="flex items-center gap-3 text-white/70 text-xs mb-3 flex-wrap">
             <span className="flex items-center gap-1.5 bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
               <Clock size={11} />
-              {book.readTime || "5 min"}
+              {book.readTime || "5 menit"}
             </span>
             {book.pages && (
               <>
@@ -174,7 +169,7 @@ export default function BookCard({
               <Bookmark size={14} className="opacity-40 hover:opacity-70 transition-opacity" />
             </button>
             <span className="text-[11px] uppercase tracking-wider opacity-35 font-medium">
-              {author}
+              {book.category}
             </span>
           </div>
 
