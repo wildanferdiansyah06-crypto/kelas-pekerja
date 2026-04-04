@@ -75,7 +75,25 @@
         "downloads": 43
       },
       "tags": ["proses", "kesabaran", "menulis", "perlahan"]
+    },
+    {
+      "id": "5",
+      "slug": "yang-tertinggal-di-lembah",
+      "title": "Yang Tertinggal Di Lembah",
+      "subtitle": "Sebuah Tafsiran tentang Janji, Kehilangan, dan Arti Sebuah Perjalanan",
+      "excerpt": "Kita selalu diajarkan untuk mendaki. Tapi ada kebohongan yang lebih sunyi: bahwa perjalanan yang sesungguhnya tidak terjadi saat kita berdiri di atas, bersorak, tetapi saat kita merangkak di dasar lembah.",
+      "preview": "Buku ini bukan tentang cara mencapai puncak. Ini tentang mereka yang tetap berada di lembah bersamamu ketika semua orang sudah berlari menuju cahaya. Tentang janji yang ditepati di tempat gelap.",
+      "category": "filosofi",
+      "pages": 48,
+      "readTime": "45 menit",
+      "cover": "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-04-04",
+      "featured": true,
+      "stats": {
+        "views": 0,
+        "downloads": 0
+      },
+      "tags": ["filosofi", "janji", "lembah", "kehilangan", "perjalanan", "teman"]
     }
   ]
 }
-
