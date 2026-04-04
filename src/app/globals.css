@@ -11,13 +11,14 @@
   html {
     scroll-behavior: smooth;
   }
-
-  body {
-    font-feature-settings: "liga" 1, "calt" 1;
-  }
-
+  
   ::selection {
     @apply bg-[#8b7355]/30;
+  }
+  
+  :focus-visible {
+    outline: 2px solid rgba(139, 115, 85, 0.5);
+    outline-offset: 2px;
   }
 }
 
@@ -25,93 +26,23 @@
   .font-serif {
     font-family: var(--font-serif);
   }
-
-  .font-sans {
-    font-family: var(--font-sans);
-  }
 }
 
 @layer utilities {
-  /* === BASE ANIMATIONS === */
+  /* === CORE ANIMATIONS === */
   @keyframes breathe {
     0%, 100% { transform: scale(1.05); }
     50% { transform: scale(1.08); }
   }
 
   @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes slide-in-right {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slide-in-left {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes slide-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* === INTERACTION ANIMATIONS === */
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(-25%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
-    50% {
-      transform: translateY(0);
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  @keyframes pulse-soft {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.8; }
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes shimmer {
@@ -124,88 +55,23 @@
     50% { transform: translateY(-10px); }
   }
 
-  @keyframes wiggle {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
-  }
-
-  /* === EXISTING CLASSES === */
+  /* === CUSTOM CLASSES === */
   .animate-breathe {
     animation: breathe 20s ease-in-out infinite;
-  }
-
-  .animate-fade-in {
-    opacity: 0;
-    animation: fade-in 0.6s ease-out forwards;
-    will-change: opacity;
   }
 
   .animate-fade-in-up {
     opacity: 0;
     animation: fade-in-up 0.6s ease-out forwards;
-    will-change: transform, opacity;
-  }
-
-  .animate-fade-in-slow {
-    opacity: 0;
-    animation: fade-in-up 1s ease-out 0.2s forwards;
-    will-change: transform, opacity;
-  }
-
-  .animate-fade-in-slower {
-    opacity: 0;
-    animation: fade-in-up 1s ease-out 0.4s forwards;
-    will-change: transform, opacity;
-  }
-
-  .animate-fade-in-slowest {
-    opacity: 0;
-    animation: fade-in-up 1s ease-out 0.6s forwards;
-    will-change: transform, opacity;
-  }
-
-  .animate-slide-in-right {
-    opacity: 0;
-    animation: slide-in-right 0.5s ease-out forwards;
-    will-change: transform, opacity;
-  }
-
-  .animate-slide-in-left {
-    opacity: 0;
-    animation: slide-in-left 0.5s ease-out forwards;
-    will-change: transform, opacity;
   }
 
   .animate-slide-in-up {
     opacity: 0;
     animation: slide-in-up 0.7s ease-out forwards;
-    will-change: transform, opacity;
-  }
-
-  /* === NEW INTERACTION CLASSES === */
-  .animate-bounce {
-    animation: bounce 1s infinite;
-  }
-
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-pulse-soft {
-    animation: pulse-soft 3s ease-in-out infinite;
-  }
-
-  .animate-spin {
-    animation: spin 1s linear infinite;
   }
 
   .animate-shimmer {
-    background: linear-gradient(
-      90deg,
-      rgba(139, 115, 85, 0.1) 25%,
-      rgba(139, 115, 85, 0.2) 50%,
-      rgba(139, 115, 85, 0.1) 75%
-    );
+    background: linear-gradient(90deg, rgba(139, 115, 85, 0.1) 25%, rgba(139, 115, 85, 0.2) 50%, rgba(139, 115, 85, 0.1) 75%);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
@@ -214,36 +80,14 @@
     animation: float 3s ease-in-out infinite;
   }
 
-  .animate-wiggle {
-    animation: wiggle 0.5s ease-in-out infinite;
-  }
-
   /* === DELAY UTILITIES === */
-  .delay-75 { animation-delay: 75ms; }
   .delay-100 { animation-delay: 100ms; }
-  .delay-150 { animation-delay: 150ms; }
   .delay-200 { animation-delay: 200ms; }
   .delay-300 { animation-delay: 300ms; }
-  .delay-400 { animation-delay: 400ms; }
   .delay-500 { animation-delay: 500ms; }
-  .delay-600 { animation-delay: 600ms; }
   .delay-700 { animation-delay: 700ms; }
-  .delay-800 { animation-delay: 800ms; }
-  .delay-1000 { animation-delay: 1000ms; }
-  .delay-1200 { animation-delay: 1200ms; }
 
-  /* === CURSOR UTILITIES === */
-  .cursor-wait { cursor: wait; }
-  .cursor-pointer { cursor: pointer; }
-
-  /* === LINE CLAMP (TEXT TRUNCATION) === */
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
+  /* === LINE CLAMP === */
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -258,29 +102,13 @@
     overflow: hidden;
   }
 
-  .line-clamp-4 {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* === SCROLLBAR UTILITIES === */
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
+  /* === SCROLLBAR === */
   .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
+  .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
@@ -309,92 +137,7 @@
     @apply font-serif text-2xl mt-12 mb-6 opacity-90;
   }
 
-  .prose-custom h3 {
-    @apply font-serif text-xl mt-8 mb-4 opacity-80;
-  }
-
-  /* === FOCUS RING === */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-[#8b7355]/50 focus:ring-offset-2 focus:ring-offset-[#faf8f5] dark:focus:ring-offset-[#1a1816];
-  }
-
-  /* === TRANSITION UTILITIES === */
-  .transition-transform {
-    transition-property: transform;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-
-  .transition-colors {
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-
-  .transition-opacity {
-    transition-property: opacity;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-
-  .transition-all {
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-
-  .transition-shadow {
-    transition-property: box-shadow;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 300ms;
-  }
-
-  /* === SCALE UTILITIES === */
-  .hover\:scale-102:hover { transform: scale(1.02); }
-  .hover\:scale-105:hover { transform: scale(1.05); }
-  .hover\:scale-110:hover { transform: scale(1.10); }
-  
-  .active\:scale-95:active { transform: scale(0.95); }
-  .active\:scale-98:active { transform: scale(0.98); }
-
-  /* === LOADING STATES === */
-  .loading-dots {
-    display: flex;
-    gap: 4px;
-  }
-
-  .loading-dots > div {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: currentColor;
-    animation: bounce 0.6s infinite alternate;
-  }
-
-  .loading-dots > div:nth-child(2) { animation-delay: 0.15s; }
-  .loading-dots > div:nth-child(3) { animation-delay: 0.3s; }
-
-  .skeleton {
-    @apply animate-shimmer rounded;
-  }
-
-  /* === DATA PENDING STATE === */
-  [data-pending] {
-    opacity: 0.7;
-    pointer-events: none;
-  }
-
-  /* === BACKDROP BLUR UTILITIES === */
-  .backdrop-blur-xs {
-    backdrop-filter: blur(2px);
-  }
-
-  /* === TEXT UTILITIES === */
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* === ASPECT RATIO UTILITIES === */
+  /* === ASPECT RATIOS === */
   .aspect-book {
     aspect-ratio: 3/4;
   }
@@ -402,21 +145,11 @@
   .aspect-cover {
     aspect-ratio: 16/10;
   }
-
-  /* === GRID UTILITIES === */
-  .grid-auto-fit {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
 }
 
-/* === SCROLLBAR STYLING === */
+/* === GLOBAL SCROLLBAR === */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -425,18 +158,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-[#8b7355]/50;
-}
-
-/* === SELECTION STYLING === */
-::selection {
-  background-color: rgba(139, 115, 85, 0.3);
-  color: inherit;
-}
-
-/* === FOCUS VISIBLE === */
-:focus-visible {
-  outline: 2px solid rgba(139, 115, 85, 0.5);
-  outline-offset: 2px;
 }
 
 /* === REDUCED MOTION === */
