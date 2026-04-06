@@ -39,7 +39,6 @@ export default function BookCard({
   const isCompact = variant === "compact";
   const isFeatured = variant === "featured";
 
-  // Format views count
   const formatViews = (views: number) => {
     if (views >= 1000) {
       return `${(views / 1000).toFixed(1)}k`;
@@ -78,10 +77,8 @@ export default function BookCard({
           priority={index < 2}
         />
 
-        {/* Gradient Overlay - Enhanced depth */}
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
-        
-        {/* Secondary gradient for depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 opacity-60" />
 
         {/* Featured Badge */}
@@ -120,22 +117,23 @@ export default function BookCard({
         </div>
 
         {/* Bottom Meta Info */}
-<div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
-  <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
-    <Clock size={11} />
-    {book.readTime || "5 menit"}
-  </span>
-  
-  {(book.stats?.views ?? 0) > 0 && (
-    <>
-      <span className="w-1 h-1 rounded-full bg-white/50" />
-      <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
-        <Eye size={11} />
-        {formatViews(book.stats.views!)}
-      </span>
-    </>
-  )}
-</div>
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+          <div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
+            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
+              <Clock size={11} />
+              {book.readTime || "5 menit"}
+            </span>
+            
+            {(book.stats?.views ?? 0) > 0 && (
+              <>
+                <span className="w-1 h-1 rounded-full bg-white/50" />
+                <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
+                  <Eye size={11} />
+                  {formatViews(book.stats.views!)}
+                </span>
+              </>
+            )}
+          </div>
 
           <div className="flex items-center justify-between">
             <p className="text-white/95 text-sm font-medium tracking-wide flex items-center gap-2">
@@ -225,7 +223,6 @@ export default function BookCard({
     </article>
   );
 
-  // Render logic
   if (onClick) {
     return (
       <div 
