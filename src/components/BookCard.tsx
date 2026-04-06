@@ -129,7 +129,7 @@ export default function BookCard({
                 <span className="w-1 h-1 rounded-full bg-white/50" />
                 <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
                   <Eye size={11} />
-                  {formatViews(book.stats.views!)}
+                  {formatViews(book.stats?.views ?? 0)}
                 </span>
               </>
             )}
