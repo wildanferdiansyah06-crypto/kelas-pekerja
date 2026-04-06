@@ -120,23 +120,22 @@ export default function BookCard({
         </div>
 
         {/* Bottom Meta Info */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-10">
-          <div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
-            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
-              <Clock size={11} />
-              {book.readTime || "5 menit"}
-            </span>
-            
-            {book.stats?.views > 0 && (
-              <>
-                <span className="w-1 h-1 rounded-full bg-white/50" />
-                <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
-                  <Eye size={11} />
-                  {formatViews(book.stats.views)}
-                </span>
-              </>
-            )}
-          </div>
+<div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
+  <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
+    <Clock size={11} />
+    {book.readTime || "5 menit"}
+  </span>
+  
+  {(book.stats?.views ?? 0) > 0 && (
+    <>
+      <span className="w-1 h-1 rounded-full bg-white/50" />
+      <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
+        <Eye size={11} />
+        {formatViews(book.stats.views!)}
+      </span>
+    </>
+  )}
+</div>
 
           <div className="flex items-center justify-between">
             <p className="text-white/95 text-sm font-medium tracking-wide flex items-center gap-2">

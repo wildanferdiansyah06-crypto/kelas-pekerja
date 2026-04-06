@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function KamiMenulisPelanPage() {
@@ -16,7 +16,8 @@ export default function KamiMenulisPelanPage() {
   
   const fullSubtitle = "Buku-buku itu lahir diam-diam. Ditulis setelah kerja selesai. Alarm pagi belum sempat dilupakan. Layar ponsel masih perih di mata. Badan bau keringat. Kopi instan dingin di meja. Lalu aku mengirimkannya sebagai tautan, dan menunggu—bukan dengan harapan besar, cukup lama untuk tahu apakah ia akan berhenti atau lewat begitu saja.";
 
-  const sections = [
+  // SECTIONS - pindah ke sini, sebelum isVisible dan useEffect
+  const sections = useMemo(() => [
     { id: 'pembuka', title: 'Pembuka' },
     { id: 'sisa', title: 'Menulis dari Sisa' },
     { id: 'berhenti', title: 'Titik Berhenti' },
@@ -24,7 +25,7 @@ export default function KamiMenulisPelanPage() {
     { id: 'dunia', title: 'Dunia yang Lewat' },
     { id: 'menulis', title: 'Mengapa Menulis' },
     { id: 'penutup', title: 'Penutup' }
-  ];
+  ], []);
 
   const isVisible = useCallback(
     (id: string) => visibleItems.has(id) || visibleItems.size === 0,
