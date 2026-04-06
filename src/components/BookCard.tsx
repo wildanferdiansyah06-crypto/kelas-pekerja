@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, ArrowUpRight, Clock, ArrowRight, Bookmark } from "lucide-react";
+import { Eye, ArrowUpRight, Clock, ArrowRight, Bookmark, Flame } from "lucide-react";
 import { Book } from "@/src/types";
 
 interface BookCardProps {
@@ -11,7 +11,7 @@ interface BookCardProps {
   index?: number;
   href?: string;
   onClick?: () => void;
-  variant?: "default" | "compact";
+  variant?: "default" | "compact" | "featured";
 }
 
 export default function BookCard({ 
@@ -22,25 +22,34 @@ export default function BookCard({
   variant = "default" 
 }: BookCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const categoryLabel = book.category 
     ? book.category.charAt(0).toUpperCase() + book.category.slice(1).toLowerCase()
     : "Umum";
 
   const previewText = book.excerpt 
-    ? book.excerpt.length > 120 
-      ? book.excerpt.substring(0, 120) + "..." 
+    ? book.excerpt.length > 140 
+      ? book.excerpt.substring(0, 140) + "..." 
       : book.excerpt
     : "Belum ada deskripsi untuk buku ini.";
 
-  // Animation delay calculation
   const animationDelay = `${index * 100}ms`;
   
   const isCompact = variant === "compact";
+  const isFeatured = variant === "featured";
+
+  // Format views count
+  const formatViews = (views: number) => {
+    if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}k`;
+    }
+    return views.toString();
+  };
 
   const cardContent = (
     <article
-      className="relative h-full"
+      className="relative h-full group"
       style={{ 
         opacity: 0,
         animationDelay,
@@ -51,41 +60,58 @@ export default function BookCard({
     >
       {/* Image Container */}
       <div
-        className={`relative w-full mb-6 overflow-hidden rounded-xl
-                   shadow-[0_8px_30px_-12px_rgba(0,0,0,0.15)]
-                   group-hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.35)]
+        className={`relative w-full mb-6 overflow-hidden rounded-2xl
+                   shadow-[0_8px_30px_-12px_rgba(0,0,0,0.2)]
+                   group-hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.4)]
                    group-hover:-translate-y-2
                    transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]
-                   ${isCompact ? 'aspect-[16/10]' : 'aspect-[16/10]'}`}
+                   ${isCompact ? 'aspect-[16/10]' : 'aspect-[4/3]'}`}
       >
         <Image
           src={book.cover}
           alt={book.title}
           fill
-          className="object-cover opacity-95
+          className="object-cover opacity-90
                      group-hover:opacity-100 group-hover:scale-[1.08]
                      transition-all duration-1000 ease-out"
           sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
           priority={index < 2}
         />
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
+        {/* Gradient Overlay - Enhanced depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500" />
+        
+        {/* Secondary gradient for depth */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 opacity-60" />
 
-        {/* Category Badge - Top Left */}
+        {/* Featured Badge */}
+        {book.featured && (
+          <div className="absolute top-4 left-4 z-10">
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
+                           bg-gradient-to-r from-amber-500/90 to-orange-500/90 
+                           text-white shadow-lg backdrop-blur-sm
+                           ${isHovered ? 'scale-105' : 'scale-100'} transition-transform duration-300`}>
+              <Flame size={12} className="fill-current" />
+              <span>Featured</span>
+            </div>
+          </div>
+        )}
+
+        {/* Category Badge */}
         <div 
-          className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide
-                     bg-white/20 backdrop-blur-md border border-white/30 text-white/95
+          className={`absolute top-4 ${book.featured ? 'top-14' : ''} left-4 z-10
+                     px-3 py-1.5 rounded-full text-xs font-medium tracking-wide
+                     bg-white/15 backdrop-blur-md border border-white/25 text-white/95
                      transition-all duration-500
                      ${isHovered ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"}`}
         >
           {categoryLabel}
         </div>
 
-        {/* View Icon - Top Right */}
+        {/* View Icon */}
         <div
-          className={`absolute top-4 right-4 w-11 h-11 rounded-full
-                     bg-white/15 backdrop-blur-md border border-white/20
+          className={`absolute top-4 right-4 w-11 h-11 rounded-full z-10
+                     bg-white/15 backdrop-blur-md border border-white/25
                      flex items-center justify-center
                      transition-all duration-500 ease-out
                      ${isHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-75 -translate-y-2"}`}
@@ -94,34 +120,27 @@ export default function BookCard({
         </div>
 
         {/* Bottom Meta Info */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-          <div className="flex items-center gap-3 text-white/70 text-xs mb-3 flex-wrap">
-            <span className="flex items-center gap-1.5 bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-10">
+          <div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
+            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
               <Clock size={11} />
               {book.readTime || "5 menit"}
             </span>
-            {book.pages && (
+            
+            {book.stats?.views > 0 && (
               <>
-                <span className="w-1 h-1 rounded-full bg-white/40" />
-                <span className="bg-black/30 backdrop-blur-sm px-2 py-1 rounded">
-                  {book.pages} halaman
-                </span>
-              </>
-            )}
-            {book.stats?.views && (
-              <>
-                <span className="w-1 h-1 rounded-full bg-white/40" />
-                <span className="bg-black/30 backdrop-blur-sm px-2 py-1 rounded flex items-center gap-1">
+                <span className="w-1 h-1 rounded-full bg-white/50" />
+                <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
                   <Eye size={11} />
-                  {(book.stats.views / 1000).toFixed(1)}k
+                  {formatViews(book.stats.views)}
                 </span>
               </>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <p className="text-white/90 text-sm font-medium tracking-wide flex items-center gap-2">
-              Baca preview
+            <p className="text-white/95 text-sm font-medium tracking-wide flex items-center gap-2">
+              Baca sekarang
               <ArrowUpRight
                 size={16}
                 className={`transition-all duration-500 ${
@@ -133,49 +152,58 @@ export default function BookCard({
         </div>
 
         {/* Index Number Watermark */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[8rem] md:text-[10rem] text-white/[0.03] font-light pointer-events-none select-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[8rem] md:text-[10rem] text-white/[0.04] font-light pointer-events-none select-none">
           {String(index + 1).padStart(2, "0")}
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="space-y-3">
-        <h3 className={`font-serif leading-[1.2] text-[#2b2b2b] dark:text-[#e8e0d5] opacity-90 group-hover:opacity-100 transition-all duration-300
-          ${isCompact ? 'text-xl md:text-2xl' : 'text-2xl md:text-[1.75rem]'}`}>
+      <div className="space-y-3 px-1">
+        <h3 className={`font-serif leading-[1.15] text-stone-800 dark:text-[#e8e0d5] 
+                       group-hover:text-stone-600 dark:group-hover:text-[#d4ccc0]
+                       transition-all duration-300
+                       ${isCompact ? 'text-xl md:text-2xl' : 'text-2xl md:text-[1.85rem]'}`}>
           {book.title}
         </h3>
 
         {book.subtitle && (
-          <p className="text-sm opacity-50 font-medium tracking-wide line-clamp-1">
+          <p className="text-sm text-stone-500 dark:text-stone-400 font-medium tracking-wide line-clamp-1">
             {book.subtitle}
           </p>
         )}
 
-        <p className="text-[15px] leading-[1.7] opacity-55 line-clamp-2 group-hover:opacity-70 transition-opacity duration-300">
+        <p className="text-[15px] leading-[1.7] text-stone-500 dark:text-stone-400 line-clamp-2 
+                      group-hover:text-stone-600 dark:group-hover:text-stone-300 
+                      transition-colors duration-300">
           &ldquo;{previewText}&rdquo;
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#2b2b2b]/5 dark:border-[#e8e0d5]/10">
+        <div className="flex items-center justify-between pt-4 mt-2 border-t border-stone-200 dark:border-stone-700/50">
           <div className="flex items-center gap-3">
             <button 
-              className="p-2 rounded-full hover:bg-[#2b2b2b]/5 dark:hover:bg-[#e8e0d5]/10 transition-colors"
+              className={`p-2 rounded-full transition-all duration-300
+                         ${isBookmarked 
+                           ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' 
+                           : 'hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
+                         }`}
               onClick={(e) => {
                 e.stopPropagation();
-                // Handle bookmark logic
+                e.preventDefault();
+                setIsBookmarked(!isBookmarked);
               }}
-              aria-label="Bookmark"
+              aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
             >
-              <Bookmark size={14} className="opacity-40 hover:opacity-70 transition-opacity" />
+              <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
             </button>
-            <span className="text-[11px] uppercase tracking-wider opacity-35 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-stone-400 dark:text-stone-500 font-medium">
               {book.category}
             </span>
           </div>
 
-          <div className={`flex items-center gap-1 text-xs font-medium transition-all duration-300 ${
-            isHovered ? "opacity-100 translate-x-0" : "opacity-50 -translate-x-1"
-          }`}>
+          <div className={`flex items-center gap-1 text-xs font-medium text-stone-500 dark:text-stone-400
+                          transition-all duration-300
+                          ${isHovered ? "opacity-100 translate-x-0" : "opacity-60 -translate-x-1"}`}>
             Lihat detail
             <ArrowRight size={14} className={`transition-transform duration-300 ${isHovered ? "translate-x-1" : ""}`} />
           </div>
@@ -187,7 +215,7 @@ export default function BookCard({
         @keyframes fade-in-up {
           from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(25px);
           }
           to {
             opacity: 1;
@@ -198,12 +226,12 @@ export default function BookCard({
     </article>
   );
 
-  // Render logic based on props
+  // Render logic
   if (onClick) {
     return (
       <div 
         onClick={onClick} 
-        className="group block w-full cursor-pointer h-full"
+        className="block w-full cursor-pointer h-full"
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && onClick()}
@@ -219,7 +247,7 @@ export default function BookCard({
     <Link 
       href={linkHref} 
       prefetch 
-      className="group block w-full h-full"
+      className="block w-full h-full"
     >
       {cardContent}
     </Link>
