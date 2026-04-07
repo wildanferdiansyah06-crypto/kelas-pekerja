@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Coffee, Code, Book, Clock, ExternalLink, Github, Linkedin, Twitter, Instagram, User } from 'lucide-react';
+import { Mail, MapPin, Coffee, Code, Book, Clock, ExternalLink, Github, Instagram, User, MessageCircle } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function TentangPage() {
@@ -107,13 +106,83 @@ export default function TentangPage() {
               <div className="relative">
                 <div className={`relative rounded-2xl overflow-hidden ${theme.card} border ${theme.border} shadow-2xl`}>
                   <div className="aspect-[3/4] relative">
-                    <Image
-                      src="/images/wildan-profile.png"
-                      alt="Wildan Ferdiansyah"
-                      fill
-                      className="object-cover"
-                      priority
-                    />
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2a2420] to-[#0f0d0c]">
+                      <svg 
+                        width="200" 
+                        height="267" 
+                        viewBox="0 0 400 533" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-full h-full max-w-full"
+                      >
+                        {/* Background */}
+                        <rect width="400" height="533" fill="#F5F0E8"/>
+                        {/* Wooden bookshelf background */}
+                        <rect x="0" y="300" width="400" height="233" fill="#8B4513" opacity="0.1"/>
+                        <rect x="50" y="320" width="300" height="180" fill="#8B4513" opacity="0.2"/>
+                        <rect x="75" y="340" width="250" height="140" fill="#8B4513" opacity="0.3"/>
+                        {/* Books on shelf */}
+                        <rect x="80" y="360" width="40" height="100" fill="#D4CFC4" stroke="#A89B8C" strokeWidth="1"/>
+                        <rect x="130" y="370" width="35" height="90" fill="#D4CFC4" stroke="#A89B8C" strokeWidth="1"/>
+                        <rect x="175" y="350" width="45" height="110" fill="#D4CFC4" stroke="#A89B8C" strokeWidth="1"/>
+                        <rect x="230" y="355" width="40" height="105" fill="#D4CFC4" stroke="#A89B8C" strokeWidth="1"/>
+                        {/* Typewriter */}
+                        <rect x="250" y="420" width="80" height="60" fill="#2C241B" rx="3"/>
+                        <rect x="260" y="430" width="60" height="40" fill="#F5F0E8" rx="2"/>
+                        <circle cx="290" cy="450" r="2" fill="#8B4513"/>
+                        {/* Wall decorations */}
+                        <circle cx="50" cy="80" r="15" fill="#E5E0DB" opacity="0.3"/>
+                        <circle cx="350" cy="100" r="20" fill="#C9A66B" opacity="0.2"/>
+                        <rect x="320" y="60" width="30" height="40" fill="#8B4513" opacity="0.2" rx="2"/>
+                        {/* Table */}
+                        <ellipse cx="200" cy="280" rx="60" ry="8" fill="#D4CFC4"/>
+                        <rect x="140" y="288" width="120" height="4" fill="#A89B8C"/>
+                        {/* Coffee cup and saucer */}
+                        <ellipse cx="200" cy="270" rx="15" ry="3" fill="#FFFFFF"/>
+                        <ellipse cx="200" cy="275" rx="20" ry="4" fill="#FFFFFF" opacity="0.8"/>
+                        <path d="M185 265 Q200 260 215 265" fill="#6B5D4D"/>
+                        <path d="M185 265 Q200 260 215 265" fill="none" stroke="#4A3F32" strokeWidth="2"/>
+                        {/* Book in hand */}
+                        <g transform="translate(120, 180)">
+                          {/* Book cover */}
+                          <rect x="0" y="0" width="60" height="80" fill="#8B4513" rx="2"/>
+                          <rect x="5" y="5" width="50" height="70" fill="#D4CFC4" rx="1"/>
+                          {/* Book spine */}
+                          <rect x="0" y="0" width="8" height="80" fill="#8B4513"/>
+                          {/* Book lines */}
+                          <line x1="10" y1="15" x2="50" y2="15" stroke="#A89B8C" strokeWidth="1"/>
+                          <line x1="10" y1="25" x2="50" y2="25" stroke="#A89B8C" strokeWidth="1"/>
+                          <line x1="10" y1="35" x2="50" y2="35" stroke="#A89B8C" strokeWidth="1"/>
+                          <line x1="10" y1="45" x2="50" y2="45" stroke="#A89B8C" strokeWidth="1"/>
+                          <line x1="10" y1="55" x2="50" y2="55" stroke="#A89B8C" strokeWidth="1"/>
+                        </g>
+                        {/* Person silhouette */}
+                        <g transform="translate(200, 120)">
+                          {/* Head */}
+                          <circle cx="0" cy="0" r="25" fill="#2C241B"/>
+                          {/* Hair */}
+                          <path d="M-25 -10 Q-25 -25 -15 -30 Q-5 -35 0 -30 Q5 -25 25 -10 Q25 -5 25 5 Q15 0 0 -10" fill="#1A1612"/>
+                          {/* Face */}
+                          <circle cx="-8" cy="-5" r="2" fill="#E5E0DB"/>
+                          <circle cx="8" cy="-5" r="2" fill="#E5E0DB"/>
+                          {/* Mustache */}
+                          <path d="M-15 5 Q-10 8 -5 8 Q0 8 5 8 Q10 8 15 5 Q10 2 15 0 Q10 -2 5 0 Q0 -2 -5 0 Q-10 2 -15 0 Q-10 2 -15 5" fill="#1A1612"/>
+                          {/* Body */}
+                          <rect x="-30" y="25" width="60" height="80" fill="#4A7C59" rx="5"/>
+                          {/* Shirt */}
+                          <rect x="-30" y="25" width="60" height="40" fill="#5A8A5A" rx="5"/>
+                          {/* Arms */}
+                          <rect x="-40" y="30" width="15" height="50" fill="#4A7C59" rx="5" transform="rotate(-20 -32.5 55)"/>
+                          <rect x="25" y="30" width="15" height="50" fill="#4A7C59" rx="5" transform="rotate(20 32.5 55)"/>
+                          {/* Hand holding book */}
+                          <rect x="10" y="60" width="40" height="50" fill="#F5E6D9" rx="3" transform="rotate(10 30 85)"/>
+                        </g>
+                        {/* Decorative elements */}
+                        <circle cx="30" cy="200" r="3" fill="#C9A66B" opacity="0.4"/>
+                        <circle cx="370" cy="150" r="4" fill="#8B4513" opacity="0.3"/>
+                        <rect x="360" y="200" width="25" height="3" fill="#C9A66B" opacity="0.2" rx="1"/>
+                      </svg>
+                    </div>
                   </div>
                   {/* Decorative overlay */}
                   <div className={`absolute inset-0 bg-gradient-to-t ${darkMode ? 'from-[#0f0d0c]/60' : 'from-[#f5f0e8]/60'} to-transparent`} />
@@ -155,23 +224,7 @@ export default function TentangPage() {
                     <Github size={20} className={theme.textMuted} />
                   </a>
                   <a 
-                    href="https://linkedin.com/in/wildanferdiansyah" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
-                  >
-                    <Linkedin size={20} className={theme.textMuted} />
-                  </a>
-                  <a 
-                    href="https://twitter.com/wildanferdiansyah" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
-                  >
-                    <Twitter size={20} className={theme.textMuted} />
-                  </a>
-                  <a 
-                    href="https://instagram.com/wildanferdiansyah" 
+                    href="https://instagram.com/_iamwildan_" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
@@ -334,6 +387,25 @@ export default function TentangPage() {
                 </h3>
                 <p className={`${theme.textMuted} group-hover:${theme.text} transition-colors`}>
                   wildanferdiansyah06@gmail.com
+                </p>
+              </a>
+              
+              <a 
+                href="https://wa.me/6289636357091"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group ${theme.card} ${theme.border} border rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+              >
+                <div className={`${theme.accent} mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center`}>
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.09-.632-.277-.876-.483-.243-.565-.424-.946-.379-.783-.325-1.213-.589-1.705-.298-1.936-.834-1.232-2.368-1.724-3.489-.462-1.157-1.011-2.391-.575-1.341-1.233-2.98-1.913-4.659-1.654-1.593-2.435-1.255-2.448-1.925-2.478-2.335-3.13-2.98-3.493-3.658-1.331-1.594-2.823-2.329-3.179-2.212-4.226-2.09-3.62-.957-1.698-1.61-2.378-1.305-2.65-1.953-.426-.752-1.679-1.492-2.209-1.233-2.389-1.85-3.179-1.991-2.798-2.299-3.75-1.983-4.443-1.722-4.238-2.615-4.5-3.063-4.665-3.522-4.925-4.842-5.5-4.9-6.3-5.6-6.6-8.8-3.6-3.8-4.6-5.2-6.7-6.5-8.5-2.8-2.8-5.2-4.2-8.8z"/>
+                  </svg>
+                </div>
+                <h3 className={`text-xl font-semibold ${theme.textHeading} mb-2`}>
+                  WhatsApp
+                </h3>
+                <p className={`${theme.textMuted} group-hover:${theme.text} transition-colors`}>
+                  089636357091
                 </p>
               </a>
               
