@@ -4,7 +4,7 @@ import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
-import { PenLine, Clock, ArrowRight, Filter, Sparkles, TrendingUp, ChevronRight, Heart } from "lucide-react";
+import { PenLine, Clock, ArrowRight, Filter, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
 import { useState, useMemo } from "react";
 
 const fadeUp = {
@@ -28,17 +28,18 @@ export default function TulisanPage() {
  const isDark = theme === "dark";
 
  const colors = {
-   bg: isDark ? "bg-[#0a0a0a]" : "bg-[#fafafa]",
+   bg: isDark ? "bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2a] to-[#2d2d2d]" : "bg-gradient-to-br from-[#fafafa] via-[#f5f5f5] to-[#e8e8e8]",
    text: isDark ? "text-neutral-300" : "text-neutral-700",
    textMuted: isDark ? "text-neutral-400" : "text-neutral-600",
    textSubtle: isDark ? "text-neutral-600" : "text-neutral-400",
    heading: isDark ? "text-white" : "text-neutral-900",
-   accent: "#c7b299",
-   accentSecondary: "#8b7355",
-   border: isDark ? "border-neutral-800" : "border-neutral-200",
-   cardBg: isDark ? "bg-neutral-900/80" : "bg-white/80",
-   featuredBg: isDark ? "bg-gradient-to-br from-[#8b7355]/30 via-neutral-900/80 to-[#0a0a0a]" 
-                     : "bg-gradient-to-br from-[#8b7355]/20 via-white to-[#fafafa]",
+   accent: isDark ? "#c7b299" : "#8b7355",
+   accentSecondary: isDark ? "#8b7355" : "#c7b299",
+   border: isDark ? "border-neutral-800/50" : "border-neutral-200/50",
+   cardBg: isDark ? "bg-neutral-900/40 backdrop-blur-sm" : "bg-white/40 backdrop-blur-sm",
+   featuredBg: isDark ? "bg-gradient-to-br from-[#c7b299]/20 via-neutral-900/80 to-[#0a0a0a]" 
+                     : "bg-gradient-to-br from-[#c7b299]/20 via-white to-[#fafafa]",
+   accentBg: isDark ? "bg-neutral-900/80" : "bg-white/80",
    grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
  };
 
@@ -59,10 +60,31 @@ export default function TulisanPage() {
 
  return (
    <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
-     {/* Grain */}
+     {/* Enhanced Background with Illustrations */}
      <div className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0`} style={{
        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-     }} />
+     }}>
+       {/* Floating Elements */}
+       <div className="absolute top-20 left-10 w-32 h-32 opacity-20">
+         <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c7b299]/10 to-transparent blur-3xl animate-pulse"></div>
+       </div>
+       <div className="absolute top-40 right-20 w-24 h-24 opacity-15">
+         <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#8b7355]/10 to-transparent blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+       </div>
+       <div className="absolute bottom-20 left-1/4 w-40 h-40 opacity-10">
+         <div className="w-full h-full bg-gradient-to-r from-transparent via-[#c7b299]/5 to-transparent blur-xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+       </div>
+       <div className="absolute top-1/3 right-1/4 w-48 h-48 opacity-8">
+         <div className="w-full h-full rounded-full bg-gradient-to-bl from-transparent via-[#c7b299]/8 to-transparent blur-xl animate-pulse" style={{ animationDelay: '6s' }}></div>
+       </div>
+       {/* Geometric Shapes */}
+       <div className="absolute top-1/2 left-1/3 w-64 h-64 opacity-5">
+         <div className="w-full h-full border-2 border-[#c7b299]/20 rotate-45 animate-spin" style={{ animationDuration: '60s' }}></div>
+       </div>
+       <div className="absolute bottom-1/3 right-1/3 w-32 h-32 opacity-5">
+         <div className="w-full h-full border border-[#c7b299]/15 rotate-12 animate-spin" style={{ animationDuration: '45s' }}></div>
+       </div>
+     </div>
 
      <div className="relative z-10">
        {/* HERO */}
@@ -173,14 +195,84 @@ export default function TulisanPage() {
            </motion.section>
          )}
 
-         {/* DIVIDER */}
-         {showFeatured && featuredPost && (
-           <div className={`flex items-center justify-center gap-4 mb-12 ${colors.textSubtle}`}>
-             <div className="h-px w-20 bg-gradient-to-r from-transparent to-[#c7b299]"></div>
-             <div className="w-2 h-2 rotate-45 bg-[#c7b299]"></div>
-             <div className="h-px w-20 bg-gradient-to-l from-transparent to-[#c7b299]"></div>
+         {/* TENTANG SECTION */}
+         <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className={`py-16 border-y ${colors.border}`}>
+           <div className="max-w-6xl mx-auto px-4 sm:px-6">
+             <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+               {/* Left Side - Visual Story */}
+               <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.7 }} className="text-center md:text-left">
+                 <div className="relative mb-6">
+                   <div className={`w-20 h-20 mx-auto md:mx-0 rounded-full bg-gradient-to-br ${colors.accent} to-transparent p-1 flex items-center justify-center`}>
+                     <BookOpen className="text-white" size={24} />
+                   </div>
+                   <h3 className={`font-serif text-2xl md:text-3xl ${colors.heading} mb-4 leading-tight`}>Tentang Tulisan</h3>
+                   <p className={`text-lg ${colors.textMuted} leading-relaxed max-w-md`}>
+                     Platform ini lahir dari kebutuhan akan berbagi pengalaman kerja yang sebenarnya. Setiap cerita adalah jejak yang membantu orang lain menemukan jalan mereka sendiri.
+                   </p>
+                 </div>
+                 
+                 {/* Key Features */}
+                 <div className="space-y-4">
+                   <div className="flex items-center gap-3">
+                     <div className={`w-12 h-12 rounded-full ${colors.accentBg} flex items-center justify-center`}>
+                       <Heart className={colors.accent} size={20} />
+                     </div>
+                     <div>
+                       <h4 className={`font-semibold ${colors.heading} mb-1`}>Berbagi Kejujuran</h4>
+                       <p className={`text-sm ${colors.textMuted}`}>Pengalaman nyata dan tulus dari berbagai sudut pandang</p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex items-center gap-3">
+                     <div className={`w-12 h-12 rounded-full ${colors.accentBg} flex items-center justify-center`}>
+                       <Sparkles className={colors.accent} size={20} />
+                     </div>
+                     <div>
+                       <h4 className={`font-semibold ${colors.heading} mb-1`}>Membangun Komunitas</h4>
+                       <p className={`text-sm ${colors.textMuted}`}>Menciptakan ruang aman untuk berbagi dan belajar bersama</p>
+                     </div>
+                   </div>
+                   
+                   <div className="flex items-center gap-3">
+                     <div className={`w-12 h-12 rounded-full ${colors.accentBg} flex items-center justify-center`}>
+                       <TrendingUp className={colors.accent} size={20} />
+                     </div>
+                     <div>
+                       <h4 className={`font-semibold ${colors.heading} mb-1`}>Inspirasi Harian</h4>
+                       <p className={`text-sm ${colors.textMuted}`}>Cerita-cerita yang memotivasi dan memberi pencerahan</p>
+                     </div>
+                   </div>
+                 </div>
+               </motion.div>
+               
+               {/* Right Side - Stats */}
+               <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9 }} className="text-center md:text-left">
+                 <div className={`${colors.cardBg} rounded-2xl p-6 border ${colors.border}`}>
+                   <h4 className={`font-semibold ${colors.heading} mb-4 text-center`}>Kumpulan Cerita</h4>
+                   <div className="grid grid-cols-2 gap-4 text-center">
+                     <div>
+                       <div className={`text-3xl font-bold ${colors.accent}`}>{posts.length}</div>
+                       <p className={`text-sm ${colors.textMuted}`}>Total Tulisan</p>
+                     </div>
+                     <div>
+                       <div className={`text-3xl font-bold ${colors.accent}`}>{featuredPost ? 1 : 0}</div>
+                       <p className={`text-sm ${colors.textMuted}`}>Cerita Unggulan</p>
+                     </div>
+                     <div>
+                       <div className={`text-3xl font-bold ${colors.accent}`}>{trendingPosts.length}</div>
+                       <p className={`text-sm ${colors.textMuted}`}>Sedang Trending</p>
+                     </div>
+                   </div>
+                   <div className="mt-6 pt-4 border-t border-[#c7b299]/20">
+                     <p className={`text-sm ${colors.textMuted} text-center italic`}>
+                       "Setiap kata yang ditulis adalah kontribusi bagi mereka yang masih mencari jalan."
+                     </p>
+                   </div>
+                 </div>
+               </motion.div>
+             </div>
            </div>
-         )}
+         </motion.section>
 
          {/* HEADER LIST */}
          <div className={`flex items-baseline justify-between mb-8 border-b ${colors.border} pb-4`}>
@@ -256,16 +348,59 @@ export default function TulisanPage() {
          )}
        </div>
 
-       {/* FINAL CTA */}
-       <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
-         <div className="max-w-3xl mx-auto text-center">
-           <p className="font-serif text-3xl sm:text-4xl italic text-[#c7b299] mb-6">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
-           <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
-             <PenLine size={20} />
-             Mulai Menulis
-           </Link>
-         </div>
-       </section>
+       {/* BERANDA SECTION */}
+       <section className={`px-4 sm:px-6 py-16 ${colors.border}`}>
+         <div className="max-w-6xl mx-auto">
+           <div className="text-center mb-12">
+             <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={`font-serif text-3xl sm:text-4xl md:text-5xl ${colors.heading} mb-6`}>
+               Ruang Bagi Semua
+             </motion.h2>
+             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className={`text-lg sm:text-xl ${colors.textMuted} max-w-3xl mx-auto mb-12 leading-relaxed`}>
+               Setiap cerita adalah ruang bagi para pekerja yang ingin berbagi pengalaman, mencari jalan, atau sekadar ingin didengar. Di sini, kita belajar dari kehidupan nyata hingga transformasi digital.
+             </motion.p>
+             
+             {/* Quick Actions */}
+             <div className="grid md:grid-cols-3 gap-6 mb-12">
+               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }} className={`${colors.cardBg} rounded-2xl p-6 border ${colors.border} hover:shadow-xl transition-all duration-300 group`}>
+                 <Link href="/tulis" className="flex flex-col items-center gap-3">
+                   <div className={`w-16 h-16 rounded-full ${colors.accentBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                     <PenLine className={colors.accent} size={24} />
+                   </div>
+                   <span className={`font-medium ${colors.text} group-hover:${colors.accent} transition-colors`}>Tulis Cerita Baru</span>
+                 </Link>
+               </motion.div>
+               
+               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.7 }} className={`${colors.cardBg} rounded-2xl p-6 border ${colors.border} hover:shadow-xl transition-all duration-300 group`}>
+                 <Link href="/tulisan" className="flex flex-col items-center gap-3">
+                   <div className={`w-16 h-16 rounded-full ${colors.accentBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                     <BookOpen className={colors.accent} size={24} />
+                   </div>
+                   <span className={`font-medium ${colors.text} group-hover:${colors.accent} transition-colors`}>Jelajahi Semua Cerita</span>
+                 </Link>
+               </motion.div>
+               
+               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8 }} className={`${colors.cardBg} rounded-2xl p-6 border ${colors.border} hover:shadow-xl transition-all duration-300 group`}>
+                 <div className="flex flex-col items-center gap-3">
+                   <div className={`w-16 h-16 rounded-full ${colors.accentBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                     <TrendingUp className={colors.accent} size={24} />
+                   </div>
+                   <span className={`font-medium ${colors.text} group-hover:${colors.accent} transition-colors`}>Cerita Trending</span>
+                 </div>
+               </motion.div>
+             </div>
+           </div>
+         </section>
+
+         {/* FINAL CTA */}
+         <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
+           <div className="max-w-3xl mx-auto text-center">
+             <p className="font-serif text-3xl sm:text-4xl italic text-[#c7b299] mb-6">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
+             <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
+               <PenLine size={20} />
+               Mulai Menulis
+             </Link>
+           </div>
+         </section>
      </div>
    </main>
  );
