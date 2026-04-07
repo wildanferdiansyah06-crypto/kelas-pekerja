@@ -74,7 +74,7 @@ export default function CahayaItuPage() {
 
   const darkMode = globalTheme === 'dark';
 
-  // Simplified theme
+  // TEMA: "Ashes & Embers" 
   const theme = darkMode ? {
     bg: 'bg-[#0f0d0c]',
     text: 'text-[#e5e0db]',
@@ -92,6 +92,7 @@ export default function CahayaItuPage() {
     gradientTo: 'to-[#0f0d0c]/10',
     quoteBorder: 'border-[#c9a66b]/40',
     quoteBg: 'bg-[#1a1612]/60',
+    highlight: 'bg-[#2a2420]/50',
     romanColor: 'text-[#5c4d3c]',
     ember: 'text-[#8b4513]',
   } : {
@@ -111,6 +112,7 @@ export default function CahayaItuPage() {
     gradientTo: 'to-[#f5f0e8]/20',
     quoteBorder: 'border-[#8b4513]/40',
     quoteBg: 'bg-[#ebe5d8]/60',
+    highlight: 'bg-[#d9d0c1]/60',
     romanColor: 'text-[#a89b8c]',
     ember: 'text-[#a0522d]',
   };
@@ -128,11 +130,11 @@ export default function CahayaItuPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
+    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
       
-      {/* Simple Background */}
+      {/* Simplified Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-20`} />
+        <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-30`} />
       </div>
 
       {/* Reading Progress Bar */}
@@ -385,6 +387,274 @@ export default function CahayaItuPage() {
                 <p className={`${theme.text} text-lg leading-[1.9]`}>
                   Orang-orang yang menerima cahayanya dengan nyaman, tanpa pernah melihat bagaimana api itu memakan dirinya sendiri.
                 </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Dia belajar bahwa dicintai berarti harus bisa memberi. Dan dia sudah tidak punya apa-apa selain tulang-tulangnya yang dipaksa berdiri. Jadi dia menolak cinta. Bukan karena tidak menginginkannya, tapi karena dia tahu, dengan kepastian yang menghancurkan, bahwa dia tidak punya apa-apa untuk diberikan. Dia sudah memberikan segalanya kepada mereka, kepada rakyatnya, kepada tujuan yang lebih besar, kepada mimpi siang bolong yang haus akan pengorbanan.
+                </p>
+              </div>
+            </section>
+
+            {/* BAB II */}
+            <section 
+              id="bab-2"
+              data-chapter={2}
+              className="mb-40 scroll-mt-24"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-16 pb-8 border-b ${theme.border}`}>
+                <span className={`text-8xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>II</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>Yang Menawan</h2>
+                  <p className={`text-lg ${theme.textMuted} italic font-serif`}>Estetika dalam Kehancuran</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className={`p-6 ${theme.card} border ${theme.border} rounded-lg`}>
+                  <p className={`${theme.textHeading} text-xl font-serif italic`}>
+                    Kamu bilang dia menginspirasi?
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Dia menawan karena sudah mati di bagian dalam. Tapi cahaya dari bangkai itu membuatnya tampak hidup. Berkilau. Pahlawan. Seolah-olah kehancuran yang teratur adalah bentuk seni yang paling tinggi.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Kamu duduk di sekitarnya untuk menghangatkan tangan. Kamu membaca buku tentang filsafat penderitaan. Kamu tidak sadar bahwa kayu bakar itu adalah tulang-tulangnya sendiri. Kamu tidak sadar bahwa setiap tawa yang kamu dengar darinya adalah bunyi dari balok-balok fondasi yang sedang patah.
+                </p>
+
+                <div className={`my-12 p-8 ${darkMode ? 'bg-[#1a1612]' : 'bg-white'} border-2 ${theme.border} shadow-xl rounded-lg relative overflow-hidden`}>
+                  <div className={`absolute -left-1 top-0 bottom-0 w-1 ${darkMode ? 'bg-[#c9a66b]/60' : 'bg-[#8b4513]/60'}`} />
+                  <p className={`${theme.textMuted} text-sm uppercase tracking-widest mb-4`}>Yang Tidak Tersadari</p>
+                  <p className={`${theme.textHeading} text-xl md:text-2xl font-serif leading-relaxed`}>
+                    Ada estetika dalam keterbatasan yang heroik. Ada romansa dalam penderitaan yang disangkal. Kita menyukai melihat sesuatu yang indah sedang hancur karena itu memvalidasi kerapuhan kita sendiri.
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Ketika seseorang yang begitu sempurna, begitu kuat, begitu terang, akhirnya menunjukkan retakannya, kita merasa lega. <em>Ah, jadi dia juga manusia.</em>
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9] ${theme.ember} font-medium`}>
+                  Tapi bagi yang sedang hancur, validasi ini adalah penghinaan terakhir. Dia tidak hancur untuk menjadi objek estetika. Dia hancur karena dia habis. Dan fakta bahwa kehancurannya indah hanya menunjukkan betapa salahnya dunia, bahwa bahkan penderitaan pun harus diproduksi dengan cara yang menarik untuk dikonsumsi.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Paling sakit bukan saat dia padam. Paling sakit saat kita baru sadar setelah dia dingin. Saat kita menemukan draft-draft email yang tidak pernah terkirim. Saat kita menemukan kertas-kertas di saku jaketnya yang bau rokok dan kopi dingin. Saat kita baru mengerti bahwa senyumnya yang terlalu ramah itu adalah bentuk terakhir dari seseorang yang sudah lupa cara menjadi tidak ramah.
+                </p>
+              </div>
+            </section>
+
+            {/* BAB III */}
+            <section 
+              id="bab-3"
+              data-chapter={3}
+              className="mb-40 scroll-mt-24"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-16 pb-8 border-b ${theme.border}`}>
+                <span className={`text-8xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>III</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>Pisau Itu</h2>
+                  <p className={`text-lg ${theme.textMuted} italic font-serif`}>Idealisme yang Mengiris</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Setiap pagi dia bangun. Mengiris sedikit demi sedikit. Impiannya yang pernah ingin jadi anak biasa. Yang pernah ingin nangis tanpa malu. Yang pernah ingin jatuh cinta seperti orang gila tanpa hitung-hitungan dampak sosial.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Sekarang, sisa-sisa irisan itu habis. Yang tersisa hanya tulang. Cahaya yang menyilaukan tapi membekukan. Struktur yang kokoh tapi kosong.
+                </p>
+
+                <div className={`my-12 pl-8 border-l-2 ${theme.quoteBorder}`}>
+                  <p className={`${theme.textMuted} text-lg leading-[1.9] italic font-serif`}>
+                    Dia bilang, aku memikul langit demi rakyatku. Tapi tidak ada yang memintanya. Tidak ada yang menuntutnya. Dia yang menuntut dari dirinya sendiri. Dia yang menetapkan standar yang mustahil. Dia yang menjadi penjaga dan tahanan dalam penjara yang dia bangun sendiri, dengan kunci yang dia lempar ke lautan yang tidak pernah dia kunjungi karena terlalu sibuk menahan langit.
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Idealismenya adalah pisau dapur yang tumpul. Bukan membunuh cepat. Tapi mengiris sedikit demi sedikit. Setiap hari. Setiap pagi. Setiap kali dia berkata <em>aku baik-baik saja</em> sambil mengabaikan getaran di lututnya. Setiap kali dia menelan kata-kata yang seharusnya keluar. Setiap kali dia memilih untuk menjadi fondasi lagi, lagi, dan lagi.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Pisau itu tidak hanya memotong daging. Tapi juga memotong mimpi. Memotong keinginan. Memotong hak untuk menjadi lemah. Memotong hak untuk tidak kuat. Setiap irisan adalah pengorbanan yang tidak ada yang lihat. Setiap tetesan darah adalah doa yang tidak ada yang dengar.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Sampai suatu hari, pisau itu mencapai tulang. Dan ketika itu terjadi, tidak ada yang bisa dilakukan lagi. Selain jatuh. Dan padam.
+                </p>
+              </div>
+            </section>
+
+            {/* BAB IV */}
+            <section 
+              id="bab-4"
+              data-chapter={4}
+              className="mb-40 scroll-mt-24"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-16 pb-8 border-b ${theme.border}`}>
+                <span className={`text-8xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>IV</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>Malam Itu</h2>
+                  <p className={`text-lg ${theme.textMuted} italic font-serif`}>Ketika Semua Menyerah</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Malam itu hujan deras. Dia di kantor sendirian. Jam menunjukkan 11:47 PM. Tidak ada yang menunggu di rumah. Tidak ada yang akan marah kalau dia pulang larut. Tidak ada yang akan bertanya di mana saja.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Tapi dia tetap di kantor. Karena di rumah terlalu sunyi. Terlalu banyak ruang kosong yang mengingatkan pada hal-hal yang tidak mau diingat. Lebih baik di kantor dengan berkas-berkas yang setia menemani. Dengan kopi yang tidak pernah menilai.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Malam itu, untuk pertama kalinya dalam bertahun-tahun, dia menulis sesuatu untuk dirinya sendiri. Bukan laporan. Bukan proposal. Bukan email resmi. Tapi tulisan tangan di kertas kantor yang tidak akan dibaca siapa-siapa.
+                </p>
+
+                <div className={`my-12 p-8 ${theme.quoteBg} border-l-4 ${theme.quoteBorder} relative`}>
+                  <Quote size={32} className={`${theme.accent} opacity-20 absolute top-4 right-4`} />
+                  <p className={`${theme.textHeading} text-2xl font-serif italic leading-relaxed text-center`}>
+                    "Aku lelah. Aku hanya ingin tidur. Tidur yang nyenyak. Tanpa mimpi. Tanpa tanggung jawab. Tanpa harus jadi cahaya untuk siapa pun."
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Malam itu, dia menangis. Diam-diam di toilet kantor. Air mata yang tidak pernah keluar selama bertahun-tahun. Air mata yang tertahan oleh kebanggaan. Oleh tanggung jawab. Oleh citra yang harus dipertahankan.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Malam itu, dia hampir menyerah. Hampir memanggil seseorang. Siapa saja. Tapi tidak ada nomor yang bisa dihubungi di tengah malam. Karena selama ini, dia sengaja menjaga jarak. Agar tidak ada yang terlalu dekat. Agar tidak ada yang akan terlalu sakit saat dia pergi.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Malam itu, dia pulang jam 2. Seperti biasa. Tapi kali ini, langkahnya lebih berat. Kali ini, beban yang dipikul terasa terlalu berat. Kali ini, untuk pertama kalinya, dia berpikir: mungkin aku tidak kuat lagi.
+                </p>
+              </div>
+            </section>
+
+            {/* BAB V */}
+            <section 
+              id="bab-5"
+              data-chapter={5}
+              className="mb-40 scroll-mt-24"
+            >
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-16 pb-8 border-b ${theme.border}`}>
+                <span className={`text-8xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>V</span>
+                <div className="flex-1">
+                  <h2 className={`text-4xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>Ratapan Itu</h2>
+                  <p className={`text-lg ${theme.textMuted} italic font-serif`}>Kata-Kata Terakhir</p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Ratapan itu tidak datang dengan teriakan. Tidak datang dengan drama. Tidak datang di depan orang banyak.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Ratapan itu datang di pagi yang biasa. Saat dia memandang cermin dan tidak mengenal wajah yang di sana. Mata yang terlalu lelah. Wajah yang terlalu pucat. Senyum yang terlalu dipaksakan.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Ratapan itu datang saat dia menulis email pengunduran diri. Dengan kata-kata yang formal. Dengan alasan yang masuk akal. "Karena alasan kesehatan keluarga." Tidak ada yang tahu bahwa keluarga yang dimaksud adalah dirinya sendiri. Yang sudah sakit terlalu lama.
+                </p>
+
+                <div className={`my-8 p-6 ${theme.accentBg} ${theme.accentBorder} border-2 rounded-lg`}>
+                  <p className={`${theme.text} text-lg leading-[1.8] font-serif italic`}>
+                    "Terima kasih atas kesempatan yang telah diberikan. Saya belajar banyak. Saya tumbuh banyak. Tapi sekarang saatnya untuk pulang. Untuk istirahat. Untuk menjadi biasa saja."
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9] ${theme.ember} font-medium`}>
+                  Di saat-saat terakhir, bukan air mata biasa yang keluar. Tapi segala sesuatu yang telah dia tahan selama bertahun-tahun. Air mata yang keluar bersama darah. Bersama usus. Bersama kehancuran total dari seseorang yang telah menjadi terlalu banyak orang, hingga dirinya asli adalah orang asing.
+                </p>
+
+                <div className={`my-12 text-center p-10 ${theme.accentBg} ${theme.accentBorder} border-2 rounded-lg`}>
+                  <p className={`${theme.textHeading} text-2xl md:text-3xl font-serif italic leading-relaxed mb-4`}>
+                    Dunia baru sadar.
+                  </p>
+                  <p className={`${theme.accent} text-xl font-serif italic`}>
+                    Oh. Dia ternyata manusia.
+                  </p>
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Tapi sudah terlambat. Cahaya itu sudah padam. Dan sekarang kamu duduk di kegelapan yang ditinggalkannya, menyesali kenapa tidak bertanya lebih keras waktu dia bilang, <em>aku baik-baik saja</em>. Kenapa tidak tarik lengannya dan bilang, <span className={theme.accent}>tidak, kamu tidak baik-baik saja, dan itu tidak apa-apa. Jatuhlah. Biarkan langit itu runtuh. Biarkan kamu hancur bersamanya. Tapi tolong, tolong jangan jadi cahaya lagi.</span>
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9]`}>
+                  Di penguburannya, orang-orang berkata, <em>dia adalah orang baik.</em> Bukan, dia adalah orang yang pernah ketawa terbahak-bahak. Bukan, dia pernah jatuh cinta seperti orang bodoh. Tapi, <span className={theme.textMuted}>dia adalah orang baik.</span> Seolah kebaikan adalah satu-satunya identitas yang tersisa dari seseorang yang telah menjual seluruh dirinya untuk menjadi pupuk bagi kehidupan orang lain.
+                </p>
+              </div>
+            </section>
+
+            {/* PENUTUP */}
+            <section 
+              id="penutup"
+              data-chapter={6}
+              className="mb-40 scroll-mt-24"
+            >
+              <div className={`mb-16 pb-8 border-b ${theme.border}`}>
+                <span className={`text-xs font-bold tracking-[0.3em] ${theme.accent} uppercase font-serif`}>Penutup</span>
+                <h2 className={`text-4xl sm:text-5xl font-bold ${theme.textHeading} mt-4 font-serif leading-tight`}>Jangan Jadi Cahaya</h2>
+              </div>
+
+              <div className="space-y-10">
+                <p className={`${theme.text} text-xl md:text-2xl leading-[1.8] font-serif text-center`}>
+                  Jangan jadi cahaya.
+                </p>
+
+                <p className={`${theme.text} text-lg leading-[1.9] text-center max-w-2xl mx-auto`}>
+                  Jadi saja lilin yang berkedip-kedip. Yang getir. Yang hampir padam tiap angin. Tapi hangat. Hangat di tangan yang dekat. Jadi saja lampu tidur yang redup. Yang cukup untuk satu kamar saja. Untuk satu tubuh saja. Untuk satu hati saja.
+                </p>
+
+                <div className={`my-16 p-10 ${theme.highlight} border-2 ${theme.accentBorder} rounded-xl text-center`}>
+                  <p className={`${theme.textHeading} text-2xl md:text-3xl font-serif italic leading-relaxed mb-6`}>
+                    Jangan menyangga langit.
+                  </p>
+                  <p className={`${theme.accent} text-xl font-serif italic mb-6`}>
+                    Biarkan runtuh.
+                  </p>
+                  <div className={`w-24 h-px ${darkMode ? 'bg-[#c9a66b]/50' : 'bg-[#8b4513]/50'} mx-auto`} />
+                </div>
+
+                <p className={`${theme.text} text-lg leading-[1.9] text-center max-w-2xl mx-auto`}>
+                  Sebab yang seharusnya kita pikul bukan langit. Tapi hanya diri kita sendiri, dan itu sudah cukup berat. <span className={`${theme.accent} font-medium text-xl`}>Itu sudah cukup. Sudah cukup. Sudah cukup.</span>
+                </p>
+
+                {/* Final Note */}
+                <div className={`mt-20 pt-12 border-t-2 ${theme.border} ${theme.accentBorder}`}>
+                  <div className="max-w-xl mx-auto">
+                    <p className={`${theme.textMuted} text-sm leading-[1.9] mb-6`}>
+                      Di saku jaket bekasnya, kertas bau rokok dan kopi dingin. Tulisannya tidak rapi. Ada noda yang mungkin air, mungkin sesuatu yang lain.
+                    </p>
+
+                    <div className={`p-6 ${theme.card} border ${theme.border} rounded-lg mb-6`}>
+                      <p className={`${theme.textMuted} text-sm italic mb-4`}>Di baliknya, gambar kecil: bocah kecil sedang berdiri di bawah hujan, memegang payung besar untuk orang lain, sementara dirinya sendiri basah kuyup.</p>
+                      <p className={`${theme.textMuted} text-xs uppercase tracking-wider`}>Di pojok, tulisan yang lebih tidak rapi lagi:</p>
+                    </div>
+
+                    <blockquote className={`${theme.ember} text-lg md:text-xl font-serif italic leading-relaxed text-center border-l-4 ${theme.quoteBorder} pl-6 py-4`}>
+                      "Aku lelah jadi pelita. Aku ingin jadi abu saja. Abu yang hangat sebentar, lalu dingin, lalu pergi, tanpa harus menerangi siapa-siapa lagi."
+                    </blockquote>
+
+                    <div className="mt-10 text-center">
+                      <p className={`${theme.accent} text-sm uppercase tracking-[0.3em]`}>Selesai</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Author Note */}
+                <div className={`mt-16 pt-8 border-t ${theme.border} text-center`}>
+                  <Feather size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
+                  <p className={`${theme.textMuted} text-sm italic leading-[1.8]`}>
+                    Ditulis setelah melihat seseorang padam, di malam yang tidak yakin ingin dihabiskan, oleh tubuh yang ingin rebah tapi masih memaksa mengingat.
+                  </p>
+                </div>
               </div>
             </section>
 
