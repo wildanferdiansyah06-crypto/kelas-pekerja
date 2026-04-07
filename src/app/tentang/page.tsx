@@ -99,87 +99,90 @@ export default function TentangPage() {
 
       {/* Main Content */}
       <main className="relative z-10">
-        {/* Hero Section - Improved Layout */}
+        {/* Hero Section - Desktop: Photo Left, Text Right / Mobile: Stacked Center */}
         <section className={`relative px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
-          <div className="max-w-5xl mx-auto">
-            {/* Profile Photo - Centered, Circular, Smaller */}
-            <div className="flex flex-col items-center mb-8">
-              <div className="relative">
-                {/* Circular Photo Container */}
-                <div className={`w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden ${theme.border} border-4 shadow-xl`}>
-                  <Image
-                    src="/images/wildan.png"
-                    alt="Wildan Ferdiansyah"
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 640px) 128px, (max-width: 768px) 144px, (max-width: 1024px) 160px, 176px"
-                  />
-                </div>
-                {/* Decorative ring */}
-                <div className={`absolute -inset-1 rounded-full ${theme.accentBorder} border-2 opacity-30`}></div>
-              </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
               
-              {/* Social Links - Below Photo */}
-              <div className="flex gap-3 mt-6">
-                <a 
-                  href="https://github.com/wildanferdiansyah06-crypto" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-2.5 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110`}
-                  aria-label="GitHub"
-                >
-                  <Github size={20} className={theme.accent} />
-                </a>
-                <a 
-                  href="https://instagram.com/_iamwildan_" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-2.5 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110`}
-                  aria-label="Instagram"
-                >
-                  <Instagram size={20} className={theme.accent} />
-                </a>
-                <a 
-                  href="https://wa.me/6289636357091"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-2.5 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110`}
-                  aria-label="WhatsApp"
-                >
-                  <MessageCircle size={20} className={theme.accent} />
-                </a>
-              </div>
-            </div>
-
-            {/* Profile Info - Below Photo */}
-            <div className="text-center">
-              <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>
-                Wildan Ferdiansyah
-              </h1>
-              
-              <p className={`text-base sm:text-lg md:text-xl ${theme.textMuted} mb-4 font-serif italic`}>
-                Bukan Penulis, Bukan Motivator
-              </p>
-
-              <p className={`text-sm sm:text-base leading-relaxed ${theme.text} mb-6 max-w-xl mx-auto px-2 sm:px-0`}>
-                Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu — bukan untuk menjadi terkenal, tetapi untuk tetap waras. "Aku menulis untuk hadir, bukan untuk memukau."
-              </p>
-
-              {/* Location & Email */}
-              <div className="flex flex-wrap gap-3 justify-center">
-                <div className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border text-sm`}>
-                  <MapPin size={14} className="sm:w-4 sm:h-4" />
-                  <span className="font-medium">Bali, Ubud</span>
+              {/* Left Side - Profile Photo (Center on mobile, Left on desktop) */}
+              <div className="flex flex-col items-center md:items-start">
+                <div className="relative">
+                  {/* Circular Photo Container */}
+                  <div className={`w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden ${theme.border} border-4 shadow-2xl`}>
+                    <Image
+                      src="/images/wildan.png"
+                      alt="Wildan Ferdiansyah"
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 640px) 160px, (max-width: 768px) 176px, (max-width: 1024px) 192px, 208px"
+                    />
+                  </div>
+                  {/* Decorative ring - Perfect Circle */}
+                  <div className={`absolute -inset-2 rounded-full ${theme.accentBorder} border-2 opacity-40 pointer-events-none`} style={{borderRadius: '50%'}}></div>
+                  <div className={`absolute -inset-3 rounded-full ${theme.accentBorder} border opacity-20 pointer-events-none`} style={{borderRadius: '50%'}}></div>
                 </div>
-                <a 
-                  href="mailto:wildanferdiansyah06@gmail.com"
-                  className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full ${theme.card} ${theme.border} border text-sm hover:${theme.accentBg} transition-colors`}
-                >
-                  <Mail size={14} className="sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">wildanferdiansyah06@gmail.com</span>
-                  <span className="sm:hidden">Email</span>
-                </a>
+                
+                {/* Social Links - Below Photo */}
+                <div className="flex gap-4 mt-8">
+                  <a 
+                    href="https://github.com/wildanferdiansyah06-crypto" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    aria-label="GitHub"
+                  >
+                    <Github size={22} className={theme.accent} />
+                  </a>
+                  <a 
+                    href="https://instagram.com/_iamwildan_" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={22} className={theme.accent} />
+                  </a>
+                  <a 
+                    href="https://wa.me/6289636357091"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    aria-label="WhatsApp"
+                  >
+                    <MessageCircle size={22} className={theme.accent} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side - Profile Info (Center on mobile, Left on desktop) */}
+              <div className="text-center md:text-left">
+                <h1 className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-4 font-serif leading-tight`}>
+                  Wildan Ferdiansyah
+                </h1>
+                
+                <p className={`text-lg sm:text-xl md:text-xl lg:text-2xl ${theme.textMuted} mb-5 font-serif italic`}>
+                  Bukan Penulis, Bukan Motivator
+                </p>
+
+                <p className={`text-sm sm:text-base md:text-base lg:text-lg leading-relaxed ${theme.text} mb-6 max-w-lg mx-auto md:mx-0`}>
+                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu — bukan untuk menjadi terkenal, tetapi untuk tetap waras. "Aku menulis untuk hadir, bukan untuk memukau."
+                </p>
+
+                {/* Location & Email */}
+                <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                    <MapPin size={16} />
+                    <span className="font-medium text-sm sm:text-base">Bali, Ubud</span>
+                  </div>
+                  <a 
+                    href="mailto:wildanferdiansyah06@gmail.com"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors`}
+                  >
+                    <Mail size={16} />
+                    <span className="text-sm sm:text-base">wildanferdiansyah06@gmail.com</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
