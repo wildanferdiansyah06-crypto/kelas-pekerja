@@ -100,7 +100,7 @@ export default function TentangPage() {
 
       subtitle: "Sebuah Pengakuan tentang yang Terbakar hingga Padam",
 
-      year: "2024",
+      year: "2026",
 
       genre: "Filsafat",
 
@@ -114,7 +114,7 @@ export default function TentangPage() {
 
       subtitle: "Tentang Menjadi Terlalu Baik",
 
-      year: "2024", 
+      year: "2026", 
 
       genre: "Fiksi",
 
@@ -128,7 +128,7 @@ export default function TentangPage() {
 
       subtitle: "Akademis Tentang Kehidupan Barista",
 
-      year: "2023",
+      year: "2026",
 
       genre: "Akademis",
 
@@ -142,7 +142,7 @@ export default function TentangPage() {
 
       subtitle: "Tentang Ketakutan dan Harapan",
 
-      year: "2023",
+      year: "2026",
 
       genre: "Puisi",
 
@@ -156,7 +156,7 @@ export default function TentangPage() {
 
       subtitle: "Mencari Makna di Antara Baris Kode",
 
-      year: "2022",
+      year: "2026",
 
       genre: "Refleksi",
 
@@ -170,7 +170,7 @@ export default function TentangPage() {
 
       subtitle: "Tentang Usia dan Pertanyaan",
 
-      year: "2022",
+      year: "2026",
 
       genre: "Fiksi",
 
@@ -206,7 +206,7 @@ export default function TentangPage() {
 
           <div className="max-w-6xl mx-auto">
 
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center lg:items-start">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
 
               
 
@@ -215,7 +215,7 @@ export default function TentangPage() {
                 <div className="relative">
 
                   {/* Circular Photo Container - Force perfect circle */}
-                  <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 shadow-2xl" 
+                  <div className={`relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden ${theme.accentBorder} border-4 shadow-2xl`} 
                        style={{aspectRatio: '1/1', objectFit: 'cover'}}>
                     <Image
                       src="/images/wildan.png"
@@ -228,8 +228,8 @@ export default function TentangPage() {
                     />
                   </div>
                   {/* Decorative ring - Perfect Circle */}
-                  <div className="absolute inset-0 rounded-full border-2 opacity-0 pointer-events-none" 
-                       style={{boxShadow: 'inset 0 0 0 999px rgba(201, 166, 107, 0.1)'}}></div>
+                  <div className={`absolute inset-0 rounded-full ${theme.accentBorder} border-2 opacity-50 pointer-events-none`} 
+                       style={{boxShadow: `inset 0 0 0 999px ${darkMode ? 'rgba(201, 166, 107, 0.1)' : 'rgba(139, 69, 19, 0.1)'}`}}></div>
                 </div>
 
                 
@@ -246,13 +246,13 @@ export default function TentangPage() {
 
                     rel="noopener noreferrer"
 
-                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
+                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
 
                     aria-label="GitHub"
 
                   >
 
-                    <Github size={22} className="text-white/80" />
+                    <Github size={22} className={theme.accent} />
 
                   </a>
 
@@ -264,13 +264,13 @@ export default function TentangPage() {
 
                     rel="noopener noreferrer"
 
-                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
+                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
 
                     aria-label="Instagram"
 
                   >
 
-                    <Instagram size={22} className="text-white/80" />
+                    <Instagram size={22} className={theme.accent} />
 
                   </a>
 
@@ -282,13 +282,13 @@ export default function TentangPage() {
 
                     rel="noopener noreferrer"
 
-                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
+                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
 
                     aria-label="WhatsApp"
 
                   >
 
-                    <MessageCircle size={22} className="text-white/80" />
+                    <MessageCircle size={22} className={theme.accent} />
 
                   </a>
 
@@ -302,7 +302,7 @@ export default function TentangPage() {
 
               <div className="text-center md:text-left lg:text-center">
 
-                <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-4 font-serif leading-tight">
+                <h1 className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-4 font-serif leading-tight`}>
 
                   Wildan Ferdiansyah
 
@@ -310,7 +310,7 @@ export default function TentangPage() {
 
                 
 
-                <p className="text-lg sm:text-xl md:text-xl lg:text-2xl text-white/80 mb-5 font-serif italic">
+                <p className={`text-lg sm:text-xl md:text-xl lg:text-2xl ${theme.textMuted} mb-5 font-serif italic`}>
 
                   Bukan Penulis, Bukan Motivator
 
@@ -318,9 +318,9 @@ export default function TentangPage() {
 
 
 
-                <p className="text-sm sm:text-base md:text-base lg:text-lg leading-relaxed text-white/70 mb-6 max-w-lg mx-auto lg:mx-0">
+                <p className={`text-sm sm:text-base md:text-base lg:text-lg leading-relaxed ${theme.textMuted} mb-6 max-w-lg mx-auto lg:mx-0`}>
 
-                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu — bukan untuk menjadi terkenal, tetapi untuk tetap waras. "Aku menulis untuk hadir, bukan untuk memukau."
+                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu - bukan untuk menjadi terkenal, tetapi untuk tetap waras.
 
                 </p>
 
@@ -330,11 +330,11 @@ export default function TentangPage() {
 
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start lg:justify-center">
 
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border">
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border`}>
 
-                    <MapPin size={16} className="text-white/80" />
+                    <MapPin size={16} className={theme.accent} />
 
-                    <span className="font-medium text-white text-sm sm:text-base">Bali, Ubud</span>
+                    <span className={`font-medium ${theme.text} text-sm sm:text-base`}>Bali, Ubud</span>
 
                   </div>
 
@@ -342,13 +342,13 @@ export default function TentangPage() {
 
                     href="mailto:wildanferdiansyah06@gmail.com"
 
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-colors"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-colors`}
 
                   >
 
-                    <Mail size={16} className="text-white/80" />
+                    <Mail size={16} className={theme.accent} />
 
-                    <span className="text-white text-sm sm:text-base">wildanferdiansyah06@gmail.com</span>
+                    <span className={`${theme.text} text-sm sm:text-base`}>wildanferdiansyah06@gmail.com</span>
 
                   </a>
 
