@@ -1264,56 +1264,50 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
               </p>
 
-              <div className={`flex items-center gap-2 ${theme.textMuted} text-xs`}>
+    <div className={`flex items-center gap-2 ${theme.textMuted} text-xs`}>
 
-                <Coffee size={14} />
+      <Coffee size={14} />
 
-                <span>Kelas Pekerja • {new Date().getFullYear()}</span>
+      <span>Kelas Pekerja {new Date().getFullYear()}</span>
 
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </main>
-<<<<<<< C:/Users/ASUS/Documents/GitHub/kelas-pekerja/src/app/tulis/page.tsx
-=======
-
-
-
-      <style jsx global>{`
-
-        @keyframes float-slow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
-
-        @keyframes steam { 0% { transform: translateY(0); opacity: 0.3; } 100% { transform: translateY(-20px); opacity: 0; } }
-
-        @keyframes drip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
-
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-
-        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .animate-float-slow { animation: float-slow 10s ease-in-out infinite; }
-
-        .animate-steam { animation: steam 3s ease-out infinite; }
-
-        .animate-drip { animation: drip 2s ease-in-out infinite; }
-
-        .animate-shake { animation: shake 0.5s ease-in-out; }
-
-        .animate-bounce-slow { animation: bounce 3s ease-in-out infinite; }
-
-        .animate-fade-in { animation: fade-in 0.5s ease-out; }
-
-      `}</style>
-
->>>>>>> C:/Users/ASUS/.windsurf/worktrees/kelas-pekerja/kelas-pekerja-97bdf993/src/app/tulis/page.tsx
     </div>
 
-  );
+  </div>
+
+</div>
+
+</div>
+
+</main>
+
+<style jsx global>{`
+
+  @keyframes float-slow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(2deg); } }
+
+  @keyframes steam { 0% { transform: translateY(0); opacity: 0.3; } 100% { transform: translateY(-20px); opacity: 0; } }
+
+  @keyframes drip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+  @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .animate-float-slow { animation: float-slow 10s ease-in-out infinite; }
+
+  .animate-steam { animation: steam 3s ease-out infinite; }
+
+  .animate-drip { animation: drip 2s ease-in-out infinite; }
+
+  .animate-shake { animation: shake 0.5s ease-in-out; }
+
+  .animate-bounce-slow { animation: bounce 3s ease-in-out infinite; }
+
+  .animate-fade-in { animation: fade-in 0.5s ease-out; }
+
+`}</style>
+
+</div>
+
+);
 
 }
-

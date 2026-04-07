@@ -727,10 +727,6 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
         </div>
 
       </div>
-<<<<<<< C:/Users/ASUS/Documents/GitHub/kelas-pekerja/src/components/BookPreviewModal.tsx
-=======
-
-
 
       {/* Global Animation Styles */}
 
@@ -810,10 +806,8 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
       `}</style>
 
->>>>>>> C:/Users/ASUS/.windsurf/worktrees/kelas-pekerja/kelas-pekerja-97bdf993/src/components/BookPreviewModal.tsx
     </div>
 
   );
 
 }
-
