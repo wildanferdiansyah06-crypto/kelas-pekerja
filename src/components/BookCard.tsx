@@ -13,7 +13,7 @@ import {
   Flame,
   ArrowUp
 } from 'lucide-react';
-import { Book } from '@/types/book';
+import { Book } from '@/src/types';
 
 interface BookCardProps {
   book: Book;
