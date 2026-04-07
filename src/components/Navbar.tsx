@@ -20,8 +20,7 @@ const { theme, toggleTheme } = useTheme();
 const [isMenuOpen, setIsMenuOpen] = useState(false);
 const [mounted, setMounted] = useState(false);
 const [isVisible, setIsVisible] = useState(true);
-const [lastScrollY, setLastScrollY] = useState(0);
-const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+const lastScrollYRef = useRef(0);
 
 useEffect(() => {
 setMounted(true);
@@ -31,54 +30,62 @@ setMounted(true);
 useEffect(() => {
   if (!mounted) return;
 
+  let ticking = false;
+  const scrollThreshold = 100;
+  let scrollDirection = 'up';
+  
   const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    
-    // Clear existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        try {
+          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+          const lastScrollY = lastScrollYRef.current;
+          
+          // Determine scroll direction
+          if (currentScrollY > lastScrollY) {
+            scrollDirection = 'down';
+          } else if (currentScrollY < lastScrollY) {
+            scrollDirection = 'up';
+          }
+          
+          // Always show navbar at the top
+          if (currentScrollY <= 0) {
+            if (!isVisible) setIsVisible(true);
+          } 
+          // Hide when scrolling down and past threshold
+          else if (scrollDirection === 'down' && currentScrollY > scrollThreshold) {
+            if (isVisible) setIsVisible(false);
+          } 
+          // Show when scrolling up
+          else if (scrollDirection === 'up') {
+            if (!isVisible) setIsVisible(true);
+          }
 
-    // Hide navbar when scrolling down, show when scrolling up
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      setIsVisible(false);
-    } else if (currentScrollY < lastScrollY) {
-      setIsVisible(true);
+          lastScrollYRef.current = currentScrollY;
+        } catch (error) {
+          console.error('Navbar scroll error:', error);
+        }
+        ticking = false;
+      });
+      ticking = true;
     }
-
-    // Always show navbar at the top
-    if (currentScrollY <= 0) {
-      setIsVisible(true);
-    }
-
-    setLastScrollY(currentScrollY);
   };
 
-  // Throttle scroll events
-  const throttledHandleScroll = () => {
-    if (!scrollTimeoutRef.current) {
-      scrollTimeoutRef.current = setTimeout(() => {
-        handleScroll();
-        scrollTimeoutRef.current = undefined;
-      }, 16); // ~60fps
-    }
-  };
+  // Initial scroll position
+  lastScrollYRef.current = window.scrollY || document.documentElement.scrollTop;
 
-  window.addEventListener('scroll', throttledHandleScroll, { passive: true });
+  window.addEventListener('scroll', handleScroll, { passive: true });
   
   return () => {
-    window.removeEventListener('scroll', throttledHandleScroll);
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
+    window.removeEventListener('scroll', handleScroll);
   };
-}, [mounted, lastScrollY]);
+}, [mounted, isVisible]);
 
 if (!mounted) return null;
 
 return (
-<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-all duration-300 ease-in-out ${
-  isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-transform duration-300 ease-in-out will-change-transform ${
+  isVisible ? 'translate-y-0' : '-translate-y-full'
 }`}>
 
   {/* Container diperlebar */}
