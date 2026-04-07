@@ -1,445 +1,360 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Mail, MapPin, Coffee, Code, Book, Clock, ExternalLink, Github, Linkedin, Twitter, Instagram, User } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
-import Link from "next/link";
 
 export default function TentangPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const isHeroInView = useInView(heroRef, { once: true });
-  
-  const [typedText, setTypedText] = useState("");
-  const fullText = "Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.";
-  
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const { theme: globalTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (isHeroInView) {
-      let i = 0;
-      const timer = setInterval(() => {
-        if (i <= fullText.length) {
-          setTypedText(fullText.slice(0, i));
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 35);
-      return () => clearInterval(timer);
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const darkMode = globalTheme === 'dark';  
+  const theme = darkMode ? {
+    bg: 'bg-[#0f0d0c]',
+    text: 'text-[#e5e0db]',
+    textMuted: 'text-[#8b7d6b]',
+    textHeading: 'text-[#f0ebe5]',
+    border: 'border-[#2a2520]',
+    accent: 'text-[#c9a66b]',
+    accentBg: 'bg-[#1a1612]',
+    accentBorder: 'border-[#3d3428]',
+    card: 'bg-[#1a1612]/80',
+    highlight: 'bg-[#2a2420]/50',
+    gradientFrom: 'from-[#2a2420]/30',
+    gradientTo: 'to-[#0f0d0c]/10',
+  } : {
+    bg: 'bg-[#f5f0e8]',
+    text: 'text-[#2c241b]',
+    textMuted: 'text-[#6b5d4d]',
+    textHeading: 'text-[#1a1612]',
+    border: 'border-[#d4cfc4]',
+    accent: 'text-[#8b4513]',
+    accentBg: 'bg-[#ebe5d8]',
+    accentBorder: 'border-[#c4b8a3]',
+    card: 'bg-[#ebe5d8]/80',
+    highlight: 'bg-[#d9d0c1]/50',
+    gradientFrom: 'from-[#d9d0c1]/40',
+    gradientTo: 'to-[#f5f0e8]/20',
+  };
+
+  const books = [
+    {
+      title: "Cahaya Itu",
+      subtitle: "Sebuah Pengakuan tentang yang Terbakar hingga Padam",
+      year: "2024",
+      genre: "Filsafat",
+      link: "/buku/cahaya-itu"
+    },
+    {
+      title: "Kami Menulis Pelan",
+      subtitle: "Tentang Menjadi Terlalu Baik",
+      year: "2024", 
+      genre: "Fiksi",
+      link: "/buku/kami-menulis-pelan"
+    },
+    {
+      title: "Soal Kopi",
+      subtitle: "Akademis Tentang Kehidupan Barista",
+      year: "2023",
+      genre: "Akademis",
+      link: "/buku/soal-kopi"
+    },
+    {
+      title: "Malam Pertama",
+      subtitle: "Tentang Ketakutan dan Harapan",
+      year: "2023",
+      genre: "Puisi",
+      link: "/buku/malam-pertama"
+    },
+    {
+      title: "Ruang Kosong",
+      subtitle: "Mencari Makna di Antara Baris Kode",
+      year: "2022",
+      genre: "Refleksi",
+      link: "/buku/ruang-kosong"
+    },
+    {
+      title: "Dua Puluh Lima",
+      subtitle: "Tentang Usia dan Pertanyaan",
+      year: "2022",
+      genre: "Fiksi",
+      link: "/buku/dua-puluh-lima"
     }
-  }, [isHeroInView]);
-
-  const colors = {
-    bg: isDark ? "bg-[#0a0908]" : "bg-[#fafaf9]",
-    text: isDark ? "text-[#e7e5e4]" : "text-[#1c1917]",
-    textMuted: isDark ? "text-[#a8a29e]" : "text-[#78716c]",
-    textSecondary: isDark ? "text-[#d6d3d1]" : "text-[#57534e]",
-    accent: isDark ? "text-[#8b7355]" : "text-[#a16207]",
-    accentMuted: isDark ? "text-[#8b7355]/60" : "text-[#a16207]/60",
-    accentBorder: isDark ? "border-[#8b7355]/30" : "border-[#a16207]/30",
-    accentBg: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
-    accentBgLight: isDark ? "bg-[#8b7355]/10" : "bg-[#a16207]/10",
-    divider: isDark ? "bg-[#8b7355]/20" : "bg-[#a16207]/20",
-    subtleText: isDark ? "text-[#57534e]" : "text-[#a8a29e]",
-  };
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: {
-        delay: i * 0.1,
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    })
-  };
-
-  const letterAnimation = {
-    hidden: { opacity: 0, y: 50, rotateX: -90 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      transition: {
-        delay: 0.3 + (i * 0.05),
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    })
-  };
-
-  const lineExpand = {
-    hidden: { scaleX: 0, opacity: 0 },
-    visible: {
-      scaleX: 1,
-      opacity: 1,
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
+  ];
 
   return (
-    <section className={`min-h-screen ${colors.bg} ${colors.text} relative overflow-hidden transition-colors duration-500`}>
-      {/* Noise texture */}
-      <div className={`absolute inset-0 ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'} pointer-events-none bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E')]`}></div>
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`absolute w-[1px] h-[1px] ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/20'} rounded-full`}
-            style={{
-              left: `${15 + i * 15}%`,
-              top: `${20 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: isDark ? [0.1, 0.3, 0.1] : [0.05, 0.15, 0.05],
-            }}
-            transition={{
-              duration: 6 + i * 0.8,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.4
-            }}
-          />
-        ))}
+    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
+      {/* Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradientFrom} ${theme.gradientTo} opacity-40`} />
       </div>
 
-      {/* HERO SECTION */}
-      <div 
-        ref={heroRef}
-        className="relative z-10 min-h-[85vh] flex flex-col justify-center items-center px-6 pt-24 pb-16"
-      >
-        <motion.div 
-          className="max-w-3xl mx-auto text-center"
-          initial={{ opacity: 0 }}
-          animate={isHeroInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          {/* Label */}
-          <motion.div 
-            className="flex items-center justify-center gap-4 mb-8"
-            initial="hidden"
-            animate={isHeroInView ? "visible" : "hidden"}
-          >
-            <motion.div 
-              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-12 origin-right`}
-              variants={lineExpand}
-            />
-            <motion.span 
-              className={`text-[10px] tracking-[0.5em] uppercase ${colors.accentMuted}`}
-              initial={{ opacity: 0 }}
-              animate={isHeroInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
-              Arsip Pikiran
-            </motion.span>
-            <motion.div 
-              className={`h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#a16207]/30'} w-12 origin-left`}
-              variants={lineExpand}
-            />
-          </motion.div>
-
-          {/* Context */}
-          <motion.p
-            className={`font-serif italic ${colors.accent} text-lg md:text-xl mb-6 opacity-80`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isHeroInView ? { opacity: 0.8, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            ruang bagi
-          </motion.p>
-
-          {/* Main Title */}
-          <div className="overflow-hidden mb-8">
-            <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl ${colors.text} flex justify-center perspective-1000`}>
-              {"Tentang".split("").map((letter, i) => (
-                <motion.span
-                  key={i}
-                  custom={i}
-                  variants={letterAnimation}
-                  initial="hidden"
-                  animate={isHeroInView ? "visible" : "hidden"}
-                  className="inline-block"
-                  style={{ 
-                    transformStyle: "preserve-3d",
-                    textShadow: isDark ? "0 0 60px rgba(139,115,85,0.12)" : "0 0 40px rgba(161,98,7,0.08)"
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </h1>
-          </div>
-
-          {/* Original Subtitle - Typewriter */}
-          <motion.div 
-            className="max-w-2xl mx-auto mt-8"
-            initial={{ opacity: 0 }}
-            animate={isHeroInView ? { opacity: 1 } : {}}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
-            <p className={`text-[15px] md:text-[17px] leading-[1.9] ${colors.textMuted} font-light`}>
-              {typedText}
-              <motion.span
-                className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'} ml-1 align-middle`}
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-              />
-            </p>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* MAIN CONTENT - Continuous Scroll, No Fade Out */}
-      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${colors.text}`}>
-        
-        {/* === YOUR ORIGINAL MANIFESTO - FULLY PRESERVED === */}
-        <motion.div
-          custom={0}
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="mb-12"
-        >
-          <p className={`text-[16px] md:text-[18px] leading-[2] ${colors.textSecondary} font-light text-justify`}>
-            <motion.span 
-              className={`float-left text-6xl md:text-7xl font-serif ${colors.accent} mr-4 mt-1 leading-none`}
-              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              K
-            </motion.span>
-            ita hidup di era yang terobsesi pada kecepatan. Segala sesuatu harus instan, terukur, menghasilkan. Namun di sudut terdalam kesadaran, kita tahu: yang benar-benar berarti justru datang dari proses yang lambat, menyakitkan, dan seringkali tanpa tujuan jelas.
-          </p>
-        </motion.div>
-
-        <motion.div 
-          className="space-y-8 mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <motion.p 
-            custom={1}
-            variants={fadeInUp}
-            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
-          >
-            Setiap tulisan di sini adalah jejak—bukan petunjuk arah, melainkan bekas tapak kaki di pasir yang segera terhapus ombak. Mereka tidak mengklaim kebenaran. Mereka hanya mengakui keberadaan: bahwa seseorang, di suatu tempat, pernah merasa sesuatu yang terlalu kompleks untuk diungkapkan dalam percakapan sehari-hari.
-          </motion.p>
-
-          <motion.p 
-            custom={2}
-            variants={fadeInUp}
-            className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}
-          >
-            Tentang kopi yang bukan sekadar minuman, melainkan ritual penundaan— cara kita memberontak terhadap waktu. Tentang kerja yang memakan hari-hari kita, lalu kita bertanya: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya?</em> Tentang keheningan yang mengganggu, karena di dalamnya kita terpaksa berhadapan dengan diri sendiri.
-          </motion.p>
-        </motion.div>
-
-        {/* Your Original Quote */}
-        <motion.div
-          className={`my-16 pl-6 md:pl-8 border-l-2 ${colors.accentBorder}`}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <blockquote 
-            className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.7]`}
-          >
-            &ldquo;Menulis adalah cara kita memberi makna pada kekosongan. Bukan untuk mengisinya, tetapi untuk mengenalinya. Seperti menatap ke dalam sumur yang gelap dan akhirnya melihat bayangan diri sendiri.&rdquo;
-          </blockquote>
-        </motion.div>
-
-        <motion.p 
-          className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-20`}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          Mungkin ini semua hanya monolog yang tak pernah dimaksudkan untuk didengar. Tapi jika kamu menemukan dirimu di sini, di antara kata-kata yang tercecer—selamat datang. Kita adalah orang-orang yang sama: yang mencari arti di tempat-tempat yang orang lain lewati begitu saja.
-        </motion.p>
-
-        {/* Divider */}
-        <motion.div 
-          className="flex items-center justify-center gap-4 py-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className={`h-px ${colors.divider} w-16 md:w-24`}></div>
-          <div className={`w-1.5 h-1.5 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#a16207]/40'} rotate-45`}></div>
-          <div className={`h-px ${colors.divider} w-16 md:w-24`}></div>
-        </motion.div>
-
-        {/* === BRIDGE: Why This Exists (Personal Layer) === */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="pt-8 pb-12"
-        >
-          <div className="text-center mb-12">
-            <span className={`text-[10px] tracking-[0.4em] uppercase ${colors.accentMuted}`}>
-              Tapi Mengapa Ini Ada?
-            </span>
-          </div>
-
-          <p className={`text-[17px] md:text-[19px] leading-[2] ${colors.textSecondary} font-light text-justify mb-8`}>
-            Semua tulisan di atas bukan sekadar filosofi yang gue angkat dari buku. Mereka datang dari <span className={colors.accent}>pengalaman hidup</span> — dari hari-hari di mana gue duduk sendirian di sudut kafe, menatap cangkir kopi yang tengah menghangat, dan bertanya dalam hati: <em className={`${colors.accent} not-italic`}>untuk apa sebenarnya gue bekerja sekeras ini?</em>
-          </p>
-
-          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify mb-8`}>
-            Gue pernah berada di tempat kerja yang di atas kertas terlihat "sempurna" — gaji cukup, nama perusahaan terdengar bagus, posisi stabil. Tapi setiap pagi, gue harus memaksa diri sendiri untuk bangkit dari tempat tidur. Bukan karena malas. Karena ada sesuatu yang <span className={colors.accent}>salah</span>, tapi gue tidak bisa menjelaskan apa. Dan yang lebih buruk: gue tidak punya tempat untuk bercerita.
-          </p>
-
-          <p className={`text-[16px] md:text-[17px] leading-[2] ${colors.textMuted} font-light text-justify`}>
-            Gue butuh ruang yang <span className={colors.accent}>lambat</span>. Yang tidak menuntut jawaban instan. Yang memberi izin untuk tidak sempurna, untuk bingung, untuk merasa tanpa harus memahami. Website ini lahir dari kebutuhan itu — dan dari keyakinan bahwa gue tidak sendirian.
-          </p>
-        </motion.div>
-
-        {/* Personal Quote */}
-        <motion.div
-          className={`my-14 pl-6 md:pl-8 border-l-2 ${colors.accentBorder}`}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <p className={`font-serif italic text-xl md:text-2xl ${colors.accent} leading-[1.7]`}>
-            &ldquo;Gue bikin ini bukan karena gue sudah menemukan jawabannya. Gue bikin ini karena gue masih mencari — dan gue tahu ada orang lain di luar sana yang juga mencari.&rdquo;
-          </p>
-        </motion.div>
-
-        {/* Who Is This For */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-16"
-        >
-          <h3 className={`font-serif text-xl md:text-2xl ${colors.text} mb-8 text-center`}>
-            Ini Untuk Kamu Yang...
-          </h3>
-
-          <div className="space-y-4">
-            {[
-              {
-                title: "Merasa sendiri di tengah keramaian kantor",
-                desc: "Di sekitarmu ada puluhan rekan kerja, tapi tidak satu pun yang benar-benar mengerti apa yang kamu rasakan."
-              },
-              {
-                title: "Punya cerita tapi tidak tahu harus cerita ke siapa",
-                desc: "Takut dianggap lemah, takut dianggap tidak bersyukur, takut di-judge oleh orang yang tidak mengerti konteksnya."
-              },
-              {
-                title: "Sedang bertanya-tanya: ini salahku, atau memang tempatnya?",
-                desc: "Kebingungan yang valid. Gue pernah di sana, dan tidak ada yang salah dengan merasa bingung."
-              }
-            ].map((item, index) => (
-              <motion.div 
-                key={index}
-                className={`flex gap-4 p-5 ${isDark ? 'bg-[#1c1917]/30' : 'bg-[#f5f5f4]/70'} border-l-2 ${colors.accentBorder}`}
-                initial={{ opacity: 0, x: -15 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 * index, duration: 0.5 }}
-                whileHover={{ x: 6, transition: { duration: 0.2 } }}
-              >
-                <span className={`${colors.accent} font-serif text-xl leading-none mt-0.5`}>0{index + 1}</span>
-                <div>
-                  <h4 className={`${colors.textSecondary} font-medium mb-1 text-[15px]`}>{item.title}</h4>
-                  <p className={`text-[14px] ${colors.textMuted} leading-relaxed`}>{item.desc}</p>
+      {/* Main Content */}
+      <main className="relative z-10">
+        {/* Hero Section */}
+        <section className={`relative px-6 py-20 md:py-32 ${theme.border} border-b`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Profile Image */}
+              <div className="relative">
+                <div className={`relative rounded-2xl overflow-hidden ${theme.card} border ${theme.border} shadow-2xl`}>
+                  <div className="aspect-[3/4] relative">
+                    <Image
+                      src="/images/wildan-profile.png"
+                      alt="Wildan Ferdiansyah"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                  {/* Decorative overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-t ${darkMode ? 'from-[#0f0d0c]/60' : 'from-[#f5f0e8]/60'} to-transparent`} />
                 </div>
-              </motion.div>
-            ))}
+              </div>
+
+              {/* Profile Info */}
+              <div className="text-center md:text-left">
+                <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${theme.textHeading} mb-4 font-serif leading-tight`}>
+                  Wildan Ferdiansyah
+                </h1>
+                
+                <p className={`text-xl md:text-2xl ${theme.textMuted} mb-6 font-serif italic`}>
+                  Bukan Penulis, Bukan Motivator
+                </p>
+
+                <p className={`text-lg leading-relaxed ${theme.text} mb-8 max-w-lg`}>
+                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis di sela sela waktu dan develop web di sela sela waktu — bukan untuk menjadi terkenal tetapi untuk tetap waras "aku menulis untuk hadir bukan untuk memukau".
+                </p>
+
+                <div className="flex flex-wrap gap-4 justify-center md:justify-start mb-8">
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                    <MapPin size={16} />
+                    <span className="text-sm font-medium">Bali, Ubud</span>
+                  </div>
+                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.card} ${theme.border} border`}>
+                    <Mail size={16} />
+                    <span className="text-sm">wildanferdiansyah06@gmail.com</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 justify-center md:justify-start">
+                  <a 
+                    href="https://github.com/wildanferdiansyah06-crypto" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
+                  >
+                    <Github size={20} className={theme.textMuted} />
+                  </a>
+                  <a 
+                    href="https://linkedin.com/in/wildanferdiansyah" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
+                  >
+                    <Linkedin size={20} className={theme.textMuted} />
+                  </a>
+                  <a 
+                    href="https://twitter.com/wildanferdiansyah" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
+                  >
+                    <Twitter size={20} className={theme.textMuted} />
+                  </a>
+                  <a 
+                    href="https://instagram.com/wildanferdiansyah" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors duration-300`}
+                  >
+                    <Instagram size={20} className={theme.textMuted} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </section>
 
-        {/* Positioning Statement */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className={`p-6 md:p-8 ${colors.accentBgLight} border ${colors.accentBorder} text-center mb-16`}
-        >
-          <p className={`text-[15px] md:text-[16px] leading-[1.9] ${colors.textSecondary}`}>
-            Ini bukan platform review kerja profesional. Ini <span className={`${colors.accent} font-medium`}>tempat orang jujur tentang dunia kerja</span> — yang baik, yang buruk, yang membingungkan, yang membuat kita tumbuh, yang membuat kita hancur, dan semua nuansa di antaranya.
-          </p>
-        </motion.div>
+        {/* Developer Section */}
+        <section className={`px-6 py-20 ${theme.border} border-b`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <Code size={24} className={theme.accent} />
+                  <h2 className={`text-2xl md:text-3xl font-bold ${theme.textHeading} font-serif`}>
+                    Web Developer
+                  </h2>
+                </div>
+                
+                <p className={`${theme.text} text-lg leading-relaxed mb-6`}>
+                  Pengembang web independent yang fokus pada menciptakan platform untuk karya sastra dan konten digital. Spesialisasi dalam membangun platform yang bermakna.
+                </p>
 
-        {/* CTA Section - No Archive */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center py-12"
-        >
-          <div className={`h-px ${colors.divider} w-20 mx-auto mb-10`}></div>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className={`font-semibold ${theme.textHeading} mb-2`}>Tech Stack</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {['Java', 'Python', 'JavaScript', 'React', 'Next.js', 'TypeScript'].map((tech) => (
+                        <span key={tech} className={`px-3 py-1 rounded-lg text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className={`font-semibold ${theme.textHeading} mb-2`}>Portfolio</h3>
+                    <a 
+                      href="https://kelaspekerja.site" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 ${theme.accent} hover:underline`}
+                    >
+                      <ExternalLink size={16} />
+                      kelaspekerja.site
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-          <h3 className={`font-serif text-2xl md:text-3xl ${colors.text} mb-5`}>
-            Punya cerita yang perlu keluar?
-          </h3>
-          
-          <p className={`text-[15px] ${colors.textMuted} max-w-md mx-auto mb-8 leading-relaxed`}>
-            Tidak harus sempurna. Tidak harus panjang. Tidak harus punya pelajaran moral. Yang penting: <span className={colors.accent}>jujur</span>.
-          </p>
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <Book size={24} className={theme.accent} />
+                  <h2 className={`text-2xl md:text-3xl font-bold ${theme.textHeading} font-serif`}>
+                    Penulis
+                  </h2>
+                </div>
+                
+                <p className={`${theme.text} text-lg leading-relaxed mb-6`}>
+                  Menulis sebagai cara untuk memahami hidup dan menjaga kewarasan. Setiap kata adalah upaya untuk tetap hadir di dunia yang terus berubah.
+                </p>
 
-          <Link href="/tulis">
-            <motion.button
-              className={`group relative px-8 py-4 ${colors.accentBg} ${colors.accentBorder} border overflow-hidden`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className={`relative z-10 text-[13px] tracking-[0.2em] uppercase ${colors.accent} font-medium transition-colors duration-300 group-hover:text-white`}>
-                Tulis Sekarang
-              </span>
-              <motion.div
-                className={`absolute inset-0 ${isDark ? 'bg-[#8b7355]' : 'bg-[#a16207]'}`}
-                initial={{ y: "100%" }}
-                whileHover={{ y: 0 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              />
-            </motion.button>
-          </Link>
-
-          <p className={`mt-8 text-[12px] ${colors.subtleText} italic max-w-sm mx-auto leading-relaxed`}>
-            &ldquo;Tulisan yang paling jujur adalah yang ditulis tanpa penonton, hanya untuk meyakinkan diri sendiri bahwa kita pernah merasa.&rdquo;
-          </p>
-        </motion.div>
-
-        {/* Final Footer */}
-        <motion.div 
-          className="mt-20 text-center pb-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div className={`h-px ${colors.accentBg} w-6`}></div>
-            <span className={`text-[9px] tracking-[0.4em] uppercase ${isDark ? 'text-[#44403c]' : 'text-[#d6d3d1]'}`}>
-              Ditulis perlahan, seperti menyeduh kopi di pagi yang belum yakin ingin dimulai
-            </span>
-            <div className={`h-px ${colors.accentBg} w-6`}></div>
+                <div className={`${theme.card} ${theme.border} border rounded-lg p-6`}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Coffee size={20} className={theme.accent} />
+                    <h3 className={`font-semibold ${theme.textHeading}`}>Proses Menulis</h3>
+                  </div>
+                  <p className={`${theme.textMuted} leading-relaxed`}>
+                    Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </section>
+
+        {/* Books Section */}
+        <section className={`px-6 py-20 ${theme.border} border-b`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className={`text-3xl md:text-4xl font-bold ${theme.textHeading} mb-4 font-serif`}>
+                Karya
+              </h2>
+              <p className={`${theme.textMuted} text-lg max-w-2xl mx-auto`}>
+                Enam buku yang lahir dari proses mencari makna dalam setiap halaman
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {books.map((book, index) => (
+                <Link
+                  key={index}
+                  href={book.link}
+                  className={`group block ${theme.card} ${theme.border} border rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <span className={`text-xs font-bold tracking-wider ${theme.accent} uppercase`}>
+                      {book.genre}
+                    </span>
+                    <span className={`text-sm ${theme.textMuted}`}>
+                      {book.year}
+                    </span>
+                  </div>
+                  
+                  <h3 className={`text-xl font-bold ${theme.textHeading} mb-2 font-serif group-hover:${theme.accent} transition-colors`}>
+                    {book.title}
+                  </h3>
+                  
+                  <p className={`${theme.textMuted} text-sm leading-relaxed mb-4`}>
+                    {book.subtitle}
+                  </p>
+                  
+                  <div className={`flex items-center gap-2 ${theme.accent} text-sm font-medium`}>
+                    <span>Baca</span>
+                    <ExternalLink size={14} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Philosophy Section */}
+        <section className={`px-6 py-20 ${theme.border} border-b`}>
+          <div className="max-w-4xl mx-auto text-center">
+            <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${theme.accentBg} ${theme.accentBorder} border mb-8`}>
+              <Coffee size={24} className={theme.accent} />
+            </div>
+            
+            <blockquote className={`${theme.textHeading} text-2xl md:text-3xl font-serif italic leading-relaxed mb-8`}>
+              "Aku menulis untuk hadir, bukan untuk memukau."
+            </blockquote>
+            
+            <p className={`${theme.textMuted} text-lg leading-relaxed max-w-2xl mx-auto`}>
+              Ini bukan tentang menjadi terkenal atau diakui. Ini tentang menjaga kewarasan diri di tengah dunia yang terus bergerak. Setiap kata adalah jangkar yang menahan agar tidak hanyut dalam arus waktu.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className={`px-6 py-20 ${theme.border} border-b`}>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className={`text-3xl md:text-4xl font-bold ${theme.textHeading} mb-8 font-serif`}>
+              Terhubung
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <a 
+                href="mailto:wildanferdiansyah06@gmail.com"
+                className={`group ${theme.card} ${theme.border} border rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+              >
+                <Mail size={32} className={`${theme.accent} mx-auto mb-4`} />
+                <h3 className={`text-xl font-semibold ${theme.textHeading} mb-2`}>
+                  Email
+                </h3>
+                <p className={`${theme.textMuted} group-hover:${theme.text} transition-colors`}>
+                  wildanferdiansyah06@gmail.com
+                </p>
+              </a>
+              
+              <a 
+                href="https://kelaspekerja.site"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group ${theme.card} ${theme.border} border rounded-xl p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+              >
+                <ExternalLink size={32} className={`${theme.accent} mx-auto mb-4`} />
+                <h3 className={`text-xl font-semibold ${theme.textHeading} mb-2`}>
+                  Website
+                </h3>
+                <p className={`${theme.textMuted} group-hover:${theme.text} transition-colors`}>
+                  kelaspekerja.site
+                </p>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
