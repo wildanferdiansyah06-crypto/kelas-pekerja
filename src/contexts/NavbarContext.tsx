@@ -13,17 +13,9 @@ const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
 
 export function NavbarProvider({ children }: { children: ReactNode }) {
   const [isVisible, setIsVisible] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const hideNavbar = () => setIsVisible(false);
   const showNavbar = () => setIsVisible(true);
-
-  // Auto-show navbar when modal closes
-  useEffect(() => {
-    if (!isModalOpen) {
-      showNavbar();
-    }
-  }, [isModalOpen]);
 
   return (
     <NavbarContext.Provider
