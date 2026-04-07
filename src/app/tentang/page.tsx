@@ -743,6 +743,5 @@ export default function TentangPage() {
     </div>
 
   );
-
 }
 

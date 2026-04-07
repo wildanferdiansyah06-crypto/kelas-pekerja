@@ -292,12 +292,12 @@ export default function TulisanPage() {
                      <PenLine size={18} />
                      Jadi yang Pertama
                    </Link>
-                 </>
+                 </div>
                ) : (
-                 <>
+                 <div>
                    <p className="font-serif text-xl italic mb-4">Belum ada cerita di kategori ini</p>
-                   <button onClick={() => setActiveCategory("Semua")} className="text-[#8b7355] hover:text-[#c7b299] text-sm">Lihat semua kategori →</button>
-                 </>
+                   <button onClick={() => setActiveCategory("Semua")} className="text-[#8b7355] hover:text-[#c7b299] text-sm">Lihat semua kategori &rarr;</button>
+                 </div>
                )}
              </motion.div>
            ) : (
@@ -358,7 +358,7 @@ export default function TulisanPage() {
              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className={`text-lg sm:text-xl ${colors.textMuted} max-w-3xl mx-auto mb-12 leading-relaxed`}>
                Setiap cerita adalah ruang bagi para pekerja yang ingin berbagi pengalaman, mencari jalan, atau sekadar ingin didengar. Di sini, kita belajar dari kehidupan nyata hingga transformasi digital.
              </motion.p>
-             
+            
              {/* Quick Actions */}
              <div className="grid md:grid-cols-3 gap-6 mb-12">
                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }} className={`${colors.cardBg} rounded-2xl p-6 border ${colors.border} hover:shadow-xl transition-all duration-300 group`}>
@@ -389,18 +389,19 @@ export default function TulisanPage() {
                </motion.div>
              </div>
            </div>
-         </section>
+         </div>
+       </section>
 
-         {/* FINAL CTA */}
-         <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
-           <div className="max-w-3xl mx-auto text-center">
-             <p className="font-serif text-3xl sm:text-4xl italic text-[#c7b299] mb-6">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
-             <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
-               <PenLine size={20} />
-               Mulai Menulis
-             </Link>
-           </div>
-         </section>
+       {/* FINAL CTA */}
+       <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
+         <div className="max-w-3xl mx-auto text-center">
+           <p className="font-serif text-3xl sm:text-4xl italic text-[#c7b299] mb-6">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
+           <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
+             <PenLine size={20} />
+             Mulai Menulis
+           </Link>
+         </div>
+       </section>
      </div>
    </main>
  );
