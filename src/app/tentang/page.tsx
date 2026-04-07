@@ -102,13 +102,14 @@ export default function TentangPage() {
         {/* Hero Section - Desktop: Photo Left, Text Right / Mobile: Stacked Center */}
         <section className={`relative px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
           <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center lg:items-start">
               
               {/* Left Side - Profile Photo (Center on mobile, Left on desktop) */}
-              <div className="flex flex-col items-center md:items-start">
+              <div className="flex flex-col items-center md:items-center lg:items-center">
                 <div className="relative">
-                  {/* Circular Photo Container */}
-                  <div className={`w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden ${theme.border} border-4 shadow-2xl`}>
+                  {/* Circular Photo Container - Force perfect circle */}
+                  <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 shadow-2xl" 
+                       style={{aspectRatio: '1/1', objectFit: 'cover'}}>
                     <Image
                       src="/images/wildan.png"
                       alt="Wildan Ferdiansyah"
@@ -116,11 +117,12 @@ export default function TentangPage() {
                       className="object-cover"
                       priority
                       sizes="(max-width: 640px) 160px, (max-width: 768px) 176px, (max-width: 1024px) 192px, 208px"
+                      style={{objectFit: 'cover', borderRadius: '50%'}}
                     />
                   </div>
                   {/* Decorative ring - Perfect Circle */}
-                  <div className={`absolute -inset-2 rounded-full ${theme.accentBorder} border-2 opacity-40 pointer-events-none`} style={{borderRadius: '50%'}}></div>
-                  <div className={`absolute -inset-3 rounded-full ${theme.accentBorder} border opacity-20 pointer-events-none`} style={{borderRadius: '50%'}}></div>
+                  <div className="absolute inset-0 rounded-full border-2 opacity-0 pointer-events-none" 
+                       style={{boxShadow: 'inset 0 0 0 999px rgba(201, 166, 107, 0.1)'}}></div>
                 </div>
                 
                 {/* Social Links - Below Photo */}
@@ -129,58 +131,58 @@ export default function TentangPage() {
                     href="https://github.com/wildanferdiansyah06-crypto" 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
                     aria-label="GitHub"
                   >
-                    <Github size={22} className={theme.accent} />
+                    <Github size={22} className="text-white/80" />
                   </a>
                   <a 
                     href="https://instagram.com/_iamwildan_" 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
                     aria-label="Instagram"
                   >
-                    <Instagram size={22} className={theme.accent} />
+                    <Instagram size={22} className="text-white/80" />
                   </a>
                   <a 
                     href="https://wa.me/6289636357091"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-3 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-all duration-300 hover:scale-110 shadow-md`}
+                    className="p-3 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-all duration-300 hover:scale-110 shadow-md"
                     aria-label="WhatsApp"
                   >
-                    <MessageCircle size={22} className={theme.accent} />
+                    <MessageCircle size={22} className="text-white/80" />
                   </a>
                 </div>
               </div>
 
               {/* Right Side - Profile Info (Center on mobile, Left on desktop) */}
-              <div className="text-center md:text-left">
-                <h1 className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-4 font-serif leading-tight`}>
+              <div className="text-center md:text-left lg:text-center">
+                <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-4 font-serif leading-tight">
                   Wildan Ferdiansyah
                 </h1>
                 
-                <p className={`text-lg sm:text-xl md:text-xl lg:text-2xl ${theme.textMuted} mb-5 font-serif italic`}>
+                <p className="text-lg sm:text-xl md:text-xl lg:text-2xl text-white/80 mb-5 font-serif italic">
                   Bukan Penulis, Bukan Motivator
                 </p>
 
-                <p className={`text-sm sm:text-base md:text-base lg:text-lg leading-relaxed ${theme.text} mb-6 max-w-lg mx-auto md:mx-0`}>
+                <p className="text-sm sm:text-base md:text-base lg:text-lg leading-relaxed text-white/70 mb-6 max-w-lg mx-auto lg:mx-0">
                   Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu — bukan untuk menjadi terkenal, tetapi untuk tetap waras. "Aku menulis untuk hadir, bukan untuk memukau."
                 </p>
 
                 {/* Location & Email */}
-                <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
-                    <MapPin size={16} />
-                    <span className="font-medium text-sm sm:text-base">Bali, Ubud</span>
+                <div className="flex flex-wrap gap-3 justify-center md:justify-start lg:justify-center">
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border">
+                    <MapPin size={16} className="text-white/80" />
+                    <span className="font-medium text-white text-sm sm:text-base">Bali, Ubud</span>
                   </div>
                   <a 
                     href="mailto:wildanferdiansyah06@gmail.com"
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.card} ${theme.border} border hover:${theme.accentBg} transition-colors`}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border hover:bg-white/20 transition-colors"
                   >
-                    <Mail size={16} />
-                    <span className="text-sm sm:text-base">wildanferdiansyah06@gmail.com</span>
+                    <Mail size={16} className="text-white/80" />
+                    <span className="text-white text-sm sm:text-base">wildanferdiansyah06@gmail.com</span>
                   </a>
                 </div>
               </div>
