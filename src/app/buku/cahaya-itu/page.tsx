@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Moon, Sun, BookOpen, Flame, ChevronRight, X, Compass, Heart, Wind, Quote, Feather } from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Moon, Sun, BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from 'next/link';
 
@@ -16,12 +16,52 @@ export default function CahayaItuPage() {
   const [readingProgress, setReadingProgress] = useState(0);
   const [completedChapters, setCompletedChapters] = useState<number[]>([]);
   
-  const { scrollYProgress } = useScroll();
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  // Performance optimizations
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const lastScrollYRef = useRef(0);
+  const tickingRef = useRef(false);
 
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  // Optimized scroll handler with throttling
+  const handleScroll = useCallback(() => {
+    if (tickingRef.current) return;
+    
+    tickingRef.current = true;
+    requestAnimationFrame(() => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      
+      setReadingProgress(progress);
+      setShowFloatingMenu(scrollTop > 300);
+      
+      // Only update chapter tracking every 100px
+      if (Math.abs(scrollTop - lastScrollYRef.current) > 100) {
+        const chapters = document.querySelectorAll('[data-chapter]');
+        let currentChapter = 0;
+        const newlyCompleted: number[] = [];
+        
+        chapters.forEach((chapter) => {
+          const rect = chapter.getBoundingClientRect();
+          const chapterNum = Number(chapter.getAttribute('data-chapter'));
+          
+          if (rect.top < window.innerHeight * 0.5) {
+            newlyCompleted.push(chapterNum);
+            currentChapter = chapterNum;
+          }
+        });
+        
+        setActiveChapter(currentChapter);
+        setCompletedChapters(prev => Array.from(new Set([...prev, ...newlyCompleted])));
+        lastScrollYRef.current = scrollTop;
+      }
+      
+      tickingRef.current = false;
+    });
   }, []);
 
   useEffect(() => {
@@ -31,36 +71,16 @@ export default function CahayaItuPage() {
   useEffect(() => {
     if (!mounted) return;
     
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setReadingProgress(progress);
-      setShowFloatingMenu(scrollTop > 300);
-      
-      const chapters = document.querySelectorAll('[data-chapter]');
-      let currentChapter = 0;
-      const newlyCompleted: number[] = [];
-      
-      chapters.forEach((chapter) => {
-        const rect = chapter.getBoundingClientRect();
-        const chapterNum = Number(chapter.getAttribute('data-chapter'));
-        
-        if (rect.top < window.innerHeight * 0.5) {
-          newlyCompleted.push(chapterNum);
-          currentChapter = chapterNum;
-        }
-      });
-      
-      setActiveChapter(currentChapter);
-      setCompletedChapters(prev => Array.from(new Set([...prev, ...newlyCompleted])));
-    };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [mounted]);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [mounted, handleScroll]);
 
   if (!mounted) return null;
 
@@ -164,52 +184,17 @@ export default function CahayaItuPage() {
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
       
-      {/* Aesthetic Background Layers */}
+      {/* Simplified Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Gradient base */}
-        <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-60`} />
-        
-        {/* Ash/Ember particles */}
-        <div className="absolute inset-0 opacity-20">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              animate={{ 
-                y: [0, -30, 0], 
-                opacity: [0.2, 0.5, 0.2],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ 
-                duration: 8 + i * 2, 
-                repeat: Infinity, 
-                ease: "easeInOut",
-                delay: i * 1.5
-              }}
-              className={`absolute rounded-full ${darkMode ? 'bg-[#c9a66b]/20' : 'bg-[#8b4513]/10'}`}
-              style={{
-                width: `${100 + i * 50}px`,
-                height: `${100 + i * 50}px`,
-                left: `${10 + i * 20}%`,
-                top: `${20 + i * 15}%`,
-                filter: 'blur(60px)'
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Noise texture */}
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          backgroundSize: '200px 200px'
-        }} />
+        {/* Simple gradient only */}
+        <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-30`} />
       </div>
 
       {/* Reading Progress Bar */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2520]' : 'bg-[#d4cfc4]'}`}>
-        <motion.div 
-          className={`h-full ${darkMode ? 'bg-[#c9a66b]' : 'bg-[#8b4513]'}`}
+        <div 
+          className={`h-full ${darkMode ? 'bg-[#c9a66b]' : 'bg-[#8b4513]'} transition-all duration-300`}
           style={{ width: `${readingProgress}%` }}
-          transition={{ type: "spring", stiffness: 100, damping: 30 }}
         />
       </div>
 
@@ -381,7 +366,7 @@ export default function CahayaItuPage() {
             <motion.div 
               initial={prefersReducedMotion ? { scale: 1 } : { scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ delay: 0.3, duration: 0.8 }}
               className="mb-16"
             >
               <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full ${theme.accentBg} border ${theme.accentBorder} mb-8 sm:mb-10`}>
@@ -408,7 +393,7 @@ export default function CahayaItuPage() {
             <motion.div 
               initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.8 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
             >
               <button
                 onClick={() => setSidebarOpen(true)}
@@ -420,15 +405,11 @@ export default function CahayaItuPage() {
             </motion.div>
           </div>
 
-          <motion.div 
-            animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className={`absolute bottom-12 left-1/2 -translate-x-1/2 ${theme.textMuted}`}
-          >
+          <div className={`absolute bottom-12 left-1/2 -translate-x-1/2 ${theme.textMuted}`}>
             <div className={`w-6 h-10 rounded-full border ${theme.border} flex justify-center pt-2`}>
               <div className={`w-[2px] h-2 rounded-full ${darkMode ? 'bg-[#c9a66b]' : 'bg-[#8b4513]'}`} />
             </div>
-          </motion.div>
+          </div>
         </motion.section>
 
         {/* Content Container */}
@@ -792,7 +773,7 @@ export default function CahayaItuPage() {
 
                 {/* Author Note */}
                 <motion.div variants={fadeIn} className={`mt-16 pt-8 border-t ${theme.border} text-center`}>
-                  <Wind size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
+                  <Feather size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
                   <p className={`${theme.textMuted} text-sm italic leading-[1.8]`}>
                     Ditulis setelah melihat seseorang padam, di malam yang tidak yakin ingin dihabiskan, oleh tubuh yang ingin rebah tapi masih memaksa mengingat.
                   </p>
