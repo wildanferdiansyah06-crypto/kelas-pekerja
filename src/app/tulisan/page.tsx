@@ -5,29 +5,117 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { PenLine, Clock, ArrowRight, Filter, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 
+// Memoized animation variants to prevent recreation
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.05 } },
 };
 
 const CATEGORIES = ["Semua", "Ruang Bagi", "Barista & FnB", "Retail", "Office & Korporat", "Gig Economy", "Startup", "Kreatif"];
+
+// Memoized background component to prevent re-renders
+const Background = memo(({ isDark }: { isDark: boolean }) => {
+  return (
+    <div className={`fixed inset-0 ${isDark ? "opacity-[0.03]" : "opacity-[0.02]"} pointer-events-none z-0`}>
+      {/* Simplified background with fewer animations */}
+      <div className="absolute top-20 left-10 w-32 h-32 opacity-20">
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c7b299]/10 to-transparent blur-3xl animate-pulse"></div>
+      </div>
+      <div className="absolute top-40 right-20 w-24 h-24 opacity-15">
+        <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#8b7355]/10 to-transparent blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      </div>
+      <div className="absolute bottom-20 left-1/4 w-40 h-40 opacity-10">
+        <div className="w-full h-full bg-gradient-to-r from-transparent via-[#c7b299]/5 to-transparent blur-xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+    </div>
+  );
+});
+
+Background.displayName = "Background";
+
+// Memoized post card component
+const PostCard = memo(({ 
+  post, 
+  index, 
+  colors 
+}: { 
+  post: any; 
+  index: number; 
+  colors: any;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: Math.min(index * 0.05, 0.3) }} // Cap delay for better performance
+    whileHover={{ y: -3 }}
+    className={`${colors.cardBg} rounded-2xl border ${colors.border} overflow-hidden hover:shadow-xl transition-all duration-300 group`}
+  >
+    <Link href={`/tulisan/${post.slug}`}>
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[10px] tracking-widest uppercase text-[#8b7355] font-medium">{post.category}</span>
+          <span className="flex items-center gap-1 text-xs text-[#8b7355]">
+            <Heart size={12} />
+            {post.likes || 0}
+          </span>
+        </div>
+        
+        <h3 className={`font-serif text-xl mb-3 ${colors.heading} group-hover:text-[#c7b299] transition-colors leading-tight`}>
+          {post.title}
+        </h3>
+        
+        <p className={`${colors.textMuted} text-sm leading-relaxed mb-4 line-clamp-3`}>
+          {post.excerpt}
+        </p>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-[#8b7355]">
+            <Clock size={12} />
+            {post.readTime}
+          </div>
+          <ChevronRight size={16} className="text-[#8b7355] group-hover:translate-x-1 transition-transform" />
+        </div>
+      </div>
+    </Link>
+  </motion.div>
+));
+
+PostCard.displayName = "PostCard";
+
+// Memoized trending post component
+const TrendingPostCard = memo(({ post, colors }: { post: any; colors: any }) => (
+  <Link href={`/tulisan/${post.slug}`} className="flex-shrink-0 w-72 p-4 rounded-xl border border-[#8b7355]/20 hover:border-[#8b7355] hover:bg-[#8b7355]/5 transition-all group">
+    <div className="flex items-center justify-between mb-2">
+      <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">{post.category}</span>
+      <span className="flex items-center gap-1 text-xs text-[#8b7355]"><Heart size={12} /> {post.likes}</span>
+    </div>
+    <h3 className={`font-serif text-lg ${colors.heading} group-hover:text-[#c7b299] line-clamp-2`}>{post.title}</h3>
+    <div className="flex items-center gap-2 mt-3 text-xs text-[#8b7355]">
+      <Clock size={12} />
+      {post.readTime}
+      <ChevronRight size={12} className="ml-auto group-hover:translate-x-1 transition-transform" />
+    </div>
+  </Link>
+));
+
+TrendingPostCard.displayName = "TrendingPostCard";
 
 export default function TulisanPage() {
   const posts = (postsData as any).posts || [];
   const { theme } = useTheme();
   const [activeCategory, setActiveCategory] = useState("Semua");
-  const [hoveredPost, setHoveredPost] = useState<string | null>(null);
 
   const isDark = theme === "dark";
 
-  const colors = {
+  // Memoized colors object
+  const colors = useMemo(() => ({
     bg: isDark ? "bg-gradient-to-br from-[#0a0a0a] via-[#1a1a2a] to-[#2d2d2d]" : "bg-gradient-to-br from-[#fafafa] via-[#f5f5f5] to-[#e8e8e8]",
     text: isDark ? "text-neutral-300" : "text-neutral-700",
     textMuted: isDark ? "text-neutral-400" : "text-neutral-600",
@@ -40,51 +128,39 @@ export default function TulisanPage() {
     featuredBg: isDark ? "bg-gradient-to-br from-[#c7b299]/20 via-neutral-900/80 to-[#0a0a0a]" 
                       : "bg-gradient-to-br from-[#c7b299]/20 via-white to-[#fafafa]",
     accentBg: isDark ? "bg-neutral-900/80" : "bg-white/80",
-    grainOpacity: isDark ? "opacity-[0.03]" : "opacity-[0.02]",
-  };
+  }), [isDark]);
 
-  const featuredPost = posts.find((p: any) => p.isFeatured);
-  const regularPosts = posts.filter((p: any) => !p.isFeatured);
-  
-  const filteredPosts = useMemo(() => {
-    if (activeCategory === "Semua") return regularPosts;
-    return regularPosts.filter((post: any) => post.category === activeCategory);
-  }, [regularPosts, activeCategory]);
+  // Memoized computed values
+  const { featuredPost, regularPosts, trendingPosts, filteredPosts, showFeatured } = useMemo(() => {
+    const featured = posts.find((p: any) => p.isFeatured);
+    const regular = posts.filter((p: any) => !p.isFeatured);
+    const trending = [...posts]
+      .filter((p: any) => !p.isFeatured)
+      .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+      .slice(0, 4);
+    const show = activeCategory === "Semua" || activeCategory === "Ruang Bagi";
+    
+    const filtered = activeCategory === "Semua" 
+      ? regular 
+      : regular.filter((post: any) => post.category === activeCategory);
 
-  const trendingPosts = [...posts]
-    .filter((p: any) => !p.isFeatured)
-    .sort((a, b) => (b.likes || 0) - (a.likes || 0))
-    .slice(0, 4);
+    return {
+      featuredPost: featured,
+      regularPosts: regular,
+      trendingPosts: trending,
+      filteredPosts: filtered,
+      showFeatured: show
+    };
+  }, [posts, activeCategory]);
 
-  const showFeatured = activeCategory === "Semua" || activeCategory === "Ruang Bagi";
+  // Memoized event handlers
+  const handleCategoryClick = useCallback((category: string) => {
+    setActiveCategory(category);
+  }, []);
 
   return (
     <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
-      {/* Enhanced Background with Illustrations */}
-      <div className={`fixed inset-0 ${colors.grainOpacity} pointer-events-none z-0`} style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-      }}>
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 opacity-20">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c7b299]/10 to-transparent blur-3xl animate-pulse"></div>
-        </div>
-        <div className="absolute top-40 right-20 w-24 h-24 opacity-15">
-          <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#8b7355]/10 to-transparent blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
-        <div className="absolute bottom-20 left-1/4 w-40 h-40 opacity-10">
-          <div className="w-full h-full bg-gradient-to-r from-transparent via-[#c7b299]/5 to-transparent blur-xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-        </div>
-        <div className="absolute top-1/3 right-1/4 w-48 h-48 opacity-8">
-          <div className="w-full h-full rounded-full bg-gradient-to-bl from-transparent via-[#c7b299]/8 to-transparent blur-xl animate-pulse" style={{ animationDelay: '6s' }}></div>
-        </div>
-        {/* Geometric Shapes */}
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 opacity-5">
-          <div className="w-full h-full border-2 border-[#c7b299]/20 rotate-45 animate-spin" style={{ animationDuration: '60s' }}></div>
-        </div>
-        <div className="absolute bottom-1/3 right-1/3 w-32 h-32 opacity-5">
-          <div className="w-full h-full border border-[#c7b299]/15 rotate-12 animate-spin" style={{ animationDuration: '45s' }}></div>
-        </div>
-      </div>
+      <Background isDark={isDark} />
 
       <div className="relative z-10">
         {/* HERO */}
@@ -115,7 +191,7 @@ export default function TulisanPage() {
         </motion.header>
 
         {/* TRENDING STRIP */}
-        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={`py-6 border-y ${colors.border} overflow-hidden`}>
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className={`py-6 border-y ${colors.border} overflow-hidden`}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-center gap-4 mb-4">
               <TrendingUp size={18} className="text-[#8b7355]" />
@@ -123,18 +199,7 @@ export default function TulisanPage() {
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
               {trendingPosts.map((post: any) => (
-                <Link key={post.slug} href={`/tulisan/${post.slug}`} className="flex-shrink-0 w-72 p-4 rounded-xl border border-[#8b7355]/20 hover:border-[#8b7355] hover:bg-[#8b7355]/5 transition-all group">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] tracking-widest uppercase text-[#8b7355]">{post.category}</span>
-                    <span className="flex items-center gap-1 text-xs text-[#8b7355]"><Heart size={12} /> {post.likes}</span>
-                  </div>
-                  <h3 className={`font-serif text-lg ${colors.heading} group-hover:text-[#c7b299] line-clamp-2`}>{post.title}</h3>
-                  <div className="flex items-center gap-2 mt-3 text-xs text-[#8b7355]">
-                    <Clock size={12} />
-                    {post.readTime}
-                    <ChevronRight size={12} className="ml-auto group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
+                <TrendingPostCard key={post.slug} post={post} colors={colors} />
               ))}
             </div>
           </div>
@@ -142,7 +207,7 @@ export default function TulisanPage() {
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
           {/* FILTER */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mb-12">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Filter size={14} className="text-[#8b7355]" />
               <span className={`text-xs tracking-widest uppercase ${colors.textSubtle}`}>Filter Kategori</span>
@@ -151,7 +216,7 @@ export default function TulisanPage() {
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  onClick={() => handleCategoryClick(cat)}
                   className={`px-4 py-2 text-xs tracking-wider rounded-full border transition-all duration-300
                     ${activeCategory === cat ? "bg-[#8b7355] text-white border-[#8b7355]" : `border-neutral-700/30 hover:border-[#8b7355] ${colors.textMuted}`}`}
                 >
@@ -163,7 +228,7 @@ export default function TulisanPage() {
 
           {/* FEATURED */}
           {showFeatured && featuredPost && (
-            <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-16">
+            <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-16">
               <div className={`relative overflow-hidden rounded-3xl ${colors.featuredBg} border ${colors.border} p-6 sm:p-10`}>
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#c7b299]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                 
@@ -195,54 +260,29 @@ export default function TulisanPage() {
             </motion.section>
           )}
 
-          {/* POSTS GRID */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {filteredPosts.map((post: any, index: number) => (
-              <motion.div
-                key={post.slug}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index }}
-                whileHover={{ y: -5 }}
-                className={`${colors.cardBg} rounded-2xl border ${colors.border} overflow-hidden hover:shadow-xl transition-all duration-300 group`}
-              >
-                <Link href={`/tulisan/${post.slug}`}>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] tracking-widest uppercase text-[#8b7355] font-medium">{post.category}</span>
-                      <span className="flex items-center gap-1 text-xs text-[#8b7355]">
-                        <Heart size={12} />
-                        {post.likes || 0}
-                      </span>
-                    </div>
-                    
-                    <h3 className={`font-serif text-xl mb-3 ${colors.heading} group-hover:text-[#c7b299] transition-colors leading-tight`}>
-                      {post.title}
-                    </h3>
-                    
-                    <p className={`${colors.textMuted} text-sm leading-relaxed mb-4 line-clamp-3`}>
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-xs text-[#8b7355]">
-                        <Clock size={12} />
-                        {post.readTime}
-                      </div>
-                      <ChevronRight size={16} className="text-[#8b7355] group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+          {/* POSTS GRID - Limited to 12 posts for better performance */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {filteredPosts.slice(0, 12).map((post: any, index: number) => (
+              <PostCard key={post.slug} post={post} index={index} colors={colors} />
             ))}
           </motion.div>
 
+          {/* Load More Button */}
+          {filteredPosts.length > 12 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mb-16">
+              <button className="inline-flex items-center gap-3 px-8 py-4 border ${colors.border} rounded-full hover:${colors.accentBg} transition-all text-sm font-medium ${colors.text}">
+                <ArrowRight size={18} />
+                Muat Lebih Banyak
+              </button>
+            </motion.div>
+          )}
+
           {/* TENTANG SECTION */}
-          <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className={`py-16 border-y ${colors.border}`}>
+          <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className={`py-16 border-y ${colors.border}`}>
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 {/* Left Side - Visual Story */}
-                <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.7 }} className="text-center md:text-left">
+                <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="text-center md:text-left">
                   <div className="relative mb-6">
                     <div className={`w-20 h-20 mx-auto md:mx-0 rounded-full bg-gradient-to-br ${colors.accent} to-transparent p-1 flex items-center justify-center`}>
                       <BookOpen className="text-white" size={24} />
