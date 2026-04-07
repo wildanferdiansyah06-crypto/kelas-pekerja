@@ -2,7 +2,6 @@
   "name": "kelas-pekerja",
   "version": "2.0.0",
   "private": true,
-
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,26 +11,24 @@
     "serve": "npx serve dist",
     "analyze": "cross-env ANALYZE=true next build"
   },
-
   "dependencies": {
-    "next": "14.2.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "clsx": "^2.1.0",
     "framer-motion": "^11.2.0",
     "lucide-react": "^0.460.0",
-    "clsx": "^2.1.0",
+    "next": "^16.2.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tailwind-merge": "^2.2.0"
   },
-
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "^16.2.2",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
