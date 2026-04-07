@@ -105,7 +105,7 @@ export default function TentangPage() {
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center lg:items-start">
               
               {/* Left Side - Profile Photo (Center on mobile, Left on desktop) */}
-              <div className="flex flex-col items-center md:items-start lg:items-center">
+              <div className="flex flex-col items-center md:items-center lg:items-center">
                 <div className="relative">
                   {/* Circular Photo Container - Force perfect circle */}
                   <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 shadow-2xl" 
