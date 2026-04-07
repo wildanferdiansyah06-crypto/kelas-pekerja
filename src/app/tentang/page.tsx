@@ -107,13 +107,14 @@ export default function TentangPage() {
               <div className="relative">
                 <div className={`relative rounded-2xl overflow-hidden ${theme.card} border ${theme.border} shadow-2xl`}>
                   <div className="aspect-[3/4] relative">
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2a2420] to-[#0f0d0c]">
-                      <div className="text-center">
-                        <User size={80} className={`${theme.accent} mx-auto mb-4`} />
-                        <p className={`${theme.textMuted} text-sm`}>Profile Photo</p>
-                        <p className={`${theme.accent} text-xs mt-2`}>Wildan Ferdiansyah</p>
-                      </div>
-                    </div>
+                    <Image
+                      src="/images/wildan.png"
+                      alt="Wildan Ferdiansyah"
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
                   </div>
                   {/* Decorative overlay */}
                   <div className={`absolute inset-0 bg-gradient-to-t ${darkMode ? 'from-[#0f0d0c]/60' : 'from-[#f5f0e8]/60'} to-transparent`} />
