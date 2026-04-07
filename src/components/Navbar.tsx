@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/src/components/ThemeProvider";
+import { useNavbar } from "@/src/contexts/NavbarContext";
 
 const navigation = [
 { label: "Beranda", href: "/" },
@@ -16,10 +17,11 @@ const navigation = [
 export default function Navbar() {
 const pathname = usePathname();
 const { theme, toggleTheme } = useTheme();
+const { isVisible: contextVisible } = useNavbar();
 
 const [isMenuOpen, setIsMenuOpen] = useState(false);
 const [mounted, setMounted] = useState(false);
-const [isVisible, setIsVisible] = useState(true);
+const [scrollVisible, setScrollVisible] = useState(true);
 const lastScrollYRef = useRef(0);
 
 useEffect(() => {
@@ -56,15 +58,15 @@ useEffect(() => {
           
           // Always show navbar at the top
           if (currentScrollY <= 0) {
-            if (!isVisible) setIsVisible(true);
+            if (!scrollVisible) setScrollVisible(true);
           } 
           // Hide when scrolling down and past threshold
           else if (scrollDirection === 'down' && currentScrollY > scrollThreshold) {
-            if (isVisible) setIsVisible(false);
+            if (scrollVisible) setScrollVisible(false);
           } 
           // Show when scrolling up
           else if (scrollDirection === 'up') {
-            if (!isVisible) setIsVisible(true);
+            if (!scrollVisible) setScrollVisible(true);
           }
 
           lastScrollYRef.current = currentScrollY;
@@ -86,13 +88,16 @@ useEffect(() => {
   return () => {
     window.removeEventListener('scroll', handleScroll, { capture: false });
   };
-}, [mounted, isVisible]);
+}, [mounted, scrollVisible]);
+
+// Combine scroll visibility with context visibility
+const finalVisibility = scrollVisible && contextVisible;
 
 if (!mounted) return null;
 
 return (
 <nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-transform duration-300 ease-out will-change-transform transform-gpu ${
-  isVisible ? 'translate-y-0' : '-translate-y-full'
+  finalVisibility ? 'translate-y-0' : '-translate-y-full'
 }`}>
 
   {/* Container diperlebar */}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Clock, ArrowRight, BookOpen, Flame, Eye } from "lucide-react";
 import { Book } from "@/src/types";
+import { useNavbar } from "@/src/contexts/NavbarContext";
 
 interface BookPreviewModalProps {
   book: (Book & { slug: string }) | null;
@@ -15,19 +16,22 @@ interface BookPreviewModalProps {
 export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const { hideNavbar, showNavbar } = useNavbar();
 
-  // Lock body scroll
+  // Lock body scroll and control navbar visibility
   useEffect(() => {
     if (isOpen) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      hideNavbar(); // Hide navbar when modal opens
       // Focus close button for accessibility
       setTimeout(() => closeButtonRef.current?.focus(), 100);
       return () => {
         document.body.style.overflow = originalOverflow;
+        showNavbar(); // Show navbar when modal closes
       };
     }
-  }, [isOpen]);
+  }, [isOpen, hideNavbar, showNavbar]);
 
   // ESC key handler
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
