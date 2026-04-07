@@ -221,40 +221,40 @@ export default function CahayaItuPage() {
             animate={{ x: 0, opacity: 1 }}
             exit={prefersReducedMotion ? { opacity: 0 } : { x: -100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className={`fixed bottom-8 left-8 z-40 flex flex-col gap-3`}
+            className={`fixed bottom-4 sm:bottom-8 left-4 sm:left-8 z-40 flex flex-col gap-2 sm:gap-3`}
           >
             <motion.button
               whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
               whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
               onClick={() => setSidebarOpen(true)}
-              className={`flex items-center gap-3 px-6 py-4 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl ${theme.accent} font-serif tracking-wide`}
+              className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl ${theme.accent} font-serif tracking-wide text-sm sm:text-base`}
             >
-              <BookOpen size={18} strokeWidth={1.5} />
-              <span className="hidden sm:inline font-medium">Daftar Isi</span>
-              <div className={`flex items-center gap-2 ml-2 pl-3 border-l ${theme.border}`}>
+              <BookOpen size={16} className="sm:size-5" strokeWidth={1.5} />
+              <span className="hidden xs:inline sm:inline font-medium">Daftar Isi</span>
+              <div className={`flex items-center gap-1 sm:gap-2 ml-1 sm:ml-2 pl-2 sm:pl-3 border-l ${theme.border}`}>
                 <span className={`text-xs font-serif ${theme.textMuted}`}>
                   {String(activeChapter).padStart(2, '0')}/{chapters.length - 1}
                 </span>
               </div>
             </motion.button>
 
-            <div className={`flex items-center gap-2 p-2 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl w-fit`}>
+            <div className={`flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl w-fit`}>
               <motion.button
                 whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
                 whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
                 onClick={toggleTheme}
-                className={`p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
+                className={`p-2 sm:p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
               >
-                {darkMode ? <Sun size={18} strokeWidth={1.5} className={theme.accent} /> : <Moon size={18} strokeWidth={1.5} className={theme.accent} />}
+                {darkMode ? <Sun size={16} className={`sm:size-5 ${theme.accent}`} strokeWidth={1.5} /> : <Moon size={16} className={`sm:size-5 ${theme.accent}`} strokeWidth={1.5} />}
               </motion.button>
-              <div className={`w-px h-4 ${darkMode ? 'bg-[#3d3428]' : 'bg-[#c4b8a3]'}`} />
+              <div className={`w-px h-3 sm:h-4 ${darkMode ? 'bg-[#3d3428]' : 'bg-[#c4b8a3]'}`} />
               <motion.a
                 href="#pembuka"
                 whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
                 whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
-                className={`p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
+                className={`p-2 sm:p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
               >
-                <Compass size={18} strokeWidth={1.5} className={theme.textMuted} />
+                <Compass size={16} className={`sm:size-5 ${theme.textMuted}`} strokeWidth={1.5} />
               </motion.a>
             </div>
           </motion.div>
@@ -278,31 +278,31 @@ export default function CahayaItuPage() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className={`fixed left-0 top-0 bottom-0 w-full sm:w-[420px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
+              className={`fixed left-0 top-0 bottom-0 w-full xs:w-80 sm:w-[420px] ${theme.sidebar} z-50 overflow-y-auto shadow-2xl`}
             >
-              <div className="pt-24 sm:pt-28 p-8 sm:p-10">
-                <div className="flex items-center justify-between mb-10">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-full border ${theme.accentBorder} ${theme.accentBg}`}>
-                      <Flame size={22} strokeWidth={1.5} className={theme.accent} />
+              <div className="pt-16 sm:pt-24 md:pt-28 p-4 sm:p-6 md:p-8 lg:p-10">
+                <div className="flex items-center justify-between mb-6 sm:mb-10">
+                  <div className="flex items-center gap-2 sm:gap-4">
+                    <div className={`p-2 sm:p-3 rounded-full border ${theme.accentBorder} ${theme.accentBg}`}>
+                      <Flame size={18} className={`sm:size-6 ${theme.accent}`} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h2 className={`font-serif font-bold text-xl ${theme.textHeading}`}>Daftar Isi</h2>
-                      <p className={`text-sm ${theme.textMuted} font-serif italic`}>Tentang yang Terbakar</p>
+                      <h2 className={`font-serif font-bold text-lg sm:text-xl ${theme.textHeading}`}>Daftar Isi</h2>
+                      <p className={`text-xs sm:text-sm ${theme.textMuted} font-serif italic`}>Tentang yang Terbakar</p>
                     </div>
                   </div>
                   <button 
                     onClick={() => setSidebarOpen(false)}
-                    className={`p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#d4cfc4]'} transition-colors duration-300`}
+                    className={`p-2 sm:p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#d4cfc4]'} transition-colors duration-300`}
                   >
-                    <X size={22} strokeWidth={1.5} className={theme.textMuted} />
+                    <X size={18} className={`sm:size-6 ${theme.textMuted}`} strokeWidth={1.5} />
                   </button>
                 </div>
 
-                <div className={`mb-8 p-5 rounded-2xl ${theme.card} border ${theme.border}`}>
-                  <div className="flex justify-between items-center mb-3">
-                    <span className={`text-sm ${theme.textMuted} font-serif`}>Progress Membaca</span>
-                    <span className={`text-sm font-serif ${theme.accent}`}>
+                <div className={`mb-6 sm:mb-8 p-3 sm:p-5 rounded-xl sm:rounded-2xl ${theme.card} border ${theme.border}`}>
+                  <div className="flex justify-between items-center mb-2 sm:mb-3">
+                    <span className={`text-xs sm:text-sm ${theme.textMuted} font-serif`}>Progress Membaca</span>
+                    <span className={`text-xs sm:text-sm font-serif ${theme.accent}`}>
                       {Math.round((completedChapters.length / chapters.length) * 100)}%
                     </span>
                   </div>
@@ -316,7 +316,7 @@ export default function CahayaItuPage() {
                   </div>
                 </div>
 
-                <nav className="space-y-1 pb-20">
+                <nav className="space-y-1 pb-16 sm:pb-20">
                   {chapters.map((chapter, idx) => {
                     const isCompleted = isChapterCompleted(chapter.num);
                     const isActive = activeChapter === chapter.num;
@@ -329,7 +329,7 @@ export default function CahayaItuPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.05, type: "spring", stiffness: 100 }}
-                        className={`group flex items-center gap-4 p-4 rounded-xl text-sm transition-all duration-300 ${
+                        className={`group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl text-xs sm:text-sm transition-all duration-300 ${
                           isActive 
                             ? `${theme.accentBg} ${theme.accent} font-semibold border ${theme.accentBorder}` 
                             : isCompleted
@@ -337,22 +337,22 @@ export default function CahayaItuPage() {
                               : `${theme.textMuted} hover:${theme.text} hover:bg-[${darkMode ? '#2a2520' : '#e0d9cc'}]`
                         }`}
                       >
-                        <span className={`text-lg font-serif font-bold flex-shrink-0 w-8 text-center ${
+                        <span className={`text-base sm:text-lg font-serif font-bold flex-shrink-0 w-6 sm:w-8 text-center ${
                           isCompleted 
                             ? theme.accent
                             : isActive 
                               ? theme.accent 
                               : theme.textMuted
                         }`}>
-                          {isCompleted ? <Feather size={18} strokeWidth={2} /> : chapter.num === 0 ? 'P' : chapter.num === 6 ? 'E' : ['I', 'II', 'III', 'IV', 'V'][chapter.num - 1]}
+                          {isCompleted ? <Feather size={14} className="sm:size-5" strokeWidth={2} /> : chapter.num === 0 ? 'P' : chapter.num === 6 ? 'E' : ['I', 'II', 'III', 'IV', 'V'][chapter.num - 1]}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className={`font-serif font-medium text-base truncate ${isActive ? theme.textHeading : isCompleted ? theme.textHeading : theme.text}`}>
+                          <p className={`font-serif font-medium text-sm sm:text-base truncate ${isActive ? theme.textHeading : isCompleted ? theme.textHeading : theme.text}`}>
                             {chapter.title}
                           </p>
                           <p className={`text-xs mt-1 truncate ${theme.textMuted} font-serif italic`}>{chapter.subtitle}</p>
                         </div>
-                        {isActive && <ChevronRight size={18} strokeWidth={2} />}
+                        {isActive && <ChevronRight size={16} className="sm:size-5" strokeWidth={2} />}
                       </motion.a>
                     );
                   })}
@@ -364,7 +364,7 @@ export default function CahayaItuPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="min-h-screen pt-0 pb-32 font-serif antialiased relative z-10">
+      <main className="min-h-screen pt-0 pb-24 sm:pb-32 font-serif antialiased relative z-10">
         
         {/* HERO SECTION */}
         <motion.section 
@@ -373,33 +373,33 @@ export default function CahayaItuPage() {
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`relative flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.bg} border-b ${theme.border} min-h-screen`}
+          className={`relative flex items-center justify-center px-4 sm:px-6 lg:px-12 ${theme.bg} border-b ${theme.border} min-h-screen`}
         >
           <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-60`} />
           
-          <div className="max-w-3xl mx-auto w-full pt-20 sm:pt-24 pb-24 relative z-10 text-center">
+          <div className="max-w-3xl mx-auto w-full pt-16 sm:pt-20 md:pt-24 pb-20 sm:pb-24 relative z-10 text-center">
             <motion.div 
               initial={prefersReducedMotion ? { scale: 1 } : { scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="mb-16"
             >
-              <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${theme.accentBg} border ${theme.accentBorder} mb-10`}>
-                <Flame size={32} strokeWidth={1} className={theme.accent} />
+              <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full ${theme.accentBg} border ${theme.accentBorder} mb-8 sm:mb-10`}>
+                <Flame size={24} className={`sm:size-8 ${theme.accent}`} strokeWidth={1} />
               </div>
               
-              <h1 className={`text-5xl sm:text-6xl lg:text-7xl font-bold ${theme.textHeading} mb-8 tracking-tight leading-[1.1] font-serif`}>
+              <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold ${theme.textHeading} mb-6 sm:mb-8 tracking-tight leading-[1.1] font-serif`}>
                 CAHAYA<br />
                 <span className={`${theme.ember} italic font-light`}>ITU</span>
               </h1>
               
-              <p className={`text-xl sm:text-2xl ${theme.textSubheading} italic mb-10 font-serif font-light tracking-wide max-w-2xl mx-auto leading-relaxed`}>
+              <p className={`text-lg sm:text-xl md:text-2xl ${theme.textSubheading} italic mb-8 sm:mb-10 font-serif font-light tracking-wide max-w-2xl mx-auto leading-relaxed`}>
                 Sebuah Pengakuan tentang yang Terbakar hingga Padam
               </p>
 
-              <div className={`w-32 h-[1px] mx-auto ${darkMode ? 'bg-[#c9a66b]/50' : 'bg-[#8b4513]/50'} mb-10`} />
+              <div className={`w-24 sm:w-32 h-[1px] mx-auto ${darkMode ? 'bg-[#c9a66b]/50' : 'bg-[#8b4513]/50'} mb-8 sm:mb-10`} />
               
-              <p className={`text-lg ${theme.textMuted} max-w-2xl mx-auto leading-[1.8] font-serif`}>
+              <p className={`text-base sm:text-lg ${theme.textMuted} max-w-2xl mx-auto leading-[1.8] font-serif`}>
                 "Badan bau keringat. Dia pulang jam dua. Bukan karena lembur. 
                 Tapi karena di rumahnya, tidak ada yang menunggu."
               </p>
@@ -412,9 +412,9 @@ export default function CahayaItuPage() {
             >
               <button
                 onClick={() => setSidebarOpen(true)}
-                className={`inline-flex items-center gap-3 px-8 py-4 rounded-full ${theme.accentBg} ${theme.accent} font-serif border ${theme.accentBorder} hover:shadow-lg transition-all duration-500 tracking-wide text-sm uppercase`}
+                className={`inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full ${theme.accentBg} ${theme.accent} font-serif border ${theme.accentBorder} hover:shadow-lg transition-all duration-500 tracking-wide text-xs sm:text-sm uppercase`}
               >
-                <BookOpen size={18} strokeWidth={1.5} />
+                <BookOpen size={16} className="sm:size-5" strokeWidth={1.5} />
                 Mulai Membaca
               </button>
             </motion.div>
@@ -432,8 +432,8 @@ export default function CahayaItuPage() {
         </motion.section>
 
         {/* Content Container */}
-        <div className="px-6 sm:px-8 lg:px-12 xl:px-16">
-          <div className="max-w-2xl mx-auto py-24">
+        <div className="px-4 sm:px-6 lg:px-12 xl:px-16">
+          <div className="max-w-2xl mx-auto py-16 sm:py-20 md:py-24">
             
             {/* PEMBUKA */}
             <motion.section 
@@ -445,13 +445,13 @@ export default function CahayaItuPage() {
               variants={fadeIn}
               className="mb-40 scroll-mt-24"
             >
-              <div className={`mb-16 pb-8 border-b ${theme.border}`}>
+              <div className={`mb-12 sm:mb-16 pb-6 sm:pb-8 border-b ${theme.border}`}>
                 <span className={`text-xs font-bold tracking-[0.3em] ${theme.accent} uppercase font-serif`}>Pembuka</span>
-                <h2 className={`text-4xl sm:text-5xl font-bold ${theme.textHeading} mt-4 font-serif leading-tight`}>Badan Bau Keringat</h2>
+                <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold ${theme.textHeading} mt-4 font-serif leading-tight`}>Badan Bau Keringat</h2>
               </div>
 
-              <motion.div variants={staggerContainer} className="space-y-8">
-                <motion.p variants={lineReveal} className={`${theme.text} text-lg leading-[1.9] first-letter:text-6xl first-letter:${theme.accent} first-letter:font-bold first-letter:mr-4 first-letter:float-left first-letter:leading-none first-letter:mt-2`}>
+              <motion.div variants={staggerContainer} className="space-y-6 sm:space-y-8">
+                <motion.p variants={lineReveal} className={`${theme.text} text-base sm:text-lg leading-[1.8] sm:leading-[1.9] first-letter:text-4xl sm:first-letter:text-6xl first-letter:${theme.accent} first-letter:font-bold first-letter:mr-3 sm:first-letter:mr-4 first-letter:float-left first-letter:leading-none first-letter:mt-2`}>
                   Badan bau keringat. Dia pulang jam dua. Bukan karena lembur. Tapi karena di rumahnya, tidak ada yang menunggu.
                 </motion.p>
                 
@@ -460,9 +460,9 @@ export default function CahayaItuPage() {
                 </motion.p>
 
                 {/* Quote Block */}
-                <motion.div variants={fadeIn} className={`my-16 p-8 ${theme.quoteBg} border-l-4 ${theme.quoteBorder} relative`}>
-                  <Quote size={40} className={`${theme.accent} opacity-20 absolute top-4 right-4`} />
-                  <p className={`${theme.textHeading} text-2xl md:text-3xl font-serif italic leading-relaxed text-center`}>
+                <motion.div variants={fadeIn} className={`my-12 sm:my-16 p-6 sm:p-8 ${theme.quoteBg} border-l-4 ${theme.quoteBorder} relative`}>
+                  <Quote size={32} className="sm:size-10 ${theme.accent} opacity-20 absolute top-3 sm:top-4 right-3 sm:right-4" />
+                  <p className={`${theme.textHeading} text-xl sm:text-2xl md:text-3xl font-serif italic leading-relaxed text-center`}>
                     "Aku baik-baik saja."
                   </p>
                 </motion.div>
@@ -483,11 +483,11 @@ export default function CahayaItuPage() {
               variants={fadeIn}
               className="mb-40 scroll-mt-24"
             >
-              <div className={`flex flex-col sm:flex-row sm:items-end gap-6 mb-16 pb-8 border-b ${theme.border}`}>
-                <span className={`text-8xl sm:text-9xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>I</span>
+              <div className={`flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6 mb-12 sm:mb-16 pb-6 sm:pb-8 border-b ${theme.border}`}>
+                <span className={`text-6xl sm:text-8xl md:text-9xl font-black ${theme.romanColor} opacity-40 leading-none font-serif`}>I</span>
                 <div className="flex-1">
-                  <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-3 font-serif leading-tight`}>Bocah Itu</h2>
-                  <p className={`text-lg ${theme.textMuted} italic font-serif`}>Tentang yang Tidak Pernah Jatuh Cinta</p>
+                  <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-2 sm:mb-3 font-serif leading-tight`}>Bocah Itu</h2>
+                  <p className={`text-base sm:text-lg ${theme.textMuted} italic font-serif`}>Tentang yang Tidak Pernah Jatuh Cinta</p>
                 </div>
               </div>
 
@@ -505,8 +505,8 @@ export default function CahayaItuPage() {
                 </motion.p>
 
                 {/* Highlight Card */}
-                <motion.div variants={fadeIn} className={`my-12 p-8 ${theme.accentBg} ${theme.accentBorder} border-2 rounded-lg`}>
-                  <p className={`${theme.text} text-lg leading-[1.8] font-serif italic`}>
+                <motion.div variants={fadeIn} className={`my-8 sm:my-12 p-4 sm:p-6 ${theme.accentBg} ${theme.accentBorder} border-2 rounded-lg`}>
+                  <p className={`${theme.text} text-base sm:text-lg leading-[1.7] sm:leading-[1.8] font-serif italic`}>
                     Cinta adalah kemewahan yang tidak bisa dia bayar. Seluruh tabungannya habis untuk membeli ketenangan bagi orang-orang yang tidak pernah bertanya, <span className={theme.accent}>bagaimana denganmu?</span>
                   </p>
                 </motion.div>
