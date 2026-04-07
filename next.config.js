@@ -7,13 +7,7 @@ const nextConfig = {
     }],
   },
   
-  // Tambahin ini buat support file upload besar
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
-  
+    
   // Experimental config buat App Router (Next.js 13+)
   experimental: {
     serverActions: {
