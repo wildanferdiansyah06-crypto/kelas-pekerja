@@ -95,18 +95,19 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       {/* Modal Container */}
       <div 
         ref={modalRef}
-        className="relative w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-y-auto bg-[#faf8f5] dark:bg-[#141210] rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl ring-1 ring-stone-200 dark:ring-stone-800"
+        className="relative w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-y-auto bg-[#faf8f5] dark:bg-[#141210] rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl ring-1 ring-stone-200 dark:ring-stone-800 transform-gpu will-change-transform"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleTabKey}
         style={{ 
-          animation: 'modal-enter 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) forwards'
+          animation: 'modal-enter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
+          transform: 'translateZ(0)'
         }}
       >
         {/* Close Button */}
         <button
           ref={closeButtonRef}
           onClick={onClose}
-          className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 p-2 sm:p-2.5 rounded-full bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-500/50 touch-manipulation"
+          className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 p-2 sm:p-2.5 rounded-full bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-opacity duration-200 transform-gpu will-change-transform touch-manipulation"
           aria-label="Tutup preview"
         >
           <X size={16} className="sm:size-5" strokeWidth={2} />
@@ -122,7 +123,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
                   src={book.cover}
                   alt={`Cover buku ${book.title}`}
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  className="object-cover transition-transform duration-300 ease-out transform-gpu will-change-transform"
                   sizes="100vw"
                   priority
                 />
@@ -341,16 +342,16 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
             <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 pt-2 sm:pt-4 mt-auto">
               <Link
                 href={`/buku/${book.slug}`}
-                className="group flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm sm:text-base touch-manipulation"
+                className="group flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium transition-opacity duration-200 transform-gpu will-change-transform text-sm sm:text-base touch-manipulation"
                 onClick={onClose}
               >
                 Baca Selengkapnya
-                <ArrowRight size={14} className="sm:size-[16px] transition-transform group-hover:translate-x-1" />
+                <ArrowRight size={14} className="sm:size-[16px] transition-opacity duration-200" />
               </Link>
               
               <button
                 onClick={onClose}
-                className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-all duration-200 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-stone-400/50 touch-manipulation"
+                className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-opacity duration-200 transform-gpu will-change-transform text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-stone-400/50 touch-manipulation"
               >
                 Tutup Preview
               </button>
@@ -369,16 +370,33 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
         @keyframes modal-enter {
           from {
             opacity: 0;
-            transform: scale(0.96) translateY(20px);
+            transform: scale(0.96) translateY(20px) translateZ(0);
           }
           to {
             opacity: 1;
-            transform: scale(1) translateY(0);
+            transform: scale(1) translateY(0) translateZ(0);
           }
         }
         
         .animate-fade-in {
-          animation: fade-in 0.25s ease-out forwards;
+          animation: fade-in 0.2s ease-out forwards;
+          will-change: opacity;
+        }
+        
+        /* Performance optimizations */
+        .transform-gpu {
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          perspective: 1000px;
+        }
+        
+        .will-change-transform {
+          will-change: transform;
+        }
+        
+        /* Reduce paint on scroll */
+        .backdrop-blur-md {
+          transform: translateZ(0);
         }
       `}</style>
     </div>

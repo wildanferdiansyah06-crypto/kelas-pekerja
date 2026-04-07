@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import "../styles/performance.css";
 
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import ReadingProgress from "@/src/components/ReadingProgress";

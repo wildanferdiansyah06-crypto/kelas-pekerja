@@ -1,0 +1,79 @@
+/* Performance Optimizations */
+/* Hardware acceleration for smooth animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce paint on scroll */
+.backdrop-blur {
+  transform: translateZ(0);
+}
+
+/* Optimize images */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduce reflows */
+.layout-stable {
+  contain: layout style paint;
+}
+
+/* Optimize transitions */
+.fast-transition {
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+/* Mobile touch optimization */
+.touch-optimized {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Scroll performance */
+.smooth-scroll {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Button performance */
+.btn-performance {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  transition: opacity 0.15s ease-out;
+}
+
+/* Modal performance */
+.modal-performance {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Navbar performance */
+.navbar-performance {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Reduce layout thrashing */
+.no-layout-shift {
+  contain: layout;
+}
+
+/* Optimize backdrop filters */
+.backdrop-performance {
+  transform: translateZ(0);
+  will-change: opacity;
+}

@@ -26,17 +26,23 @@ useEffect(() => {
 setMounted(true);
 }, []);
 
-// Auto-hide navbar on scroll
+// Auto-hide navbar on scroll - Performance optimized
 useEffect(() => {
   if (!mounted) return;
 
   let ticking = false;
   const scrollThreshold = 100;
   let scrollDirection = 'up';
+  let lastScrollTime = 0;
+  const throttleDelay = 16; // ~60fps
   
   const handleScroll = () => {
+    const now = performance.now();
+    if (now - lastScrollTime < throttleDelay) return;
+    
     if (!ticking) {
-      window.requestAnimationFrame(() => {
+      ticking = true;
+      requestAnimationFrame(() => {
         try {
           const currentScrollY = window.scrollY || document.documentElement.scrollTop;
           const lastScrollY = lastScrollYRef.current;
@@ -62,29 +68,30 @@ useEffect(() => {
           }
 
           lastScrollYRef.current = currentScrollY;
+          lastScrollTime = now;
         } catch (error) {
           console.error('Navbar scroll error:', error);
         }
         ticking = false;
       });
-      ticking = true;
     }
   };
 
   // Initial scroll position
   lastScrollYRef.current = window.scrollY || document.documentElement.scrollTop;
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  // Use passive listener for better performance
+  window.addEventListener('scroll', handleScroll, { passive: true, capture: false });
   
   return () => {
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScroll, { capture: false });
   };
 }, [mounted, isVisible]);
 
 if (!mounted) return null;
 
 return (
-<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-transform duration-300 ease-in-out will-change-transform ${
+<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-transform duration-300 ease-out will-change-transform transform-gpu ${
   isVisible ? 'translate-y-0' : '-translate-y-full'
 }`}>
 
@@ -94,7 +101,7 @@ return (
     {/* Logo */}
     <Link
       href="/"
-      className="font-serif text-lg tracking-wider opacity-80 hover:opacity-100 transition-all duration-200 hover:scale-105 transform"
+      className="font-serif text-lg tracking-wider opacity-80 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform"
     >
       Kelas Pekerja
     </Link>
@@ -105,7 +112,7 @@ return (
         <Link
           key={item.href}
           href={item.href}
-          className={`text-sm tracking-wider transition-all duration-200 hover:scale-105 transform ${
+          className={`text-sm tracking-wider transition-opacity duration-200 transform-gpu will-change-transform ${
             pathname === item.href
               ? "opacity-100 font-medium"
               : "opacity-60 hover:opacity-100"
@@ -122,7 +129,7 @@ return (
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="p-2 rounded-full hover:bg-[#8b7355]/10 transition-all duration-200 hover:scale-110 transform"
+        className="p-2 rounded-full hover:bg-[#8b7355]/10 transition-opacity duration-200 transform-gpu will-change-transform"
         aria-label="Toggle theme"
       >
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -131,7 +138,7 @@ return (
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden p-2 rounded-full hover:bg-[#8b7355]/10 transition-all duration-200 hover:scale-110 transform"
+        className="md:hidden p-2 rounded-full hover:bg-[#8b7355]/10 transition-opacity duration-200 transform-gpu will-change-transform"
         aria-label="Toggle menu"
       >
         {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -141,7 +148,7 @@ return (
   </div>
 
   {/* Mobile Menu */}
-  <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+  <div className={`md:hidden transition-all duration-300 ease-out overflow-hidden will-change-transform transform-gpu ${
     isMenuOpen ? 'max-h-64 opacity-100 border-t border-[#8b7355]/10 bg-[#faf8f5] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
   }`}>
     <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
@@ -151,7 +158,7 @@ return (
           key={item.href}
           href={item.href}
           onClick={() => setIsMenuOpen(false)}
-          className={`text-sm transition-all duration-200 transform hover:translate-x-1 ${
+          className={`text-sm transition-opacity duration-200 transform-gpu will-change-transform ${
             pathname === item.href
               ? "opacity-100 font-medium"
               : "opacity-60 hover:opacity-100"
