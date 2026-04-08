@@ -1,18 +1,10 @@
 "use client";
 
-import { Metadata } from "next";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
 import Footer from "@/src/components/Footer";
-
-export const metadata: Metadata = {
-  title: "Kelas Pekerja — Di Antara Sunyi dan Langkah",
-  description: "Ruang bagi yang mengarungi sunyi. Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat.",
-};
-
-export const revalidate = 3600;
 
 function getRelativeTime(dateString: string): string {
   const date = new Date(dateString);
