@@ -82,6 +82,16 @@ export default function HomePageClient({
     <div className={`relative min-h-screen ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#2b2a26]'} transition-colors duration-500`}>
         {/* HERO */}
         <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+          {/* Background Image with Gradient Fade */}
+          <div className="absolute inset-0 z-0">
+            {/* Coffee aesthetic background */}
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=1920&q=80')] bg-cover bg-center bg-no-repeat" />
+            {/* Gradient overlay - fade to bottom */}
+            <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-b from-[#0f0e0c]/70 via-[#1a1815]/50 to-[#0f0e0c]' : 'bg-gradient-to-b from-[#faf9f7]/60 via-[#f5f3ef]/40 to-[#faf9f7]'}`} />
+            {/* Additional gradient for better text readability */}
+            <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-[#1a1815]/30 via-transparent to-[#0f0e0c]/50' : 'bg-gradient-to-br from-[#f8f7e6]/20 via-transparent to-[#e8e5d6]/30'}`} />
+          </div>
+
           {/* Animated Background Layer */}
           <div className="absolute inset-0 z-0">
             {/* Coffee bean illustrations - always visible */}
@@ -153,6 +163,134 @@ export default function HomePageClient({
               </Link>
             </div>
 
+          </div>
+
+          {/* Coffee Equipment Illustrations - Bottom of Hero */}
+          <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none">
+            {/* Gradient fade overlay */}
+            <div className={`h-32 ${isDark ? 'bg-gradient-to-t from-[#0f0e0c] to-transparent' : 'bg-gradient-to-t from-[#faf9f7] to-transparent'}`} />
+            
+            {/* Coffee decorations container */}
+            <div className={`relative h-48 ${isDark ? 'bg-[#0f0e0c]' : 'bg-[#faf9f7]'} overflow-hidden`}>
+              {/* Coffee beans scattered */}
+              <div className="absolute bottom-4 left-[10%] opacity-40">
+                <svg width="24" height="36" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#8b7355]' : 'text-[#8b7355]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-8 left-[20%] opacity-30 rotate-45">
+                <svg width="20" height="30" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#a08060]' : 'text-[#a08060]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-2 left-[30%] opacity-50 -rotate-12">
+                <svg width="28" height="42" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#6b5a45]' : 'text-[#6b5a45]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-6 left-[45%] opacity-35 rotate-90">
+                <svg width="22" height="34" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#c7b299]' : 'text-[#c7b299]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-3 left-[60%] opacity-45 -rotate-30">
+                <svg width="26" height="40" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#8b7355]' : 'text-[#8b7355]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-8 left-[75%] opacity-25 rotate-60">
+                <svg width="18" height="28" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#a08060]' : 'text-[#a08060]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-5 left-[85%] opacity-40 -rotate-15">
+                <svg width="24" height="36" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#6b5a45]' : 'text-[#6b5a45]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-10 left-[5%] opacity-30 rotate-120">
+                <svg width="20" height="32" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#8b7355]' : 'text-[#8b7355]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+              <div className="absolute bottom-2 left-[95%] opacity-35 -rotate-45">
+                <svg width="22" height="34" viewBox="0 0 24 36" fill="none" className={`${isDark ? 'text-[#c7b299]' : 'text-[#c7b299]'}`}>
+                  <ellipse cx="12" cy="18" rx="8" ry="14" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M12 8 Q15 12 12 18 Q9 24 12 28" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+
+              {/* Coffee cup illustration */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 opacity-20">
+                <svg width="120" height="80" viewBox="0 0 120 80" fill="none" className={`${isDark ? 'text-[#8b7355]' : 'text-[#8b7355]'}`}>
+                  {/* Cup body */}
+                  <path d="M20 20 L25 60 Q30 70 60 70 Q90 70 95 60 L100 20 Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Cup handle */}
+                  <path d="M100 30 Q115 30 115 45 Q115 55 95 55" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Steam lines */}
+                  <path d="M40 15 Q45 5 40 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+                  <path d="M60 15 Q65 5 60 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+                  <path d="M80 15 Q85 5 80 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+                  {/* Saucer */}
+                  <ellipse cx="60" cy="75" rx="45" ry="5" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                </svg>
+              </div>
+
+              {/* Coffee grinder silhouette */}
+              <div className="absolute bottom-0 left-[15%] opacity-15">
+                <svg width="80" height="100" viewBox="0 0 80 100" fill="none" className={`${isDark ? 'text-[#6b5a45]' : 'text-[#6b5a45]'}`}>
+                  {/* Base */}
+                  <rect x="25" y="70" width="30" height="25" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Body */}
+                  <path d="M30 70 L35 40 L45 40 L50 70 Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Hopper */}
+                  <path d="M35 40 L30 20 L50 20 L45 40 Z" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Handle */}
+                  <circle cx="40" cy="15" r="8" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  <line x1="40" y1="15" x2="65" y2="10" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="68" cy="10" r="3" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Drawer */}
+                  <rect x="32" y="78" width="16" height="12" rx="1" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                </svg>
+              </div>
+
+              {/* French press silhouette */}
+              <div className="absolute bottom-0 right-[15%] opacity-15">
+                <svg width="70" height="90" viewBox="0 0 70 90" fill="none" className={`${isDark ? 'text-[#6b5a45]' : 'text-[#6b5a45]'}`}>
+                  {/* Glass body */}
+                  <rect x="20" y="30" width="30" height="50" rx="3" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Lid */}
+                  <rect x="18" y="25" width="34" height="8" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Plunger handle */}
+                  <line x1="35" y1="25" x2="35" y2="10" stroke="currentColor" strokeWidth="2"/>
+                  <circle cx="35" cy="8" r="4" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Spout */}
+                  <path d="M50 35 L60 40 L50 45" stroke="currentColor" strokeWidth="2" fill="none"/>
+                  {/* Base */}
+                  <rect x="18" y="78" width="34" height="8" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+                </svg>
+              </div>
+
+              {/* Coffee leaves decoration */}
+              <div className="absolute bottom-4 right-[5%] opacity-20">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className={`${isDark ? 'text-[#8b7355]' : 'text-[#8b7355]'}`}>
+                  <path d="M30 60 Q30 30 10 20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <path d="M30 60 Q30 30 50 20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                  <ellipse cx="10" cy="18" rx="6" ry="10" transform="rotate(-30 10 18)" stroke="currentColor" strokeWidth="1" fill="none"/>
+                  <ellipse cx="50" cy="18" rx="6" ry="10" transform="rotate(30 50 18)" stroke="currentColor" strokeWidth="1" fill="none"/>
+                  <ellipse cx="8" cy="15" rx="4" ry="7" transform="rotate(-45 8 15)" stroke="currentColor" strokeWidth="1" fill="none"/>
+                  <ellipse cx="52" cy="15" rx="4" ry="7" transform="rotate(45 52 15)" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+              </div>
+            </div>
           </div>
         </section>
 
