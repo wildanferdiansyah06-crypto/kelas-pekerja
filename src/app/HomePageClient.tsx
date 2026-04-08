@@ -1,13 +1,34 @@
-import { getPageData } from "./page-data";
-import HomePageClient from "./HomePageClient";
+"use client";
 
-export default async function HomePage() {
-  const pageData = await getPageData();
+import { useTheme } from "@/src/components/ThemeProvider";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
+import Footer from "@/src/components/Footer";
+
+function getRelativeTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
   
-  return <HomePageClient {...pageData} />;
+  if (diffInDays === 0) return "Hari ini";
+  if (diffInDays === 1) return "Kemarin";
+  if (diffInDays < 7) return `${diffInDays} hari lalu`;
+  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
+  return `${Math.floor(diffInDays / 30)} bulan lalu`;
 }
 
-function HomePageClient({ 
+interface HomePageClientProps {
+  featuredBooks: any[];
+  allBooks: any[];
+  latestBooks: any[];
+  mostRelatable: any[];
+  totalViews: number;
+  totalDownloads: number;
+  config: any;
+}
+
+export default function HomePageClient({ 
   featuredBooks, 
   allBooks, 
   latestBooks, 
@@ -15,7 +36,7 @@ function HomePageClient({
   totalViews, 
   totalDownloads, 
   config 
-}: Awaited<ReturnType<typeof getPageData>>) {
+}: HomePageClientProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   
@@ -157,7 +178,7 @@ function HomePageClient({
                       <div className="p-6">
                         <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] dark:text-[#a08060] mb-3">
                           <span>{book.category}</span>
-                          <span>•</span>
+                          <span>â¢</span>
                           <span>{book.pages} halaman</span>
                         </div>
 
@@ -206,7 +227,7 @@ function HomePageClient({
                     
                     <div className="flex items-center gap-2 text-[10px] tracking-wider uppercase text-[#8b7355] dark:text-[#a08060] mb-4">
                       <span>{getRelativeTime(book.publishedAt)}</span>
-                      <span>•</span>
+                      <span>â¢</span>
                       <span>{book.readTime}</span>
                     </div>
 
@@ -324,7 +345,7 @@ function HomePageClient({
           </div>
 
           <div>
-            <div className="text-3xl font-serif text-[#8b7355] dark:text-[#a08060] mb-2">∞</div>
+            <div className="text-3xl font-serif text-[#8b7355] dark:text-[#a08060] mb-2">â</div>
             <div className="text-xs uppercase tracking-wider text-[#9a8b7a] dark:text-[#6b5a45]">Kopi</div>
           </div>
         </div>
