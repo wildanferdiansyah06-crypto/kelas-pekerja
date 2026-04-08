@@ -20,39 +20,40 @@ const stagger = {
 
 const CATEGORIES = ["Semua", "Ruang Bagi", "Barista & FnB", "Retail", "Office & Korporat", "Gig Economy", "Startup", "Kreatif"];
 
-// Memoized background component with mocha theme and better illustrations
+// Memoized background component with deeper theme consistent with other pages
 const Background = memo(({ isDark }: { isDark: boolean }) => {
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      {/* Mocha gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08] opacity-100"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#8b4513]/20 via-transparent to-[#d2691e]/10"></div>
+      {/* Deep gradient background */}
+      {isDark ? (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a] opacity-100"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#c7b299]/10 via-transparent to-[#8b7355]/5"></div>
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08] opacity-100"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#8b4513]/20 via-transparent to-[#d2691e]/10"></div>
+        </>
+      )}
       
-      {/* Coffee bean illustrations */}
-      <div className="absolute top-20 left-10 w-24 h-32 opacity-30 rotate-12">
-        <div className="w-full h-full bg-gradient-to-br from-[#8b4513]/30 to-[#654321]/20 rounded-full blur-xl"></div>
+      {/* Subtle illustrations */}
+      <div className={`absolute top-20 left-10 w-24 h-32 ${isDark ? 'opacity-20' : 'opacity-30'} rotate-12`}>
+        <div className={`w-full h-full ${isDark ? 'bg-gradient-to-br from-[#c7b299]/20 to-[#8b7355]/10' : 'bg-gradient-to-br from-[#8b4513]/30 to-[#654321]/20'} rounded-full blur-xl`}></div>
       </div>
-      <div className="absolute top-40 right-20 w-20 h-28 opacity-25 -rotate-6">
-        <div className="w-full h-full bg-gradient-to-tr from-[#a0522d]/25 to-[#8b4513]/15 rounded-full blur-lg"></div>
+      <div className={`absolute top-40 right-20 w-20 h-28 ${isDark ? 'opacity-15' : 'opacity-25'} -rotate-6`}>
+        <div className={`w-full h-full ${isDark ? 'bg-gradient-to-tr from-[#8b7355]/15 to-[#c7b299]/8' : 'bg-gradient-to-tr from-[#a0522d]/25 to-[#8b4513]/15'} rounded-full blur-lg`}></div>
       </div>
-      <div className="absolute bottom-32 left-1/4 w-32 h-24 opacity-20 rotate-45">
-        <div className="w-full h-full bg-gradient-to-r from-[#cd853f]/20 to-[#8b4513]/10 rounded-full blur-2xl"></div>
-      </div>
-      <div className="absolute bottom-20 right-1/3 w-28 h-28 opacity-15 -rotate-12">
-        <div className="w-full h-full bg-gradient-to-bl from-[#daa520]/20 to-[#b8860b]/10 rounded-full blur-xl"></div>
-      </div>
-      
-      {/* Steam/coffee vapor effect */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-10">
-        <div className="w-full h-full bg-gradient-radial from-[#f4e4d4]/20 via-transparent to-transparent animate-pulse"></div>
+      <div className={`absolute bottom-32 left-1/4 w-32 h-24 ${isDark ? 'opacity-10' : 'opacity-20'} rotate-45`}>
+        <div className={`w-full h-full ${isDark ? 'bg-gradient-to-r from-[#8b7355]/10 to-[#c7b299]/5' : 'bg-gradient-to-r from-[#cd853f]/20 to-[#8b4513]/10'} rounded-full blur-2xl`}></div>
       </div>
       
       {/* Decorative circles */}
       <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-5">
-        <div className="w-full h-full border-2 border-[#8b4513]/20 rounded-full animate-spin" style={{ animationDuration: '60s' }}></div>
+        <div className={`w-full h-full border-2 ${isDark ? 'border-[#c7b299]/10' : 'border-[#8b4513]/20'} rounded-full animate-spin`} style={{ animationDuration: '60s' }}></div>
       </div>
       <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-5">
-        <div className="w-full h-full border border-[#a0522d]/15 rounded-full animate-spin" style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
+        <div className={`w-full h-full border ${isDark ? 'border-[#8b7355]/8' : 'border-[#a0522d]/15'} rounded-full animate-spin`} style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
       </div>
     </div>
   );
@@ -134,20 +135,20 @@ export default function TulisanPage() {
 
   const isDark = theme === "dark";
 
-  // Memoized colors object with mocha theme
+  // Memoized colors object with deeper theme consistent with other pages
   const colors = useMemo(() => ({
-    bg: "bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]",
-    text: "text-[#f4e4d4]",
-    textMuted: "text-[#d4a574]",
-    textSubtle: "text-[#b8860b]",
-    heading: "text-[#faf0e6]",
-    accent: "#d2691e",
-    accentSecondary: "#cd853f",
-    border: "border-[#8b4513]/30",
-    cardBg: "bg-[#3d2817]/60 backdrop-blur-sm",
-    featuredBg: "bg-gradient-to-br from-[#8b4513]/30 via-[#3d2817]/80 to-[#2c1810]",
-    accentBg: "bg-[#4a3426]/80",
-  }), []);
+    bg: isDark ? "bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]" : "bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]",
+    text: isDark ? "text-[#e8e0d5]" : "text-[#d4a574]",
+    textMuted: isDark ? "text-[#a8a298]" : "text-[#8b7355]",
+    textSubtle: isDark ? "text-[#78716c]" : "text-[#6b5d54]",
+    heading: isDark ? "text-[#faf0e6]" : "text-[#f4e4d4]",
+    accent: isDark ? "#c7b299" : "#8b7355",
+    accentSecondary: isDark ? "#8b7355" : "#c7b299",
+    border: isDark ? "border-neutral-800/50" : "border-[#8b4513]/30",
+    cardBg: isDark ? "bg-neutral-900/40 backdrop-blur-sm" : "bg-[#3d2817]/60 backdrop-blur-sm",
+    featuredBg: isDark ? "bg-gradient-to-br from-[#c7b299]/20 via-neutral-900/80 to-[#0a0a0a]" : "bg-gradient-to-br from-[#8b4513]/30 via-[#3d2817]/80 to-[#2c1810]",
+    accentBg: isDark ? "bg-neutral-900/80" : "bg-[#4a3426]/80",
+  }), [isDark]);
 
   // Memoized computed values
   const { featuredPost, regularPosts, trendingPosts, filteredPosts, showFeatured } = useMemo(() => {
