@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
@@ -38,11 +39,6 @@ export default function HomePageClient({
   config 
 }: HomePageClientProps) {
   const { theme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {

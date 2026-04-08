@@ -32,4 +32,16 @@ export async function getPageData() {
     totalDownloads,
     config
   };
+  } catch (error) {
+    console.error('Error in getPageData:', error);
+    return {
+      featuredBooks: [],
+      allBooks: [],
+      latestBooks: [],
+      mostRelatable: [],
+      totalViews: 0,
+      totalDownloads: 0,
+      config: { tagline: "Tentang malam yang tak pernah benar-benar tidur..." }
+    };
+  }
 }
