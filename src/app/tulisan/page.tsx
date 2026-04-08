@@ -6,6 +6,7 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { PenLine, Clock, ArrowRight, Filter, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
 import { useState, useMemo, useCallback, memo } from "react";
+import Footer from "@/src/components/Footer";
 
 // Memoized animation variants to prevent recreation
 const fadeUp = {
@@ -321,7 +322,7 @@ export default function TulisanPage() {
                 <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.1 }} className="lg:col-span-2">
                   <div className={`${colors.cardBg} rounded-2xl p-8 border ${colors.border} h-full`}>
                     <div className="flex items-center gap-4 mb-8">
-                      <div className={`w-16 h-16 rounded-full bg-gradient-to-br from-[#d2691e] to-transparent p-1 flex items-center justify-center flex-shrink-0`}>
+                      <div className={`w-16 h-16 rounded-full ${colors.accent} p-1 flex items-center justify-center flex-shrink-0`}>
                         <BookOpen className="text-white" size={28} />
                       </div>
                       <div>
@@ -442,13 +443,16 @@ export default function TulisanPage() {
         {/* FINAL CTA */}
         <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
           <div className="max-w-3xl mx-auto text-center">
-            <p className="font-serif text-3xl sm:text-4xl italic text-[#c7b299] mb-6">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
+            <p className="text-2xl sm:text-3xl md:text-4xl font-light italic text-[#c7b299] mb-6 leading-relaxed tracking-wide">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
             <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
               <PenLine size={20} />
               Mulai Menulis
             </Link>
           </div>
         </section>
+
+        {/* FOOTER */}
+        <Footer />
       </div>
     </main>
   );
