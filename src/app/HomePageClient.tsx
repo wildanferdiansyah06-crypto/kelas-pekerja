@@ -8,15 +8,23 @@ import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
 import Footer from "@/src/components/Footer";
 
 function getRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
-  if (diffInDays === 0) return "Hari ini";
-  if (diffInDays === 1) return "Kemarin";
-  if (diffInDays < 7) return `${diffInDays} hari lalu`;
-  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
-  return `${Math.floor(diffInDays / 30)} bulan lalu`;
+  try {
+    if (!dateString) return "Tanggal tidak diketahui";
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Tanggal tidak valid";
+    
+    const now = new Date();
+    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return "Hari ini";
+    if (diffInDays === 1) return "Kemarin";
+    if (diffInDays < 7) return `${diffInDays} hari lalu`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
+    return `${Math.floor(diffInDays / 30)} bulan lalu`;
+  } catch (error) {
+    return "Tanggal tidak diketahui";
+  }
 }
 
 interface HomePageClientProps {
@@ -30,21 +38,45 @@ interface HomePageClientProps {
 }
 
 export default function HomePageClient({ 
-  featuredBooks, 
-  allBooks, 
-  latestBooks, 
-  mostRelatable, 
-  totalViews, 
-  totalDownloads, 
-  config 
+  featuredBooks = [], 
+  allBooks = [], 
+  latestBooks = [], 
+  mostRelatable = [], 
+  totalViews = 0, 
+  totalDownloads = 0, 
+  config = {} 
 }: HomePageClientProps) {
   const { theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const [hasError, setHasError] = React.useState(false);
 
   React.useEffect(() => {
-    setMounted(true);
+    try {
+      setMounted(true);
+    } catch (error) {
+      console.error('Error in HomePageClient mount:', error);
+      setHasError(true);
+    }
   }, []);
+  
   const isDark = mounted && theme === "dark";
+
+  // Error boundary fallback
+  if (hasError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">Terjadi kesalahan pada halaman</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Muat Ulang
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className={`relative min-h-screen ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#2b2a26]'} transition-colors duration-500`}>
@@ -99,7 +131,7 @@ export default function HomePageClient({
             </p>
             
             <p className={`text-sm md:text-base ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
-              {config.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
+              {config?.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -168,39 +200,42 @@ export default function HomePageClient({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {featuredBooks.map((book) => (
-                <article key={book.id} className="group cursor-pointer">
-                  <Link href={`/buku/${book.slug}`} className="block">
+              {featuredBooks.map((book, index) => (
+                <article key={book?.id || `featured-${index}`} className="group cursor-pointer">
+                  <Link href={`/buku/${book?.slug || '#'}`} className="block">
                     <div className={`${isDark ? 'bg-[#1a1816]' : 'bg-[#f5f3ef]'} rounded-lg overflow-hidden border ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-[#a08060]/30' : 'border-[#8b7355]/30'} transition-all duration-300`}>
-                      {book.cover && (
+                      {book?.cover && (
                         <div className="aspect-[16/10] overflow-hidden">
                           <Image 
                             src={book.cover} 
-                            alt={book.title}
+                            alt={book?.title || 'Book cover'}
                             width={640}
                             height={400}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
                           />
                         </div>
                       )}
                       
                       <div className="p-6">
                         <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-3`}>
-                          <span>{book.category}</span>
+                          <span>{book?.category || 'Umum'}</span>
                           <span>â¢</span>
-                          <span>{book.pages} halaman</span>
+                          <span>{book?.pages || '0'} halaman</span>
                         </div>
 
                         <h4 className={`font-serif text-xl mb-2 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
-                          {book.title}
+                          {book?.title || 'Tanpa Judul'}
                         </h4>
                         
                         <p className={`text-sm ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-2 mb-4`}>
-                          {book.subtitle || book.excerpt}
+                          {book?.subtitle || book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                         </p>
 
                         <div className={`flex items-center justify-between text-xs ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
-                          <span>{book.readTime}</span>
+                          <span>{book?.readTime || '5 menit'}</span>
                           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
                       </div>
@@ -229,23 +264,23 @@ export default function HomePageClient({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestBooks.map((book) => (
-              <article key={book.id} className="group cursor-pointer">
-                <Link href={`/buku/${book.slug}`} className="block">
+            {latestBooks.map((book, index) => (
+              <article key={book?.id || `latest-${index}`} className="group cursor-pointer">
+                <Link href={`/buku/${book?.slug || '#'}`} className="block">
                   <div className={`${isDark ? 'bg-[#1a1816]' : 'bg-[#f5f3ef]'} rounded-lg p-8 h-full border ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-[#a08060]/30' : 'border-[#8b7355]/30'} group-hover:-translate-y-1 transition-all duration-300`}>
                     
                     <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-4`}>
-                      <span>{getRelativeTime(book.publishedAt)}</span>
+                      <span>{getRelativeTime(book?.publishedAt || new Date().toISOString())}</span>
                       <span>â¢</span>
-                      <span>{book.readTime}</span>
+                      <span>{book?.readTime || '5 menit'}</span>
                     </div>
 
                     <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
-                      {book.title}
+                      {book?.title || 'Tanpa Judul'}
                     </h4>
                     
                     <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-3`}>
-                      {book.excerpt}
+                      {book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                     </p>
 
                     <div className={`mt-6 flex items-center gap-2 text-xs ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} transition-colors`}>
@@ -286,9 +321,9 @@ export default function HomePageClient({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {mostRelatable.length > 0 ? mostRelatable.map((book) => (
-              <article key={book.id} className="group cursor-pointer relative">
-                <Link href={`/buku/${book.slug}`} className="block">
+            {mostRelatable.length > 0 ? mostRelatable.map((book, index) => (
+              <article key={book?.id || `relatable-${index}`} className="group cursor-pointer relative">
+                <Link href={`/buku/${book?.slug || '#'}`} className="block">
                   <div className={`absolute -top-3 left-6 ${isDark ? 'bg-[#a08060]' : 'bg-[#8b7355]'} ${isDark ? 'text-[#0f0e0c]' : 'text-[#faf9f7]'} text-[10px] tracking-wider uppercase px-3 py-1 rounded-full font-medium z-10`}>
                     Paling Dibaca
                   </div>
@@ -296,19 +331,19 @@ export default function HomePageClient({
                   <div className={`${isDark ? 'bg-[#0f0e0c]' : 'bg-[#faf9f7]'} rounded-lg p-8 h-full pt-10 border ${isDark ? 'border-[#a08060]/20' : 'border-[#8b7355]/20'} group-hover:${isDark ? 'border-[#a08060]/40' : 'border-[#8b7355]/40'} group-hover:-translate-y-1 transition-all duration-300`}>
                     
                     <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
-                      {book.title}
+                      {book?.title || 'Tanpa Judul'}
                     </h4>
                     
                     <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-3 mb-4`}>
-                      {book.excerpt}
+                      {book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                     </p>
 
                     <div className={`flex items-center gap-4 text-xs ${isDark ? 'text-[#6b5a45]' : 'text-[#9a8b7a]'} mb-4`}>
                       <span className="flex items-center gap-1">
                         <Eye size={12} />
-                        {book.stats?.views?.toLocaleString() || 0}
+                        {book?.stats?.views?.toLocaleString() || '0'}
                       </span>
-                      <span>{book.readTime}</span>
+                      <span>{book?.readTime || '5 menit'}</span>
                     </div>
 
                     <div className="flex items-center justify-between text-xs">
