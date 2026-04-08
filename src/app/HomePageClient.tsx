@@ -127,36 +127,36 @@ export default function HomePageClient({
             </div>
           </div>
 
-          <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="max-w-4xl mx-auto text-center relative z-20 pb-32">
             <p className={`text-[11px] tracking-[0.4em] uppercase mb-8 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} font-medium`}>
               Sebuah Ruang untuk
             </p>
-            
+
             <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 ${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'}`}>
               Kelas Pekerja
             </h1>
-            
+
             <p className={`text-xl md:text-2xl ${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} dark:text-[#c4b5a0] mb-4 max-w-2xl mx-auto leading-relaxed`}>
               Di antara sunyi dan langkah, kita menemukan makna.
             </p>
-            
+
             <p className={`text-sm md:text-base ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
               {config?.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/buku"
-                className={`group inline-flex items-center gap-3 px-8 py-4 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} text-white rounded-full hover:${isDark ? 'bg-[#c7b299]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium`}
+                className={`group inline-flex items-center gap-3 px-8 py-4 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} text-white rounded-full hover:${isDark ? 'bg-[#c7b299]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium relative z-30`}
               >
                 <BookOpen size={18} />
                 Mulai Membaca
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              
+
               <Link
                 href="/tulis"
-                className={`inline-flex items-center gap-2 px-8 py-4 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#8b7355]/20'} rounded-full ${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} hover:${isDark ? 'border-[#8b7355]' : 'border-[#8b7355]'} hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#1a1816]'} transition-all duration-300 text-sm tracking-wider`}
+                className={`inline-flex items-center gap-2 px-8 py-4 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#8b7355]/20'} rounded-full ${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} hover:${isDark ? 'border-[#8b7355]' : 'border-[#8b7355]'} hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#1a1816]'} transition-all duration-300 text-sm tracking-wider relative z-30`}
               >
                 <PenLine size={18} />
                 Tulis Cerita
