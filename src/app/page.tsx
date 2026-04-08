@@ -49,13 +49,35 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
         <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 dark:opacity-40"
-            style={{
-              backgroundImage: `url('https://images.pexels.com/photos/30266551/pexels-photo-30266551/free-photo-of-cozy-autumn-coffee-with-old-books-and-music.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920')`,
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#faf9f7]/90 via-[#faf9f7]/95 to-[#faf9f7] dark:from-[#0f0e0c]/80 dark:via-[#0f0e0c]/90 dark:to-[#0f0e0c]" />
+          {/* Dynamic animated background */}
+          <div className="absolute inset-0">
+            {/* Coffee bean illustrations */}
+            <div className="absolute top-20 left-10 w-32 h-32 opacity-30 rotate-12 animate-pulse">
+              <div className="w-full h-full bg-gradient-to-br from-[#8b4513]/20 to-[#654321]/10 rounded-full blur-3xl"></div>
+            </div>
+            <div className="absolute top-40 right-20 w-24 h-24 opacity-25 -rotate-6 animate-pulse" style={{ animationDelay: '2s' }}>
+              <div className="w-full h-full bg-gradient-to-tr from-[#d2691e]/15 to-[#8b4513]/8 rounded-full blur-2xl"></div>
+            </div>
+            <div className="absolute bottom-32 left-1/4 w-40 h-40 opacity-20 rotate-45 animate-pulse" style={{ animationDelay: '4s' }}>
+              <div className="w-full h-full bg-gradient-to-r from-[#cd853f]/10 to-[#8b4513]/5 rounded-full blur-2xl"></div>
+            </div>
+            
+            {/* Steam/coffee vapor effect */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-15">
+              <div className="w-full h-full bg-gradient-radial from-[#f4e4d4]/10 via-transparent to-transparent animate-pulse"></div>
+            </div>
+            
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#faf9f7]/95 dark:from-[#0f0e0c]/80 dark:via-transparent dark:to-[#0f0e0c]/90"></div>
+            
+            {/* Decorative circles */}
+            <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-5">
+              <div className="w-full h-full border-2 border-[#8b7355]/20 rounded-full animate-spin" style={{ animationDuration: '60s' }}></div>
+            </div>
+            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-5">
+              <div className="w-full h-full border border-[#8b7355]/15 rounded-full animate-spin" style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
+            </div>
+          </div>
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -97,6 +119,7 @@ export default async function HomePage() {
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <div className="w-px h-12 bg-gradient-to-b from-[#8b7355] to-transparent" />
+          <Coffee className="w-4 h-4 text-[#8b7355] animate-bounce" style={{ animationDelay: '6s' }} />
         </div>
       </section>
 
