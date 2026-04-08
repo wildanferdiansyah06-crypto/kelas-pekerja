@@ -140,7 +140,7 @@ export default function HomePageClient({
               Di antara sunyi dan langkah, kita menemukan makna.
             </p>
 
-            <p className={`text-sm md:text-base ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
+            <p className={`text-sm md:text-base ${isDark ? 'text-[#e8d4c4]' : 'text-[#4a3f35]'} max-w-md mx-auto mb-12 leading-relaxed drop-shadow-sm`}>
               {config?.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
             </p>
 
