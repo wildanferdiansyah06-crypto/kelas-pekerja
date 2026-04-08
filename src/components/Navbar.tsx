@@ -96,7 +96,7 @@ const finalVisibility = scrollVisible && contextVisible;
 if (!mounted) return null;
 
 return (
-<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/10 transition-transform duration-300 ease-out will-change-transform transform-gpu ${
+<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#3d2817]/90 dark:bg-[#1a1816]/90 border-b border-[#8b7355]/20 transition-transform duration-300 ease-out will-change-transform transform-gpu ${
   finalVisibility ? 'translate-y-0' : '-translate-y-full'
 }`}>
 
@@ -106,7 +106,7 @@ return (
     {/* Logo */}
     <Link
       href="/"
-      className="font-serif text-lg tracking-wider opacity-80 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform"
+      className="font-serif text-lg tracking-wider text-[#f4e4d4] opacity-90 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform"
     >
       Kelas Pekerja
     </Link>
@@ -117,10 +117,10 @@ return (
         <Link
           key={item.href}
           href={item.href}
-          className={`text-sm tracking-wider transition-opacity duration-200 transform-gpu will-change-transform ${
+          className={`text-sm tracking-wider text-[#d4a574] transition-all duration-200 transform-gpu will-change-transform ${
             pathname === item.href
-              ? "opacity-100 font-medium"
-              : "opacity-60 hover:opacity-100"
+              ? "text-[#f4e4d4] font-medium"
+              : "hover:text-[#f4e4d4]"
           }`}
         >
           {item.label}
@@ -134,7 +134,7 @@ return (
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="p-2 rounded-full hover:bg-[#8b7355]/10 transition-opacity duration-200 transform-gpu will-change-transform"
+        className="p-2 rounded-full text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
         aria-label="Toggle theme"
       >
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -143,7 +143,7 @@ return (
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden p-2 rounded-full hover:bg-[#8b7355]/10 transition-opacity duration-200 transform-gpu will-change-transform"
+        className="md:hidden p-2 rounded-full text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
         aria-label="Toggle menu"
       >
         {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -154,7 +154,7 @@ return (
 
   {/* Mobile Menu */}
   <div className={`md:hidden transition-all duration-300 ease-out overflow-hidden will-change-transform transform-gpu ${
-    isMenuOpen ? 'max-h-64 opacity-100 border-t border-[#8b7355]/10 bg-[#faf8f5] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
+    isMenuOpen ? 'max-h-64 opacity-100 border-t border-[#8b7355]/20 bg-[#3d2817] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
   }`}>
     <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
 
@@ -163,10 +163,10 @@ return (
           key={item.href}
           href={item.href}
           onClick={() => setIsMenuOpen(false)}
-          className={`text-sm transition-opacity duration-200 transform-gpu will-change-transform ${
+          className={`text-sm transition-all duration-200 transform-gpu will-change-transform ${
             pathname === item.href
-              ? "opacity-100 font-medium"
-              : "opacity-60 hover:opacity-100"
+              ? "text-[#f4e4d4] font-medium"
+              : "text-[#d4a574] hover:text-[#f4e4d4]"
           }`}
         >
           {item.label}
