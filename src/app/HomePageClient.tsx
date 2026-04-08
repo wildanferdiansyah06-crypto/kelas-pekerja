@@ -5,7 +5,6 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
-import Footer from "@/src/components/Footer";
 
 function getRelativeTime(dateString: string): string {
   try {
@@ -546,8 +545,6 @@ export default function HomePageClient({
         </div>
       </section>
 
-      {/* FOOTER */}
-      <Footer />
     </div>
   );
 }
