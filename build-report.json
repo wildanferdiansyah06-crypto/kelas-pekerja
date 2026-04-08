@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-04-08T05:12:09.327Z",
+  "summary": {
+    "success": true,
+    "duration": 39664,
+    "steps": {
+      "install": true,
+      "lint": true,
+      "test": true,
+      "build": true
+    }
+  },
+  "details": {
+    "install": {
+      "success": true,
+      "output": "\nup to date, audited 396 packages in 5s\n\n150 packages are looking for funding\n  run `npm fund` for details\n\n7 vulnerabilities (6 high, 1 critical)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+      "error": null
+    },
+    "lint": {
+      "success": true,
+      "output": "\n> kelas-pekerja@2.0.0 lint\n> next lint\n\n\n./src/app/tulisan/page.tsx\n132:9  Warning: The 'posts' logical expression could make the dependencies of useMemo Hook (at line 174) change on every render. To fix this, wrap the initialization of 'posts' in its own useMemo() Hook.  react-hooks/exhaustive-deps\n\ninfo  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules\n",
+      "error": null
+    },
+    "test": {
+      "success": true,
+      "output": "",
+      "error": null,
+      "skipped": true
+    },
+    "build": {
+      "success": true,
+      "output": "\n> kelas-pekerja@2.0.0 build\n> next build\n\n  ▲ Next.js 14.2.5\n  - Environments: .env.local, .env\n\n   Creating an optimized production build ...\n ✓ Compiled successfully\n   Linting and checking validity of types ...\n\n./src/app/tulisan/page.tsx\n132:9  Warning: The 'posts' logical expression could make the dependencies of useMemo Hook (at line 174) change on every render. To fix this, wrap the initialization of 'posts' in its own useMemo() Hook.  react-hooks/exhaustive-deps\n\ninfo  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules\n   Collecting page data ...\n   Generating static pages (0/25) ...\n   Generating static pages (6/25) \r\n   Generating static pages (12/25) \r\n   Generating static pages (18/25) \r\n ✓ Generating static pages (25/25)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size     First Load JS\n┌ ○ /                                       4.51 kB    ",
+      "error": null
+    },
+    "overall": {
+      "success": true,
+      "duration": 39664
+    }
+  },
+  "recommendations": []
+}
