@@ -1,6 +1,7 @@
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
 
 export async function getPageData() {
+  try {
   const featuredData = await getFeaturedBooks(2);
   const config = await getConfig();
   const allBooksData = await getBooks({ limit: 6 });

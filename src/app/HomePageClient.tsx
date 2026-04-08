@@ -38,7 +38,12 @@ export default function HomePageClient({
   config 
 }: HomePageClientProps) {
   const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  const isDark = mounted && theme === "dark";
   
   return (
     <div className={`relative min-h-screen ${isDark ? 'bg-[#faf9f7]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#2d2a26]' : 'text-[#2b2a26]'} dark:text-[#e8e0d5] transition-colors duration-500`}>
