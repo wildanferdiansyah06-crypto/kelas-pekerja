@@ -1,7 +1,11 @@
+"use client";
+
 import { Metadata } from "next";
+import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
 import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
+import Footer from "@/src/components/Footer";
 
 export const metadata: Metadata = {
   title: "Kelas Pekerja — Di Antara Sunyi dan Langkah",
@@ -23,10 +27,13 @@ function getRelativeTime(dateString: string): string {
 }
 
 export default async function HomePage() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
   const featuredData = await getFeaturedBooks(2);
   const config = await getConfig();
   const allBooksData = await getBooks({ limit: 6 });
-
+  
   const featuredBooks = featuredData.books;
   const allBooks = allBooksData.books;
   const latestBooks = allBooks.slice(0, 3);
@@ -40,112 +47,108 @@ export default async function HomePage() {
     const remaining = allBooks.filter(b => !featuredSlugs.has(b.slug) && !mostRelatable.find(m => m.slug === b.slug));
     mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
   }
-
+  
   const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
   const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
-
+  
   return (
-    <div className="relative min-h-screen bg-[#faf9f7] dark:bg-[#0f0e0c] text-[#2d2a26] dark:text-[#e8e0d5] transition-colors duration-500">
-      {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-        <div className="absolute inset-0 z-0">
-          {/* Dynamic animated background */}
-          <div className="absolute inset-0">
-            {/* Coffee bean illustrations */}
-            <div className="absolute top-20 left-10 w-32 h-32 opacity-30 rotate-12 animate-pulse">
-              <div className="w-full h-full bg-gradient-to-br from-[#8b4513]/20 to-[#654321]/10 rounded-full blur-3xl"></div>
-            </div>
-            <div className="absolute top-40 right-20 w-24 h-24 opacity-25 -rotate-6 animate-pulse" style={{ animationDelay: '2s' }}>
-              <div className="w-full h-full bg-gradient-to-tr from-[#d2691e]/15 to-[#8b4513]/8 rounded-full blur-2xl"></div>
-            </div>
-            <div className="absolute bottom-32 left-1/4 w-40 h-40 opacity-20 rotate-45 animate-pulse" style={{ animationDelay: '4s' }}>
-              <div className="w-full h-full bg-gradient-to-r from-[#cd853f]/10 to-[#8b4513]/5 rounded-full blur-2xl"></div>
-            </div>
-            
-            {/* Steam/coffee vapor effect */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-15">
-              <div className="w-full h-full bg-gradient-radial from-[#f4e4d4]/10 via-transparent to-transparent animate-pulse"></div>
-            </div>
-            
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#faf9f7]/95 dark:from-[#0f0e0c]/80 dark:via-transparent dark:to-[#0f0e0c]/90"></div>
-            
-            {/* Decorative circles */}
-            <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-5">
-              <div className="w-full h-full border-2 border-[#8b7355]/20 rounded-full animate-spin" style={{ animationDuration: '60s' }}></div>
-            </div>
-            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-5">
-              <div className="w-full h-full border border-[#8b7355]/15 rounded-full animate-spin" style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
+    <div className={`relative min-h-screen ${isDark ? 'bg-[#faf9f7]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#2d2a26]' : 'text-[#2b2a26]'} dark:text-[#e8e0d5] transition-colors duration-500`}>
+        {/* HERO */}
+        <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
+          <div className="absolute inset-0 z-0">
+            {/* Light theme animated background */}
+            <div className="absolute inset-0">
+              {/* Coffee bean illustrations */}
+              <div className="absolute top-20 left-10 w-32 h-32 opacity-30 rotate-12 animate-pulse">
+                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-br from-[#8b7355]/20 to-[#654321]/10' : 'bg-gradient-to-br from-[#c7b299]/20 to-[#8b7355]/10'} rounded-full blur-3xl`}></div>
+              </div>
+              <div className="absolute top-40 right-20 w-24 h-24 opacity-25 -rotate-6 animate-pulse" style={{ animationDelay: '2s' }}>
+                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-tr from-[#a0522d]/15 to-[#8b7355]/8' : 'bg-gradient-to-tr from-[#d2691e]/15 to-[#c7b299]/8'} rounded-full blur-2xl`}></div>
+              </div>
+              <div className="absolute bottom-32 left-1/4 w-40 h-40 opacity-20 rotate-45 animate-pulse" style={{ animationDelay: '4s' }}>
+                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-r from-[#8b7355]/10 to-[#a0522d]/5' : 'bg-gradient-to-r from-[#cd853f]/10 to-[#8b7355]/5'} rounded-full blur-2xl`}></div>
+              </div>
+              
+              {/* Steam/coffee vapor effect */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-15">
+                <div className={`w-full h-full ${isDark ? 'bg-gradient-radial from-[#f4e4d4]/10 via-transparent to-transparent' : 'bg-gradient-radial from-[#f5deb3]/10 via-transparent to-transparent'} animate-pulse`}></div>
+              </div>
+              
+              {/* Gradient overlay */}
+              <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#faf9f7]/95' : 'bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#e8e5d6]'} `}></div>
+              
+              {/* Decorative circles */}
+              <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-5">
+                <div className={`w-full h-full border-2 ${isDark ? 'border-[#8b7355]/20' : 'border-[#8b7355]/20'} rounded-full animate-spin`} style={{ animationDuration: '60s' }}></div>
+              </div>
+              <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-5">
+                <div className={`w-full h-full border ${isDark ? 'border-[#8b7355]/15' : 'border-[#8b7355]/20'} rounded-full animate-spin`} style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <p className="text-[11px] tracking-[0.4em] uppercase mb-8 text-[#8b7355] dark:text-[#a08060] font-medium">
-            Sebuah Ruang untuk
-          </p>
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <p className={`text-[11px] tracking-[0.4em] uppercase mb-8 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} font-medium`}>
+              Sebuah Ruang untuk
+            </p>
+            
+            <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} dark:text-[#f5f0e8]`}>
+              Kelas Pekerja
+            </h1>
+            
+            <p className={`text-xl md:text-2xl ${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} dark:text-[#c4b5a0] mb-4 max-w-2xl mx-auto leading-relaxed`}>
+              Di antara sunyi dan langkah, kita menemukan makna.
+            </p>
+            
+            <p className={`text-sm md:text-base ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
+              {config.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link
+                href="/buku"
+                className={`group inline-flex items-center gap-3 px-8 py-4 ${isDark ? 'bg-[#c7b299]' : 'bg-[#2d2a26]'} dark:${isDark ? 'bg-[#1a1816]' : 'bg-[#e8e0d5]'} text-white rounded-full hover:${isDark ? 'bg-[#8b7355]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium`}
+              >
+                <BookOpen size={18} />
+                Mulai Membaca
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              
+              <Link
+                href="/tulis"
+                className={`inline-flex items-center gap-2 px-8 py-4 border ${isDark ? 'border-[#8b7355]/40' : 'border-[#8b7355]/20'} rounded-full ${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} dark:${isDark ? 'text-[#c4b5a0]' : 'text-[#2d2a26]'} hover:${isDark ? 'border-[#8b7355]' : 'border-[#8b7355]'} hover:${isDark ? 'text-[#2d2a26]' : 'text-[#1a1816]'} transition-all duration-300 text-sm tracking-wider`}
+              >
+                <PenLine size={18} />
+                Tulis Cerita
+              </Link>
+            </div>
 
-          <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 text-[#1a1816] dark:text-[#f5f0e8]">
-            Kelas Pekerja
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-[#5c5346] dark:text-[#c4b5a0] mb-4 max-w-2xl mx-auto leading-relaxed">
-            Di antara sunyi dan langkah, kita menemukan makna.
-          </p>
-
-          <p className="text-sm md:text-base text-[#8b7355] dark:text-[#a08060] max-w-md mx-auto mb-12 leading-relaxed opacity-80">
-            {config.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/buku"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-[#2d2a26] dark:bg-[#e8e0d5] text-[#faf9f7] dark:text-[#0f0e0c] rounded-full hover:bg-[#1a1816] dark:hover:bg-[#f5f0e8] transition-all duration-300 text-sm tracking-wider font-medium"
-            >
-              <BookOpen size={18} />
-              Mulai Membaca
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-
-            <Link
-              href="/tulis"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-[#8b7355]/40 rounded-full text-[#5c5346] dark:text-[#c4b5a0] hover:border-[#8b7355] hover:text-[#2d2a26] dark:hover:text-[#e8e0d5] transition-all duration-300 text-sm tracking-wider"
-            >
-              <PenLine size={18} />
-              Tulis Cerita
-            </Link>
           </div>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-px h-12 bg-gradient-to-b from-[#8b7355] to-transparent" />
-          <Coffee className="w-4 h-4 text-[#8b7355] animate-bounce" style={{ animationDelay: '6s' }} />
-        </div>
-      </section>
+        </section>
 
       {/* INI TEMPAT APA? */}
       <section className="py-32 px-6 relative">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[10px] tracking-[0.4em] uppercase mb-6 text-[#8b7355] dark:text-[#a08060]">
+          <p className={`text-[10px] tracking-[0.4em] uppercase mb-6 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} `}>
             Ini Tempat Apa?
           </p>
 
-          <h2 className="font-serif text-4xl md:text-5xl leading-tight mb-8 text-[#1a1816] dark:text-[#f5f0e8]">
-            Bukan tentang puncak.
-            <br />
-            <span className="italic text-[#8b7355] dark:text-[#a08060]">Ini tentang perjalanan yang tak terhitung.</span>
-          </h2>
+          <h2 className={`font-serif text-4xl md:text-5xl leading-tight mb-8 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} dark:text-[#f5f0e8]`}>
+              Bukan tentang puncak.
+              <br />
+              <span className={`italic ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} `}>Ini tentang perjalanan yang tak terhitung.</span>
+            </h2>
 
           <div className="space-y-4 text-lg md:text-xl leading-relaxed text-[#6b6055] dark:text-[#a09080]">
             <p>Bangun pagi saat dunia masih terbungkus kabut.</p>
             <p>Pulang malam dengan bayangan semakin panjang.</p>
-            <p className="text-[#5c5346] dark:text-[#c4b5a0]">Dan hal-hal yang hanya bisa diucapkan dalam keheningan.</p>
+            <p className={`text-[#5c5346] dark:text-[#c4b5a0]`}>Dan hal-hal yang hanya bisa diucapkan dalam keheningan.</p>
           </div>
 
           <div className="mt-16 flex justify-center gap-8 text-[#8b7355] dark:text-[#a08060]">
-            <div className="w-24 h-px bg-[#8b7355]/30 dark:bg-[#a08060]/30" />
+            <div className={`w-24 h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#8b7355]/30'} dark:bg-[#a08060]/30`} />
             <Coffee size={20} className="opacity-60" />
-            <div className="w-24 h-px bg-[#8b7355]/30 dark:bg-[#a08060]/30" />
+            <div className={`w-24 h-px ${isDark ? 'bg-[#8b7355]/30' : 'bg-[#8b7355]/30'} dark:bg-[#a08060]/30`} />
           </div>
         </div>
       </section>
@@ -358,67 +361,20 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#8b7355]/5 dark:bg-[#a08060]/5" />
-        
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <PenLine className="w-12 h-12 mx-auto mb-8 text-[#8b7355] dark:text-[#a08060] opacity-80" />
-          
-          <h3 className="font-serif text-3xl md:text-4xl mb-6 text-[#1a1816] dark:text-[#f5f0e8]">
-            Tak semua beban harus dipikul sendirian.
-          </h3>
-          
-          <p className="text-lg text-[#6b6055] dark:text-[#a09080] mb-4 max-w-xl mx-auto leading-relaxed">
-            Jika ada cerita mengendap di sudut hatimu, biarkan mengalir ke sini.
-          </p>
-          <p className="text-sm text-[#8b7355] dark:text-[#a08060] mb-10">
-            Tak perlu sempurna. Yang penting, jujur pada lembar yang terbuka.
-          </p>
-
+      <section className="py-24 px-6 border-t border-[#8b7355]/10 dark:border-[#a08060]/10">
+        <div className="max-w-3xl mx-auto text-center">
           <Link
             href="/tulis"
             className="inline-flex items-center gap-3 px-10 py-5 bg-[#2d2a26] dark:bg-[#8b7355] text-[#faf9f7] dark:text-[#0f0e0c] rounded-full hover:bg-[#1a1816] dark:hover:bg-[#a08060] transition-all duration-300 text-sm tracking-wider font-medium shadow-lg shadow-[#8b7355]/20 dark:shadow-[#a08060]/20 hover:shadow-[#8b7355]/30 dark:hover:shadow-[#a08060]/30"
           >
             <PenLine size={18} />
-            Tulis Cerita
+            Tulis Cerita Pertamamu
           </Link>
-
-          <div className="mt-16 pt-8 border-t border-[#8b7355]/20 dark:border-[#a08060]/20">
-            <p className="text-sm italic text-[#8b7355] dark:text-[#a08060] max-w-md mx-auto">
-              "Ragu di awal, namun ternyata banyak yang merasakan getaran yang sama."
-            </p>
-            <p className="text-xs text-[#9a8b7a] dark:text-[#6b5a45] mt-2">— Raka, Jakarta</p>
-          </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-24 px-6 border-t border-[#8b7355]/10 dark:border-[#a08060]/10">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="mb-16 space-y-2">
-            <p className="font-serif text-2xl md:text-3xl text-[#5c5346] dark:text-[#c4b5a0]">
-              Tak semua orang kuat.
-            </p>
-            <p className="font-serif text-2xl md:text-3xl text-[#5c5346] dark:text-[#c4b5a0]">
-              Namun banyak yang terus melangkah.
-            </p>
-            <p className="font-serif text-2xl md:text-3xl text-[#8b7355] dark:text-[#a08060] italic">
-              Dan mungkin, engkau salah satunya.
-            </p>
-          </div>
-
-          <div className="flex justify-center gap-8 mb-12 text-sm text-[#8b7355] dark:text-[#a08060]">
-            <Link href="/buku" className="hover:text-[#2d2a26] dark:hover:text-[#e8e0d5] transition-colors">Buku</Link>
-            <Link href="/tentang" className="hover:text-[#2d2a26] dark:hover:text-[#e8e0d5] transition-colors">Tentang</Link>
-            <Link href="/tulis" className="hover:text-[#2d2a26] dark:hover:text-[#e8e0d5] transition-colors">Tulis</Link>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 text-xs text-[#9a8b7a] dark:text-[#6b5a45]">
-            <Coffee size={14} />
-            <span>Kelas Pekerja © {new Date().getFullYear()}</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
