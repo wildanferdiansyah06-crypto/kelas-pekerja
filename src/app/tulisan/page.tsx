@@ -6,7 +6,6 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { PenLine, Clock, ArrowRight, Filter, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
 import { useState, useMemo, useCallback, memo } from "react";
-import Footer from "@/src/components/Footer";
 
 // Memoized animation variants to prevent recreation
 const fadeUp = {
@@ -180,10 +179,10 @@ export default function TulisanPage() {
   }, []);
 
   return (
-    <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
+    <div className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
       <Background isDark={isDark} />
 
-      <div className="relative z-10">
+      <div className="relative z-10 pt-16">
         {/* HERO */}
         <motion.header variants={stagger} initial="hidden" animate="show" className="pt-24 pb-12 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto text-center">
@@ -451,9 +450,7 @@ export default function TulisanPage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <Footer />
       </div>
-    </main>
+    </div>
   );
 }
