@@ -1,63 +1,121 @@
-# 🛡️ Safe Deploy Automation System
+# 🛡️ Auto Deploy Monitoring & Fixing System
 
-**Senior DevOps Engineer Implementation - Production Ready**
+Complete automation system for Vercel deployments with AI-powered error detection and automatic fixes.
 
-## 📋 Overview
+## Features
 
-Sistem automation yang aman untuk monitoring dan auto-fix deployment Vercel dengan guardrails keamanan dan stabilitas.
+- Real-time deployment monitoring
+- Automatic error detection and classification
+- AI-powered fix generation
+- Automatic branch creation and commit management
+- Comprehensive logging and reporting
+- Safety guards and retry limits
+- Vercel API + CLI fallback support
+- Local build validation
+- Configurable via environment variables
 
-## 🚨 Critical Risks Fixed
-
-| Risiko | Solusi | Status |
-|---------|----------|--------|
-| Infinite Loop Deployment | ✅ Max 3 retry attempts | Selesai |
-| Direct Main Branch Manipulation | ✅ Branch-based fixes | Selesai |
-| No Rollback Mechanism | ✅ Auto-rollback on failure | Selesai |
-| Unlimited Auto-Commit | ✅ Daily commit limits | Selesai |
-| No Error Validation | ✅ Pre-deployment checks | Selesai |
-
-## 🛡️ Safety Features
-
-### 1. **Deployment Limits**
-- Max 3 retry attempts per deployment
-- Max 10 commits per day
-- 5 minute deployment timeout
-- 1 minute cooldown between actions
-
-### 2. **Branch-Based Fixes**
-- All fixes applied to `bot-fix/<timestamp>` branch
-- Validation before merge to main
-- Automatic branch cleanup after merge
-
-### 3. **Rollback System**
-- Automatic rollback on fix failure
-- Backup hash tracking
-- Emergency rollback capability
-
-### 4. **Dry-Run Mode**
-- Simulation mode for testing
-- No actual changes made
-- Detailed simulation reports
-
-### 5. **Comprehensive Logging**
-- Timestamped logs with levels
-- Error type classification
-- Deployment tracking
-- Fix history
-
-## 📁 File Structure
+## File Structure
 
 ```
 scripts/
-├── safe-deploy-automation.js    # 🛡️ Main safe automation system
-├── auto-deploy-monitor.js        # ⚠️  Legacy system (deprecated)
-├── auto-fix-vercel.js            # ⚠️  Legacy system (deprecated)
-├── continuous-monitor.js          # ⚠️  Legacy system (deprecated)
-├── debug-client-errors.js         # 🐛 Debug tool
-├── vercel-dashboard-fix.js        # 🔧 Dashboard fix tool
-├── debug-monitor-system.js        # 📊 Debug reporting tool
-└── README.md                     # 📖 This documentation
+  auto-deploy-agent.js          # Main orchestrator system
+  vercel-client.js              # Vercel API + CLI client
+  git-utils.js                  # Git operations and branch management
+  logger.js                     # Structured logging system
+  config.js                     # Configuration management
+  ai-fix-engine.js              # AI-powered error analysis and fixes
+  run-build-check.js            # Local build validation
+  prompts/
+    fix-prompt.md              # AI fix prompt template
+  logs/
+    deploy-history.json        # Deployment history tracking
+  auto-deploy-monitor.js        # Legacy system (deprecated)
+  auto-fix-vercel.js            # Legacy system (deprecated)
+  continuous-monitor.js          # Legacy system (deprecated)
+  debug-client-errors.js         # Debug tool
+  vercel-dashboard-fix.js        # Dashboard fix tool
+  debug-monitor-system.js        # Debug reporting tool
+  README.md                     # This documentation
 ```
+
+## Usage
+
+### Main Auto-Deploy Agent
+```bash
+# Start monitoring with default settings
+node auto-deploy-agent.js
+
+# Dry-run mode (simulation only)
+node auto-deploy-agent.js --dry-run
+
+# Verbose logging
+node auto-deploy-agent.js --verbose
+
+# Custom settings
+node auto-deploy-agent.js --max-retry 5 --interval 60 --branch-prefix custom-fix
+```
+
+### Build Validation
+```bash
+# Full build validation
+node run-build-check.js
+
+# Quick syntax check
+node run-build-check.js --quick
+
+# Deployment readiness check
+node run-build-check.js --readiness
+```
+
+### Legacy Scripts (for debugging only)
+```bash
+# Legacy monitoring (deprecated)
+node auto-deploy-monitor.js
+node auto-fix-vercel.js
+node continuous-monitor.js
+```
+
+## Configuration
+
+### Environment Variables
+```bash
+# Vercel Settings
+VERCEL_TOKEN=your_vercel_token
+VERCEL_PROJECT_ID=your_project_id
+VERCEL_TEAM_ID=your_team_id
+
+# AI Settings
+AI_PROVIDER=openai
+AI_API_KEY=your_openai_key
+AI_MODEL=gpt-4
+
+# Retry & Timing
+MAX_RETRY_PER_DEPLOYMENT=3
+MAX_TOTAL_ATTEMPTS=10
+CHECK_INTERVAL=30000
+DEPLOYMENT_TIMEOUT=600000
+
+# Branch Settings
+BRANCH_PREFIX=bot-fix
+MAIN_BRANCH=main
+
+# Feature Flags
+ENABLE_AUTO_FIX=true
+DRY_RUN=false
+VERBOSE=false
+ENABLE_AI_FIX=true
+```
+
+## Safety Features
+
+- **Branch Isolation**: All fixes applied to separate branches
+- **Retry Limits**: Configurable retry attempts per deployment
+- **Dry-Run Mode**: Test without making actual changes
+- **Build Validation**: Local testing before deployment
+- **Error Pattern Detection**: Smart error classification
+- **Commit Limits**: Prevent excessive bot commits
+- **Rollback Capability**: Automatic rollback on failure
+- **Comprehensive Logging**: Full audit trail
 
 ## 🚀 Usage
 
