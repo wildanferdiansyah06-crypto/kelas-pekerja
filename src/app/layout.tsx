@@ -76,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className="dark scroll-smooth" suppressHydrationWarning>
+    <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-[#faf8f5] text-[#2b2b2b] dark:bg-[#1a1816] dark:text-[#e8e0d5]`}
       >
