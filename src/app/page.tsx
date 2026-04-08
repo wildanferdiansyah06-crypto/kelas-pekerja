@@ -2,9 +2,10 @@
 
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
-import { getFeaturedBooks, getConfig, getBooks } from "@/src/lib/api";
 import Footer from "@/src/components/Footer";
+import { getPageData } from "./page-data";
 
 function getRelativeTime(dateString: string): string {
   const date = new Date(dateString);
@@ -19,29 +20,22 @@ function getRelativeTime(dateString: string): string {
 }
 
 export default async function HomePage() {
+  const pageData = await getPageData();
+  
+  return <HomePageClient {...pageData} />;
+}
+
+function HomePageClient({ 
+  featuredBooks, 
+  allBooks, 
+  latestBooks, 
+  mostRelatable, 
+  totalViews, 
+  totalDownloads, 
+  config 
+}: Awaited<ReturnType<typeof getPageData>>) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  
-  const featuredData = await getFeaturedBooks(2);
-  const config = await getConfig();
-  const allBooksData = await getBooks({ limit: 6 });
-  
-  const featuredBooks = featuredData.books;
-  const allBooks = allBooksData.books;
-  const latestBooks = allBooks.slice(0, 3);
-  
-  const featuredSlugs = new Set(latestBooks.map(b => b.slug));
-  const mostRelatable = allBooks
-    .filter(b => b.featured && !featuredSlugs.has(b.slug))
-    .slice(0, 3);
-  
-  if (mostRelatable.length < 3) {
-    const remaining = allBooks.filter(b => !featuredSlugs.has(b.slug) && !mostRelatable.find(m => m.slug === b.slug));
-    mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
-  }
-  
-  const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
-  const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
   
   return (
     <div className={`relative min-h-screen ${isDark ? 'bg-[#faf9f7]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#2d2a26]' : 'text-[#2b2a26]'} dark:text-[#e8e0d5] transition-colors duration-500`}>
@@ -168,9 +162,11 @@ export default async function HomePage() {
                     <div className="bg-[#f5f3ef] dark:bg-[#1a1816] rounded-lg overflow-hidden border border-[#8b7355]/10 dark:border-[#a08060]/10 group-hover:border-[#8b7355]/30 dark:group-hover:border-[#a08060]/30 transition-all duration-300">
                       {book.cover && (
                         <div className="aspect-[16/10] overflow-hidden">
-                          <img 
+                          <Image 
                             src={book.cover} 
                             alt={book.title}
+                            width={640}
+                            height={400}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
