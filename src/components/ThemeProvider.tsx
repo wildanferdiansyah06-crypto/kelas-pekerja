@@ -14,28 +14,38 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("kelas-pekerja-theme") as Theme | null;
+    setMounted(true);
+    
+    // Only access browser APIs on client side
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem("kelas-pekerja-theme") as Theme | null;
 
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-      return;
+      if (savedTheme) {
+        setTheme(savedTheme);
+        document.documentElement.classList.toggle("dark", savedTheme === "dark");
+        return;
+      }
+
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme: Theme = prefersDark ? "dark" : "light";
+
+      setTheme(initialTheme);
+      document.documentElement.classList.toggle("dark", initialTheme === "dark");
     }
-
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    const initialTheme: Theme = prefersDark ? "dark" : "light";
-
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("kelas-pekerja-theme", theme);
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, [theme]);
+    if (!mounted) return;
+    
+    // Only access browser APIs on client side
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("kelas-pekerja-theme", theme);
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    }
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
