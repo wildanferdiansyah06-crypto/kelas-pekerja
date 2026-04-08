@@ -79,7 +79,7 @@ export default function HomePageClient({
   }
   
   return (
-    <div className={`relative min-h-screen ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#2b2a26]'} transition-colors duration-500`}>
+    <div className={`relative min-h-screen ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#2b2a26]'} transition-colors duration-500`}>
         {/* HERO */}
         <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
           {/* Animated Background Layer */}
@@ -118,11 +118,11 @@ export default function HomePageClient({
           </div>
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <p className={`text-[11px] tracking-[0.4em] uppercase mb-8 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} font-medium`}>
+            <p className={`text-[11px] tracking-[0.4em] uppercase mb-8 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} font-medium`}>
               Sebuah Ruang untuk
             </p>
             
-            <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} dark:text-[#f5f0e8]`}>
+            <h1 className={`font-serif text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 ${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'}`}>
               Kelas Pekerja
             </h1>
             
@@ -130,14 +130,14 @@ export default function HomePageClient({
               Di antara sunyi dan langkah, kita menemukan makna.
             </p>
             
-            <p className={`text-sm md:text-base ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
+            <p className={`text-sm md:text-base ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} max-w-md mx-auto mb-12 leading-relaxed opacity-80`}>
               {config?.tagline || "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat."}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/buku"
-                className={`group inline-flex items-center gap-3 px-8 py-4 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} text-white rounded-full hover:${isDark ? 'bg-[#a08060]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium`}
+                className={`group inline-flex items-center gap-3 px-8 py-4 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} text-white rounded-full hover:${isDark ? 'bg-[#c7b299]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium`}
               >
                 <BookOpen size={18} />
                 Mulai Membaca
@@ -159,42 +159,42 @@ export default function HomePageClient({
       {/* INI TEMPAT APA? */}
       <section className="py-32 px-6 relative">
         <div className="max-w-3xl mx-auto text-center">
-          <p className={`text-[10px] tracking-[0.4em] uppercase mb-6 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} `}>
+          <p className={`text-[10px] tracking-[0.4em] uppercase mb-6 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} `}>
             Ini Tempat Apa?
           </p>
 
-          <h2 className={`font-serif text-4xl md:text-5xl leading-tight mb-8 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} dark:text-[#f5f0e8]`}>
+          <h2 className={`font-serif text-4xl md:text-5xl leading-tight mb-8 ${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'}`}>
               Bukan tentang puncak.
               <br />
-              <span className={`italic ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} `}>Ini tentang perjalanan yang tak terhitung.</span>
+              <span className={`italic ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} `}>Ini tentang perjalanan yang tak terhitung.</span>
             </h2>
 
-          <div className={`space-y-4 text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'}`}>
+          <div className={`space-y-4 text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#6b6055]'}`}>
             <p>Bangun pagi saat dunia masih terbungkus kabut.</p>
             <p>Pulang malam dengan bayangan semakin panjang.</p>
             <p className={isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'}>Dan hal-hal yang hanya bisa diucapkan dalam keheningan.</p>
           </div>
 
-          <div className={`mt-16 flex justify-center gap-8 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
-            <div className={`w-24 h-px ${isDark ? 'bg-[#a08060]/30' : 'bg-[#8b7355]/30'}`} />
+          <div className={`mt-16 flex justify-center gap-8 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
+            <div className={`w-24 h-px ${isDark ? 'bg-[#c7b299]/30' : 'bg-[#8b7355]/30'}`} />
             <Coffee size={20} className="opacity-60" />
-            <div className={`w-24 h-px ${isDark ? 'bg-[#a08060]/30' : 'bg-[#8b7355]/30'}`} />
+            <div className={`w-24 h-px ${isDark ? 'bg-[#c7b299]/30' : 'bg-[#8b7355]/30'}`} />
           </div>
         </div>
       </section>
 
       {/* FEATURED BOOKS */}
       {featuredBooks.length > 0 && (
-        <section className={`py-24 px-6 border-t ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'}`}>
+        <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b7355]/10'}`}>
           <div className="max-w-6xl mx-auto">
             <div className="mb-16 text-center">
-              <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+              <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
                 Pilihan Editor
               </p>
               <h3 className={`font-serif text-3xl md:text-4xl mb-3 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'}`}>
                 Buku Unggulan
               </h3>
-              <p className={`text-sm ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} max-w-md mx-auto`}>
+              <p className={`text-sm ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} max-w-md mx-auto`}>
                 Dua karya yang menembus keheningan, membantu pembaca menemukan makna dalam sunyi.
               </p>
             </div>
@@ -203,7 +203,7 @@ export default function HomePageClient({
               {featuredBooks.map((book, index) => (
                 <article key={book?.id || `featured-${index}`} className="group cursor-pointer">
                   <Link href={`/buku/${book?.slug || '#'}`} className="block">
-                    <div className={`${isDark ? 'bg-[#1a1816]' : 'bg-[#f5f3ef]'} rounded-lg overflow-hidden border ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-[#a08060]/30' : 'border-[#8b7355]/30'} transition-all duration-300`}>
+                    <div className={`${isDark ? 'bg-neutral-900/40 backdrop-blur-sm' : 'bg-[#f5f3ef]'} rounded-lg overflow-hidden border ${isDark ? 'border-neutral-800/50' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-neutral-700/50' : 'border-[#8b7355]/30'} transition-all duration-300`}>
                       {book?.cover && (
                         <div className="aspect-[16/10] overflow-hidden">
                           <Image 
@@ -220,21 +220,21 @@ export default function HomePageClient({
                       )}
                       
                       <div className="p-6">
-                        <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-3`}>
+                        <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-3`}>
                           <span>{book?.category || 'Umum'}</span>
                           <span>â¢</span>
                           <span>{book?.pages || '0'} halaman</span>
                         </div>
 
-                        <h4 className={`font-serif text-xl mb-2 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
+                        <h4 className={`font-serif text-xl mb-2 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'} transition-colors`}>
                           {book?.title || 'Tanpa Judul'}
                         </h4>
                         
-                        <p className={`text-sm ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-2 mb-4`}>
+                        <p className={`text-sm ${isDark ? 'text-[#a8a298]' : 'text-[#6b6055]'} line-clamp-2 mb-4`}>
                           {book?.subtitle || book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                         </p>
 
-                        <div className={`flex items-center justify-between text-xs ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+                        <div className={`flex items-center justify-between text-xs ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
                           <span>{book?.readTime || '5 menit'}</span>
                           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                         </div>
@@ -249,16 +249,16 @@ export default function HomePageClient({
       )}
 
       {/* TULISAN TERBARU */}
-      <section className={`py-24 px-6 border-t ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'}`}>
+      <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b7355]/10'}`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
-            <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+            <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
               Tulisan Terbaru
             </p>
             <h3 className={`font-serif text-3xl md:text-4xl mb-3 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'}`}>
               Jejak-jejak yang baru saja tertinggal.
             </h3>
-            <p className={`text-sm ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+            <p className={`text-sm ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
               Setiap minggu, sebuah cerita baru. Baca dengan perlahan.
             </p>
           </div>
@@ -267,23 +267,23 @@ export default function HomePageClient({
             {latestBooks.map((book, index) => (
               <article key={book?.id || `latest-${index}`} className="group cursor-pointer">
                 <Link href={`/buku/${book?.slug || '#'}`} className="block">
-                  <div className={`${isDark ? 'bg-[#1a1816]' : 'bg-[#f5f3ef]'} rounded-lg p-8 h-full border ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-[#a08060]/30' : 'border-[#8b7355]/30'} group-hover:-translate-y-1 transition-all duration-300`}>
+                  <div className={`${isDark ? 'bg-neutral-900/40 backdrop-blur-sm' : 'bg-[#f5f3ef]'} rounded-lg p-8 h-full border ${isDark ? 'border-neutral-800/50' : 'border-[#8b7355]/10'} group-hover:${isDark ? 'border-neutral-700/50' : 'border-[#8b7355]/30'} group-hover:-translate-y-1 transition-all duration-300`}>
                     
-                    <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-4`}>
+                    <div className={`flex items-center gap-2 text-[10px] tracking-wider uppercase ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-4`}>
                       <span>{getRelativeTime(book?.publishedAt || new Date().toISOString())}</span>
                       <span>â¢</span>
                       <span>{book?.readTime || '5 menit'}</span>
                     </div>
 
-                    <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
+                    <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'} transition-colors`}>
                       {book?.title || 'Tanpa Judul'}
                     </h4>
                     
-                    <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-3`}>
+                    <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#6b6055]'} line-clamp-3`}>
                       {book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                     </p>
 
-                    <div className={`mt-6 flex items-center gap-2 text-xs ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} transition-colors`}>
+                    <div className={`mt-6 flex items-center gap-2 text-xs ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} transition-colors`}>
                       <span>Baca selengkapnya</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -296,7 +296,7 @@ export default function HomePageClient({
           <div className="mt-12 text-center">
             <Link
               href="/buku"
-              className={`inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} transition-colors`}
+              className={`inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} transition-colors`}
             >
               Lihat Semua Tulisan
               <ArrowRight size={16} />
@@ -306,16 +306,16 @@ export default function HomePageClient({
       </section>
 
       {/* PALING BANYAK DIRASA */}
-      <section className={`py-24 px-6 ${isDark ? 'bg-[#1a1816]/50' : 'bg-[#f5f3ef]'}`}>
+      <section className={`py-24 px-6 ${isDark ? 'bg-gradient-to-br from-[#1a1815]/50 via-[#0f0e0c]/50 to-[#0d0c0a]/50' : 'bg-[#f5f3ef]'}`}>
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
-            <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+            <p className={`text-[10px] tracking-[0.4em] uppercase mb-4 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
               Paling Banyak Dirasa
             </p>
             <h3 className={`font-serif text-3xl md:text-4xl mb-3 ${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'}`}>
               Kata-kata yang membuat banyak orang terdiam sejenak.
             </h3>
-            <p className={`text-sm ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+            <p className={`text-sm ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
               Bukan karena ramai. Tapi karena menyentuh bagian dalam yang sama.
             </p>
           </div>
@@ -324,17 +324,17 @@ export default function HomePageClient({
             {mostRelatable.length > 0 ? mostRelatable.map((book, index) => (
               <article key={book?.id || `relatable-${index}`} className="group cursor-pointer relative">
                 <Link href={`/buku/${book?.slug || '#'}`} className="block">
-                  <div className={`absolute -top-3 left-6 ${isDark ? 'bg-[#a08060]' : 'bg-[#8b7355]'} ${isDark ? 'text-[#0f0e0c]' : 'text-[#faf9f7]'} text-[10px] tracking-wider uppercase px-3 py-1 rounded-full font-medium z-10`}>
+                  <div className={`absolute -top-3 left-6 ${isDark ? 'bg-[#c7b299]' : 'bg-[#8b7355]'} ${isDark ? 'text-[#0f0e0c]' : 'text-[#faf9f7]'} text-[10px] tracking-wider uppercase px-3 py-1 rounded-full font-medium z-10`}>
                     Paling Dibaca
                   </div>
 
-                  <div className={`${isDark ? 'bg-[#0f0e0c]' : 'bg-[#faf9f7]'} rounded-lg p-8 h-full pt-10 border ${isDark ? 'border-[#a08060]/20' : 'border-[#8b7355]/20'} group-hover:${isDark ? 'border-[#a08060]/40' : 'border-[#8b7355]/40'} group-hover:-translate-y-1 transition-all duration-300`}>
+                  <div className={`${isDark ? 'bg-neutral-900/40 backdrop-blur-sm' : 'bg-[#faf9f7]'} rounded-lg p-8 h-full pt-10 border ${isDark ? 'border-neutral-800/50' : 'border-[#8b7355]/20'} group-hover:${isDark ? 'border-neutral-700/50' : 'border-[#8b7355]/40'} group-hover:-translate-y-1 transition-all duration-300`}>
                     
-                    <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#f5f0e8]' : 'text-[#1a1816]'} transition-colors`}>
+                    <h4 className={`font-serif text-xl mb-3 ${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:${isDark ? 'text-[#faf0e6]' : 'text-[#1a1816]'} transition-colors`}>
                       {book?.title || 'Tanpa Judul'}
                     </h4>
                     
-                    <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a09080]' : 'text-[#6b6055]'} line-clamp-3 mb-4`}>
+                    <p className={`text-sm leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#6b6055]'} line-clamp-3 mb-4`}>
                       {book?.excerpt || 'Tidak ada deskripsi tersedia.'}
                     </p>
 
@@ -347,16 +347,16 @@ export default function HomePageClient({
                     </div>
 
                     <div className="flex items-center justify-between text-xs">
-                      <span className={`${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} transition-colors`}>
+                      <span className={`${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#c4b5a0]' : 'text-[#5c5346]'} transition-colors`}>
                         Baca selengkapnya
                       </span>
-                      <ArrowRight size={14} className={`${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:translate-x-1 transition-all`} />
+                      <ArrowRight size={14} className={`${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} group-hover:${isDark ? 'text-[#e8e0d5]' : 'text-[#2d2a26]'} group-hover:translate-x-1 transition-all`} />
                     </div>
                   </div>
                 </Link>
               </article>
             )) : (
-              <div className={`col-span-3 text-center py-12 ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'}`}>
+              <div className={`col-span-3 text-center py-12 ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'}`}>
                 <p>Lebih banyak cerita akan segera hadir...</p>
               </div>
             )}
@@ -365,42 +365,42 @@ export default function HomePageClient({
       </section>
 
       {/* STATS */}
-      <section className={`py-24 px-6 border-t ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'}`}>
+      <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b7355]/10'}`}>
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-2`}>
+            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-2`}>
               {allBooks.length}
             </div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#9a8b7a]'}`}>Buku</div>
           </div>
 
           <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-2`}>
+            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-2`}>
               {totalViews.toLocaleString()}
             </div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#9a8b7a]'}`}>Dibaca</div>
           </div>
 
           <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-2`}>
+            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-2`}>
               {totalDownloads.toLocaleString()}
             </div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#9a8b7a]'}`}>Diunduh</div>
           </div>
 
           <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#a08060]' : 'text-[#8b7355]'} mb-2`}>â</div>
+            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#8b7355]'} mb-2`}>â</div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#9a8b7a]'}`}>Kopi</div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className={`py-24 px-6 border-t ${isDark ? 'border-[#a08060]/10' : 'border-[#8b7355]/10'}`}>
+      <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b7355]/10'}`}>
         <div className="max-w-3xl mx-auto text-center">
           <Link
             href="/tulis"
-            className={`inline-flex items-center gap-3 px-10 py-5 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} ${isDark ? 'text-[#0f0e0c]' : 'text-[#faf9f7]'} rounded-full hover:${isDark ? 'bg-[#a08060]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium shadow-lg ${isDark ? 'shadow-[#a08060]/20 hover:shadow-[#a08060]/30' : 'shadow-[#8b7355]/20 hover:shadow-[#8b7355]/30'}`}
+            className={`inline-flex items-center gap-3 px-10 py-5 ${isDark ? 'bg-[#8b7355]' : 'bg-[#2d2a26]'} ${isDark ? 'text-[#0f0e0c]' : 'text-[#faf9f7]'} rounded-full hover:${isDark ? 'bg-[#c7b299]' : 'bg-[#1a1816]'} transition-all duration-300 text-sm tracking-wider font-medium shadow-lg ${isDark ? 'shadow-[#c7b299]/20 hover:shadow-[#c7b299]/30' : 'shadow-[#8b7355]/20 hover:shadow-[#8b7355]/30'}`}
           >
             <PenLine size={18} />
             Tulis Cerita Pertamamu
