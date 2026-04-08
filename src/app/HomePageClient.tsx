@@ -43,36 +43,39 @@ export default function HomePageClient({
   return (
     <div className={`relative min-h-screen ${isDark ? 'bg-[#faf9f7]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f8f7e6] to-[#e8e5d6]'} ${isDark ? 'text-[#2d2a26]' : 'text-[#2b2a26]'} dark:text-[#e8e0d5] transition-colors duration-500`}>
         {/* HERO */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
+        <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+          {/* Animated Background Layer */}
           <div className="absolute inset-0 z-0">
-            {/* Light theme animated background */}
-            <div className="absolute inset-0">
-              {/* Coffee bean illustrations */}
-              <div className="absolute top-20 left-10 w-32 h-32 opacity-30 rotate-12 animate-pulse">
-                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-br from-[#8b7355]/20 to-[#654321]/10' : 'bg-gradient-to-br from-[#c7b299]/20 to-[#8b7355]/10'} rounded-full blur-3xl`}></div>
-              </div>
-              <div className="absolute top-40 right-20 w-24 h-24 opacity-25 -rotate-6 animate-pulse" style={{ animationDelay: '2s' }}>
-                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-tr from-[#a0522d]/15 to-[#8b7355]/8' : 'bg-gradient-to-tr from-[#d2691e]/15 to-[#c7b299]/8'} rounded-full blur-2xl`}></div>
-              </div>
-              <div className="absolute bottom-32 left-1/4 w-40 h-40 opacity-20 rotate-45 animate-pulse" style={{ animationDelay: '4s' }}>
-                <div className={`w-full h-full ${isDark ? 'bg-gradient-to-r from-[#8b7355]/10 to-[#a0522d]/5' : 'bg-gradient-to-r from-[#cd853f]/10 to-[#8b7355]/5'} rounded-full blur-2xl`}></div>
-              </div>
-              
-              {/* Steam/coffee vapor effect */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-15">
-                <div className={`w-full h-full ${isDark ? 'bg-gradient-radial from-[#f4e4d4]/10 via-transparent to-transparent' : 'bg-gradient-radial from-[#f5deb3]/10 via-transparent to-transparent'} animate-pulse`}></div>
-              </div>
-              
-              {/* Gradient overlay */}
-              <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#faf9f7]/95' : 'bg-gradient-to-br from-[#faf9f7]/80 via-transparent to-[#e8e5d6]'} `}></div>
-              
-              {/* Decorative circles */}
-              <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-5">
-                <div className={`w-full h-full border-2 ${isDark ? 'border-[#8b7355]/20' : 'border-[#8b7355]/20'} rounded-full animate-spin`} style={{ animationDuration: '60s' }}></div>
-              </div>
-              <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-5">
-                <div className={`w-full h-full border ${isDark ? 'border-[#8b7355]/15' : 'border-[#8b7355]/20'} rounded-full animate-spin`} style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
-              </div>
+            {/* Coffee bean illustrations - always visible */}
+            <div className="absolute top-20 left-10 w-32 h-32 opacity-40 rotate-12 animate-pulse">
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-to-br from-[#8b7355]/30 to-[#654321]/15' : 'bg-gradient-to-br from-[#c7b299]/30 to-[#8b7355]/15'} rounded-full blur-3xl`}></div>
+            </div>
+            <div className="absolute top-40 right-20 w-24 h-24 opacity-35 -rotate-6 animate-pulse" style={{ animationDelay: '2s' }}>
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-to-tr from-[#a0522d]/20 to-[#8b7355]/10' : 'bg-gradient-to-tr from-[#d2691e]/20 to-[#c7b299]/10'} rounded-full blur-2xl`}></div>
+            </div>
+            <div className="absolute bottom-32 left-1/4 w-40 h-40 opacity-30 rotate-45 animate-pulse" style={{ animationDelay: '4s' }}>
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-to-r from-[#8b7355]/15 to-[#a0522d]/8' : 'bg-gradient-to-r from-[#cd853f]/15 to-[#8b7355]/8'} rounded-full blur-2xl`}></div>
+            </div>
+            
+            {/* Steam/coffee vapor effect */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-20">
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-radial from-[#f4e4d4]/15 via-transparent to-transparent' : 'bg-gradient-radial from-[#f5deb3]/15 via-transparent to-transparent'} animate-pulse`}></div>
+            </div>
+            
+            {/* Decorative circles */}
+            <div className="absolute top-1/3 left-1/4 w-64 h-64 opacity-8">
+              <div className={`w-full h-full border-2 ${isDark ? 'border-[#8b7355]/25' : 'border-[#8b7355]/25'} rounded-full animate-spin`} style={{ animationDuration: '60s' }}></div>
+            </div>
+            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 opacity-8">
+              <div className={`w-full h-full border ${isDark ? 'border-[#8b7355]/20' : 'border-[#8b7355]/25'} rounded-full animate-spin`} style={{ animationDuration: '45s', animationDirection: 'reverse' }}></div>
+            </div>
+            
+            {/* Additional floating elements */}
+            <div className="absolute top-1/4 right-1/3 w-20 h-20 opacity-25 animate-bounce" style={{ animationDuration: '8s' }}>
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-to-br from-[#a0522d]/20 to-transparent' : 'bg-gradient-to-br from-[#d2691e]/20 to-transparent'} rounded-full blur-xl`}></div>
+            </div>
+            <div className="absolute bottom-1/4 left-1/3 w-16 h-16 opacity-20 animate-pulse" style={{ animationDelay: '3s' }}>
+              <div className={`w-full h-full ${isDark ? 'bg-gradient-to-tr from-[#8b7355]/15 to-transparent' : 'bg-gradient-to-tr from-[#c7b299]/15 to-transparent'} rounded-full blur-lg`}></div>
             </div>
           </div>
 
