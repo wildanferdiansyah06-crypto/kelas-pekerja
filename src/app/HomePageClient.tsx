@@ -44,11 +44,6 @@ export default function HomePageClient({
   React.useEffect(() => {
     setMounted(true);
   }, []);
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
   const isDark = mounted && theme === "dark";
   
   return (
