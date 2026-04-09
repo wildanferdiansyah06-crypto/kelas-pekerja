@@ -191,8 +191,7 @@ function GridWithData({
   );
 }
 
-// SATU-SATUNYA EXPORT DEFAULT DI FILE INI
-export default function Page() {
+function PageContent() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const searchParams = useSearchParams();
@@ -295,5 +294,13 @@ export default function Page() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <PageContent />
+    </Suspense>
   );
 }
