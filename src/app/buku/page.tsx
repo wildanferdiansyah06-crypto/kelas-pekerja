@@ -230,9 +230,9 @@ function PageContent() {
   const hasBooks = booksWithSlugs.length > 0;
 
   return (
-    <main className="transition-colors duration-500">
-      <section className={`pt-32 pb-16 px-6 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
-        <div className="max-w-screen-lg mx-auto text-center">
+    <main className={`transition-colors duration-500 ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+      <section className="pt-32 pb-16 px-6">
+        <div className="text-center">
           <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`} style={{ animation: 'fade-in 0.6s ease-out' }}>
             Perpustakaan Mini
           </p>
@@ -275,7 +275,7 @@ function PageContent() {
         </div>
       </section>
 
-      <section className={`px-6 pb-32 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+      <section className="px-6 pb-32">
         {error ? (
           <div className="text-center py-32">
             <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
