@@ -35,7 +35,25 @@ export async function getBooks(filters?: {
     params.limit = filters.limit;
   }
 
-  const books = await client.fetch<Book[]>(query, params);
+  const sanityBooks = await client.fetch<any[]>(query, params);
+
+  // Transform Sanity data to match Book type
+  const books: Book[] = sanityBooks.map((book) => ({
+    id: book._id,
+    slug: book.slug?.current || '',
+    title: book.title,
+    subtitle: book.subtitle || '',
+    excerpt: book.excerpt || '',
+    preview: book.preview || '',
+    category: book.category || 'kehidupan',
+    pages: 0, // Sanity doesn't have pages, default to 0
+    readTime: book.readTime || '5 menit',
+    cover: book.cover?.url || '',
+    publishedAt: book.publishedAt || '',
+    featured: book.featured || false,
+    stats: book.stats || { views: 0, downloads: 0 },
+    tags: book.tags || [],
+  }));
 
   return {
     books,
@@ -45,11 +63,29 @@ export async function getBooks(filters?: {
 
 export async function getBook(slug: string) {
   const query = `*[_type == "book" && slug.current == $slug][0]`;
-  const book = await client.fetch<Book>(query, { slug });
+  const sanityBook = await client.fetch<any>(query, { slug });
 
-  if (!book) {
+  if (!sanityBook) {
     throw new Error("Book not found");
   }
+
+  // Transform Sanity data to match Book type
+  const book: Book = {
+    id: sanityBook._id,
+    slug: sanityBook.slug?.current || '',
+    title: sanityBook.title,
+    subtitle: sanityBook.subtitle || '',
+    excerpt: sanityBook.excerpt || '',
+    preview: sanityBook.preview || '',
+    category: sanityBook.category || 'kehidupan',
+    pages: 0, // Sanity doesn't have pages, default to 0
+    readTime: sanityBook.readTime || '5 menit',
+    cover: sanityBook.cover?.url || '',
+    publishedAt: sanityBook.publishedAt || '',
+    featured: sanityBook.featured || false,
+    stats: sanityBook.stats || { views: 0, downloads: 0 },
+    tags: sanityBook.tags || [],
+  };
 
   return { book };
 }
