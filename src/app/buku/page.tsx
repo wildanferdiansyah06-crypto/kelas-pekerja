@@ -264,34 +264,30 @@ function PageContent() {
       </section>
 
       <section className={`px-6 pb-16 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
-        <div className="max-w-screen-2xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-            <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
-              <CategoryFilter activeCategory={category} books={booksWithSlugs} />
-            </Suspense>
+        <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+          <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
+            <CategoryFilter activeCategory={category} books={booksWithSlugs} />
+          </Suspense>
 
-            <Suspense fallback={<div className={`h-12 w-72 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
-              <SearchBar initialSearch={search} />
-            </Suspense>
-          </div>
+          <Suspense fallback={<div className={`h-12 w-72 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
+            <SearchBar initialSearch={search} />
+          </Suspense>
         </div>
       </section>
 
       <section className={`px-6 pb-32 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
-        <div className="max-w-screen-2xl mx-auto">
-          {error ? (
-            <div className="text-center py-32">
-              <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
-              <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>{error.message}</p>
-            </div>
-          ) : hasBooks ? (
-            <Suspense fallback={<GridSkeleton isDark={isDark} />}>
-              <GridWithData books={booksWithSlugs} total={total} category={category} search={search} isDark={isDark} />
-            </Suspense>
-          ) : (
-            <EmptyState isDark={isDark} />
-          )}
-        </div>
+        {error ? (
+          <div className="text-center py-32">
+            <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
+            <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>{error.message}</p>
+          </div>
+        ) : hasBooks ? (
+          <Suspense fallback={<GridSkeleton isDark={isDark} />}>
+            <GridWithData books={booksWithSlugs} total={total} category={category} search={search} isDark={isDark} />
+          </Suspense>
+        ) : (
+          <EmptyState isDark={isDark} />
+        )}
       </section>
     </main>
   );
