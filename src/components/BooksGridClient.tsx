@@ -13,6 +13,7 @@ interface BooksGridClientProps {
   hasFilters: boolean;
   category?: string;
   search?: string;
+  isDark?: boolean;
 }
 
 export default function BooksGridClient({
@@ -23,6 +24,7 @@ export default function BooksGridClient({
   hasFilters,
   category,
   search,
+  isDark = false,
 }: BooksGridClientProps) {
   const [selectedBook, setSelectedBook] = useState<(Book & { slug: string }) | null>(null);
 
@@ -35,7 +37,7 @@ export default function BooksGridClient({
         <section className="mb-20" style={{ animation: "fade-in 0.6s ease-out" }}>
           <div className="flex items-center gap-3 mb-8">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <h2 className="text-sm tracking-[0.2em] uppercase text-[#d4a574] dark:opacity-60 font-medium">
+            <h2 className={`text-sm tracking-[0.2em] uppercase font-medium ${isDark ? 'text-[#d4a574] opacity-60' : 'text-[#d4a574]'}`}>
               Paling Banyak Dibaca Minggu Ini
             </h2>
           </div>
@@ -72,9 +74,9 @@ export default function BooksGridClient({
           FOOTER INFO
          ========================= */}
       <div className="mt-32 text-center" style={{ animation: "fade-in 0.6s ease-out" }}>
-        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#8b4513]/30 dark:border-[#e8e0d5]/10 hover:border-[#8b7355]/40 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
-          <span className="w-2 h-2 rounded-full bg-[#8b7355]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
-          <span className="text-sm text-[#8b7355] dark:opacity-50 tracking-wide">
+        <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border transition-colors duration-300 ${isDark ? 'border-[#e8e0d5]/10 hover:border-[#e8e0d5]/20' : 'border-[#8b4513]/30 hover:border-[#8b7355]/40'}`}>
+          <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-[#e8e0d5]/40' : 'bg-[#8b7355]/40'}`} />
+          <span className={`text-sm tracking-wide ${isDark ? 'text-[#bfae9c] opacity-50' : 'text-[#8b7355]'}`}>
             Menampilkan {filteredCount} dari {total} cerita
             {category && category !== "all" && ` • ${category}`}
             {search && ` • "${search}"`}

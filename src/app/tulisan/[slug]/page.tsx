@@ -191,7 +191,7 @@ export default function TulisanDetailPage() {
 
   if (!post) {
     return (
-      <main className={`min-h-screen ${colors.bg} ${colors.text} flex items-center justify-center`}>
+      <main className={`${colors.bg} ${colors.text} flex items-center justify-center`}>
         <div className="text-center">
           <p className="font-serif text-2xl italic mb-4">Tulisan tidak ditemukan</p>
           <Link href="/tulisan" className="text-[#8b7355] hover:text-[#c7b299]">Kembali</Link>
@@ -201,7 +201,7 @@ export default function TulisanDetailPage() {
   }
 
   return (
-    <main className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
+    <main className={`${colors.bg} ${colors.text} transition-colors duration-500`}>
       {/* Progress Bar */}
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-[#8b7355] z-[60] origin-left" style={{ scaleX: scrollYProgress }} />
       

@@ -130,7 +130,7 @@ export default function CahayaItuPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
       
       {/* Simplified Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -263,13 +263,13 @@ export default function CahayaItuPage() {
       )}
 
       {/* Main Content */}
-      <main className="min-h-screen pt-0 pb-24 font-serif antialiased relative z-10">
+      <main className="pt-0 pb-24 font-serif antialiased relative z-10">
         
         {/* HERO SECTION */}
-        <section 
+        <section
           id="pembuka"
           data-chapter={0}
-          className={`relative flex items-center justify-center px-6 ${theme.bg} border-b ${theme.border} min-h-screen`}
+          className={`relative flex items-center justify-center px-6 ${theme.bg} border-b ${theme.border}`}
         >
           <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-60`} />
           

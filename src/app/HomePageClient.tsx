@@ -63,10 +63,10 @@ export default function HomePageClient({
   // Error boundary fallback
   if (hasError) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">Terjadi kesalahan pada halaman</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-blue-500 text-white rounded"
           >
@@ -78,9 +78,9 @@ export default function HomePageClient({
   }
   
   return (
-    <div className={`relative min-h-screen ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#d4a574]'} transition-colors duration-500`}>
+    <div className={`relative ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'} ${isDark ? 'text-[#e8e0d5]' : 'text-[#d4a574]'} transition-colors duration-500`}>
         {/* HERO */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+        <section className="relative flex items-center justify-center px-6 py-20 overflow-hidden">
           {/* Background Image with Gradient Fade */}
           <div className="absolute inset-0 z-0">
             {/* Coffee aesthetic background */}

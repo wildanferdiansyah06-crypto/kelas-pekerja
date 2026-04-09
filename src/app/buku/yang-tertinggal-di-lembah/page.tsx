@@ -151,7 +151,7 @@ export default function YangTertinggalDiLembahPage() {
   };
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
       
       {/* Reading Progress Bar - lebih subtle dan elegant */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2622]' : 'bg-[#d4cfc4]'}`}>
@@ -313,16 +313,16 @@ export default function YangTertinggalDiLembahPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="min-h-screen pt-0 pb-32 font-serif antialiased">
+      <main className="pt-0 pb-32 font-serif antialiased">
         
         {/* Hero Section - lebih dramatic dan "deep" */}
-        <motion.section 
+        <motion.section
           id="prolog"
           data-chapter={0}
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`relative flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.bg} border-b ${theme.border} min-h-screen`}
+          className={`relative flex items-center justify-center px-6 sm:px-8 lg:px-12 ${theme.bg} border-b ${theme.border}`}
         >
           <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-60`} />
           

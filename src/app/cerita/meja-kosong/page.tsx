@@ -104,7 +104,7 @@ export default function MejaKosongPage() {
   const viewportConfig = { once: true, amount: 0.2 };
 
   return (
-    <div className={`min-h-screen ${theme.bg} transition-colors duration-700 ease-out selection:bg-amber-900/30 selection:text-amber-100`}>
+    <div className={`${theme.bg} transition-colors duration-700 ease-out selection:bg-amber-900/30 selection:text-amber-100`}>
       
       <motion.div 
         className={`fixed top-0 left-0 right-0 h-[2px] ${darkMode ? 'bg-gradient-to-r from-amber-800 to-amber-600' : 'bg-gradient-to-r from-amber-700 to-amber-500'} origin-left z-50`}

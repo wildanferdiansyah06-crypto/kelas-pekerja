@@ -362,7 +362,7 @@ export default function TulisPage() {
 
     return (
 
-      <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+      <div className={`${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
 
         <div className="fixed inset-0 pointer-events-none">
 
@@ -386,7 +386,7 @@ export default function TulisPage() {
 
 
 
-        <main className="relative z-10 px-6 py-16 min-h-screen flex items-center justify-center">
+        <main className="relative z-10 px-6 py-16 flex items-center justify-center">
 
           <div className="max-w-lg mx-auto text-center">
 

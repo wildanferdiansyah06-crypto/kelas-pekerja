@@ -146,7 +146,7 @@ export default function DiBalikBarPage() {
   ];
 
   return (
-    <div className={`min-h-screen ${theme.bg} transition-colors duration-700 ease-out selection:bg-amber-900/30 selection:text-amber-100`}>
+    <div className={`${theme.bg} transition-colors duration-700 ease-out selection:bg-amber-900/30 selection:text-amber-100`}>
       
       {/* Aesthetic Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">

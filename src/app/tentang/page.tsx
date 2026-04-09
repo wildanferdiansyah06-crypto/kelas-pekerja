@@ -184,7 +184,7 @@ export default function TentangPage() {
 
   return (
 
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-500`}>
 
       {/* Background */}
 

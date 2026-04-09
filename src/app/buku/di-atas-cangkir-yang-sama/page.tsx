@@ -140,7 +140,7 @@ export default function CoffeeBookPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors duration-500`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-500`}>
       
       {/* Reading Progress Bar - Top */}
       <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
@@ -305,7 +305,7 @@ export default function CoffeeBookPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="min-h-screen pt-0 pb-20">
+      <main className="pt-0 pb-20">
         {/* Hero Section dengan Human Touch */}
         <motion.section 
           initial="hidden"

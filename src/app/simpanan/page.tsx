@@ -9,7 +9,7 @@ export default function BookmarksPage() {
 
   if (!isLoaded) {
     return (
-      <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] pt-32 px-6">
+      <main className="bg-[#faf8f5] dark:bg-[#1a1816] pt-32 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="animate-pulse space-y-4">
             <div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded" />
@@ -21,7 +21,7 @@ export default function BookmarksPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] pt-32 pb-16 px-6">
+    <main className="bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] pt-32 pb-16 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

@@ -17,7 +17,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className={`border-t py-16 px-6 transition-colors duration-500 ${
+    <footer className={`border-t py-16 px-6 transition-colors duration-500 relative z-20 ${
       isDark ? 'border-[#8b7355]/20 bg-[#1a1816]' : 'border-[#8b4513]/30 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'
     }`}>
       <div className="max-w-4xl mx-auto text-center">
