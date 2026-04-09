@@ -206,8 +206,11 @@ function PageContent() {
 
   useEffect(() => {
     // Fetch books
+    console.log('Fetching books...');
     getBooks()
       .then(({ books, total: totalBooks }: BooksResponse) => {
+        console.log('Books fetched:', books);
+        console.log('Total books:', totalBooks);
         setTotal(totalBooks);
 
         const slugs = books.map((book) => ({
@@ -215,6 +218,7 @@ function PageContent() {
           slug: bookSlugMap[book.title] || makeSlug(book.title),
         }));
 
+        console.log('Books with slugs:', slugs);
         setBooksWithSlugs(slugs);
 
         const allCategories = books.map(b => b.category).filter(Boolean) as string[];
