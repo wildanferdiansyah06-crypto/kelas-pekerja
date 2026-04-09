@@ -1,51 +1,59 @@
+"use client";
+
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { getConfig } from "@/src/lib/api";
+import { useTheme } from "@/src/components/ThemeProvider";
 
-export default async function Footer() {
-  let config: any = {};
+export default function Footer() {
+  const [config, setConfig] = useState<any>({});
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
-  try {
-    config = await getConfig();
-  } catch (error) {
-    console.error("Failed to load config:", error);
-  }
+  useEffect(() => {
+    getConfig()
+      .then((data) => setConfig(data))
+      .catch((error) => console.error("Failed to load config:", error));
+  }, []);
 
   return (
-    <footer className="border-t border-[#8b7355]/10 py-16 px-6 bg-[#faf8f5] dark:bg-[#1a1816] transition-colors duration-500">
+    <footer className={`border-t py-16 px-6 transition-colors duration-500 ${
+      isDark ? 'border-[#8b7355]/20 bg-[#1a1816]' : 'border-[#8b4513]/30 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'
+    }`}>
       <div className="max-w-4xl mx-auto text-center">
 
         {/* Title */}
-        <h3 className="font-serif text-2xl mb-4 text-[#8b7355] opacity-90">
+        <h3 className={`font-serif text-2xl mb-4 opacity-90 ${isDark ? 'text-[#f4e4d4]' : 'text-[#d4a574]'}`}>
           {config?.site?.title || "Kelas Pekerja"}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-[#6b5a45] dark:text-[#bfae9c] max-w-md mx-auto mb-8 leading-relaxed">
+        <p className={`text-sm max-w-md mx-auto mb-8 leading-relaxed ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
           {config?.site?.description ||
             "Catatan tentang malam, kopi, dan kehidupan."}
         </p>
 
         {/* Navigation */}
-        <div className="flex justify-center gap-6 text-sm text-[#4a3f35] dark:text-[#cbb8a5] mb-10">
-          <Link href="/" className="hover:text-[#8b7355] transition-colors duration-200">
+        <div className={`flex justify-center gap-6 text-sm mb-10 ${isDark ? 'text-[#cbb8a5]' : 'text-[#a8a298]'}`}>
+          <Link href="/" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#d4a574]'}`}>
             Beranda
           </Link>
 
-          <Link href="/buku" className="hover:text-[#8b7355] transition-colors duration-200">
+          <Link href="/buku" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#d4a574]'}`}>
             Buku
           </Link>
 
-          <Link href="/tulisan" className="hover:text-[#8b7355] transition-colors duration-200">
+          <Link href="/tulisan" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#d4a574]'}`}>
             Tulisan
           </Link>
 
-          <Link href="/tentang" className="hover:text-[#8b7355] transition-colors duration-200">
+          <Link href="/tentang" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#d4a574]'}`}>
             Tentang
           </Link>
         </div>
 
         {/* Contact Info */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm text-[#6b5a45] dark:text-[#bfae9c] mb-10">
+        <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm mb-10 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
 
           <a
             href="https://wa.me/6289636357091"
@@ -84,7 +92,7 @@ export default async function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-xs text-[#8b7355]/60 dark:text-[#bfae9c]/60">
+        <div className={`text-xs ${isDark ? 'text-[#bfae9c]/60' : 'text-[#8b7355]/60'}`}>
           © {new Date().getFullYear()} Kelas Pekerja
         </div>
 

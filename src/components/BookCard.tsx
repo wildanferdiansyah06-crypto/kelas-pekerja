@@ -136,33 +136,33 @@ export default function BookCard({
 
       {/* Content Section */}
       <div className="space-y-3 px-1">
-        <h3 className={`font-serif leading-[1.15] text-stone-800 dark:text-[#e8e0d5] 
-                       group-hover:text-stone-600 dark:group-hover:text-[#d4ccc0]
+        <h3 className={`font-serif leading-[1.15] text-[#f4e4d4] dark:text-[#e8e0d5] 
+                       group-hover:text-[#faf0e6] dark:group-hover:text-[#d4ccc0]
                        transition-all duration-300
                        ${isCompact ? 'text-xl md:text-2xl' : 'text-2xl md:text-[1.85rem]'}`}>
           {book.title}
         </h3>
 
         {book.subtitle && (
-          <p className="text-sm text-stone-500 dark:text-stone-400 font-medium tracking-wide line-clamp-1">
+          <p className="text-sm text-[#8b7355] dark:text-stone-400 font-medium tracking-wide line-clamp-1">
             {book.subtitle}
           </p>
         )}
 
-        <p className="text-[15px] leading-[1.7] text-stone-500 dark:text-stone-400 line-clamp-2 
-                      group-hover:text-stone-600 dark:group-hover:text-stone-300 
+        <p className="text-[15px] leading-[1.7] text-[#8b7355] dark:text-stone-400 line-clamp-2 
+                      group-hover:text-[#a8a298] dark:group-hover:text-stone-300 
                       transition-colors duration-300">
           &ldquo;{book.preview}&rdquo;
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 mt-2 border-t border-stone-200 dark:border-stone-700/50">
+        <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#8b4513]/30 dark:border-stone-700/50">
           <div className="flex items-center gap-3">
             <button 
               className={`p-2 rounded-full transition-all duration-300
                          ${isBookmarked 
                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' 
-                           : 'hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
+                           : 'hover:bg-[#3d2817]/30 dark:hover:bg-stone-800 text-[#8b7355] hover:text-[#d4a574] dark:hover:text-stone-300'
                          }`}
               onClick={(e) => {
                 e.stopPropagation();
@@ -173,12 +173,12 @@ export default function BookCard({
             >
               <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
             </button>
-            <span className="text-[11px] uppercase tracking-wider text-stone-400 dark:text-stone-500 font-medium">
+            <span className="text-[11px] uppercase tracking-wider text-[#8b7355] dark:text-stone-500 font-medium">
               {book.category}
             </span>
           </div>
 
-          <div className={`flex items-center gap-1 text-xs font-medium text-stone-500 dark:text-stone-400
+          <div className={`flex items-center gap-1 text-xs font-medium text-[#8b7355] dark:text-stone-400
                           transition-all duration-300
                           ${isHovered ? "opacity-100 translate-x-0" : "opacity-60 -translate-x-1"}`}>
             Lihat detail

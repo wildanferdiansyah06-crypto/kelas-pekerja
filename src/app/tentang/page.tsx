@@ -64,29 +64,29 @@ export default function TentangPage() {
 
   } : {
 
-    bg: 'bg-[#f5f0e8]',
+    bg: 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]',
 
-    text: 'text-[#2c241b]',
+    text: 'text-[#d4a574]',
 
-    textMuted: 'text-[#6b5d4d]',
+    textMuted: 'text-[#8b7355]',
 
-    textHeading: 'text-[#1a1612]',
+    textHeading: 'text-[#f4e4d4]',
 
-    border: 'border-[#d4cfc4]',
+    border: 'border-[#8b4513]/30',
 
-    accent: 'text-[#8b4513]',
+    accent: 'text-[#d4a574]',
 
-    accentBg: 'bg-[#ebe5d8]',
+    accentBg: 'bg-[#3d2817]/60 backdrop-blur-sm',
 
-    accentBorder: 'border-[#c4b8a3]',
+    accentBorder: 'border-[#8b4513]/30',
 
-    card: 'bg-[#ebe5d8]/80',
+    card: 'bg-[#3d2817]/60 backdrop-blur-sm',
 
-    highlight: 'bg-[#d9d0c1]/50',
+    highlight: 'bg-[#8b4513]/20',
 
-    gradientFrom: 'from-[#d9d0c1]/40',
+    gradientFrom: 'from-[#3d2817]/20',
 
-    gradientTo: 'to-[#f5f0e8]/20',
+    gradientTo: 'to-[#2c1810]/20',
 
   };
 

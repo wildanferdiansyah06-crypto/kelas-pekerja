@@ -35,7 +35,7 @@ export default function BooksGridClient({
         <section className="mb-20" style={{ animation: "fade-in 0.6s ease-out" }}>
           <div className="flex items-center gap-3 mb-8">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <h2 className="text-sm tracking-[0.2em] uppercase opacity-60 font-medium">
+            <h2 className="text-sm tracking-[0.2em] uppercase text-[#d4a574] dark:opacity-60 font-medium">
               Paling Banyak Dibaca Minggu Ini
             </h2>
           </div>
@@ -72,9 +72,9 @@ export default function BooksGridClient({
           FOOTER INFO
          ========================= */}
       <div className="mt-32 text-center" style={{ animation: "fade-in 0.6s ease-out" }}>
-        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/20 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
-          <span className="w-2 h-2 rounded-full bg-[#2b2b2b]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
-          <span className="text-sm opacity-50 tracking-wide">
+        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-[#8b4513]/30 dark:border-[#e8e0d5]/10 hover:border-[#8b7355]/40 dark:hover:border-[#e8e0d5]/20 transition-colors duration-300">
+          <span className="w-2 h-2 rounded-full bg-[#8b7355]/40 dark:bg-[#e8e0d5]/40 animate-pulse" />
+          <span className="text-sm text-[#8b7355] dark:opacity-50 tracking-wide">
             Menampilkan {filteredCount} dari {total} cerita
             {category && category !== "all" && ` • ${category}`}
             {search && ` • "${search}"`}

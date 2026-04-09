@@ -179,7 +179,7 @@ export default function TulisanPage() {
   }, []);
 
   return (
-    <div className={`min-h-screen ${colors.bg} ${colors.text} transition-colors duration-500`}>
+    <div className={colors.bg + " " + colors.text + " transition-colors duration-500"}>
       <Background isDark={isDark} />
 
       <div className="relative z-10 pt-16">

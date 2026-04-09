@@ -78,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-[#faf8f5] text-[#2b2b2b] dark:bg-[#1a1816] dark:text-[#e8e0d5]`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08] text-[#d4a574] dark:bg-[#1a1816] dark:text-[#e8e0d5]`}
       >
         <ThemeProvider>
           <NavbarProvider>

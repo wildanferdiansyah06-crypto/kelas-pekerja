@@ -52,7 +52,7 @@ function makeSlug(title: string): string {
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
   return (
     <div className="text-center py-32" style={{ animation: 'fade-in 0.6s ease-out' }}>
-      <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-[#2b2b2b]/5 dark:bg-[#e8e0d5]/5 flex items-center justify-center transition-all duration-500 hover:scale-105">
+      <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-[#3d2817]/10 dark:bg-[#e8e0d5]/5 flex items-center justify-center transition-all duration-500 hover:scale-105">
         <svg
           className="w-10 h-10 opacity-30"
           fill="none"
@@ -78,7 +78,7 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
       {!hasFilters && (
         <Link 
           href="/tulis"
-          className="inline-flex items-center gap-2 px-6 py-3 border border-[#2b2b2b] dark:border-[#e8e0d5] rounded-full hover:bg-[#2b2b2b] hover:text-[#e8e0d5] dark:hover:bg-[#e8e0d5] dark:hover:text-[#2b2b2b] transition-all duration-300"
+          className="inline-flex items-center gap-2 px-6 py-3 border border-[#8b4513]/30 dark:border-[#e8e0d5] rounded-full hover:bg-[#8b7355] hover:text-[#f4e4d4] dark:hover:bg-[#e8e0d5] dark:hover:text-[#2b2b2b] transition-all duration-300"
         >
           <span>Tulis Pengalaman Lo</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,9 +95,9 @@ function GridSkeleton() {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="animate-pulse">
-          <div className="aspect-[16/10] bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded-lg mb-6" />
-          <div className="h-6 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded w-3/4 mb-3" />
-          <div className="h-4 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 rounded w-1/2" />
+          <div className="aspect-[16/10] bg-[#3d2817]/20 dark:bg-[#e8e0d5]/10 rounded-lg mb-6" />
+          <div className="h-6 bg-[#3d2817]/20 dark:bg-[#e8e0d5]/10 rounded w-3/4 mb-3" />
+          <div className="h-4 bg-[#3d2817]/20 dark:bg-[#e8e0d5]/10 rounded w-1/2" />
         </div>
       ))}
     </div>
@@ -110,9 +110,9 @@ function FeaturedCard({ book, index, onSelect }: { book: Book & { slug: string }
   return (
     <div 
       onClick={() => onSelect(book)}
-      className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border border-[#2b2b2b]/10 dark:border-[#e8e0d5]/10 hover:border-[#2b2b2b]/30 dark:hover:border-[#e8e0d5]/30 transition-all duration-500 hover:shadow-lg cursor-pointer"
+      className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border border-[#8b4513]/20 dark:border-[#e8e0d5]/10 hover:border-[#8b7355]/40 dark:hover:border-[#e8e0d5]/30 transition-all duration-500 hover:shadow-lg cursor-pointer"
     >
-      <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg bg-[#2b2b2b]/5 flex-shrink-0">
+      <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg bg-[#3d2817]/20 flex-shrink-0">
         {book.cover ? (
           <Image 
             src={book.cover} 
@@ -128,7 +128,7 @@ function FeaturedCard({ book, index, onSelect }: { book: Book & { slug: string }
             </svg>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2b2b2b]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2c1810]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
       
       <div className="flex flex-col justify-center">
@@ -233,31 +233,31 @@ export default async function Page({ searchParams }: PageProps) {
   const hasBooks = booksWithSlugs.length > 0;
 
   return (
-    <main className="min-h-screen">
+    <main className="bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08] dark:bg-[#0f0e0c]">
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-screen-lg mx-auto text-center">
-          <p className="text-[11px] tracking-[0.5em] uppercase opacity-40 mb-6 font-medium" style={{ animation: 'fade-in 0.6s ease-out' }}>
+          <p className="text-[11px] tracking-[0.5em] uppercase text-[#d4a574] mb-6 font-medium" style={{ animation: 'fade-in 0.6s ease-out' }}>
             Perpustakaan Mini
           </p>
 
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl opacity-90 mb-6 tracking-tight" style={{ animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}>
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-[#f4e4d4] mb-6 tracking-tight" style={{ animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}>
             Rak Buku
           </h1>
 
-          <p className="text-lg md:text-xl opacity-60 max-w-2xl mx-auto leading-relaxed mb-6" style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}>
+          <p className="text-lg md:text-xl text-[#8b7355] max-w-2xl mx-auto leading-relaxed mb-6" style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}>
             &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff, 
             dan pekerja kantoran yang gak diajarin di sekolah.&rdquo;
           </p>
 
-          <div className="flex items-center justify-center gap-6 text-sm opacity-40" style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}>
+          <div className="flex items-center justify-center gap-6 text-sm text-[#8b7355]" style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}>
             <span className="flex items-center gap-2">
-              <span className="font-semibold opacity-60">{total}</span> cerita
+              <span className="font-semibold text-[#d4a574]">{total}</span> cerita
             </span>
-            <span className="opacity-20">|</span>
+            <span className="opacity-30">|</span>
             <span className="flex items-center gap-2">
-              <span className="font-semibold opacity-60">{uniqueCategories.length}</span> kategori
+              <span className="font-semibold text-[#d4a574]">{uniqueCategories.length}</span> kategori
             </span>
-            <span className="opacity-20">|</span>
+            <span className="opacity-30">|</span>
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               diupdate mingguan
@@ -269,11 +269,11 @@ export default async function Page({ searchParams }: PageProps) {
       <section className="px-6 pb-16">
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-            <Suspense fallback={<div className="h-12 w-40 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />}>
+            <Suspense fallback={<div className="h-12 w-40 bg-[#3d2817]/20 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />}>
               <CategoryFilter activeCategory={category} books={booksWithSlugs} />
             </Suspense>
 
-            <Suspense fallback={<div className="h-12 w-72 bg-[#2b2b2b]/10 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />}>
+            <Suspense fallback={<div className="h-12 w-72 bg-[#3d2817]/20 dark:bg-[#e8e0d5]/10 animate-pulse rounded-lg" />}>
               <SearchBar initialSearch={search} />
             </Suspense>
           </div>

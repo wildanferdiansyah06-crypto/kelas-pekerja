@@ -45,8 +45,8 @@ export default function CategoryFilter({ activeCategory = 'all', books }: Catego
           className={cn(
             "flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm whitespace-nowrap transition-all duration-300",
             activeCategory === cat
-              ? "border-[#2b2b2b] bg-[#2b2b2b] text-[#e8e0d5] dark:border-[#e8e0d5] dark:bg-[#e8e0d5] dark:text-[#2b2b2b]"
-              : "border-[#2b2b2b]/20 hover:border-[#2b2b2b]/40 dark:border-[#e8e0d5]/20 dark:hover:border-[#e8e0d5]/40"
+              ? "border-[#8b7355] bg-[#8b7355] text-[#f4e4d4] dark:border-[#e8e0d5] dark:bg-[#e8e0d5] dark:text-[#2b2b2b]"
+              : "border-[#8b4513]/30 hover:border-[#8b7355]/40 dark:border-[#e8e0d5]/20 dark:hover:border-[#e8e0d5]/40"
           )}
         >
           {CATEGORY_LABELS[cat] || cat}
