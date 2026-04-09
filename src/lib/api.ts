@@ -1,16 +1,5 @@
 import { Book, Quote, SiteConfig } from "@/src/types";
-
-import booksData from "@/public/data/books.json";
-import quotesData from "@/public/data/quotes.json";
-import configData from "@/public/data/config.json";
-
-/* =========================
-   LOCAL DATA
-========================= */
-
-const books = (booksData.books || []) as Book[];
-const quotes = (quotesData.quotes || []) as Quote[];
-const config = configData as unknown as SiteConfig;
+import { client } from "@/src/sanity/lib/client";
 
 /* =========================
    BOOKS
@@ -22,50 +11,41 @@ export async function getBooks(filters?: {
   search?: string;
   limit?: number;
 }) {
-  let result = [...books];
+  let query = `*[_type == "book"]`;
+  const params: Record<string, any> = {};
 
-  // Filter category
   if (filters?.category && filters.category !== "all") {
-    result = result.filter((b) => b.category === filters.category);
+    query += ` && category == $category`;
+    params.category = filters.category;
   }
 
-  // Filter featured
   if (filters?.featured) {
-    result = result.filter((b) => b.featured);
+    query += ` && featured == true`;
   }
 
-  // Search
   if (filters?.search) {
-    const search = filters.search.toLowerCase();
-
-    result = result.filter(
-      (b) =>
-        b.title.toLowerCase().includes(search) ||
-        b.excerpt?.toLowerCase().includes(search) ||
-        b.tags?.some((tag) => tag.toLowerCase().includes(search))
-    );
+    query += ` && (title match $search || excerpt match $search || tags match $search)`;
+    params.search = filters.search;
   }
 
-  // Sort newest
-  result = result.sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() -
-      new Date(a.publishedAt).getTime()
-  );
+  query += ` | order(publishedAt desc)`;
 
-  // Limit
   if (filters?.limit) {
-    result = result.slice(0, filters.limit);
+    query += `[0...$limit]`;
+    params.limit = filters.limit;
   }
+
+  const books = await client.fetch<Book[]>(query, params);
 
   return {
-    books: result,
-    total: result.length,
+    books,
+    total: books.length,
   };
 }
 
 export async function getBook(slug: string) {
-  const book = books.find((b) => b.slug === slug);
+  const query = `*[_type == "book" && slug.current == $slug][0]`;
+  const book = await client.fetch<Book>(query, { slug });
 
   if (!book) {
     throw new Error("Book not found");
@@ -86,8 +66,9 @@ export async function getFeaturedBooks(limit = 3) {
 ========================= */
 
 export async function getRandomQuote() {
-  const random =
-    quotes[Math.floor(Math.random() * quotes.length)];
+  const query = `*[_type == "quote"] | order(rand())`;
+  const quotes = await client.fetch<Quote[]>(query);
+  const random = quotes[Math.floor(Math.random() * quotes.length)];
 
   return {
     quote: random,
@@ -100,23 +81,29 @@ export async function getQuotes(filters?: {
   mood?: string;
   limit?: number;
 }) {
-  let result = [...quotes];
+  let query = `*[_type == "quote"]`;
+  const params: Record<string, any> = {};
 
   if (filters?.category) {
-    result = result.filter((q) => q.category === filters.category);
+    query += ` && category == $category`;
+    params.category = filters.category;
   }
 
   if (filters?.mood) {
-    result = result.filter((q) => q.mood === filters.mood);
+    query += ` && mood == $mood`;
+    params.mood = filters.mood;
   }
 
   if (filters?.limit) {
-    result = result.slice(0, filters.limit);
+    query += `[0...$limit]`;
+    params.limit = filters.limit;
   }
 
+  const quotes = await client.fetch<Quote[]>(query, params);
+
   return {
-    quotes: result,
-    total: result.length,
+    quotes,
+    total: quotes.length,
   };
 }
 
@@ -125,6 +112,8 @@ export async function getQuotes(filters?: {
 ========================= */
 
 export async function getConfig(): Promise<SiteConfig> {
+  const query = `*[_type == "siteConfig"][0]`;
+  const config = await client.fetch<SiteConfig>(query);
   return config;
 }
 
