@@ -149,9 +149,9 @@ export default function BookCard({
           </p>
         )}
 
-        <p className="text-[15px] leading-[1.7] text-[#8b7355] dark:text-stone-400 line-clamp-2 
-                      group-hover:text-[#a8a298] dark:group-hover:text-stone-300 
-                      transition-colors duration-300">
+        <p className={`text-[15px] leading-[1.7] text-[#8b7355] dark:text-stone-400 line-clamp-2
+                      group-hover:text-[#a8a298] dark:group-hover:text-stone-300
+                      transition-colors duration-300`}>
           &ldquo;{book.preview}&rdquo;
         </p>
 
