@@ -1,9 +1,15 @@
 import { createClient } from '@sanity/client'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-import booksData from '../public/data/books.json' with { type: 'json' }
-import postsData from '../public/data/posts.json' with { type: 'json' }
-import quotesData from '../public/data/quotes.json' with { type: 'json' }
-import configData from '../public/data/config.json' with { type: 'json' }
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const booksData = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/data/books.json'), 'utf8'))
+const postsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/data/posts.json'), 'utf8'))
+const quotesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/data/quotes.json'), 'utf8'))
+const configData = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/data/config.json'), 'utf8'))
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'frlqeeaf',
