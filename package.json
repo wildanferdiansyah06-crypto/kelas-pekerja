@@ -2,7 +2,6 @@
   "name": "kelas-pekerja",
   "version": "2.0.0",
   "private": true,
-
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,30 +9,40 @@
     "lint": "next lint",
     "export": "next build",
     "serve": "npx serve dist",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
-
   "dependencies": {
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.2.0",
+    "lucide-react": "^0.460.0",
     "next": "14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "framer-motion": "^11.2.0",
-    "lucide-react": "^0.460.0",
-    "clsx": "^2.1.0",
+    "sanity": "^3.99.0",
     "tailwind-merge": "^2.2.0"
   },
-
   "devDependencies": {
-    "@types/node": "^20",
+    "@sanity/cli": "^6.3.1",
+    "@tailwindcss/typography": "^0.5.15",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.39",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
