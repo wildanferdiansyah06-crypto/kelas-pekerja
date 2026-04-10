@@ -42,6 +42,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",

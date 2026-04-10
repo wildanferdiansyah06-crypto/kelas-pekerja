@@ -6,5 +6,5 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Set to false to ensure fresh data from Sanity
+  useCdn: true, // Enable CDN for better reliability and performance
 })
