@@ -241,7 +241,7 @@ function PageContent() {
   return (
     <main className={`transition-colors duration-500 ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
       <section className="pt-32 pb-16 px-6">
-        <div className="text-center">
+        <div className="max-w-6xl mx-auto text-center">
           <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`} style={{ animation: 'fade-in 0.6s ease-out' }}>
             Perpustakaan Mini
           </p>
@@ -273,7 +273,7 @@ function PageContent() {
       </section>
 
       <section className={`px-6 pb-16 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
-        <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
           <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
           </Suspense>
@@ -285,18 +285,20 @@ function PageContent() {
       </section>
 
       <section className="px-6 pb-32">
-        {error ? (
-          <div className="text-center py-32">
-            <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
-            <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>{error.message}</p>
-          </div>
-        ) : hasBooks ? (
-          <Suspense fallback={<GridSkeleton isDark={isDark} />}>
-            <GridWithData books={booksWithSlugs} total={total} category={category} search={search} isDark={isDark} />
-          </Suspense>
-        ) : (
-          <EmptyState isDark={isDark} />
-        )}
+        <div className="max-w-6xl mx-auto">
+          {error ? (
+            <div className="text-center py-32">
+              <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
+              <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>{error.message}</p>
+            </div>
+          ) : hasBooks ? (
+            <Suspense fallback={<GridSkeleton isDark={isDark} />}>
+              <GridWithData books={booksWithSlugs} total={total} category={category} search={search} isDark={isDark} />
+            </Suspense>
+          ) : (
+            <EmptyState isDark={isDark} />
+          )}
+        </div>
       </section>
     </main>
   );
