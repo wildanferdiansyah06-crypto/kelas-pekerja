@@ -37,6 +37,14 @@ export async function getBooks(filters?: {
 
   const sanityBooks = await client.fetch<any[]>(query, params);
 
+  // Handle null response
+  if (!sanityBooks) {
+    return {
+      books: [],
+      total: 0,
+    };
+  }
+
   // Transform Sanity data to match Book type
   const books: Book[] = sanityBooks.map((book) => ({
     id: book._id,
