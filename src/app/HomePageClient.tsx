@@ -4,7 +4,7 @@ import React from "react";
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, PenLine, Coffee, Eye } from "lucide-react";
+import { ArrowRight, BookOpen, PenLine, Coffee, Eye, Infinity } from "lucide-react";
 
 function getRelativeTime(dateString: string): string {
   try {
@@ -519,7 +519,9 @@ export default function HomePageClient({
           </div>
 
           <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#d4a574]'} mb-2`}>â</div>
+            <div className={`flex items-center justify-center ${isDark ? 'text-[#c7b299]' : 'text-[#d4a574]'} mb-2`}>
+              <Infinity size={32} />
+            </div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#a8a298]'}`}>Kopi</div>
           </div>
         </div>
