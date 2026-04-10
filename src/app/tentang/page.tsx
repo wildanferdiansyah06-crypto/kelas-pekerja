@@ -406,7 +406,7 @@ export default function TentangPage() {
 
                     <div className="flex flex-wrap gap-2">
 
-                      {['Java', 'Python', 'JavaScript', 'React', 'Next.js', 'TypeScript'].map((tech) => (
+                      {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Sanity', 'Framer Motion'].map((tech) => (
 
                         <span key={tech} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
 
@@ -420,15 +420,33 @@ export default function TentangPage() {
 
                   </div>
 
-                  
+                  <div>
+
+                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Tools & Workflow</h3>
+
+                    <div className="flex flex-wrap gap-2">
+
+                      {['Git', 'ESLint', 'Jest', 'Playwright', 'Vercel', 'GitHub Actions'].map((tool) => (
+
+                        <span key={tool} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+
+                          {tool}
+
+                        </span>
+
+                      ))}
+
+                    </div>
+
+                  </div>
 
                   <div>
 
                     <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Portfolio</h3>
 
-                    <a 
+                    <a
 
-                      href="https://kelaspekerja.site" 
+                      href="https://kelaspekerja.site"
 
                       target="_blank"
 
@@ -476,23 +494,65 @@ export default function TentangPage() {
 
                 </p>
 
+                <div className="space-y-4">
 
+                  <div>
 
-                <div className={`${theme.accentBg} ${theme.accentBorder} border rounded-lg p-4 sm:p-6`}>
+                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Genre Karya</h3>
 
-                  <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                    <div className="flex flex-wrap gap-2">
 
-                    <Coffee size={18} className={theme.accent} />
+                      {['Fiksi', 'Puisi', 'Filsafat', 'Refleksi', 'Akademis'].map((genre) => (
 
-                    <h3 className={`font-semibold ${theme.textHeading} text-sm sm:text-base`}>Proses Menulis</h3>
+                        <span key={genre} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+
+                          {genre}
+
+                        </span>
+
+                      ))}
+
+                    </div>
 
                   </div>
 
-                  <p className={`${theme.textMuted} leading-relaxed text-xs sm:text-sm`}>
+                  <div>
 
-                    Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.
+                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Tools Menulis</h3>
 
-                  </p>
+                    <div className="flex flex-wrap gap-2">
+
+                      {['Notion', 'Obsidian', 'Typora', 'VS Code'].map((tool) => (
+
+                        <span key={tool} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+
+                          {tool}
+
+                        </span>
+
+                      ))}
+
+                    </div>
+
+                  </div>
+
+                  <div className={`${theme.accentBg} ${theme.accentBorder} border rounded-lg p-4 sm:p-6`}>
+
+                    <div className="flex items-center gap-3 mb-3 sm:mb-4">
+
+                      <Coffee size={18} className={theme.accent} />
+
+                      <h3 className={`font-semibold ${theme.textHeading} text-sm sm:text-base`}>Proses Menulis</h3>
+
+                    </div>
+
+                    <p className={`${theme.textMuted} leading-relaxed text-xs sm:text-sm`}>
+
+                      Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.
+
+                    </p>
+
+                  </div>
 
                 </div>
 

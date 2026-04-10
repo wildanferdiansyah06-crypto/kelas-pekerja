@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  Bookmark, 
-  ArrowUpRight, 
-  ArrowRight, 
-  Eye, 
+import {
+  Bookmark,
+  ArrowUpRight,
+  ArrowRight,
+  Eye,
   Clock,
   BookOpen,
   Flame,
@@ -24,9 +24,9 @@ interface BookCardProps {
   className?: string;
 }
 
-export default function BookCard({ 
-  book, 
-  index = 0, 
+export default function BookCard({
+  book,
+  index = 0,
   variant = 'default',
   href,
   onClick,
@@ -34,8 +34,50 @@ export default function BookCard({
 }: BookCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showBookmarkToast, setShowBookmarkToast] = useState(false);
 
   const animationDelay = `${index * 100}ms`;
+
+  // Load bookmark state from localStorage on mount
+  useEffect(() => {
+    try {
+      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      setIsBookmarked(bookmarks.includes(book.slug));
+    } catch (error) {
+      console.error('Error loading bookmarks:', error);
+      setIsBookmarked(false);
+    }
+  }, [book.slug]);
+
+  // Handle bookmark toggle
+  const handleBookmarkToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    try {
+      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      const newBookmarked = !isBookmarked;
+
+      if (newBookmarked) {
+        if (!bookmarks.includes(book.slug)) {
+          bookmarks.push(book.slug);
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+          setShowBookmarkToast(true);
+          setTimeout(() => setShowBookmarkToast(false), 2000);
+        }
+      } else {
+        const index = bookmarks.indexOf(book.slug);
+        if (index > -1) {
+          bookmarks.splice(index, 1);
+          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+      }
+
+      setIsBookmarked(newBookmarked);
+    } catch (error) {
+      console.error('Error saving bookmark:', error);
+    }
+  };
   
   const isCompact = variant === "compact";
   const isFeatured = variant === "featured";
@@ -158,17 +200,13 @@ export default function BookCard({
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#8b4513]/30 dark:border-stone-700/50">
           <div className="flex items-center gap-3">
-            <button 
+            <button
               className={`p-2 rounded-full transition-all duration-300
-                         ${isBookmarked 
-                           ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' 
+                         ${isBookmarked
+                           ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
                            : 'hover:bg-[#3d2817]/30 dark:hover:bg-stone-800 text-[#8b7355] hover:text-[#d4a574] dark:hover:text-stone-300'
                          }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setIsBookmarked(!isBookmarked);
-              }}
+              onClick={handleBookmarkToggle}
               aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
             >
               <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
@@ -186,6 +224,13 @@ export default function BookCard({
           </div>
         </div>
       </div>
+
+      {/* Bookmark Toast Notification */}
+      {showBookmarkToast && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-[#2c1810] dark:bg-[#1a1816] text-[#f4e4d4] dark:text-[#e8e0d5] px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-[#8b7355]/30 dark:border-stone-700/50 animate-bounce">
+          ✓ Ditambahkan ke bookmark
+        </div>
+      )}
 
       {/* Global Styles for Animation */}
       <style jsx global>{`

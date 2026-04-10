@@ -11,6 +11,7 @@ const navigation = [
 { label: "Beranda", href: "/" },
 { label: "Buku", href: "/buku" },
 { label: "Tulisan", href: "/tulisan" },
+{ label: "Bookmark", href: "/bookmark" },
 { label: "Tentang", href: "/tentang" },
 ];
 
