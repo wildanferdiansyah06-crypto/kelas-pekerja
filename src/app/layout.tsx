@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { NavbarProvider } from "@/src/contexts/NavbarContext";
 import ReadingProgress from "@/src/components/ReadingProgress";
 import LayoutWrapper from "@/src/components/LayoutWrapper";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -95,6 +96,7 @@ export default function RootLayout({
             </LayoutWrapper>
           </NavbarProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
