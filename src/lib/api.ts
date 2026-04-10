@@ -156,9 +156,39 @@ export async function getQuotes(filters?: {
 ========================= */
 
 export async function getConfig(): Promise<SiteConfig> {
-  const query = `*[_type == "siteConfig"][0]`;
-  const config = await client.fetch<SiteConfig>(query);
-  return config;
+  try {
+    const query = `*[_type == "siteConfig"][0]`;
+    const config = await client.fetch<SiteConfig>(query);
+    return config;
+  } catch (error) {
+    console.error('Error fetching config from Sanity:', error);
+    // Return fallback config if Sanity fails
+    return {
+      title: "Kelas Pekerja",
+      description: "Catatan tentang malam, kopi, dan kehidupan.",
+      tagline: "Tentang malam yang tak pernah benar-benar tidur, kopi yang menghangatkan, dan cerita-cerita yang tersimpan di antara detik-detik yang terlewat.",
+      author: {
+        name: "Wildan Ferdiansyah",
+        bio: "Seseorang yang mencoba memahami hidupnya melalui kata kata.",
+        roles: {
+          past: ["Barista", "Muralis"],
+          current: "Penulis & Web Developer"
+        },
+        social: {
+          whatsapp: "6289636357091",
+          instagram: "_iamwildan_",
+          email: "wildanferdiansyah06@gmail.com"
+        },
+        manifesto: "Menulis untuk hadir, bukan untuk memukau."
+      },
+      navigation: [
+        { label: "Beranda", href: "/" },
+        { label: "Buku", href: "/buku" },
+        { label: "Tulisan", href: "/tulisan" },
+        { label: "Tentang", href: "/tentang" }
+      ]
+    };
+  }
 }
 
 /* =========================

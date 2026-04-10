@@ -24,12 +24,12 @@ export default function Footer() {
 
         {/* Title */}
         <h3 className={`font-serif text-2xl mb-4 opacity-90 ${isDark ? 'text-[#f4e4d4]' : 'text-[#d4a574]'}`}>
-          {config?.site?.title || "Kelas Pekerja"}
+          {config?.title || "Kelas Pekerja"}
         </h3>
 
         {/* Description */}
         <p className={`text-sm max-w-md mx-auto mb-8 leading-relaxed ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
-          {config?.site?.description ||
+          {config?.description ||
             "Catatan tentang malam, kopi, dan kehidupan."}
         </p>
 
