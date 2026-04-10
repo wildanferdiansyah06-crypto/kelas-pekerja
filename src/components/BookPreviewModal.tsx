@@ -200,7 +200,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
         ref={modalRef}
 
-        className="relative w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-y-auto bg-[#faf8f5] dark:bg-[#141210] rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl ring-1 ring-stone-200 dark:ring-stone-800 transform-gpu will-change-transform"
+        className="relative w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[70vh] sm:max-h-[85vh] md:max-h-[80vh] overflow-y-auto bg-[#faf8f5] dark:bg-[#141210] rounded-lg sm:rounded-xl md:rounded-2xl shadow-2xl ring-1 ring-stone-200 dark:ring-stone-800 transform-gpu will-change-transform"
 
         onClick={(e) => e.stopPropagation()}
 
@@ -242,7 +242,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
           {/* Cover Image */}
 
-          <div className="relative aspect-[4/5] min-h-[150px] sm:min-h-[200px] overflow-hidden">
+          <div className="relative aspect-[16/9] h-24 overflow-hidden">
 
             {book.cover ? (
 
