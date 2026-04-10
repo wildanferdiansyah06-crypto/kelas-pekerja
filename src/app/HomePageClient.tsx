@@ -503,7 +503,7 @@ export default function HomePageClient({
 
       {/* STATS */}
       <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b4513]/30'}`}>
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
           <div>
             <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#d4a574]'} mb-2`}>
               {allBooks.length}
@@ -516,13 +516,6 @@ export default function HomePageClient({
               {totalViews.toLocaleString()}
             </div>
             <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#a8a298]'}`}>Dibaca</div>
-          </div>
-
-          <div>
-            <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#d4a574]'} mb-2`}>
-              {totalDownloads.toLocaleString()}
-            </div>
-            <div className={`text-xs uppercase tracking-wider ${isDark ? 'text-[#6b5a45]' : 'text-[#a8a298]'}`}>Diunduh</div>
           </div>
 
           <div>

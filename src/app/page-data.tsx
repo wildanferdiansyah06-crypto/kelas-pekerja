@@ -5,6 +5,7 @@ export async function getPageData() {
   const featuredData = await getFeaturedBooks(2);
   const config = await getConfig();
   const allBooksData = await getBooks({ limit: 6 });
+  const allBooksForStats = await getBooks(); // Fetch all books for accurate stats
   
   const featuredBooks = featuredData.books;
   const allBooks = allBooksData.books;
@@ -20,12 +21,12 @@ export async function getPageData() {
     mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
   }
   
-  const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
-  const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
+  const totalViews = allBooksForStats.books.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
+  const totalDownloads = allBooksForStats.books.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
 
   return {
     featuredBooks,
-    allBooks,
+    allBooks: allBooksForStats.books, // Use all books for accurate count
     latestBooks,
     mostRelatable,
     totalViews,
