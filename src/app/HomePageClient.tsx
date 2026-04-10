@@ -306,7 +306,7 @@ export default function HomePageClient({
               <span className={`italic ${isDark ? 'text-[#c7b299]' : 'text-[#c7b299]'} `}>Ini tentang perjalanan yang tak terhitung.</span>
             </h2>
 
-          <div className={`space-y-4 text-base sm:text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#8b7355]'}`}>
+          <div className={`space-y-4 text-sm sm:text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#8b7355]'}`}>
             <p>Bangun pagi saat dunia masih terbungkus kabut.</p>
             <p>Pulang malam dengan bayangan semakin panjang.</p>
             <p className={isDark ? 'text-[#c4b5a0]' : 'text-[#a8a298]'}>Dan hal-hal yang hanya bisa diucapkan dalam keheningan.</p>
