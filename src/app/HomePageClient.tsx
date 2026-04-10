@@ -300,13 +300,13 @@ export default function HomePageClient({
             Ini Tempat Apa?
           </p>
 
-          <h2 className={`font-serif text-4xl md:text-5xl leading-tight mb-8 ${isDark ? 'text-[#faf0e6]' : 'text-[#f4e4d4]'}`}>
+          <h2 className={`font-serif text-2xl sm:text-4xl md:text-5xl leading-tight mb-8 ${isDark ? 'text-[#faf0e6]' : 'text-[#f4e4d4]'}`}>
               Bukan tentang puncak.
               <br />
               <span className={`italic ${isDark ? 'text-[#c7b299]' : 'text-[#c7b299]'} `}>Ini tentang perjalanan yang tak terhitung.</span>
             </h2>
 
-          <div className={`space-y-4 text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#8b7355]'}`}>
+          <div className={`space-y-4 text-base sm:text-lg md:text-xl leading-relaxed ${isDark ? 'text-[#a8a298]' : 'text-[#8b7355]'}`}>
             <p>Bangun pagi saat dunia masih terbungkus kabut.</p>
             <p>Pulang malam dengan bayangan semakin panjang.</p>
             <p className={isDark ? 'text-[#c4b5a0]' : 'text-[#a8a298]'}>Dan hal-hal yang hanya bisa diucapkan dalam keheningan.</p>
@@ -503,7 +503,7 @@ export default function HomePageClient({
 
       {/* STATS */}
       <section className={`py-24 px-6 border-t ${isDark ? 'border-neutral-800/30' : 'border-[#8b4513]/30'}`}>
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-12 text-center">
           <div>
             <div className={`text-3xl font-serif ${isDark ? 'text-[#c7b299]' : 'text-[#d4a574]'} mb-2`}>
               {allBooks.length}
