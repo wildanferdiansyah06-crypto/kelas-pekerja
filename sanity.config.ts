@@ -1,4 +1,4 @@
-'use client'
+i'use client'
 
 /**
  * This configuration is used to for the Sanity Studio that’s mounted on the `\src\app\y\[[...tool]]\page.tsx` route
@@ -11,11 +11,12 @@ import {structureTool} from 'sanity/structure'
 import {apiVersion, dataset, projectId} from './src/sanity/env'
 import {schema} from './src/sanity/schemaTypes'
 import {structure} from './src/sanity/structure'
+import { i } from 'framer-motion/client'
 
 export default defineConfig({
   basePath: '/y',
-  projectId: 'frlqeeaf',
-  dataset: 'production',
+  projectId,
+  dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [

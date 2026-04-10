@@ -4,7 +4,6 @@ import { Suspense, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { getBooks } from "@/src/lib/api";
 import { useTheme } from "@/src/components/ThemeProvider";
 
 import BookCard from "@/src/components/BookCard";
@@ -205,9 +204,15 @@ function PageContent() {
   const search = searchParams.get('search') || undefined;
 
   useEffect(() => {
-    // Fetch books
-    console.log('Fetching books...');
-    getBooks()
+    // Fetch books from API route
+    console.log('Fetching books from API...');
+    fetch('/api/books')
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(({ books, total: totalBooks }: BooksResponse) => {
         console.log('Books fetched:', books);
         console.log('Total books:', totalBooks);
