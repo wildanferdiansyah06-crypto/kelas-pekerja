@@ -147,7 +147,7 @@ export default function SeniMenyeduhiKehidupanPage() {
   ];
 
   return (
-    <div ref={containerRef} className={`${theme.bg} ${theme.text} transition-colors duration-700 overflow-x-hidden selection:bg-amber-900/30 selection:text-amber-100`}>
+    <div ref={containerRef} className={`${theme.bg} ${theme.text} transition-colors duration-700 overflow-x-hidden selection:bg-amber-900/30 selection:text-amber-100 w-full`}>
       
       {/* Background - Coffee Aesthetic */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">

@@ -151,7 +151,7 @@ export default function YangTertinggalDiLembahPage() {
   };
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current w-full`}>
       
       {/* Reading Progress Bar - lebih subtle dan elegant */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2622]' : 'bg-[#d4cfc4]'}`}>

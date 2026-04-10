@@ -130,7 +130,7 @@ export default function CahayaItuPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current w-full`}>
       
       {/* Simplified Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">

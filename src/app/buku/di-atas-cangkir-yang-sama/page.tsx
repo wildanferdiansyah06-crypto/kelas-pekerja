@@ -140,7 +140,7 @@ export default function CoffeeBookPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-500`}>
+    <div className={`${theme.bg} ${theme.text} transition-colors duration-500 w-full`}>
       
       {/* Reading Progress Bar - Top */}
       <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>

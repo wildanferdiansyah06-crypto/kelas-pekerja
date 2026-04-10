@@ -239,8 +239,8 @@ function PageContent() {
   const hasBooks = booksWithSlugs.length > 0;
 
   return (
-    <main className={`transition-colors duration-500 ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
-      <section className="pt-32 pb-16 px-6">
+    <main className={`transition-colors duration-500 w-full ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+      <section className="pt-32 pb-16 px-6 w-full">
         <div className="max-w-6xl mx-auto text-center">
           <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`} style={{ animation: 'fade-in 0.6s ease-out' }}>
             Perpustakaan Mini
@@ -272,7 +272,7 @@ function PageContent() {
         </div>
       </section>
 
-      <section className={`px-6 pb-16 ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+      <section className={`px-6 pb-16 w-full ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
           <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
@@ -284,7 +284,7 @@ function PageContent() {
         </div>
       </section>
 
-      <section className="px-6 pb-32">
+      <section className="px-6 pb-32 w-full">
         <div className="max-w-6xl mx-auto">
           {error ? (
             <div className="text-center py-32">

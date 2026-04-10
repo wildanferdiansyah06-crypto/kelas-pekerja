@@ -336,7 +336,7 @@ export default function KamiMenulisPelanPage() {
 
   return (
 
-    <div ref={mainRef} className={`${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+    <div ref={mainRef} className={`${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500 w-full`}>
 
       
 

@@ -12,7 +12,7 @@ export default function BukuLayout({
       <ReadingProgress />
 
       {/* Konten buku - tanpa pb-32 yang besar */}
-      <main className="flex-1 max-w-5xl mx-auto pt-0 px-0 w-full">
+      <main className="flex-1 w-full pt-0 px-0">
         {children}
       </main>
 
