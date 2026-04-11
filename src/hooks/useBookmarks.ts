@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { getOrCreateUser, addBookmark as addBookmarkToSanity, removeBookmark as removeBookmarkFromSanity, getUserBookmarks } from "@/src/lib/user";
+import { getOrCreateUser, addBookmark as addBookmarkToSanity, removeBookmark as removeBookmarkFromSanity, getUserBookmarks, updateReadingProgress } from "@/src/lib/user";
 
 interface BookmarkedItem {
 id: string;
@@ -117,6 +117,15 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
         session.user.image || ""
       );
       await addBookmarkToSanity(user._id, item.id, item.type);
+
+      // Save reading progress when bookmarking a book
+      if (item.type === "book") {
+        const doc = document.documentElement;
+        const scrollHeight = doc.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY || window.pageYOffset;
+        const progress = scrollHeight > 0 ? Math.round((scrolled / scrollHeight) * 100) : 0;
+        await updateReadingProgress(user._id, item.slug, progress);
+      }
 
       setBookmarks((prev) => {
         if (prev.some((b) => b.id === item.id)) return prev;
