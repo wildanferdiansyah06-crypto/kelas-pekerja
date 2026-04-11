@@ -86,13 +86,18 @@ export async function getBook(slug: string) {
     excerpt: sanityBook.excerpt || '',
     preview: sanityBook.preview || '',
     category: sanityBook.category || 'kehidupan',
-    pages: 0, // Sanity doesn't have pages, default to 0
+    pages: sanityBook.pages || 0,
     readTime: sanityBook.readTime || '5 menit',
     cover: sanityBook.cover?.url || '',
     publishedAt: sanityBook.publishedAt || '',
     featured: sanityBook.featured || false,
     stats: sanityBook.stats || { views: 0, downloads: 0 },
     tags: sanityBook.tags || [],
+    // New fields
+    description: sanityBook.description || '',
+    author: sanityBook.author || '',
+    downloadUrl: sanityBook.downloadUrl || '',
+    chapters: sanityBook.chapters || [],
   };
 
   return { book };

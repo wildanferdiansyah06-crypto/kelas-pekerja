@@ -6,6 +6,8 @@ export interface Book {
   excerpt: string
   content?: string
   preview: string
+  description?: string
+  author?: string
 
   category:
     | "kehidupan"
@@ -15,6 +17,7 @@ export interface Book {
     | "kopi"
     | "pekerja"
     | "filosofi"
+    | "refleksi"
     | "catatan-malam"
 
   pages: number
@@ -32,6 +35,12 @@ export interface Book {
   }
 
   tags?: string[]
+  chapters?: Chapter[]
+}
+
+export interface Chapter {
+  title: string
+  content: any[]
 }
 
 export interface Post {
