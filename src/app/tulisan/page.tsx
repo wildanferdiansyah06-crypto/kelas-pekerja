@@ -88,7 +88,7 @@ const TrendingPostCard = memo(({ post, colors }: { post: any; colors: any }) => 
 TrendingPostCard.displayName = "TrendingPostCard";
 
 export default function TulisanPage() {
-  const posts = useMemo(() => (postsData as any).posts || [], [postsData]);
+  const posts = useMemo(() => (postsData as any).posts || [], []);
   const { theme } = useTheme();
   const [activeCategory, setActiveCategory] = useState("Semua");
 

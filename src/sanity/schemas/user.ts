@@ -1,4 +1,4 @@
-export default {
+const userSchema = {
   name: 'user',
   title: 'User',
   type: 'document',
@@ -129,3 +129,5 @@ export default {
     },
   },
 }
+
+export default userSchema;
