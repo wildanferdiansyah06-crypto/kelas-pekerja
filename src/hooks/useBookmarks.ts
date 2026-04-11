@@ -30,7 +30,11 @@ const loadBookmarks = async () => {
   if (session?.user) {
     // Load from Sanity if user is logged in
     try {
-      const user = await getOrCreateUser(session.user.email, session.user.name, session.user.image);
+      const user = await getOrCreateUser(
+        session.user.email || "",
+        session.user.name || "",
+        session.user.image || ""
+      );
       const sanityBookmarks = await getUserBookmarks(user._id);
 
       const transformedBookmarks = sanityBookmarks.map((b: any) => ({
@@ -107,7 +111,11 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
   if (session?.user) {
     // Add to Sanity if user is logged in
     try {
-      const user = await getOrCreateUser(session.user.email, session.user.name, session.user.image);
+      const user = await getOrCreateUser(
+        session.user.email || "",
+        session.user.name || "",
+        session.user.image || ""
+      );
       await addBookmarkToSanity(user._id, item.id, item.type);
 
       setBookmarks((prev) => {
@@ -147,7 +155,11 @@ async (id: string) => {
   if (session?.user) {
     // Remove from Sanity if user is logged in
     try {
-      const user = await getOrCreateUser(session.user.email, session.user.name, session.user.image);
+      const user = await getOrCreateUser(
+        session.user.email || "",
+        session.user.name || "",
+        session.user.image || ""
+      );
       await removeBookmarkFromSanity(user._id, id);
 
       setBookmarks((prev) => prev.filter((b) => b.id !== id));
