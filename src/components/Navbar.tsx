@@ -196,6 +196,29 @@ return (
         </Link>
       ))}
 
+      {/* Mobile Login/Logout Button */}
+      {session ? (
+        <button
+          onClick={() => {
+            signOut({ callbackUrl: '/' });
+            setIsMenuOpen(false);
+          }}
+          className="flex items-center gap-2 text-sm transition-all duration-200 transform-gpu will-change-transform text-[#d4a574] hover:text-[#f4e4d4]"
+        >
+          <LogOut size={16} />
+          <span>Keluar</span>
+        </button>
+      ) : (
+        <Link
+          href="/auth/signin"
+          onClick={() => setIsMenuOpen(false)}
+          className="flex items-center gap-2 text-sm transition-all duration-200 transform-gpu will-change-transform text-[#d4a574] hover:text-[#f4e4d4]"
+        >
+          <User size={16} />
+          <span>Masuk</span>
+        </Link>
+      )}
+
     </div>
   </div>
 </nav>
