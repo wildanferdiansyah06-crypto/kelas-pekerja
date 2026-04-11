@@ -7,4 +7,5 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: true, // Enable CDN for better reliability and performance
+  token: process.env.SANITY_API_TOKEN, // Add API token for authentication
 })
