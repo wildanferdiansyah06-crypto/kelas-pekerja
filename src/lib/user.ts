@@ -89,14 +89,22 @@ export async function updateReadingProgress(userId: string, bookId: string, prog
   }
 
   const existingProgress = user.readingProgress?.find(
-    (p: any) => p.book._ref === bookId
+    (p: any) => p.bookId === bookId
   );
+
+  // Fetch book data to store
+  const bookQuery = `*[_type == "book" && _id == $bookId][0]{_id, title, slug}`;
+  const book = await client.fetch(bookQuery, { bookId });
+
+  if (!book) {
+    throw new Error("Book not found");
+  }
 
   if (existingProgress) {
     // Update existing progress
     const updatedProgress = user.readingProgress?.map((p: any) =>
-      p.book._ref === bookId
-        ? { ...p, progress, lastReadAt: new Date().toISOString() }
+      p.bookId === bookId
+        ? { ...p, progress, lastReadAt: new Date().toISOString(), book }
         : p
     );
 
@@ -106,11 +114,8 @@ export async function updateReadingProgress(userId: string, bookId: string, prog
     // Add new progress
     const updatedUser = await client.patch(userId).setIfMissing({ readingProgress: [] }).append("readingProgress", [
       {
-        _type: "object",
-        book: {
-          _type: "reference",
-          _ref: bookId,
-        },
+        bookId,
+        book,
         progress,
         lastReadAt: new Date().toISOString(),
       },
@@ -130,7 +135,7 @@ export async function getUserBookmarks(userId: string) {
 
 // Get user reading progress
 export async function getUserReadingProgress(userId: string) {
-  const query = `*[_type == "user" && _id == $userId][0]{readingProgress[]{book->{_id, title, slug}, progress, lastReadAt}}`;
+  const query = `*[_type == "user" && _id == $userId][0]{readingProgress}`;
   const user = await client.fetch(query, { userId });
 
   return user?.readingProgress || [];
