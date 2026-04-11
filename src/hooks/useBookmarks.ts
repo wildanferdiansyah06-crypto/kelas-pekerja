@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { getOrCreateUser, addBookmark as addBookmarkToSanity, removeBookmark as removeBookmarkFromSanity, getUserBookmarks, updateReadingProgress } from "@/src/lib/user";
+import { addBookmark as addBookmarkToSanity, removeBookmark as removeBookmarkFromSanity, getUserBookmarks, updateReadingProgress } from "@/src/lib/user";
 
 interface BookmarkedItem {
 id: string;
@@ -27,15 +27,10 @@ useEffect(() => {
 const loadBookmarks = async () => {
   if (status === "loading") return;
 
-  if (session?.user) {
-    // Load from Sanity if user is logged in
+  if (session?.user && session.user.id) {
+    // Load from Sanity if user is logged in and has user ID
     try {
-      const user = await getOrCreateUser(
-        session.user.email || "",
-        session.user.name || "",
-        session.user.image || ""
-      );
-      const sanityBookmarks = await getUserBookmarks(user._id);
+      const sanityBookmarks = await getUserBookmarks(session.user.id);
 
       const transformedBookmarks = sanityBookmarks.map((b: any) => ({
         id: b._id,
@@ -45,10 +40,8 @@ const loadBookmarks = async () => {
         savedAt: new Date().toISOString(),
       }));
 
-      console.log('Loaded bookmarks from Sanity:', transformedBookmarks);
       setBookmarks(transformedBookmarks);
     } catch (error) {
-      console.error("Failed to load bookmarks from Sanity:", error);
       // Fallback to localStorage
       loadLocalBookmarks();
     }
@@ -109,17 +102,10 @@ ACTIONS
 
 const addBookmark = useCallback(
 async (item: Omit<BookmarkedItem, "savedAt">) => {
-  if (session?.user) {
-    // Add to Sanity if user is logged in
+  if (session?.user && session.user.id) {
+    // Add to Sanity if user is logged in and has user ID
     try {
-      console.log('Adding bookmark to Sanity:', item);
-      const user = await getOrCreateUser(
-        session.user.email || "",
-        session.user.name || "",
-        session.user.image || ""
-      );
-      console.log('User ID:', user._id);
-      await addBookmarkToSanity(user._id, item.id, item.type);
+      await addBookmarkToSanity(session.user.id, item.id, item.type);
 
       // Save reading progress when bookmarking a book
       if (item.type === "book") {
@@ -127,8 +113,7 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
         const scrollHeight = doc.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY || window.pageYOffset;
         const progress = scrollHeight > 0 ? Math.round((scrolled / scrollHeight) * 100) : 0;
-        console.log('Saving reading progress:', progress);
-        await updateReadingProgress(user._id, item.slug, progress);
+        await updateReadingProgress(session.user.id, item.slug, progress);
       }
 
       setBookmarks((prev) => {
@@ -165,15 +150,10 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
 
 const removeBookmark = useCallback(
 async (id: string) => {
-  if (session?.user) {
-    // Remove from Sanity if user is logged in
+  if (session?.user && session.user.id) {
+    // Remove from Sanity if user is logged in and has user ID
     try {
-      const user = await getOrCreateUser(
-        session.user.email || "",
-        session.user.name || "",
-        session.user.image || ""
-      );
-      await removeBookmarkFromSanity(user._id, id);
+      await removeBookmarkFromSanity(session.user.id, id);
 
       setBookmarks((prev) => prev.filter((b) => b.id !== id));
     } catch (error) {

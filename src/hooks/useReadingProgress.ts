@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { getOrCreateUser, getUserReadingProgress } from '@/src/lib/user';
+import { getUserReadingProgress } from '@/src/lib/user';
 
 export function useReadingProgressRestore() {
   const { data: session } = useSession();
@@ -11,7 +11,7 @@ export function useReadingProgressRestore() {
 
   useEffect(() => {
     const restoreProgress = async () => {
-      if (!session?.user) return;
+      if (!session?.user || !session.user.id) return;
 
       // Extract book slug from pathname
       if (pathname.startsWith('/buku/')) {
@@ -21,13 +21,7 @@ export function useReadingProgressRestore() {
         if (!bookSlug) return;
 
         try {
-          const user = await getOrCreateUser(
-            session.user.email || "",
-            session.user.name || "",
-            session.user.image || ""
-          );
-
-          const progressData = await getUserReadingProgress(user._id);
+          const progressData = await getUserReadingProgress(session.user.id);
           const bookProgress = progressData.find(
             (p: any) => p.bookSlug === bookSlug
           );
