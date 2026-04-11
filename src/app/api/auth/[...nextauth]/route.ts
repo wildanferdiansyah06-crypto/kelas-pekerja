@@ -13,7 +13,13 @@ const handler = NextAuth({
     async signIn({ user }) {
       if (user.email) {
         // Ensure user exists in Sanity when signing in
-        await getOrCreateUser(user.email, user.name || "", user.image || "")
+        try {
+          await getOrCreateUser(user.email, user.name || "", user.image || "")
+        } catch (error) {
+          console.error('Error creating user in Sanity during sign-in:', error)
+          // Allow sign-in to proceed even if Sanity user creation fails
+          // The user will be created later when they try to bookmark
+        }
       }
       return true
     },
