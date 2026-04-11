@@ -110,7 +110,7 @@ return (
     {/* Logo */}
     <Link
       href="/"
-      className="font-serif text-lg tracking-wider text-[#f4e4d4] opacity-90 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform"
+      className="font-serif text-lg tracking-wider text-[#f4e4d4] opacity-90 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform shrink-0"
     >
       Kelas Pekerja
     </Link>
@@ -132,10 +132,27 @@ return (
       ))}
     </div>
 
-    {/* Right Controls */}
-    <div className="flex items-center gap-3">
+    {/* Mobile Navigation - Horizontal Scroll */}
+    <div className="md:hidden flex items-center gap-4 overflow-x-auto scrollbar-hide flex-1 mx-4">
+      {navigation.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={`text-sm tracking-wider text-[#d4a574] transition-all duration-200 transform-gpu will-change-transform whitespace-nowrap ${
+            pathname === item.href
+              ? "text-[#f4e4d4] font-medium"
+              : "hover:text-[#f4e4d4]"
+          }`}
+        >
+          {item.label}
+        </Link>
+      ))}
+    </div>
 
-      {/* User Profile Display */}
+    {/* Right Controls */}
+    <div className="flex items-center gap-3 shrink-0">
+
+      {/* User Profile Display - Desktop */}
       {session?.user ? (
         <div className="hidden md:flex items-center gap-3">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
@@ -170,6 +187,21 @@ return (
         </Link>
       )}
 
+      {/* User Profile Display - Mobile */}
+      {session?.user && (
+        <div className="md:hidden flex items-center gap-2 px-2 py-1 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
+          {session.user.image && (
+            <Image
+              src={session.user.image}
+              alt={session.user.name || 'User'}
+              width={20}
+              height={20}
+              className="w-5 h-5 rounded-full object-cover"
+            />
+          )}
+        </div>
+      )}
+
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
@@ -179,7 +211,7 @@ return (
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
 
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button - Show user menu */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="md:hidden p-2 rounded-full text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
@@ -191,30 +223,15 @@ return (
     </div>
   </div>
 
-  {/* Mobile Menu */}
+  {/* Mobile Menu - User Actions Only */}
   <div className={`md:hidden transition-all duration-300 ease-out overflow-hidden will-change-transform transform-gpu ${
-    isMenuOpen ? 'max-h-64 opacity-100 border-t border-[#8b7355]/20 bg-[#3d2817] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
+    isMenuOpen ? 'max-h-48 opacity-100 border-t border-[#8b7355]/20 bg-[#3d2817] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
   }`}>
-    <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
+    <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
 
-      {navigation.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          onClick={() => setIsMenuOpen(false)}
-          className={`text-sm transition-all duration-200 transform-gpu will-change-transform ${
-            pathname === item.href
-              ? "text-[#f4e4d4] font-medium"
-              : "text-[#d4a574] hover:text-[#f4e4d4]"
-          }`}
-        >
-          {item.label}
-        </Link>
-      ))}
-
-      {/* Mobile User Profile Display */}
+      {/* Mobile User Profile Full Display */}
       {session?.user && (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
+        <div className="flex items-center gap-3 px-3 py-2 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
           {session.user.image && (
             <Image
               src={session.user.image}
