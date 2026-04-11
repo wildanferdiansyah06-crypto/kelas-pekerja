@@ -8,9 +8,15 @@ import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2, FileUp, X, Star
 
 import { useState, useRef, useEffect } from "react";
 
+import { useTheme } from "@/src/components/ThemeProvider";
+
 
 
 export default function TulisPage() {
+
+  const { theme } = useTheme();
+
+  const isDark = theme === "dark";
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,8 +25,6 @@ export default function TulisPage() {
   const [error, setError] = useState("");
 
   const [files, setFiles] = useState<File[]>([]);
-
-  const [isDark, setIsDark] = useState(true);
 
   const [mounted, setMounted] = useState(false);
 
@@ -43,34 +47,6 @@ export default function TulisPage() {
   useEffect(() => {
 
     setMounted(true);
-
-    const checkTheme = () => {
-
-      const isDarkMode = document.documentElement.classList.contains('dark') || 
-
-                        localStorage.getItem('theme') === 'dark' ||
-
-                        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-      setIsDark(isDarkMode);
-
-    };
-
-    checkTheme();
-
-    const observer = new MutationObserver(() => checkTheme());
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    window.addEventListener('storage', checkTheme);
-
-    return () => {
-
-      observer.disconnect();
-
-      window.removeEventListener('storage', checkTheme);
-
-    };
 
   }, []);
 
@@ -322,31 +298,31 @@ export default function TulisPage() {
 
 
 
-  const theme = {
+  const themeColors = {
 
-    bg: isDark ? "bg-[#1a1814]" : "bg-[#f5f0e8]",
+    bg: isDark ? "bg-[#0f0e0c]" : "bg-[#2c1810]",
 
-    text: isDark ? "text-[#e8e0d5]" : "text-[#3d3229]",
+    text: isDark ? "text-[#f4e4d4]" : "text-[#d4a574]",
 
-    textMuted: isDark ? "text-[#a09080]" : "text-[#8b7355]",
+    textMuted: isDark ? "text-[#bfae9c]" : "text-[#8b7355]",
 
-    textSubtle: isDark ? "text-[#8b7355]" : "text-[#a08060]",
+    textSubtle: isDark ? "text-[#a09080]" : "text-[#a08060]",
 
-    card: isDark ? "bg-[#231f1a]/90 border-[#3d3229]/50" : "bg-[#faf8f5]/90 border-[#d4c8b8]/50",
+    card: isDark ? "bg-[#1a1815]/80 border-[#3d3229]/40" : "bg-[#3d2817]/60 border-[#8b4513]/30",
 
-    input: isDark ? "bg-[#0f0e0c]/50 border-[#3d3229]/50 text-[#e8e0d5] placeholder-[#5a4d40]" : "bg-[#fff]/60 border-[#d4c8b8] text-[#3d3229] placeholder-[#a09080]",
+    input: isDark ? "bg-[#1a1815]/50 border-[#3d3229]/40 text-[#f4e4d4] placeholder-[#a09080]" : "bg-[#3d2817]/60 border-[#8b4513]/30 text-[#d4a574] placeholder-[#8b7355]",
 
-    accent: "text-[#8b7355]",
+    accent: isDark ? "text-[#d4a574]" : "text-[#8b7355]",
 
-    accentBg: "bg-[#8b7355] hover:bg-[#6b5a45]",
+    accentBg: isDark ? "bg-[#d4a574] hover:bg-[#c7b299]" : "bg-[#8b7355] hover:bg-[#6b5a45]",
 
     accentText: "text-white",
 
-    border: isDark ? "border-[#3d3229]/30" : "border-[#d4c8b8]/50",
+    border: isDark ? "border-[#3d3229]/40" : "border-[#8b4513]/30",
 
-    highlight: isDark ? "bg-[#8b7355]/10" : "bg-[#8b7355]/5",
+    highlight: isDark ? "bg-[#d4a574]/10" : "bg-[#8b7355]/10",
 
-    glow: isDark ? "shadow-[#8b7355]/20" : "shadow-[#8b7355]/10",
+    glow: isDark ? "shadow-[#d4a574]/20" : "shadow-[#8b7355]/20",
 
   };
 
@@ -362,11 +338,11 @@ export default function TulisPage() {
 
     return (
 
-      <div className={`${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+      <div className={`${themeColors.text} relative overflow-hidden transition-colors duration-500 bg-gradient-to-br ${isDark ? 'from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
 
         <div className="fixed inset-0 pointer-events-none">
 
-          <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#231f1a] via-[#1a1814] to-[#0f0e0c]' : 'from-[#faf8f5] via-[#f5f0e8] to-[#ebe4d8]'}`} />
+          <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`} />
 
           {[...Array(8)].map((_, i) => (
 
@@ -378,7 +354,7 @@ export default function TulisPage() {
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 
-            <div className={`w-[600px] h-[600px] rounded-full ${theme.accent} opacity-5 blur-3xl animate-pulse`} />
+            <div className={`w-[600px] h-[600px] rounded-full ${themeColors.accent} opacity-5 blur-3xl animate-pulse`} />
 
           </div>
 
@@ -392,7 +368,7 @@ export default function TulisPage() {
 
             <div className="relative inline-block mb-8">
 
-              <div className={`w-28 h-28 mx-auto rounded-full ${theme.accentBg} flex items-center justify-center animate-bounce-slow shadow-2xl ${theme.glow}`}>
+              <div className={`w-28 h-28 mx-auto rounded-full ${themeColors.accentBg} flex items-center justify-center animate-bounce-slow shadow-2xl ${themeColors.glow}`}>
 
                 <CheckCircle className="w-14 h-14 text-white" strokeWidth={2.5} />
 
@@ -404,17 +380,17 @@ export default function TulisPage() {
 
               </div>
 
-              <div className={`absolute inset-0 w-28 h-28 mx-auto rounded-full ${theme.accent} blur-3xl opacity-30 animate-pulse`} />
+              <div className={`absolute inset-0 w-28 h-28 mx-auto rounded-full ${themeColors.accent} blur-3xl opacity-30 animate-pulse`} />
 
             </div>
 
             
 
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${theme.highlight} text-sm font-medium mb-6 animate-fade-in`}>
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${themeColors.highlight} text-sm font-medium mb-6 animate-fade-in`}>
 
-              <TrendingUp size={16} className={theme.accent} />
+              <TrendingUp size={16} className={themeColors.accent} />
 
-              <span className={theme.accent}>Tulisan lo bakal dibaca ribuan orang</span>
+              <span className={themeColors.accent}>Tulisan lo bakal dibaca ribuan orang</span>
 
             </div>
 
@@ -428,11 +404,11 @@ export default function TulisPage() {
 
             
 
-            <p className={`${theme.textMuted} text-lg mb-8 leading-relaxed`}>
+            <p className={`${themeColors.textMuted} text-lg mb-8 leading-relaxed`}>
 
               Tulisan lo udah masuk. Sekarang tim kami bakal review dulu. 
 
-              <span className={`${theme.text} font-medium block mt-2`}>
+              <span className={`${themeColors.text} font-medium block mt-2`}>
 
                 Yang jelas: cerita lo berarti buat banyak orang.
 
@@ -442,11 +418,11 @@ export default function TulisPage() {
 
 
 
-            <div className={`${theme.card} rounded-2xl p-6 mb-8 border text-left`}>
+            <div className={`${themeColors.card} rounded-2xl p-6 mb-8 border text-left`}>
 
-              <h3 className={`${theme.text} font-semibold mb-4 flex items-center gap-2`}>
+              <h3 className={`${themeColors.text} font-semibold mb-4 flex items-center gap-2`}>
 
-                <Eye size={20} className={theme.accent} />
+                <Eye size={20} className={themeColors.accent} />
 
                 Apa selanjutnya?
 
@@ -466,7 +442,7 @@ export default function TulisPage() {
 
                   <div key={i} className="flex items-start gap-4">
 
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${item.done ? (isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600') : theme.highlight + ' ' + theme.textMuted}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${item.done ? (isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600') : themeColors.highlight + ' ' + themeColors.textMuted}`}>
 
                       {item.step}
 
@@ -474,9 +450,9 @@ export default function TulisPage() {
 
                     <div>
 
-                      <p className={`${theme.text} font-medium text-sm`}>{item.title}</p>
+                      <p className={`${themeColors.text} font-medium text-sm`}>{item.title}</p>
 
-                      <p className={`${theme.textMuted} text-xs`}>{item.desc}</p>
+                      <p className={`${themeColors.textMuted} text-xs`}>{item.desc}</p>
 
                     </div>
 
@@ -492,7 +468,7 @@ export default function TulisPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
 
-              <Link href="/buku" className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 ${theme.accentBg} ${theme.accentText} rounded-full transition-all duration-300 text-sm font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5`}>
+              <Link href="/buku" className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 ${themeColors.accentBg} ${themeColors.accentText} rounded-full transition-all duration-300 text-sm font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5`}>
 
                 <Eye size={18} />
 
@@ -500,7 +476,7 @@ export default function TulisPage() {
 
               </Link>
 
-              <button onClick={() => setIsSuccess(false)} className={`w-full sm:w-auto px-6 py-3 ${theme.card} ${theme.text} rounded-full border hover:${theme.accent} transition-all text-sm font-medium`}>
+              <button onClick={() => setIsSuccess(false)} className={`w-full sm:w-auto px-6 py-3 ${themeColors.card} ${themeColors.text} rounded-full border hover:${themeColors.accent} transition-all text-sm font-medium`}>
 
                 Tulis Lagi
 
@@ -522,13 +498,13 @@ export default function TulisPage() {
 
   return (
 
-    <div className={`min-h-screen ${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500`}>
+    <div className={`min-h-screen ${themeColors.text} relative overflow-hidden transition-colors duration-500 bg-gradient-to-br ${isDark ? 'from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
 
       {/* Background */}
 
       <div className="fixed inset-0 pointer-events-none">
 
-        <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#231f1a] via-[#1a1814] to-[#0f0e0c]' : 'from-[#faf8f5] via-[#f5f0e8] to-[#ebe4d8]'}`} />
+        <div className={`absolute inset-0 bg-gradient-to-br ${isDark ? 'from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`} />
 
         
 
@@ -604,7 +580,7 @@ export default function TulisPage() {
 
           {/* Back */}
 
-          <Link href="/" className={`inline-flex items-center gap-2 text-sm ${theme.textSubtle} hover:${theme.text} transition-all mb-6 group`}>
+          <Link href="/" className={`inline-flex items-center gap-2 text-sm ${themeColors.textSubtle} hover:${themeColors.text} transition-all mb-6 group`}>
 
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
 
@@ -618,11 +594,11 @@ export default function TulisPage() {
 
           <div className="text-center mb-10">
 
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${theme.highlight} text-xs tracking-wider uppercase mb-5`}>
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${themeColors.highlight} text-xs tracking-wider uppercase mb-5`}>
 
-              <Sparkles size={14} className={theme.accent} />
+              <Sparkles size={14} className={themeColors.accent} />
 
-              <span className={theme.accent}>Platform Review Kerja No.1 Indonesia</span>
+              <span className={themeColors.accent}>Platform Review Kerja No.1 Indonesia</span>
 
             </div>
 
@@ -630,11 +606,11 @@ export default function TulisPage() {
 
             <h1 className="font-serif text-3xl md:text-5xl mb-4 leading-tight">
 
-              Pengalaman Kerja Lo Bisa <span className={`${theme.accent} relative`}>
+              Pengalaman Kerja Lo Bisa <span className={`${themeColors.accent} relative`}>
 
                 Nyelamatin
 
-                <svg className={`absolute -bottom-2 left-0 w-full h-3 ${theme.accent}`} viewBox="0 0 100 12" preserveAspectRatio="none">
+                <svg className={`absolute -bottom-2 left-0 w-full h-3 ${themeColors.accent}`} viewBox="0 0 100 12" preserveAspectRatio="none">
 
                   <path d="M0,8 Q50,0 100,8" stroke="currentColor" strokeWidth="3" fill="none" opacity="0.3"/>
 
@@ -646,13 +622,13 @@ export default function TulisPage() {
 
             
 
-            <p className={`${theme.textMuted} text-lg max-w-xl mx-auto leading-relaxed mb-6`}>
+            <p className={`${themeColors.textMuted} text-lg max-w-xl mx-auto leading-relaxed mb-6`}>
 
-              Ribuan orang tiap hari <span className={theme.text}>bingung mau kerja di mana.</span> 
+              Ribuan orang tiap hari <span className={themeColors.text}>bingung mau kerja di mana.</span> 
 
               Dengan cerita lo, mereka bisa 
 
-              <span className={`${theme.text} font-medium`}> gak salah pilih tempat kerja.</span>
+              <span className={`${themeColors.text} font-medium`}> gak salah pilih tempat kerja.</span>
 
             </p>
 
@@ -664,13 +640,13 @@ export default function TulisPage() {
 
               {benefits.map((benefit, i) => (
 
-                <div key={i} className={`${theme.card} rounded-xl p-4 border text-center hover:scale-105 transition-transform duration-300`}>
+                <div key={i} className={`${themeColors.card} rounded-xl p-4 border text-center hover:scale-105 transition-transform duration-300`}>
 
-                  <benefit.icon size={24} className={`${theme.accent} mx-auto mb-2`} />
+                  <benefit.icon size={24} className={`${themeColors.accent} mx-auto mb-2`} />
 
-                  <p className={`${theme.text} text-xs font-medium`}>{benefit.title}</p>
+                  <p className={`${themeColors.text} text-xs font-medium`}>{benefit.title}</p>
 
-                  <p className={`${theme.textMuted} text-[10px]`}>{benefit.desc}</p>
+                  <p className={`${themeColors.textMuted} text-[10px]`}>{benefit.desc}</p>
 
                 </div>
 
@@ -684,13 +660,13 @@ export default function TulisPage() {
 
           {/* EXAMPLES - Real Stories */}
 
-          <div className={`${theme.card} rounded-2xl p-6 mb-8 border`}>
+          <div className={`${themeColors.card} rounded-2xl p-6 mb-8 border`}>
 
             <div className="flex items-center justify-between mb-5">
 
-              <h3 className={`${theme.text} font-semibold flex items-center gap-2`}>
+              <h3 className={`${themeColors.text} font-semibold flex items-center gap-2`}>
 
-                <Quote size={20} className={theme.accent} />
+                <Quote size={20} className={themeColors.accent} />
 
                 Tulisan yang Lolos
 
@@ -718,13 +694,13 @@ export default function TulisPage() {
 
             
 
-            <div className={`${theme.highlight} rounded-xl p-5 transition-all duration-500 border-l-4 border-[#8b7355]`}>
+            <div className={`${themeColors.highlight} rounded-xl p-5 transition-all duration-500 border-l-4 border-[#8b7355]`}>
 
               <div className="flex items-center justify-between mb-3">
 
                 <div className="flex items-center gap-3">
 
-                  <span className={`text-xs px-3 py-1 rounded-full ${isDark ? 'bg-[#3d3229]/50' : 'bg-[#d4c8b8]/50'} ${theme.accent} font-medium`}>
+                  <span className={`text-xs px-3 py-1 rounded-full ${isDark ? 'bg-[#3d3229]/50' : 'bg-[#d4c8b8]/50'} ${themeColors.accent} font-medium`}>
 
                     {examples[activeExample].category}
 
@@ -734,7 +710,7 @@ export default function TulisPage() {
 
                     {[...Array(5)].map((_, i) => (
 
-                      <Star key={i} size={12} className={i < examples[activeExample].rating ? "text-yellow-500 fill-yellow-500" : theme.textMuted} />
+                      <Star key={i} size={12} className={i < examples[activeExample].rating ? "text-yellow-500 fill-yellow-500" : themeColors.textMuted} />
 
                     ))}
 
@@ -742,7 +718,7 @@ export default function TulisPage() {
 
                 </div>
 
-                <div className={`flex items-center gap-1 ${theme.textMuted} text-xs`}>
+                <div className={`flex items-center gap-1 ${themeColors.textMuted} text-xs`}>
 
                   <Heart size={12} className="text-red-500 fill-red-500" />
 
@@ -754,23 +730,23 @@ export default function TulisPage() {
 
               
 
-              <h4 className={`${theme.text} font-bold text-lg mb-2 leading-tight`}>
+              <h4 className={`${themeColors.text} font-bold text-lg mb-2 leading-tight`}>
 
                 "{examples[activeExample].title}"
 
               </h4>
 
-              <p className={`${theme.textMuted} text-sm leading-relaxed mb-3`}>
+              <p className={`${themeColors.textMuted} text-sm leading-relaxed mb-3`}>
 
                 {examples[activeExample].content}
 
               </p>
 
-              <div className={`flex items-center justify-between ${theme.textSubtle} text-xs`}>
+              <div className={`flex items-center justify-between ${themeColors.textSubtle} text-xs`}>
 
                 <span>@{examples[activeExample].author}</span>
 
-                <span className={theme.accent}>Lolos moderasi</span>
+                <span className={themeColors.accent}>Lolos moderasi</span>
 
               </div>
 
@@ -778,11 +754,11 @@ export default function TulisPage() {
 
             
 
-            <p className={`${theme.textMuted} text-xs mt-4 text-center`}>
+            <p className={`${themeColors.textMuted} text-xs mt-4 text-center`}>
 
               Geser untuk lihat cerita lain • 
 
-              <span className={theme.accent}> Tulisan lo bisa jadi yang berikutnya</span>
+              <span className={themeColors.accent}> Tulisan lo bisa jadi yang berikutnya</span>
 
             </p>
 
@@ -792,13 +768,13 @@ export default function TulisPage() {
 
           {/* FORM */}
 
-          <div className={`${theme.card} rounded-2xl p-6 md:p-8 border shadow-xl relative overflow-hidden`}>
+          <div className={`${themeColors.card} rounded-2xl p-6 md:p-8 border shadow-xl relative overflow-hidden`}>
 
             {/* Writing indicator */}
 
             {isWriting && (
 
-              <div className={`absolute top-0 left-0 right-0 h-1 ${theme.accentBg} transition-all duration-300`} style={{width: `${Math.min(wordCount / 5, 100)}%`}} />
+              <div className={`absolute top-0 left-0 right-0 h-1 ${themeColors.accentBg} transition-all duration-300`} style={{width: `${Math.min(wordCount / 5, 100)}%`}} />
 
             )}
 
@@ -822,7 +798,7 @@ export default function TulisPage() {
 
               <div>
 
-                <label htmlFor="title" className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                <label htmlFor="title" className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                   Judul Tulisan <span className="text-red-500">*</span>
 
@@ -840,7 +816,7 @@ export default function TulisPage() {
 
                   placeholder="Contoh: 'Gaji 4jt, Tapi Tiap Hari Dibentak'"
 
-                  className={`w-full ${theme.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all font-medium`}
+                  className={`w-full ${themeColors.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all font-medium`}
 
                 />
 
@@ -854,7 +830,7 @@ export default function TulisPage() {
 
                 <div>
 
-                  <label htmlFor="category" className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                  <label htmlFor="category" className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                     Bidang Kerja <span className="text-red-500">*</span>
 
@@ -868,7 +844,7 @@ export default function TulisPage() {
 
                     required
 
-                    className={`w-full ${theme.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all appearance-none cursor-pointer`}
+                    className={`w-full ${themeColors.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all appearance-none cursor-pointer`}
 
                     style={{
 
@@ -912,7 +888,7 @@ export default function TulisPage() {
 
                 <div>
 
-                  <label className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                  <label className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                     Rating Pengalaman
 
@@ -942,7 +918,7 @@ export default function TulisPage() {
 
                           size={28}
 
-                          className={(hoverRating ? star <= hoverRating : star <= rating) ? "text-yellow-500 fill-yellow-500 drop-shadow-sm" : theme.textMuted}
+                          className={(hoverRating ? star <= hoverRating : star <= rating) ? "text-yellow-500 fill-yellow-500 drop-shadow-sm" : themeColors.textMuted}
 
                         />
 
@@ -950,7 +926,7 @@ export default function TulisPage() {
 
                     ))}
 
-                    <span className={`ml-3 text-sm font-medium ${theme.textMuted}`}>
+                    <span className={`ml-3 text-sm font-medium ${themeColors.textMuted}`}>
 
                       {rating > 0 && ["Buruk banget", "Kurang oke", "Biasa aja", "Bagus", "Luar biasa"][rating - 1]}
 
@@ -970,7 +946,7 @@ export default function TulisPage() {
 
                 <div>
 
-                  <label htmlFor="author" className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                  <label htmlFor="author" className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                     Nama <span className="text-xs normal-case font-normal opacity-70">(Boleh samaran)</span>
 
@@ -986,7 +962,7 @@ export default function TulisPage() {
 
                     placeholder="Contoh: BaristaJKT, PakAsep, Anonim"
 
-                    className={`w-full ${theme.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all`}
+                    className={`w-full ${themeColors.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all`}
 
                   />
 
@@ -996,7 +972,7 @@ export default function TulisPage() {
 
                 <div>
 
-                  <label htmlFor="email" className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                  <label htmlFor="email" className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                     Email <span className="text-xs normal-case font-normal opacity-70">(Opsional)</span>
 
@@ -1012,7 +988,7 @@ export default function TulisPage() {
 
                     placeholder="Buat notifikasi kalau tulisan lolos"
 
-                    className={`w-full ${theme.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all`}
+                    className={`w-full ${themeColors.input} border rounded-lg px-4 py-3 focus:border-[#8b7355]/60 focus:outline-none transition-all`}
 
                   />
 
@@ -1026,7 +1002,7 @@ export default function TulisPage() {
 
               <div>
 
-                <label className={`block text-xs tracking-wider uppercase ${theme.textSubtle} mb-2 font-semibold`}>
+                <label className={`block text-xs tracking-wider uppercase ${themeColors.textSubtle} mb-2 font-semibold`}>
 
                   Bukti / Lampiran <span className="text-xs normal-case font-normal opacity-70">(Slip gaji, foto, dll)</span>
 
@@ -1038,19 +1014,19 @@ export default function TulisPage() {
 
                   onClick={() => fileInputRef.current?.click()}
 
-                  className={`w-full ${theme.input} border-2 border-dashed rounded-lg px-4 py-6 text-center cursor-pointer hover:border-[#8b7355]/60 hover:bg-[#8b7355]/5 transition-all group`}
+                  className={`w-full ${themeColors.input} border-2 border-dashed rounded-lg px-4 py-6 text-center cursor-pointer hover:border-[#8b7355]/60 hover:bg-[#8b7355]/5 transition-all group`}
 
                 >
 
-                  <div className={`w-12 h-12 mx-auto mb-3 rounded-full ${theme.highlight} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <div className={`w-12 h-12 mx-auto mb-3 rounded-full ${themeColors.highlight} flex items-center justify-center group-hover:scale-110 transition-transform`}>
 
-                    <FileUp className={`w-6 h-6 ${theme.accent}`} />
+                    <FileUp className={`w-6 h-6 ${themeColors.accent}`} />
 
                   </div>
 
-                  <p className={`text-sm ${theme.text} font-medium mb-1`}>Klik atau drop file di sini</p>
+                  <p className={`text-sm ${themeColors.text} font-medium mb-1`}>Klik atau drop file di sini</p>
 
-                  <p className={`text-xs ${theme.textMuted}`}>DOCX, TXT, PDF, JPG, PNG • Max 25MB</p>
+                  <p className={`text-xs ${themeColors.textMuted}`}>DOCX, TXT, PDF, JPG, PNG • Max 25MB</p>
 
                 </div>
 
@@ -1066,21 +1042,21 @@ export default function TulisPage() {
 
                     {files.map((file, index) => (
 
-                      <div key={index} className={`flex items-center justify-between ${theme.input} border rounded-lg px-3 py-2 group/file`}>
+                      <div key={index} className={`flex items-center justify-between ${themeColors.input} border rounded-lg px-3 py-2 group/file`}>
 
                         <div className="flex items-center gap-3 min-w-0">
 
                           <div className={`w-10 h-10 ${isDark ? 'bg-[#3d3229]/50' : 'bg-[#d4c8b8]/50'} rounded-lg flex items-center justify-center flex-shrink-0`}>
 
-                            <span className={`text-xs ${theme.accent} font-bold uppercase`}>{file.name.split('.').pop()}</span>
+                            <span className={`text-xs ${themeColors.accent} font-bold uppercase`}>{file.name.split('.').pop()}</span>
 
                           </div>
 
                           <div className="min-w-0">
 
-                            <p className={`text-sm ${theme.text} font-medium truncate`}>{file.name}</p>
+                            <p className={`text-sm ${themeColors.text} font-medium truncate`}>{file.name}</p>
 
-                            <p className={`text-xs ${theme.textMuted}`}>{formatFileSize(file.size)}</p>
+                            <p className={`text-xs ${themeColors.textMuted}`}>{formatFileSize(file.size)}</p>
 
                           </div>
 
@@ -1110,13 +1086,13 @@ export default function TulisPage() {
 
                 <div className="flex items-center justify-between mb-2">
 
-                  <label htmlFor="content" className={`text-xs tracking-wider uppercase ${theme.textSubtle} font-semibold`}>
+                  <label htmlFor="content" className={`text-xs tracking-wider uppercase ${themeColors.textSubtle} font-semibold`}>
 
                     Cerita Lo <span className="text-red-500">*</span>
 
                   </label>
 
-                  <span className={`text-xs ${wordCount < 50 ? theme.textMuted : wordCount < 100 ? 'text-yellow-500' : theme.accent} font-medium transition-colors`}>
+                  <span className={`text-xs ${wordCount < 50 ? themeColors.textMuted : wordCount < 100 ? 'text-yellow-500' : themeColors.accent} font-medium transition-colors`}>
 
                     {wordCount} kata {wordCount >= 100 && '✓'}
 
@@ -1160,13 +1136,13 @@ Ide yang bisa ditulis:
 
 Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
-                    className={`w-full ${theme.input} border rounded-lg px-4 py-4 focus:border-[#8b7355]/60 focus:outline-none transition-all resize-none leading-relaxed`}
+                    className={`w-full ${themeColors.input} border rounded-lg px-4 py-4 focus:border-[#8b7355]/60 focus:outline-none transition-all resize-none leading-relaxed`}
 
                   />
 
                   {wordCount > 0 && wordCount < 50 && (
 
-                    <div className={`absolute bottom-3 right-3 text-[10px] ${theme.textMuted} bg-[#0f0e0c]/80 px-2 py-1 rounded`}>
+                    <div className={`absolute bottom-3 right-3 text-[10px] ${themeColors.textMuted} bg-[#0f0e0c]/80 px-2 py-1 rounded`}>
 
                       Min. 50 kata untuk lolos
 
@@ -1176,9 +1152,9 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
                 </div>
 
-                <p className={`text-xs ${theme.textMuted} mt-2`}>
+                <p className={`text-xs ${themeColors.textMuted} mt-2`}>
 
-                  <span className={theme.accent}>Tip:</span> Tulisan 100-300 kata paling banyak dibaca
+                  <span className={themeColors.accent}>Tip:</span> Tulisan 100-300 kata paling banyak dibaca
 
                 </p>
 
@@ -1196,7 +1172,7 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
                   disabled={isSubmitting || wordCount < 50}
 
-                  className={`w-full inline-flex items-center justify-center gap-2 px-8 py-4 ${wordCount >= 50 ? theme.accentBg : 'bg-gray-500 cursor-not-allowed'} ${theme.accentText} rounded-full transition-all duration-300 text-sm font-bold tracking-wide shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:hover:transform-none`}
+                  className={`w-full inline-flex items-center justify-center gap-2 px-8 py-4 ${wordCount >= 50 ? themeColors.accentBg : 'bg-gray-500 cursor-not-allowed'} ${themeColors.accentText} rounded-full transition-all duration-300 text-sm font-bold tracking-wide shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:hover:transform-none`}
 
                 >
 
@@ -1216,7 +1192,7 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
                 {wordCount < 50 && (
 
-                  <p className={`text-xs ${theme.textMuted} text-center mt-3`}>
+                  <p className={`text-xs ${themeColors.textMuted} text-center mt-3`}>
 
                     Tulis minimal 50 kata dulu ya biar bermanfaat
 
@@ -1226,7 +1202,7 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
                 
 
-                <div className={`flex items-center justify-center gap-4 mt-4 text-xs ${theme.textMuted}`}>
+                <div className={`flex items-center justify-center gap-4 mt-4 text-xs ${themeColors.textMuted}`}>
 
                   <span className="flex items-center gap-1">
 
@@ -1252,11 +1228,11 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
           {/* Trust Footer */}
 
-          <div className={`mt-10 pt-6 ${theme.border} border-t`}>
+          <div className={`mt-10 pt-6 ${themeColors.border} border-t`}>
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
 
-              <p className={`text-sm ${theme.textSubtle} italic max-w-md`}>
+              <p className={`text-sm ${themeColors.textSubtle} italic max-w-md`}>
 
                 "Gak semua orang kuat. Tapi banyak yang tetap jalan. 
 
@@ -1264,7 +1240,7 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
 
               </p>
 
-    <div className={`flex items-center gap-2 ${theme.textMuted} text-xs`}>
+    <div className={`flex items-center gap-2 ${themeColors.textMuted} text-xs`}>
 
       <Coffee size={14} />
 
