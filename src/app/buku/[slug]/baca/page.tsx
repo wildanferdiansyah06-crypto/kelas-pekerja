@@ -10,6 +10,7 @@ import { Book } from "@/src/types"
 
 import BookmarkButton from "@/src/components/BookmarkButton"
 import ShareButtons from "@/src/components/ShareButtons"
+import ReadingProgressRestore from "@/src/components/ReadingProgressRestore"
 
 const books = booksData.books as Book[]
 
@@ -71,6 +72,8 @@ export default async function BookPage({ params }: BookPageProps) {
 
   return (
     <main className="bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700 w-full">
+
+      <ReadingProgressRestore />
 
       {/* NAVBAR */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 backdrop-blur-sm border-b border-[#8b7355]/10 shadow-sm">
