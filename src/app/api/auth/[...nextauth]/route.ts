@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import { getOrCreateUser } from "@/src/lib/user"
 
 const handler = NextAuth({
   providers: [
@@ -9,17 +10,26 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, account, user }) {
-      if (account && user) {
-        token.id = user.id
+    async signIn({ user }) {
+      if (user.email) {
+        // Ensure user exists in Sanity when signing in
+        await getOrCreateUser(user.email, user.name || "", user.image || "")
+      }
+      return true
+    },
+    async jwt({ token, user }) {
+      if (user) {
         token.email = user.email
+        token.name = user.name
+        token.picture = user.image
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string
         session.user.email = token.email as string
+        session.user.name = token.name as string
+        session.user.image = token.picture as string
       }
       return session
     },

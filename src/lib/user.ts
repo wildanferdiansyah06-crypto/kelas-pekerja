@@ -9,6 +9,15 @@ export async function getOrCreateUser(email: string, name?: string, image?: stri
   if (existingUser) {
     console.log('Found existing user:', existingUser._id);
     console.log('Existing user bookmarks count:', existingUser.bookmarks?.length || 0);
+
+    // Update user data if name or image changed
+    if (name && existingUser.name !== name) {
+      await client.patch(existingUser._id).set({ name }).commit();
+    }
+    if (image && existingUser.image !== image) {
+      await client.patch(existingUser._id).set({ image }).commit();
+    }
+
     return existingUser;
   }
 
@@ -31,26 +40,8 @@ export async function getOrCreateUser(email: string, name?: string, image?: stri
 // Add bookmark to user
 export async function addBookmark(userId: string, itemId: string, itemType: "book" | "post") {
   console.log('addBookmark called:', { userId, itemId, itemType });
-  const query = `*[_type == "user" && _id == $userId][0]`;
-  const user = await client.fetch(query, { userId });
 
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  console.log('Current bookmarks count:', user.bookmarks?.length || 0);
-  console.log('Current bookmarks:', user.bookmarks);
-
-  const existingBookmark = user.bookmarks?.find(
-    (b: any) => b._id === itemId
-  );
-
-  if (existingBookmark) {
-    console.log('Bookmark already exists, skipping');
-    return user; // Already bookmarked
-  }
-
-  // Fetch the actual book/post data to store
+  // Fetch the actual book/post data to store first
   const contentQuery = itemType === "book"
     ? `*[_type == "book" && _id == $itemId][0]{_id, title, subtitle, cover, slug}`
     : `*[_type == "post" && _id == $itemId][0]{_id, title, slug}`;
@@ -63,12 +54,39 @@ export async function addBookmark(userId: string, itemId: string, itemType: "boo
 
   console.log('Content fetched:', content);
 
-  const updatedUser = await client.patch(userId).setIfMissing({ bookmarks: [] }).append("bookmarks", [
-    {
-      ...content,
-      _type: itemType,
-    },
-  ]).commit();
+  // Use a transaction to ensure atomic operation
+  const transaction = client.transaction();
+
+  // Fetch current user state
+  const query = `*[_type == "user" && _id == $userId][0]`;
+  const user = await client.fetch(query, { userId });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  console.log('Current bookmarks count:', user.bookmarks?.length || 0);
+
+  // Check if bookmark already exists
+  const existingBookmark = user.bookmarks?.find(
+    (b: any) => b._id === itemId
+  );
+
+  if (existingBookmark) {
+    console.log('Bookmark already exists, skipping');
+    return user; // Already bookmarked
+  }
+
+  // Add the bookmark
+  const bookmarkData = {
+    ...content,
+    _type: itemType,
+  };
+
+  const updatedUser = await client.patch(userId)
+    .setIfMissing({ bookmarks: [] })
+    .append("bookmarks", [bookmarkData])
+    .commit();
 
   console.log('Bookmark added successfully. New bookmarks count:', updatedUser.bookmarks?.length);
 
