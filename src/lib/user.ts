@@ -33,17 +33,28 @@ export async function addBookmark(userId: string, itemId: string, itemType: "boo
   }
 
   const existingBookmark = user.bookmarks?.find(
-    (b: any) => b._ref === itemId
+    (b: any) => b._id === itemId
   );
 
   if (existingBookmark) {
     return user; // Already bookmarked
   }
 
+  // Fetch the actual book/post data to store
+  const contentQuery = itemType === "book"
+    ? `*[_type == "book" && _id == $itemId][0]{_id, title, subtitle, cover, slug}`
+    : `*[_type == "post" && _id == $itemId][0]{_id, title, slug}`;
+
+  const content = await client.fetch(contentQuery, { itemId });
+
+  if (!content) {
+    throw new Error(`${itemType} not found`);
+  }
+
   const updatedUser = await client.patch(userId).setIfMissing({ bookmarks: [] }).append("bookmarks", [
     {
-      _type: "reference",
-      _ref: itemId,
+      ...content,
+      _type: itemType,
     },
   ]).commit();
 
@@ -60,7 +71,7 @@ export async function removeBookmark(userId: string, itemId: string) {
   }
 
   const updatedBookmarks = user.bookmarks?.filter(
-    (b: any) => b._ref !== itemId
+    (b: any) => b._id !== itemId
   );
 
   const updatedUser = await client.patch(userId).set({ bookmarks: updatedBookmarks }).commit();
@@ -111,7 +122,7 @@ export async function updateReadingProgress(userId: string, bookId: string, prog
 
 // Get user bookmarks
 export async function getUserBookmarks(userId: string) {
-  const query = `*[_type == "user" && _id == $userId][0]{bookmarks[]->{_id, _type, title, subtitle, cover, slug}}`;
+  const query = `*[_type == "user" && _id == $userId][0]{bookmarks}`;
   const user = await client.fetch(query, { userId });
 
   return user?.bookmarks || [];
