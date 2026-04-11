@@ -48,7 +48,11 @@ export default function ReadingProgress() {
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(async () => {
           try {
-            const user = await getOrCreateUser(session.user.email, session.user.name, session.user.image);
+            const user = await getOrCreateUser(
+              session.user.email || "",
+              session.user.name || "",
+              session.user.image || ""
+            );
             if (currentBookId) {
               await updateReadingProgress(user._id, currentBookId, Math.round(value));
             }
