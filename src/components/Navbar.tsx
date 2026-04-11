@@ -134,16 +134,29 @@ return (
     {/* Right Controls */}
     <div className="flex items-center gap-3">
 
-      {/* Login/Logout Button */}
-      {session ? (
-        <button
-          onClick={() => signOut({ callbackUrl: '/' })}
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm tracking-wider text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
-          aria-label="Logout"
-        >
-          <LogOut size={16} />
-          <span>Keluar</span>
-        </button>
+      {/* User Profile Display */}
+      {session?.user ? (
+        <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
+            {session.user.image && (
+              <img
+                src={session.user.image}
+                alt={session.user.name || 'User'}
+                className="w-6 h-6 rounded-full object-cover"
+              />
+            )}
+            <span className="text-sm text-[#d4a574] truncate max-w-[120px]">
+              {session.user.name || 'User'}
+            </span>
+          </div>
+          <button
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm tracking-wider text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+            aria-label="Logout"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
       ) : (
         <Link
           href="/auth/signin"
@@ -195,6 +208,22 @@ return (
           {item.label}
         </Link>
       ))}
+
+      {/* Mobile User Profile Display */}
+      {session?.user && (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
+          {session.user.image && (
+            <img
+              src={session.user.image}
+              alt={session.user.name || 'User'}
+              className="w-6 h-6 rounded-full object-cover"
+            />
+          )}
+          <span className="text-sm text-[#d4a574] truncate max-w-[120px]">
+            {session.user.name || 'User'}
+          </span>
+        </div>
+      )}
 
       {/* Mobile Login/Logout Button */}
       {session ? (
