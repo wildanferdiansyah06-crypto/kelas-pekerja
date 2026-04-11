@@ -272,7 +272,7 @@ function PageContent() {
         </div>
       </section>
 
-      <section className={`px-6 pb-16 w-full ${isDark ? 'bg-[#0f0e0c]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+      <section className="px-6 pb-16 w-full">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
           <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
