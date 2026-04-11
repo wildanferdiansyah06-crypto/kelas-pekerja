@@ -18,12 +18,14 @@
     "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@auth/core": "^0.34.3",
     "@vercel/speed-insights": "^2.0.0",
     "clsx": "^2.1.0",
     "dotenv": "^17.4.1",
     "framer-motion": "^11.2.0",
     "lucide-react": "^0.460.0",
     "next": "^15.5.15",
+    "next-auth": "^4.24.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sanity": "^3.99.0",

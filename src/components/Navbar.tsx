@@ -3,9 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, User, LogOut } from "lucide-react";
 import { useTheme } from "@/src/components/ThemeProvider";
 import { useNavbar } from "@/src/contexts/NavbarContext";
+import { useSession, signOut } from "next-auth/react";
 
 const navigation = [
 { label: "Beranda", href: "/" },
@@ -19,6 +20,7 @@ export default function Navbar() {
 const pathname = usePathname();
 const { theme, toggleTheme } = useTheme();
 const { isVisible: contextVisible } = useNavbar();
+const { data: session } = useSession();
 
 const [isMenuOpen, setIsMenuOpen] = useState(false);
 const [mounted, setMounted] = useState(false);
@@ -131,6 +133,26 @@ return (
 
     {/* Right Controls */}
     <div className="flex items-center gap-3">
+
+      {/* Login/Logout Button */}
+      {session ? (
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm tracking-wider text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+          aria-label="Logout"
+        >
+          <LogOut size={16} />
+          <span>Keluar</span>
+        </button>
+      ) : (
+        <Link
+          href="/auth/signin"
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm tracking-wider text-[#d4a574] hover:text-[#f4e4d4] hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+        >
+          <User size={16} />
+          <span>Masuk</span>
+        </Link>
+      )}
 
       {/* Theme Toggle */}
       <button
