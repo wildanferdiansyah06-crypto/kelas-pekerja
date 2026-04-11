@@ -129,10 +129,9 @@ export default defineType({
       title: 'Bab-Bab',
       type: 'array',
       of: [
-        defineField({
-          name: 'chapter',
-          title: 'Bab',
+        {
           type: 'object',
+          name: 'chapter',
           fields: [
             defineField({
               name: 'title',
@@ -184,7 +183,7 @@ export default defineType({
               ],
             }),
           ],
-        }),
+        },
       ],
     }),
   ],
