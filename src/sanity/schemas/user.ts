@@ -28,8 +28,39 @@ export default {
       type: 'array',
       of: [
         {
-          type: 'reference',
-          to: [{ type: 'book' }, { type: 'post' }],
+          type: 'object',
+          fields: [
+            {
+              name: '_id',
+              title: 'ID',
+              type: 'string',
+            },
+            {
+              name: '_type',
+              title: 'Type',
+              type: 'string',
+            },
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'subtitle',
+              title: 'Subtitle',
+              type: 'string',
+            },
+            {
+              name: 'cover',
+              title: 'Cover',
+              type: 'image',
+            },
+            {
+              name: 'slug',
+              title: 'Slug',
+              type: 'slug',
+            },
+          ],
         },
       ],
     },
@@ -42,11 +73,31 @@ export default {
           type: 'object',
           fields: [
             {
+              name: 'bookSlug',
+              title: 'Book Slug',
+              type: 'string',
+            },
+            {
               name: 'book',
               title: 'Book',
-              type: 'reference',
-              to: [{ type: 'book' }],
-              validation: (Rule: any) => Rule.required(),
+              type: 'object',
+              fields: [
+                {
+                  name: '_id',
+                  title: 'ID',
+                  type: 'string',
+                },
+                {
+                  name: 'title',
+                  title: 'Title',
+                  type: 'string',
+                },
+                {
+                  name: 'slug',
+                  title: 'Slug',
+                  type: 'slug',
+                },
+              ],
             },
             {
               name: 'progress',

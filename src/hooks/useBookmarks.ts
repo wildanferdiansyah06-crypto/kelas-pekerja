@@ -45,6 +45,7 @@ const loadBookmarks = async () => {
         savedAt: new Date().toISOString(),
       }));
 
+      console.log('Loaded bookmarks from Sanity:', transformedBookmarks);
       setBookmarks(transformedBookmarks);
     } catch (error) {
       console.error("Failed to load bookmarks from Sanity:", error);
@@ -111,11 +112,13 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
   if (session?.user) {
     // Add to Sanity if user is logged in
     try {
+      console.log('Adding bookmark to Sanity:', item);
       const user = await getOrCreateUser(
         session.user.email || "",
         session.user.name || "",
         session.user.image || ""
       );
+      console.log('User ID:', user._id);
       await addBookmarkToSanity(user._id, item.id, item.type);
 
       // Save reading progress when bookmarking a book
@@ -124,6 +127,7 @@ async (item: Omit<BookmarkedItem, "savedAt">) => {
         const scrollHeight = doc.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY || window.pageYOffset;
         const progress = scrollHeight > 0 ? Math.round((scrolled / scrollHeight) * 100) : 0;
+        console.log('Saving reading progress:', progress);
         await updateReadingProgress(user._id, item.slug, progress);
       }
 
