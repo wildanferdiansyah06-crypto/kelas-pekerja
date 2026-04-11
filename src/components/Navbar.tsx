@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Sun, Moon, User, LogOut } from "lucide-react";
 import { useTheme } from "@/src/components/ThemeProvider";
@@ -139,9 +140,11 @@ return (
         <div className="hidden md:flex items-center gap-3">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
             {session.user.image && (
-              <img
+              <Image
                 src={session.user.image}
                 alt={session.user.name || 'User'}
+                width={24}
+                height={24}
                 className="w-6 h-6 rounded-full object-cover"
               />
             )}
@@ -213,9 +216,11 @@ return (
       {session?.user && (
         <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#8b7355]/10 border border-[#8b7355]/20">
           {session.user.image && (
-            <img
+            <Image
               src={session.user.image}
               alt={session.user.name || 'User'}
+              width={24}
+              height={24}
               className="w-6 h-6 rounded-full object-cover"
             />
           )}
