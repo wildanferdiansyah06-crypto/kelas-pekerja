@@ -46,22 +46,22 @@ const config: Config = {
       colors: {
         kp: {
           // Backgrounds
-          'bg-base':     '#faf7f2',
-          'bg-surface':  '#f3ede4',
-          'bg-elevated': '#ede5d8',
+          'bg-base':     '#fdf6ee',
+          'bg-surface':  '#fff9f2',
+          'bg-elevated': '#f0e6d3',
           'bg-invert':   '#1c1410',
 
           // Text
-          'text-primary':   '#1c1410',
-          'text-secondary': '#4a3728',
-          'text-muted':     '#8a7060',
+          'text-primary':   '#2c1e0f',
+          'text-secondary': '#6b4c2a',
+          'text-muted':     '#9c7a55',
           'text-subtle':    '#b8a898',
           'text-on-dark':   '#f5f0e8',
 
           // Accent
-          'accent':       '#7c5c3a',
-          'accent-hover': '#5e4428',
-          'accent-light': '#c4a882',
+          'accent':       '#a0714f',
+          'accent-hover': '#7c5230',
+          'accent-light': '#e8d5b7',
           'accent-faint': '#f0e8dc',
         },
       },
@@ -70,10 +70,7 @@ const config: Config = {
       // TYPOGRAPHY
       // ==========================================
       fontFamily: {
-        display: ['var(--font-display)', 'Georgia', 'serif'],
-        body:    ['var(--font-body)', 'Georgia', 'serif'],
-        ui:      ['var(--font-ui)', 'system-ui', 'sans-serif'],
-        serif: ['var(--font-display)', 'var(--font-body)', 'Georgia', 'serif'],
+        serif: ['var(--font-display)', 'Georgia', 'serif'],
         sans: ['var(--font-ui)', 'system-ui', 'sans-serif'],
       },
       typography: ({ theme }: { theme: any }) => ({

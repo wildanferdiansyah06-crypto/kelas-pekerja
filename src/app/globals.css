@@ -7,33 +7,33 @@
 ============================================ */
 :root {
   /* --- Typography --- */
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'Lora', serif;
-  --font-ui: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Playfair Display', serif;
+  --font-ui: 'Inter', sans-serif;
 
   /* --- Backgrounds --- */
-  --kp-bg-base:        #faf7f2;   /* Background utama semua halaman */
-  --kp-bg-surface:     #f3ede4;   /* Card, sidebar, section background */
-  --kp-bg-elevated:    #ede5d8;   /* Hover state, elevated surface */
+  --kp-bg-base:        #fdf6ee;   /* krem hangat, bukan putih polos */
+  --kp-bg-surface:     #fff9f2;   /* card / navbar background */
+  --kp-bg-muted:       #f0e6d3;   /* section alt background */
   --kp-bg-invert:      #1c1410;   /* Footer, CTA gelap (tetap gelap di light mode) */
 
   /* --- Text --- */
-  --kp-text-primary:   #1c1410;   /* Heading utama, teks penting */
-  --kp-text-secondary: #4a3728;   /* Paragraf, body text */
-  --kp-text-muted:     #8a7060;   /* Label, metadata, nav link default */
+  --kp-text-primary:   #2c1e0f;   /* coklat tua pekat */
+  --kp-text-secondary: #6b4c2a;   /* coklat medium */
+  --kp-text-muted:     #9c7a55;   /* abu-coklat untuk placeholder */
   --kp-text-subtle:    #b8a898;   /* Placeholder, footer caption */
   --kp-text-on-dark:   #f5f0e8;   /* Teks di atas bg-invert */
 
-  /* --- Accent (Coffee Warm) --- */
-  --kp-accent:         #7c5c3a;   /* CTA button, tag, link aktif */
-  --kp-accent-hover:   #5e4428;   /* Hover state accent */
-  --kp-accent-light:   #c4a882;   /* Quote border, dekorasi halus */
+  /* --- Accent — Coffee --- */
+  --kp-accent:         #a0714f;   /* kopi susu */
+  --kp-accent-hover:   #7c5230;   /* kopi pekat hover */
+  --kp-accent-light:   #e8d5b7;   /* kopi muda untuk badge/chip */
   --kp-accent-faint:   #f0e8dc;   /* Tag background, highlight area */
 
   /* --- Borders --- */
-  --kp-border:         rgba(100, 75, 50, 0.15);  /* Border default */
-  --kp-border-medium:  rgba(100, 75, 50, 0.25);  /* Border hover/emphasis */
-  --kp-border-strong:  rgba(100, 75, 50, 0.45);  /* Border focused/active */
+  --kp-border:         #e2cdb0;
+  --kp-border-medium:  #f0e6d3;
+  --kp-border-strong:  rgba(100, 75, 50, 0.45);
 
   /* --- Typography --- */
   --kp-font-display:   var(--font-display), 'Georgia', serif;
@@ -42,13 +42,51 @@
 
   /* --- Shadow --- */
   --kp-shadow-sm:  0 1px 8px rgba(50, 30, 10, 0.06);
-  --kp-shadow-md:  0 4px 20px rgba(50, 30, 10, 0.08);
-  --kp-shadow-lg:  0 8px 40px rgba(50, 30, 10, 0.12);
+  --kp-shadow-md:  0 4px 24px rgba(100, 60, 20, 0.08);
+  --kp-shadow-lg:  0 8px 32px rgba(100, 60, 20, 0.16);
+}
+
+/* ============================================
+   DARK MODE DESIGN TOKENS — KELAS PEKERJA
+============================================ */
+.dark {
+  /* --- Backgrounds --- */
+  --kp-bg-base:        #0f0b07;   /* hitam dengan undertone coklat */
+  --kp-bg-surface:     #1a1410;   /* card / navbar */
+  --kp-bg-muted:       #231c14;   /* section alt */
+  --kp-bg-invert:      #1c1410;   /* Footer, CTA gelap */
+
+  /* --- Text --- */
+  --kp-text-primary:   #f2e8d5;   /* krem lembut */
+  --kp-text-secondary: #c9a97a;   /* coklat muda */
+  --kp-text-muted:     #7a6248;   /* muted */
+  --kp-text-subtle:    #5a4a38;   /* subtle */
+  --kp-text-on-dark:   #f5f0e8;   /* Teks di atas bg-invert */
+
+  /* --- Accent --- */
+  --kp-accent:         #c9915a;   /* orange-coklat hangat */
+  --kp-accent-hover:   #e0a96a;   /* lebih terang saat hover */
+  --kp-accent-light:   #2c1e0f;   /* badge/chip background */
+  --kp-accent-faint:   #3d2a1a;   /* Tag background, highlight area */
+
+  /* --- Borders --- */
+  --kp-border:         #2e2018;
+  --kp-border-medium:  #1f1610;
+  --kp-border-strong:  #3d2a1a;
+
+  /* --- Shadow --- */
+  --kp-shadow-sm:  0 1px 8px rgba(0, 0, 0, 0.3);
+  --kp-shadow-md:  0 4px 24px rgba(0, 0, 0, 0.5);
+  --kp-shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.7);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+
+  *, *::before, *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
   }
 
   body {
@@ -57,7 +95,6 @@
     font-family: var(--kp-font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-color 0.3s ease, color 0.2s ease;
   }
 
   ::selection {

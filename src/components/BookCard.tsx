@@ -91,15 +91,14 @@ export default function BookCard({
 
   const cardContent = (
     <article
-      className="relative h-full group cursor-pointer card-hover"
+      className="relative h-full group cursor-pointer card-hover rounded-2xl overflow-hidden"
       style={{
         opacity: 0,
         animationDelay,
         animation: 'fade-in-up 0.6s ease-out forwards',
         backgroundColor: 'var(--kp-bg-surface)',
         border: '1px solid var(--kp-border)',
-        borderRadius: '1rem',
-        overflow: 'hidden',
+        boxShadow: 'var(--kp-shadow-md)',
       }}
     >
       {/* Card Image Area */}
@@ -135,14 +134,14 @@ export default function BookCard({
       <div style={{ padding: '1rem' }}>
         {/* Title */}
         <h3
-          className="font-display font-semibold text-base leading-[1.4] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
+          className="font-serif font-semibold text-base leading-[1.4] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
           style={{ color: 'var(--kp-text-primary)' }}
         >
           {book.title}
         </h3>
 
         {/* Metadata */}
-        <div className="flex items-center gap-3 text-xs font-ui mt-2" style={{ color: 'var(--kp-text-muted)' }}>
+        <div className="flex items-center gap-3 text-xs font-sans mt-2" style={{ color: 'var(--kp-text-muted)' }}>
           <span>{book.pages || 'N/A'} halaman</span>
           <span>·</span>
           <span className="flex items-center gap-1">

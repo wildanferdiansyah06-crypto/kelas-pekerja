@@ -25,13 +25,13 @@ export default function Footer() {
         {/* Logo + tagline */}
         <div className="mb-12">
           <h2
-            className="font-display text-2xl font-bold mb-2"
+            className="font-serif text-2xl font-bold mb-2"
             style={{ color: 'var(--kp-text-primary)' }}
           >
             ☕ Kelas Pekerja
           </h2>
           <p
-            className="font-ui text-sm max-w-xs"
+            className="font-sans text-sm max-w-xs"
             style={{ color: 'var(--kp-text-muted)' }}
           >
             Dibuat dengan ☕ dan ❤️ di malam yang sunyi.
@@ -40,7 +40,7 @@ export default function Footer() {
 
         {/* Divider */}
         <div
-          className="pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-ui text-sm"
+          className="pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-sans text-sm"
           style={{ borderTop: '1px solid var(--kp-border)', color: 'var(--kp-text-muted)' }}
         >
           <span>© {new Date().getFullYear()} Kelas Pekerja</span>

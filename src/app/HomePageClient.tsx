@@ -91,35 +91,41 @@ export default function HomePageClient({
               className="object-cover object-center"
             />
             {/* Overlay gradient - Light mode: warm golden overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#fdf6ee]/90 via-[#fdf6ee]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--kp-bg-base)]/90 via-[var(--kp-bg-base)]/70 to-transparent dark:from-[var(--kp-bg-base)]/95 dark:via-[var(--kp-bg-base)]/75 dark:to-transparent" />
             {/* Bottom fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#fdf6ee] to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[var(--kp-bg-base)] to-transparent dark:from-[var(--kp-bg-base)] dark:to-transparent" />
           </div>
 
           {/* Content - posisi kiri, z-10 */}
           <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-16 py-24">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium mb-6" style={{ backgroundColor: 'var(--kp-accent-light)', borderColor: 'var(--kp-border)', color: 'var(--kp-accent)' }}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium mb-6 font-sans" style={{ backgroundColor: 'var(--kp-accent-light)', borderColor: 'var(--kp-border)', color: 'var(--kp-accent)' }}>
               ☕ Literasi untuk Pekerja
             </div>
 
             {/* Heading */}
-            <h1 className="font-display text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-2xl" style={{ color: 'var(--kp-text-primary)' }}>
+            <h1 className="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6 max-w-2xl" style={{ color: 'var(--kp-text-primary)' }}>
               Baca. Renungkan.<br />
               <span style={{ color: 'var(--kp-accent)' }}>Bertumbuh.</span>
             </h1>
 
             {/* Subtext */}
-            <p className="font-body text-lg max-w-lg mb-10 leading-relaxed" style={{ color: 'var(--kp-text-secondary)' }}>
+            <p className="font-serif text-lg max-w-lg mb-10 leading-relaxed" style={{ color: 'var(--kp-text-secondary)' }}>
               Kumpulan bacaan ringan untuk jiwa yang lelah, ditemani secangkir kopi di waktu senggang.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-3.5 rounded-full font-ui text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5" style={{ backgroundColor: 'var(--kp-accent)', color: 'var(--kp-text-on-dark)' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent-hover)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent)'; }}>
+              <Link
+                href="/buku"
+                className="px-8 py-3.5 rounded-full font-sans text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                style={{ backgroundColor: 'var(--kp-accent)', color: 'var(--kp-text-on-dark)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent-hover)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent)'; }}
+              >
                 Mulai Membaca
-              </button>
-              <button className="px-8 py-3.5 rounded-full border font-ui text-sm font-semibold transition-all duration-200" style={{ borderColor: 'var(--kp-border)', color: 'var(--kp-text-primary)' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
+              </Link>
+              <button className="px-8 py-3.5 rounded-full border font-sans text-sm font-semibold transition-all duration-200" style={{ borderColor: 'var(--kp-border)', color: 'var(--kp-text-primary)' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
                 Jelajahi Koleksi
               </button>
             </div>

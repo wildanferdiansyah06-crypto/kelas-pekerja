@@ -66,7 +66,7 @@ export default function CategoryFilter({ activeCategory = 'all', books }: Catego
         >
           {CATEGORY_LABELS[cat] || cat}
           <span className={cn(
-            "text-xs font-ui",
+            "text-xs font-sans",
             activeCategory === cat ? "opacity-70" : "opacity-40"
           )}>
             ({counts[cat] || 0})

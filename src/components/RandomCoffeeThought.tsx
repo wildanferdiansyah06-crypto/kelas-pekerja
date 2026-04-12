@@ -44,15 +44,15 @@ export default function RandomCoffeeThought() {
   return (
     <section className="py-32 px-6 text-center relative z-10">
       <div className="max-w-xl mx-auto">
-        <p className="font-ui text-xs tracking-widest uppercase mb-4" style={{ opacity: 0.4 }}>
+        <p className="font-sans text-xs tracking-widest uppercase mb-4" style={{ opacity: 0.4, color: 'var(--kp-text-muted)' }}>
           Butuh teman ngopi?
         </p>
 
-        <h3 className="font-display text-3xl md:text-4xl mb-6" style={{ opacity: 0.9 }}>
+        <h3 className="font-serif text-3xl md:text-4xl mb-6" style={{ opacity: 0.9, color: 'var(--kp-text-primary)' }}>
           Random Coffee Thought
         </h3>
 
-        <p className="font-body text-sm mb-10" style={{ opacity: 0.6 }}>
+        <p className="font-serif text-sm mb-10" style={{ opacity: 0.6, color: 'var(--kp-text-secondary)' }}>
           Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.
         </p>
 
@@ -63,18 +63,18 @@ export default function RandomCoffeeThought() {
           </div>
 
           {currentQuote && (
-            <p className="relative z-10 font-display text-xl italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-text-primary)' }}>
+            <p className="relative z-10 font-serif text-xl italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-text-primary)' }}>
               {currentQuote.text}
             </p>
           )}
 
           <div className="flex items-center justify-between mt-6">
-            <span className="text-sm font-medium" style={{ color: 'var(--kp-text-muted)' }}>
+            <span className="text-sm font-medium font-sans" style={{ color: 'var(--kp-text-muted)' }}>
               — Coffee Thought
             </span>
             <button
               onClick={randomThought}
-              className="px-4 py-1.5 rounded-full text-sm font-ui font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+              className="px-4 py-1.5 rounded-full text-sm font-sans font-medium transition-all duration-200 hover:scale-105 active:scale-95"
               style={{
                 backgroundColor: 'var(--kp-accent)',
                 color: 'var(--kp-text-on-dark)',

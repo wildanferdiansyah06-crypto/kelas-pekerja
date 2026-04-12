@@ -47,7 +47,7 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Cari buku..."
-        className="w-full pl-10 pr-10 py-3 rounded-xl font-ui text-sm
+        className="w-full pl-10 pr-10 py-3 rounded-xl font-sans text-sm
                  focus:outline-none focus:ring-2 transition-all duration-200"
         style={{
           backgroundColor: 'var(--kp-bg-surface)',

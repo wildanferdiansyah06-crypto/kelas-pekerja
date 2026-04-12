@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Serif_Display, Lora, DM_Sans } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import "../styles/performance.css";
 
@@ -10,29 +10,20 @@ import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
 
-const dmSerifDisplay = DM_Serif_Display({
+const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
   preload: true,
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-  preload: true,
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-});
-
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-ui",
   display: "swap",
   preload: true,
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -101,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${dmSerifDisplay.variable} ${lora.variable} ${dmSans.variable} font-body antialiased transition-colors duration-500`}
+        className={`${playfairDisplay.variable} ${inter.variable} font-display antialiased transition-colors duration-500`}
         style={{
           backgroundColor: 'var(--kp-bg-base)',
           color: 'var(--kp-text-primary)',
