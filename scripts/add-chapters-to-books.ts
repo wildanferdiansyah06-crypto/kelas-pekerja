@@ -12,9 +12,10 @@ const client = createClient({
 })
 
 // Sample chapters data for each book
-const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
+const bookChapters: Record<string, Array<{ _key: string; title: string; content: any[] }>> = {
   'seni-menyeduh-kehidupan': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Awal yang Pelan',
       content: [
         {
@@ -30,6 +31,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Menyeduh Makna',
       content: [
         {
@@ -42,6 +44,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
   ],
   'di-balik-bar': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Pelanggan Pertama',
       content: [
         {
@@ -52,6 +55,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Cerita di Uap Kopi',
       content: [
         {
@@ -64,6 +68,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
   ],
   'di-atas-cangkir-yang-sama': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Konsistensi',
       content: [
         {
@@ -74,6 +79,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Kehadiran',
       content: [
         {
@@ -86,6 +92,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
   ],
   'kami-menulis-pelan': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Kesabaran',
       content: [
         {
@@ -96,6 +103,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Proses',
       content: [
         {
@@ -108,6 +116,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
   ],
   'yang-tertinggal-di-lembah': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Janji',
       content: [
         {
@@ -118,6 +127,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Kehilangan',
       content: [
         {
@@ -130,6 +140,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
   ],
   'cahaya-itu': [
     {
+      _key: 'chapter-1',
       title: 'Bab 1: Pelita yang Lelah',
       content: [
         {
@@ -140,6 +151,7 @@ const bookChapters: Record<string, Array<{ title: string; content: any[] }>> = {
       ],
     },
     {
+      _key: 'chapter-2',
       title: 'Bab 2: Kehancuran yang Indah',
       content: [
         {
