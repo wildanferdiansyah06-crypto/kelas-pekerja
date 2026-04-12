@@ -100,18 +100,28 @@ const finalVisibility = scrollVisible && contextVisible;
 if (!mounted) return null;
 
 return (
-<nav className={`fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-[#faf9f7]/90 dark:bg-[#1a1816]/90 border-b border-[#e5e2dd] dark:border-[#8b7355]/20 transition-transform duration-300 ease-out will-change-transform transform-gpu ${
-  finalVisibility ? 'translate-y-0' : '-translate-y-full'
-}`}>
-
-  {/* Container diperlebar */}
-  <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<nav
+  className="fixed top-0 left-0 right-0 z-[100] h-16 transition-all duration-200 ease-out"
+  style={{
+    backgroundColor: 'var(--kp-bg-base)',
+    borderBottom: '1px solid var(--kp-border)',
+  }}
+>
+  {/* Container */}
+  <div className="max-w-7xl mx-auto px-6 tablet:px-12 h-16 flex items-center justify-between">
 
     {/* Logo */}
     <Link
       href="/"
-      className="font-serif text-lg tracking-wider text-[#2d2d2d] dark:text-[#f4e4d4] opacity-90 hover:opacity-100 transition-opacity duration-200 transform-gpu will-change-transform shrink-0"
+      className="flex items-center gap-2.5 font-display text-xl"
+      style={{ color: 'var(--kp-text-primary)' }}
     >
+      <div
+        className="w-7 h-7 rounded-md flex items-center justify-center"
+        style={{ backgroundColor: 'var(--kp-accent)' }}
+      >
+        <span className="text-sm">☕</span>
+      </div>
       Kelas Pekerja
     </Link>
 
@@ -121,11 +131,21 @@ return (
         <Link
           key={item.href}
           href={item.href}
-          className={`text-sm tracking-wider text-[#4a4a4a] dark:text-[#d4a574] transition-all duration-200 transform-gpu will-change-transform ${
-            pathname === item.href
-              ? "text-[#2d2d2d] dark:text-[#f4e4d4] font-medium"
-              : "hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4]"
-          }`}
+          className="font-ui text-sm font-normal transition-colors duration-150"
+          style={{
+            color: pathname === item.href ? 'var(--kp-text-primary)' : 'var(--kp-text-muted)',
+            fontWeight: pathname === item.href ? '500' : '400',
+          }}
+          onMouseEnter={(e) => {
+            if (pathname !== item.href) {
+              e.currentTarget.style.color = 'var(--kp-text-primary)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (pathname !== item.href) {
+              e.currentTarget.style.color = 'var(--kp-text-muted)';
+            }
+          }}
         >
           {item.label}
         </Link>
@@ -138,11 +158,11 @@ return (
         <Link
           key={item.href}
           href={item.href}
-          className={`text-sm tracking-wider text-[#4a4a4a] dark:text-[#d4a574] transition-all duration-200 transform-gpu will-change-transform whitespace-nowrap ${
-            pathname === item.href
-              ? "text-[#2d2d2d] dark:text-[#f4e4d4] font-medium"
-              : "hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4]"
-          }`}
+          className="font-ui text-sm font-normal whitespace-nowrap transition-colors duration-150"
+          style={{
+            color: pathname === item.href ? 'var(--kp-text-primary)' : 'var(--kp-text-muted)',
+            fontWeight: pathname === item.href ? '500' : '400',
+          }}
         >
           {item.label}
         </Link>
@@ -155,7 +175,13 @@ return (
       {/* User Profile Display - Desktop */}
       {session?.user ? (
         <div className="hidden md:flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#e5e2dd] dark:bg-[#8b7355]/10 border border-[#d4d0c8] dark:border-[#8b7355]/20">
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border"
+            style={{
+              backgroundColor: 'var(--kp-bg-surface)',
+              borderColor: 'var(--kp-border)',
+            }}
+          >
             {session.user.image && (
               <Image
                 src={session.user.image}
@@ -165,13 +191,25 @@ return (
                 className="w-6 h-6 rounded-full object-cover"
               />
             )}
-            <span className="text-sm text-[#4a4a4a] dark:text-[#d4a574] truncate max-w-[120px]">
+            <span
+              className="text-sm truncate max-w-[120px]"
+              style={{ color: 'var(--kp-text-muted)' }}
+            >
               {session.user.name || 'User'}
             </span>
           </div>
           <button
             onClick={() => signOut({ callbackUrl: '/' })}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm tracking-wider text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4] hover:bg-[#e5e2dd] dark:hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-ui transition-colors duration-200"
+            style={{ color: 'var(--kp-text-muted)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--kp-text-primary)';
+              e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--kp-text-muted)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
             aria-label="Logout"
           >
             <LogOut size={16} />
@@ -180,16 +218,31 @@ return (
       ) : (
         <Link
           href="/auth/signin"
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm tracking-wider text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4] hover:bg-[#e5e2dd] dark:hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-ui font-medium transition-colors duration-200"
+          style={{
+            backgroundColor: 'var(--kp-text-primary)',
+            color: 'var(--kp-bg-base)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--kp-accent)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--kp-text-primary)';
+          }}
         >
-          <User size={16} />
-          <span>Masuk</span>
+          Masuk
         </Link>
       )}
 
       {/* User Profile Display - Mobile */}
       {session?.user && (
-        <div className="md:hidden flex items-center gap-2 px-2 py-1 rounded-full bg-[#e5e2dd] dark:bg-[#8b7355]/10 border border-[#d4d0c8] dark:border-[#8b7355]/20">
+        <div
+          className="md:hidden flex items-center gap-2 px-2 py-1 rounded-full border"
+          style={{
+            backgroundColor: 'var(--kp-bg-surface)',
+            borderColor: 'var(--kp-border)',
+          }}
+        >
           {session.user.image && (
             <Image
               src={session.user.image}
@@ -205,16 +258,34 @@ return (
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="p-2 rounded-full text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4] hover:bg-[#e5e2dd] dark:hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+        className="p-2 rounded-full font-ui transition-colors duration-200"
+        style={{ color: 'var(--kp-text-muted)' }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = 'var(--kp-text-primary)';
+          e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = 'var(--kp-text-muted)';
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }}
         aria-label="Toggle theme"
       >
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
 
-      {/* Mobile Menu Button - Show user menu */}
+      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="md:hidden p-2 rounded-full text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4] hover:bg-[#e5e2dd] dark:hover:bg-[#8b7355]/20 transition-all duration-200 transform-gpu will-change-transform"
+        className="md:hidden p-2 rounded-full font-ui transition-colors duration-200"
+        style={{ color: 'var(--kp-text-muted)' }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = 'var(--kp-text-primary)';
+          e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = 'var(--kp-text-muted)';
+          e.currentTarget.style.backgroundColor = 'transparent';
+        }}
         aria-label="Toggle menu"
       >
         {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -224,14 +295,26 @@ return (
   </div>
 
   {/* Mobile Menu - User Actions Only */}
-  <div className={`md:hidden transition-all duration-300 ease-out overflow-hidden will-change-transform transform-gpu ${
-    isMenuOpen ? 'max-h-48 opacity-100 border-t border-[#e5e2dd] dark:border-[#8b7355]/20 bg-[#faf9f7] dark:bg-[#1a1816]' : 'max-h-0 opacity-0'
-  }`}>
+  <div
+    className={`md:hidden transition-all duration-300 ease-out overflow-hidden ${
+      isMenuOpen ? 'max-h-48 opacity-100 border-t' : 'max-h-0 opacity-0'
+    }`}
+    style={{
+      borderColor: 'var(--kp-border)',
+      backgroundColor: 'var(--kp-bg-base)',
+    }}
+  >
     <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
 
       {/* Mobile User Profile Full Display */}
       {session?.user && (
-        <div className="flex items-center gap-3 px-3 py-2 rounded-full bg-[#e5e2dd] dark:bg-[#8b7355]/10 border border-[#d4d0c8] dark:border-[#8b7355]/20">
+        <div
+          className="flex items-center gap-3 px-3 py-2 rounded-full border"
+          style={{
+            backgroundColor: 'var(--kp-bg-surface)',
+            borderColor: 'var(--kp-border)',
+          }}
+        >
           {session.user.image && (
             <Image
               src={session.user.image}
@@ -241,7 +324,10 @@ return (
               className="w-6 h-6 rounded-full object-cover"
             />
           )}
-          <span className="text-sm text-[#4a4a4a] dark:text-[#d4a574] truncate max-w-[120px]">
+          <span
+            className="text-sm truncate max-w-[120px]"
+            style={{ color: 'var(--kp-text-muted)' }}
+          >
             {session.user.name || 'User'}
           </span>
         </div>
@@ -254,7 +340,8 @@ return (
             signOut({ callbackUrl: '/' });
             setIsMenuOpen(false);
           }}
-          className="flex items-center gap-2 text-sm transition-all duration-200 transform-gpu will-change-transform text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4]"
+          className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
+          style={{ color: 'var(--kp-text-muted)' }}
         >
           <LogOut size={16} />
           <span>Keluar</span>
@@ -263,7 +350,8 @@ return (
         <Link
           href="/auth/signin"
           onClick={() => setIsMenuOpen(false)}
-          className="flex items-center gap-2 text-sm transition-all duration-200 transform-gpu will-change-transform text-[#4a4a4a] dark:text-[#d4a574] hover:text-[#2d2d2d] dark:hover:text-[#f4e4d4]"
+          className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
+          style={{ color: 'var(--kp-text-muted)' }}
         >
           <User size={16} />
           <span>Masuk</span>

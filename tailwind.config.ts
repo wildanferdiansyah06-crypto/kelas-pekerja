@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: "class",
@@ -40,36 +41,28 @@ const config: Config = {
     },
     extend: {
       // ==========================================
-      // COLORS - Kelas Pekerja Palette
+      // COLORS - Kelas Pekerja Light Mode Palette
       // ==========================================
       colors: {
-        // Background layers
         kp: {
-          bg: "#0f0e0c",           // Deep dark background
-          "bg-light": "#1a1816",    // Card/surface background
-          "bg-lighter": "#252320",  // Elevated surfaces
-        },
-        // Text colors
-        text: {
-          primary: "#f5f0e8",       // Main headings
-          secondary: "#e8e0d5",     // Body text
-          muted: "#a09080",         // Secondary text
-          subtle: "#8b7355",        // Accents, labels
-          dim: "#6b5a45",           // Footer, captions
-        },
-        // Accent (warm brown/coffee tones)
-        accent: {
-          DEFAULT: "#8b7355",       // Primary accent
-          light: "#a08060",         // Hover states
-          lighter: "#c4b5a0",       // Highlights
-          dark: "#6b5635",          // Pressed states
-        },
-        // Utility
-        border: {
-          DEFAULT: "#8b7355",
-          subtle: "rgba(139, 115, 85, 0.1)",
-          light: "rgba(139, 115, 85, 0.2)",
-          medium: "rgba(139, 115, 85, 0.3)",
+          // Backgrounds
+          'bg-base':     '#faf7f2',
+          'bg-surface':  '#f3ede4',
+          'bg-elevated': '#ede5d8',
+          'bg-invert':   '#1c1410',
+
+          // Text
+          'text-primary':   '#1c1410',
+          'text-secondary': '#4a3728',
+          'text-muted':     '#8a7060',
+          'text-subtle':    '#b8a898',
+          'text-on-dark':   '#f5f0e8',
+
+          // Accent
+          'accent':       '#7c5c3a',
+          'accent-hover': '#5e4428',
+          'accent-light': '#c4a882',
+          'accent-faint': '#f0e8dc',
         },
       },
 
@@ -77,22 +70,42 @@ const config: Config = {
       // TYPOGRAPHY
       // ==========================================
       fontFamily: {
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        body:    ['var(--font-body)', 'Georgia', 'serif'],
+        ui:      ['var(--font-ui)', 'system-ui', 'sans-serif'],
         serif: [
+          "'Lora'",
           "Georgia",
-          "Cambria",
-          '"Times New Roman"',
-          "Times",
           "serif",
         ],
         sans: [
+          "'DM Sans'",
           "system-ui",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"Segoe UI"',
-          "Roboto",
           "sans-serif",
         ],
       },
+      typography: ({ theme }: { theme: any }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('fontFamily.body'),
+            '--tw-prose-headings': theme('fontFamily.display'),
+            '--tw-prose-lead': theme('fontFamily.body'),
+            '--tw-prose-links': theme('colors.kp.accent'),
+            '--tw-prose-bold': theme('colors.kp.text-primary'),
+            '--tw-prose-counters': theme('colors.kp.accent'),
+            '--tw-prose-bullets': theme('colors.kp.accent'),
+            '--tw-prose-hr': theme('colors.kp.border'),
+            '--tw-prose-quotes': theme('colors.kp.text-primary'),
+            '--tw-prose-quote-borders': theme('colors.kp.accent'),
+            '--tw-prose-captions': theme('colors.kp.text-muted'),
+            '--tw-prose-code': theme('colors.kp.text-primary'),
+            '--tw-prose-pre-code': theme('colors.kp.text-muted'),
+            '--tw-prose-pre-bg': theme('colors.kp.bg-surface'),
+            '--tw-prose-th-borders': theme('colors.kp.border'),
+            '--tw-prose-td-borders': theme('colors.kp.border'),
+          },
+        },
+      }),
       fontSize: {
         "2xs": "0.625rem", // 10px for small labels
       },
@@ -189,6 +202,15 @@ const config: Config = {
       },
 
       // ==========================================
+      // BOX SHADOW
+      // ==========================================
+      boxShadow: {
+        'kp-sm': '0 1px 8px rgba(50, 30, 10, 0.06)',
+        'kp-md': '0 4px 20px rgba(50, 30, 10, 0.08)',
+        'kp-lg': '0 8px 40px rgba(50, 30, 10, 0.12)',
+      },
+
+      // ==========================================
       // BACKGROUND IMAGE
       // ==========================================
       backgroundImage: {
@@ -198,6 +220,7 @@ const config: Config = {
     },
   },
   plugins: [
+    typography,
     // Custom plugin for line-clamp (since Tailwind 3.3+ moved it to core)
     function({ addUtilities }: { addUtilities: Function }) {
       addUtilities({

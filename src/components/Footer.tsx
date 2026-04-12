@@ -3,12 +3,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getConfig } from "@/src/lib/api";
-import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function Footer() {
   const [config, setConfig] = useState<any>({});
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
 
   useEffect(() => {
     getConfig()
@@ -17,76 +14,294 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className={`border-t py-16 px-6 transition-colors duration-500 relative z-20 ${
-      isDark ? 'border-[#8b7355]/20 bg-[#1a1816]' : 'border-[#e5e2dd] bg-[#faf9f7]'
-    }`}>
-      <div className="max-w-4xl mx-auto text-center">
+    <footer
+      className="relative z-20"
+      style={{
+        backgroundColor: 'var(--kp-bg-invert)',
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-6 tablet:px-12 py-12 laptop:py-16">
+        <div
+          className="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-4 gap-8 laptop:gap-10 pb-8 border-b"
+          style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+        >
+          {/* Kolom 1: Brand */}
+          <div className="col-span-1">
+            <div
+              className="font-display text-xl laptop:text-2xl mb-3"
+              style={{ color: 'var(--kp-text-on-dark)' }}
+            >
+              {config?.title || "Kelas Pekerja"}
+            </div>
+            <p
+              className="font-body text-sm leading-relaxed mb-5"
+              style={{ color: 'rgba(245,240,232,0.45)' }}
+            >
+              {config?.description ||
+                "Catatan tentang malam, kopi, dan kehidupan. Arsip sunyi orang-orang yang tetap bekerja."}
+            </p>
+            <div className="flex gap-2.5">
+              <a
+                href="https://wa.me/6289636357091"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8.5 h-8.5 rounded-md border flex items-center justify-center transition-colors duration-200"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.12)',
+                  color: 'rgba(245,240,232,0.5)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }}
+              >
+                📱
+              </a>
+              <a
+                href="mailto:wildanferdiansyah06@gmail.com"
+                className="w-8.5 h-8.5 rounded-md border flex items-center justify-center transition-colors duration-200"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.12)',
+                  color: 'rgba(245,240,232,0.5)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }}
+              >
+                ✉️
+              </a>
+              <a
+                href="https://instagram.com/_iamwildan_"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8.5 h-8.5 rounded-md border flex items-center justify-center transition-colors duration-200"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.12)',
+                  color: 'rgba(245,240,232,0.5)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                }}
+              >
+                📷
+              </a>
+            </div>
+          </div>
 
-        {/* Title */}
-        <h3 className={`font-serif text-2xl mb-4 opacity-90 ${isDark ? 'text-[#f4e4d4]' : 'text-[#2d2d2d]'}`}>
-          {config?.title || "Kelas Pekerja"}
-        </h3>
+          {/* Kolom 2: Jelajahi */}
+          <div className="col-span-1">
+            <div
+              className="font-ui text-xs font-medium tracking-widest uppercase mb-4"
+              style={{ color: 'rgba(245,240,232,0.4)' }}
+            >
+              Jelajahi
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              <li>
+                <Link
+                  href="/"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Beranda
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/buku"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Buku
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tulisan"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Tulisan
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tentang"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Tentang
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Description */}
-        <p className={`text-sm max-w-md mx-auto mb-8 leading-relaxed ${isDark ? 'text-[#bfae9c]' : 'text-[#4a4a4a]'}`}>
-          {config?.description ||
-            "Catatan tentang malam, kopi, dan kehidupan."}
-        </p>
+          {/* Kolom 3: Komunitas */}
+          <div className="col-span-1">
+            <div
+              className="font-ui text-xs font-medium tracking-widest uppercase mb-4"
+              style={{ color: 'rgba(245,240,232,0.4)' }}
+            >
+              Komunitas
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              <li>
+                <Link
+                  href="/auth/signin"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Tulis Cerita
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/bookmark"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Tersimpan
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Pikiran Kopi
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-        {/* Navigation */}
-        <div className={`flex justify-center gap-6 text-sm mb-10 ${isDark ? 'text-[#cbb8a5]' : 'text-[#6a6a6a]'}`}>
-          <Link href="/" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#2d2d2d]'}`}>
-            Beranda
-          </Link>
-
-          <Link href="/buku" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#2d2d2d]'}`}>
-            Buku
-          </Link>
-
-          <Link href="/tulisan" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#2d2d2d]'}`}>
-            Tulisan
-          </Link>
-
-          <Link href="/tentang" className={`transition-colors duration-200 ${isDark ? 'hover:text-[#f4e4d4]' : 'hover:text-[#2d2d2d]'}`}>
-            Tentang
-          </Link>
+          {/* Kolom 4: Kontak */}
+          <div className="col-span-1">
+            <div
+              className="font-ui text-xs font-medium tracking-widest uppercase mb-4"
+              style={{ color: 'rgba(245,240,232,0.4)' }}
+            >
+              Kontak
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              <li>
+                <a
+                  href="https://wa.me/6289636357091"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  WhatsApp
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:wildanferdiansyah06@gmail.com"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Email
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://instagram.com/_iamwildan_"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-ui text-sm transition-colors duration-200"
+                  style={{ color: 'rgba(245,240,232,0.55)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--kp-text-on-dark)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(245,240,232,0.55)';
+                  }}
+                >
+                  Instagram
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Contact Info */}
-        <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm mb-10 ${isDark ? 'text-[#bfae9c]' : 'text-[#4a4a4a]'}`}>
-
-          <a
-            href="https://wa.me/6289636357091"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#25D366] transition-colors duration-200"
+        {/* Footer Bottom */}
+        <div className="flex flex-col tablet:flex-row justify-between items-center pt-5 laptop:pt-5">
+          <div
+            className="font-ui text-xs"
+            style={{ color: 'rgba(245,240,232,0.3)' }}
           >
-            0896-3635-7091
-          </a>
-
-          <a
-            href="mailto:wildanferdiansyah06@gmail.com"
-            className="hover:text-[#EA4335] transition-colors duration-200"
+            © {new Date().getFullYear()} Kelas Pekerja
+          </div>
+          <div
+            className="font-ui text-xs flex items-center gap-1.5 mt-2 tablet:mt-0"
+            style={{ color: 'rgba(245,240,232,0.25)' }}
           >
-            wildanferdiansyah06@gmail.com
-          </a>
-
-          <a
-            href="https://instagram.com/_iamwildan_"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#E4405F] transition-colors duration-200"
-          >
-            @_iamwildan_
-          </a>
-
+            Dibuat dengan <span style={{ color: 'var(--kp-accent-light)' }}>☕</span> dan ❤️
+          </div>
         </div>
-
-        {/* Copyright */}
-        <div className={`text-xs ${isDark ? 'text-[#bfae9c]/60' : 'text-[#8a8a8a]'}`}>
-          © {new Date().getFullYear()} Kelas Pekerja
-        </div>
-
       </div>
     </footer>
   );

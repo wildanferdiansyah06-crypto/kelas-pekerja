@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { DM_Serif_Display, Lora, DM_Sans } from "next/font/google";
 import "./globals.css";
 import "../styles/performance.css";
 
@@ -10,18 +10,29 @@ import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
 
-const playfair = Playfair_Display({
+const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-display",
   display: "swap",
   preload: true,
+  weight: ["400"],
 });
 
-const inter = Inter({
+const lora = Lora({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-body",
   display: "swap",
   preload: true,
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-ui",
+  display: "swap",
+  preload: true,
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -78,8 +89,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#3d2817",
-  colorScheme: "dark light",
+  themeColor: "#7c5c3a",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -90,7 +101,11 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7] text-[#2d2d2d] dark:bg-gradient-to-br dark:from-[#2c1810] dark:via-[#3d2817] dark:to-[#1a0e08] dark:text-[#d4a574]`}
+        className={`${dmSerifDisplay.variable} ${lora.variable} ${dmSans.variable} font-body antialiased transition-colors duration-500`}
+        style={{
+          backgroundColor: 'var(--kp-bg-base)',
+          color: 'var(--kp-text-primary)',
+        }}
       >
         <SessionProvider>
           <ThemeProvider>

@@ -2,29 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   LIGHT MODE DESIGN TOKENS — KELAS PEKERJA
+============================================ */
 :root {
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
+  /* --- Typography --- */
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Lora', serif;
+  --font-ui: 'DM Sans', sans-serif;
+
+  /* --- Backgrounds --- */
+  --kp-bg-base:        #faf7f2;   /* Background utama semua halaman */
+  --kp-bg-surface:     #f3ede4;   /* Card, sidebar, section background */
+  --kp-bg-elevated:    #ede5d8;   /* Hover state, elevated surface */
+  --kp-bg-invert:      #1c1410;   /* Footer, CTA gelap (tetap gelap di light mode) */
+
+  /* --- Text --- */
+  --kp-text-primary:   #1c1410;   /* Heading utama, teks penting */
+  --kp-text-secondary: #4a3728;   /* Paragraf, body text */
+  --kp-text-muted:     #8a7060;   /* Label, metadata, nav link default */
+  --kp-text-subtle:    #b8a898;   /* Placeholder, footer caption */
+  --kp-text-on-dark:   #f5f0e8;   /* Teks di atas bg-invert */
+
+  /* --- Accent (Coffee Warm) --- */
+  --kp-accent:         #7c5c3a;   /* CTA button, tag, link aktif */
+  --kp-accent-hover:   #5e4428;   /* Hover state accent */
+  --kp-accent-light:   #c4a882;   /* Quote border, dekorasi halus */
+  --kp-accent-faint:   #f0e8dc;   /* Tag background, highlight area */
+
+  /* --- Borders --- */
+  --kp-border:         rgba(100, 75, 50, 0.15);  /* Border default */
+  --kp-border-medium:  rgba(100, 75, 50, 0.25);  /* Border hover/emphasis */
+  --kp-border-strong:  rgba(100, 75, 50, 0.45);  /* Border focused/active */
+
+  /* --- Typography --- */
+  --kp-font-display:   var(--font-display), 'Georgia', serif;
+  --kp-font-body:      var(--font-body), 'Georgia', serif;
+  --kp-font-ui:        var(--font-ui), system-ui, sans-serif;
+
+  /* --- Shadow --- */
+  --kp-shadow-sm:  0 1px 8px rgba(50, 30, 10, 0.06);
+  --kp-shadow-md:  0 4px 20px rgba(50, 30, 10, 0.08);
+  --kp-shadow-lg:  0 8px 40px rgba(50, 30, 10, 0.12);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-  
-  ::selection {
-    @apply bg-[#8b7355]/30;
+
+  body {
+    background-color: var(--kp-bg-base);
+    color: var(--kp-text-primary);
+    font-family: var(--kp-font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  
+
+  ::selection {
+    @apply bg-accent/30;
+  }
+
   :focus-visible {
-    outline: 2px solid rgba(139, 115, 85, 0.5);
+    outline: 2px solid rgba(124, 92, 58, 0.5);
     outline-offset: 2px;
   }
 }
 
 @layer components {
-  .font-serif {
-    font-family: var(--font-serif);
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-ui {
+    font-family: var(--font-ui);
   }
 }
 

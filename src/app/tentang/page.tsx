@@ -34,64 +34,6 @@ export default function TentangPage() {
 
 
 
-  const darkMode = globalTheme === 'dark';  
-
-  const theme = darkMode ? {
-
-    bg: 'bg-[#0f0d0c]',
-
-    text: 'text-[#e5e0db]',
-
-    textMuted: 'text-[#8b7d6b]',
-
-    textHeading: 'text-[#f0ebe5]',
-
-    border: 'border-[#2a2520]',
-
-    accent: 'text-[#c9a66b]',
-
-    accentBg: 'bg-[#1a1612]',
-
-    accentBorder: 'border-[#3d3428]',
-
-    card: 'bg-[#1a1612]/80',
-
-    highlight: 'bg-[#2a2420]/50',
-
-    gradientFrom: 'from-[#2a2420]/30',
-
-    gradientTo: 'to-[#0f0d0c]/10',
-
-  } : {
-
-    bg: 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]',
-
-    text: 'text-[#d4a574]',
-
-    textMuted: 'text-[#8b7355]',
-
-    textHeading: 'text-[#f4e4d4]',
-
-    border: 'border-[#8b4513]/30',
-
-    accent: 'text-[#d4a574]',
-
-    accentBg: 'bg-[#3d2817]/60 backdrop-blur-sm',
-
-    accentBorder: 'border-[#8b4513]/30',
-
-    card: 'bg-[#3d2817]/60 backdrop-blur-sm',
-
-    highlight: 'bg-[#8b4513]/20',
-
-    gradientFrom: 'from-[#3d2817]/20',
-
-    gradientTo: 'to-[#2c1810]/20',
-
-  };
-
-
-
   const books = [
 
     {
@@ -184,13 +126,13 @@ export default function TentangPage() {
 
   return (
 
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-500`}>
+    <div className="transition-colors duration-500" style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-text-primary)' }}>
 
       {/* Background */}
 
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
 
-        <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradientFrom} ${theme.gradientTo} opacity-40`} />
+        <div className="absolute inset-0 opacity-40" style={{ background: 'linear-gradient(to bottom right, var(--kp-bg-surface), transparent)' }} />
 
       </div>
 
@@ -202,21 +144,21 @@ export default function TentangPage() {
 
         {/* Hero Section - Desktop: Photo Left, Text Right / Mobile: Stacked Center */}
 
-        <section className={`relative px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
+        <section className="relative px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 border-b" style={{ borderColor: 'var(--kp-border)' }}>
 
           <div className="max-w-6xl mx-auto">
 
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
 
-              
+
 
               {/* Left Side - Profile Photo (Center on mobile, Left on desktop) */}
               <div className="flex flex-col items-center md:items-center lg:items-center">
                 <div className="relative">
 
                   {/* Circular Photo Container - Force perfect circle */}
-                  <div className={`relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden ${theme.accentBorder} border-4 shadow-2xl`} 
-                       style={{aspectRatio: '1/1', objectFit: 'cover'}}>
+                  <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 shadow-2xl"
+                       style={{ borderColor: 'var(--kp-border)', aspectRatio: '1/1', objectFit: 'cover' }}>
                     <Image
                       src="/images/wildan.png"
                       alt="Wildan Ferdiansyah"
@@ -228,68 +170,80 @@ export default function TentangPage() {
                     />
                   </div>
                   {/* Decorative ring - Perfect Circle */}
-                  <div className={`absolute inset-0 rounded-full ${theme.accentBorder} border-2 opacity-50 pointer-events-none`} 
-                       style={{boxShadow: `inset 0 0 0 999px ${darkMode ? 'rgba(201, 166, 107, 0.1)' : 'rgba(139, 69, 19, 0.1)'}`}}></div>
+                  <div className="absolute inset-0 rounded-full border-2 opacity-50 pointer-events-none"
+                       style={{ borderColor: 'var(--kp-border)', boxShadow: 'inset 0 0 0 999px rgba(124,92,58,0.1)' }}></div>
                 </div>
 
-                
+
 
                 {/* Social Links - Below Photo */}
 
                 <div className="flex gap-4 mt-8">
 
-                  <a 
-
-                    href="https://github.com/wildanferdiansyah06-crypto" 
-
+                  <a
+                    href="https://github.com/wildanferdiansyah06-crypto"
                     target="_blank"
-
                     rel="noopener noreferrer"
-
-                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
-
+                    className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-110 shadow-md"
+                    style={{
+                      backgroundColor: 'var(--kp-bg-surface)',
+                      borderColor: 'var(--kp-border)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                      e.currentTarget.style.borderColor = 'var(--kp-accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                      e.currentTarget.style.borderColor = 'var(--kp-border)';
+                    }}
                     aria-label="GitHub"
-
                   >
-
-                    <Github size={22} className={theme.accent} />
-
+                    <Github size={22} style={{ color: 'var(--kp-accent)' }} />
                   </a>
 
-                  <a 
-
-                    href="https://instagram.com/_iamwildan_" 
-
+                  <a
+                    href="https://instagram.com/_iamwildan_"
                     target="_blank"
-
                     rel="noopener noreferrer"
-
-                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
-
+                    className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-110 shadow-md"
+                    style={{
+                      backgroundColor: 'var(--kp-bg-surface)',
+                      borderColor: 'var(--kp-border)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                      e.currentTarget.style.borderColor = 'var(--kp-accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                      e.currentTarget.style.borderColor = 'var(--kp-border)';
+                    }}
                     aria-label="Instagram"
-
                   >
-
-                    <Instagram size={22} className={theme.accent} />
-
+                    <Instagram size={22} style={{ color: 'var(--kp-accent)' }} />
                   </a>
 
-                  <a 
-
+                  <a
                     href="https://wa.me/6289636357091"
-
                     target="_blank"
-
                     rel="noopener noreferrer"
-
-                    className={`p-3 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-all duration-300 hover:scale-110 shadow-md`}
-
+                    className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-110 shadow-md"
+                    style={{
+                      backgroundColor: 'var(--kp-bg-surface)',
+                      borderColor: 'var(--kp-border)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                      e.currentTarget.style.borderColor = 'var(--kp-accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                      e.currentTarget.style.borderColor = 'var(--kp-border)';
+                    }}
                     aria-label="WhatsApp"
-
                   >
-
-                    <MessageCircle size={22} className={theme.accent} />
-
+                    <MessageCircle size={22} style={{ color: 'var(--kp-accent)' }} />
                   </a>
 
                 </div>
@@ -302,26 +256,20 @@ export default function TentangPage() {
 
               <div className="text-center md:text-left lg:text-center">
 
-                <h1 className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold ${theme.textHeading} mb-4 font-serif leading-tight`}>
-
+                <h1 className="font-display text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight" style={{ color: 'var(--kp-text-primary)' }}>
                   Wildan Ferdiansyah
-
                 </h1>
 
-                
 
-                <p className={`text-lg sm:text-xl md:text-xl lg:text-2xl ${theme.textMuted} mb-5 font-serif italic`}>
 
+                <p className="font-body text-lg sm:text-xl md:text-xl lg:text-2xl mb-5 italic" style={{ color: 'var(--kp-text-muted)' }}>
                   Bukan Penulis, Bukan Motivator
-
                 </p>
 
 
 
-                <p className={`text-sm sm:text-base md:text-base lg:text-lg leading-relaxed ${theme.textMuted} mb-6 max-w-lg mx-auto lg:mx-0`}>
-
+                <p className="font-body text-sm sm:text-base md:text-base lg:text-lg leading-relaxed mb-6 max-w-lg mx-auto lg:mx-0" style={{ color: 'var(--kp-text-secondary)' }}>
                   Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu - bukan untuk menjadi terkenal, tetapi untuk tetap waras.
-
                 </p>
 
 
@@ -329,27 +277,27 @@ export default function TentangPage() {
                 {/* Location & Email */}
 
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start lg:justify-center">
-
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border`}>
-
-                    <MapPin size={16} className={theme.accent} />
-
-                    <span className={`font-medium ${theme.text} text-sm sm:text-base`}>Bali, Ubud</span>
-
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border"
+                       style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}>
+                    <MapPin size={16} style={{ color: 'var(--kp-accent)' }} />
+                    <span className="font-ui text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Bali, Ubud</span>
                   </div>
 
-                  <a 
-
+                  <a
                     href="mailto:wildanferdiansyah06@gmail.com"
-
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full ${theme.accentBg} backdrop-blur-sm ${theme.accentBorder} border hover:${theme.card} transition-colors`}
-
+                    className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border transition-colors"
+                    style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                      e.currentTarget.style.borderColor = 'var(--kp-accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                      e.currentTarget.style.borderColor = 'var(--kp-border)';
+                    }}
                   >
-
-                    <Mail size={16} className={theme.accent} />
-
-                    <span className={`${theme.text} text-sm sm:text-base`}>wildanferdiansyah06@gmail.com</span>
-
+                    <Mail size={16} style={{ color: 'var(--kp-accent)' }} />
+                    <span className="font-ui text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>wildanferdiansyah06@gmail.com</span>
                   </a>
 
                 </div>
@@ -366,7 +314,7 @@ export default function TentangPage() {
 
         {/* Developer Section */}
 
-        <section className={`px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 border-b" style={{ borderColor: 'var(--kp-border)' }}>
 
           <div className="max-w-6xl mx-auto">
 
@@ -374,13 +322,14 @@ export default function TentangPage() {
 
               {/* Web Developer */}
 
-              <div className={`${theme.card} ${theme.border} border rounded-xl p-6 sm:p-8`}>
+              <div className="border rounded-xl p-6 sm:p-8"
+                   style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}>
 
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
 
-                  <Code size={22} className={theme.accent} />
+                  <Code size={22} style={{ color: 'var(--kp-accent)' }} />
 
-                  <h2 className={`text-xl sm:text-2xl md:text-3xl font-bold ${theme.textHeading} font-serif`}>
+                  <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: 'var(--kp-text-primary)' }}>
 
                     Web Developer
 
@@ -388,9 +337,9 @@ export default function TentangPage() {
 
                 </div>
 
-                
 
-                <p className={`${theme.text} text-sm sm:text-base leading-relaxed mb-4 sm:mb-6`}>
+
+                <p className="font-body text-sm sm:text-base leading-relaxed mb-4 sm:mb-6" style={{ color: 'var(--kp-text-secondary)' }}>
 
                   Pengembang web independent yang fokus pada menciptakan platform untuk karya sastra dan konten digital. Spesialisasi dalam membangun platform yang bermakna.
 
@@ -402,13 +351,14 @@ export default function TentangPage() {
 
                   <div>
 
-                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Tech Stack</h3>
+                    <h3 className="font-ui font-semibold mb-2 text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Tech Stack</h3>
 
                     <div className="flex flex-wrap gap-2">
 
                       {['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Sanity', 'Framer Motion'].map((tech) => (
 
-                        <span key={tech} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                        <span key={tech} className="font-ui px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm border"
+                              style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-accent)', borderColor: 'var(--kp-border)' }}>
 
                           {tech}
 
@@ -422,13 +372,14 @@ export default function TentangPage() {
 
                   <div>
 
-                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Tools & Workflow</h3>
+                    <h3 className="font-ui font-semibold mb-2 text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Tools & Workflow</h3>
 
                     <div className="flex flex-wrap gap-2">
 
                       {['Git', 'ESLint', 'Jest', 'Playwright', 'Vercel', 'GitHub Actions'].map((tool) => (
 
-                        <span key={tool} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                        <span key={tool} className="font-ui px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm border"
+                              style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-accent)', borderColor: 'var(--kp-border)' }}>
 
                           {tool}
 
@@ -442,7 +393,7 @@ export default function TentangPage() {
 
                   <div>
 
-                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Portfolio</h3>
+                    <h3 className="font-ui font-semibold mb-2 text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Portfolio</h3>
 
                     <a
 
@@ -452,7 +403,9 @@ export default function TentangPage() {
 
                       rel="noopener noreferrer"
 
-                      className={`inline-flex items-center gap-2 ${theme.accent} hover:underline text-sm sm:text-base`}
+                      className="inline-flex items-center gap-2 font-ui text-sm sm:text-base hover:underline"
+
+                      style={{ color: 'var(--kp-accent)' }}
 
                     >
 
@@ -472,13 +425,14 @@ export default function TentangPage() {
 
               {/* Writer */}
 
-              <div className={`${theme.card} ${theme.border} border rounded-xl p-6 sm:p-8`}>
+              <div className="border rounded-xl p-6 sm:p-8"
+                   style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}>
 
                 <div className="flex items-center gap-3 mb-4 sm:mb-6">
 
-                  <Book size={22} className={theme.accent} />
+                  <Book size={22} style={{ color: 'var(--kp-accent)' }} />
 
-                  <h2 className={`text-xl sm:text-2xl md:text-3xl font-bold ${theme.textHeading} font-serif`}>
+                  <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: 'var(--kp-text-primary)' }}>
 
                     Penulis
 
@@ -486,9 +440,9 @@ export default function TentangPage() {
 
                 </div>
 
-                
 
-                <p className={`${theme.text} text-sm sm:text-base leading-relaxed mb-4 sm:mb-6`}>
+
+                <p className="font-body text-sm sm:text-base leading-relaxed mb-4 sm:mb-6" style={{ color: 'var(--kp-text-secondary)' }}>
 
                   Menulis sebagai cara untuk memahami hidup dan menjaga kewarasan. Setiap kata adalah upaya untuk tetap hadir di dunia yang terus berubah.
 
@@ -498,13 +452,14 @@ export default function TentangPage() {
 
                   <div>
 
-                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Genre Karya</h3>
+                    <h3 className="font-ui font-semibold mb-2 text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Genre Karya</h3>
 
                     <div className="flex flex-wrap gap-2">
 
                       {['Fiksi', 'Puisi', 'Filsafat', 'Refleksi', 'Akademis'].map((genre) => (
 
-                        <span key={genre} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                        <span key={genre} className="font-ui px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm border"
+                              style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-accent)', borderColor: 'var(--kp-border)' }}>
 
                           {genre}
 
@@ -518,13 +473,14 @@ export default function TentangPage() {
 
                   <div>
 
-                    <h3 className={`font-semibold ${theme.textHeading} mb-2 text-sm sm:text-base`}>Tools Menulis</h3>
+                    <h3 className="font-ui font-semibold mb-2 text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Tools Menulis</h3>
 
                     <div className="flex flex-wrap gap-2">
 
                       {['Notion', 'Obsidian', 'Typora', 'VS Code'].map((tool) => (
 
-                        <span key={tool} className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm ${theme.accentBg} ${theme.accent} ${theme.accentBorder} border`}>
+                        <span key={tool} className="font-ui px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm border"
+                              style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-accent)', borderColor: 'var(--kp-border)' }}>
 
                           {tool}
 
@@ -536,17 +492,18 @@ export default function TentangPage() {
 
                   </div>
 
-                  <div className={`${theme.accentBg} ${theme.accentBorder} border rounded-lg p-4 sm:p-6`}>
+                  <div className="border rounded-lg p-4 sm:p-6"
+                       style={{ backgroundColor: 'var(--kp-bg-base)', borderColor: 'var(--kp-border)' }}>
 
                     <div className="flex items-center gap-3 mb-3 sm:mb-4">
 
-                      <Coffee size={18} className={theme.accent} />
+                      <Coffee size={18} style={{ color: 'var(--kp-accent)' }} />
 
-                      <h3 className={`font-semibold ${theme.textHeading} text-sm sm:text-base`}>Proses Menulis</h3>
+                      <h3 className="font-ui font-semibold text-sm sm:text-base" style={{ color: 'var(--kp-text-primary)' }}>Proses Menulis</h3>
 
                     </div>
 
-                    <p className={`${theme.textMuted} leading-relaxed text-xs sm:text-sm`}>
+                    <p className="font-body leading-relaxed text-xs sm:text-sm" style={{ color: 'var(--kp-text-muted)' }}>
 
                       Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.
 
@@ -568,19 +525,19 @@ export default function TentangPage() {
 
         {/* Books Section */}
 
-        <section className={`px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 border-b" style={{ borderColor: 'var(--kp-border)' }}>
 
           <div className="max-w-6xl mx-auto">
 
             <div className="text-center mb-8 sm:mb-12">
 
-              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme.textHeading} mb-3 sm:mb-4 font-serif`}>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--kp-text-primary)' }}>
 
                 Karya
 
               </h2>
 
-              <p className={`${theme.textMuted} text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-2 sm:px-4`}>
+              <p className="font-body text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-2 sm:px-4" style={{ color: 'var(--kp-text-muted)' }}>
 
                 Enam buku yang lahir dari proses mencari makna dalam setiap halaman
 
@@ -600,19 +557,29 @@ export default function TentangPage() {
 
                   href={book.link}
 
-                  className={`group block ${theme.card} ${theme.border} border rounded-xl p-4 sm:p-6 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+                  className="group block border rounded-xl p-4 sm:p-6 hover:shadow-xl transition-all duration-200"
 
+                  style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}
+
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                    e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                    e.currentTarget.style.borderColor = 'var(--kp-border)';
+                  }}
                 >
 
                   <div className="flex justify-between items-start mb-3 sm:mb-4">
 
-                    <span className={`text-xs sm:text-sm font-bold tracking-wider ${theme.accent} uppercase`}>
+                    <span className="font-ui text-xs sm:text-sm font-bold tracking-widest uppercase" style={{ color: 'var(--kp-accent)' }}>
 
                       {book.genre}
 
                     </span>
 
-                    <span className={`text-xs sm:text-sm ${theme.textMuted}`}>
+                    <span className="font-ui text-xs sm:text-sm" style={{ color: 'var(--kp-text-muted)' }}>
 
                       {book.year}
 
@@ -620,25 +587,25 @@ export default function TentangPage() {
 
                   </div>
 
-                  
 
-                  <h3 className={`text-lg sm:text-xl font-bold ${theme.textHeading} mb-2 font-serif group-hover:${theme.accent} transition-colors`}>
+
+                  <h3 className="font-display text-lg sm:text-xl font-bold mb-2 group-hover:opacity-70 transition-opacity" style={{ color: 'var(--kp-text-primary)' }}>
 
                     {book.title}
 
                   </h3>
 
-                  
 
-                  <p className={`${theme.textMuted} text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2`}>
+
+                  <p className="font-body text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2" style={{ color: 'var(--kp-text-muted)' }}>
 
                     {book.subtitle}
 
                   </p>
 
-                  
 
-                  <div className={`flex items-center gap-2 ${theme.accent} text-xs sm:text-sm font-medium`}>
+
+                  <div className="flex items-center gap-2 font-ui text-xs sm:text-sm font-medium" style={{ color: 'var(--kp-accent)' }}>
 
                     <span>Baca</span>
 
@@ -660,27 +627,28 @@ export default function TentangPage() {
 
         {/* Philosophy Section */}
 
-        <section className={`px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 border-b" style={{ borderColor: 'var(--kp-border)' }}>
 
           <div className="max-w-4xl mx-auto text-center px-2 sm:px-4">
 
-            <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full ${theme.accentBg} ${theme.accentBorder} border mb-6 sm:mb-8`}>
+            <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border mb-6 sm:mb-8"
+                 style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}>
 
-              <Coffee size={20} className={theme.accent} />
+              <Coffee size={20} style={{ color: 'var(--kp-accent)' }} />
 
             </div>
 
-            
 
-            <blockquote className={`${theme.textHeading} text-xl sm:text-2xl md:text-3xl font-serif italic leading-relaxed mb-6 sm:mb-8 px-2 sm:px-4`}>
+
+            <blockquote className="font-display text-xl sm:text-2xl md:text-3xl italic leading-relaxed mb-6 sm:mb-8 px-2 sm:px-4" style={{ color: 'var(--kp-text-primary)' }}>
 
               "Aku menulis untuk hadir, bukan untuk memukau."
 
             </blockquote>
 
-            
 
-            <p className={`${theme.textMuted} text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto px-2 sm:px-4`}>
+
+            <p className="font-body text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto px-2 sm:px-4" style={{ color: 'var(--kp-text-muted)' }}>
 
               Ini bukan tentang menjadi terkenal atau diakui. Ini tentang menjaga kewarasan diri di tengah dunia yang terus bergerak. Setiap kata adalah jangkar yang menahan agar tidak hanyut dalam arus waktu.
 
@@ -694,37 +662,47 @@ export default function TentangPage() {
 
         {/* Contact Section */}
 
-        <section className={`px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 ${theme.border} border-b`}>
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 border-b" style={{ borderColor: 'var(--kp-border)' }}>
 
           <div className="max-w-4xl mx-auto text-center">
 
-            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${theme.textHeading} mb-6 sm:mb-8 font-serif`}>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8" style={{ color: 'var(--kp-text-primary)' }}>
 
               Terhubung
 
             </h2>
 
-            
+
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
 
-              <a 
+              <a
 
                 href="mailto:wildanferdiansyah06@gmail.com"
 
-                className={`group ${theme.card} ${theme.border} border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+                className="group border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-200"
 
+                style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}
+
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border)';
+                }}
               >
 
-                <Mail size={24} className={`${theme.accent} mx-auto mb-3 sm:mb-4`} />
+                <Mail size={24} className="mx-auto mb-3 sm:mb-4" style={{ color: 'var(--kp-accent)' }} />
 
-                <h3 className={`text-lg sm:text-xl font-semibold ${theme.textHeading} mb-2`}>
+                <h3 className="font-ui text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--kp-text-primary)' }}>
 
                   Email
 
                 </h3>
 
-                <p className={`${theme.textMuted} text-xs sm:text-sm group-hover:${theme.text} transition-colors break-all`}>
+                <p className="font-ui text-xs sm:text-sm group-hover:opacity-100 transition-colors break-all" style={{ color: 'var(--kp-text-muted)', opacity: 0.7 }}>
 
                   wildanferdiansyah06@gmail.com
 
@@ -732,9 +710,9 @@ export default function TentangPage() {
 
               </a>
 
-              
 
-              <a 
+
+              <a
 
                 href="https://wa.me/6289636357091"
 
@@ -742,19 +720,29 @@ export default function TentangPage() {
 
                 rel="noopener noreferrer"
 
-                className={`group ${theme.card} ${theme.border} border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg}`}
+                className="group border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-200"
 
+                style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}
+
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border)';
+                }}
               >
 
-                <MessageCircle size={24} className={`${theme.accent} mx-auto mb-3 sm:mb-4`} />
+                <MessageCircle size={24} className="mx-auto mb-3 sm:mb-4" style={{ color: 'var(--kp-accent)' }} />
 
-                <h3 className={`text-lg sm:text-xl font-semibold ${theme.textHeading} mb-2`}>
+                <h3 className="font-ui text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--kp-text-primary)' }}>
 
                   WhatsApp
 
                 </h3>
 
-                <p className={`${theme.textMuted} text-xs sm:text-sm group-hover:${theme.text} transition-colors`}>
+                <p className="font-ui text-xs sm:text-sm group-hover:opacity-100 transition-colors" style={{ color: 'var(--kp-text-muted)', opacity: 0.7 }}>
 
                   089636357091
 
@@ -762,9 +750,9 @@ export default function TentangPage() {
 
               </a>
 
-              
 
-              <a 
+
+              <a
 
                 href="https://kelaspekerja.site"
 
@@ -772,19 +760,29 @@ export default function TentangPage() {
 
                 rel="noopener noreferrer"
 
-                className={`group ${theme.card} ${theme.border} border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:${theme.accentBg} sm:col-span-2 lg:col-span-1`}
+                className="group border rounded-xl p-6 sm:p-8 hover:shadow-xl transition-all duration-200 sm:col-span-2 lg:col-span-1"
 
+                style={{ backgroundColor: 'var(--kp-bg-surface)', borderColor: 'var(--kp-border)' }}
+
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-base)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                  e.currentTarget.style.borderColor = 'var(--kp-border)';
+                }}
               >
 
-                <ExternalLink size={24} className={`${theme.accent} mx-auto mb-3 sm:mb-4`} />
+                <ExternalLink size={24} className="mx-auto mb-3 sm:mb-4" style={{ color: 'var(--kp-accent)' }} />
 
-                <h3 className={`text-lg sm:text-xl font-semibold ${theme.textHeading} mb-2`}>
+                <h3 className="font-ui text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--kp-text-primary)' }}>
 
                   Website
 
                 </h3>
 
-                <p className={`${theme.textMuted} text-xs sm:text-sm group-hover:${theme.text} transition-colors`}>
+                <p className="font-ui text-xs sm:text-sm group-hover:opacity-100 transition-colors" style={{ color: 'var(--kp-text-muted)', opacity: 0.7 }}>
 
                   kelaspekerja.site
 

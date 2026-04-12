@@ -91,143 +91,132 @@ export default function BookCard({
 
   const cardContent = (
     <article
-      className="relative h-full group"
-      style={{ 
+      className="relative h-full group cursor-pointer"
+      style={{
         opacity: 0,
         animationDelay,
-        animation: 'fade-in-up 0.6s ease-out forwards'
+        animation: 'fade-in-up 0.6s ease-out forwards',
+        backgroundColor: 'var(--kp-bg-base)',
+        border: '1px solid var(--kp-border)',
+        borderRadius: '10px',
+        overflow: 'hidden',
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+        e.currentTarget.style.boxShadow = 'var(--kp-shadow-md)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--kp-border)';
+        e.currentTarget.style.boxShadow = 'none';
+      }}
     >
-      {/* Image Container */}
+      {/* Card Image Area */}
       <div
-        className={`relative w-full mb-6 overflow-hidden rounded-2xl
-                   shadow-[0_8px_30px_-12px_rgba(0,0,0,0.2)]
-                   group-hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.4)]
-                   group-hover:-translate-y-2
-                   transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]
-                   ${isCompact ? 'aspect-[16/10]' : 'aspect-[4/3]'}`}
+        className="relative h-40"
+        style={{ backgroundColor: 'var(--kp-bg-elevated)' }}
       >
-        <Image
-          src={book.cover}
-          alt={book.title}
-          fill
-          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:scale-105"
-          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        />
-
-        {/* Category Badge */}
-        <div className={`absolute top-4 left-4 z-10
-                     bg-white/15 backdrop-blur-md border border-white/25 text-white/95
-                     transition-all duration-500
-                     ${isHovered ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"}`}>
-          <span className="px-3 py-1.5 rounded-full text-xs font-medium">
-            {book.category}
-          </span>
-        </div>
-
-        {/* View Icon */}
+        {book.cover && (
+          <Image
+            src={book.cover}
+            alt={book.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        )}
+        {/* Overlay gradient */}
         <div
-          className={`absolute top-4 right-4 w-11 h-11 rounded-full z-10
-                     bg-white/15 backdrop-blur-md border border-white/25
-                     flex items-center justify-center
-                     transition-all duration-500 ease-out
-                     ${isHovered ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-75 -translate-y-2"}`}
-        >
-          <Eye size={18} className="text-white/90" />
-        </div>
-
-        {/* Bottom Meta Info */}
-        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-          <div className="flex items-center gap-3 text-white/80 text-xs mb-3 flex-wrap">
-            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md">
-              <Clock size={11} />
-              {book.readTime || "5 menit"}
-            </span>
-            
-            {(book.stats?.views ?? 0) > 0 && (
-              <>
-                <span className="w-1 h-1 rounded-full bg-white/50" />
-                <span className="bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md flex items-center gap-1">
-                  <Eye size={11} />
-                  {formatViews(book.stats?.views ?? 0)}
-                </span>
-              </>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p className="text-white/95 text-sm font-medium tracking-wide flex items-center gap-2">
-              Baca sekarang
-              <ArrowUpRight
-                size={16}
-                className={`transition-all duration-500 ${
-                  isHovered ? "translate-x-1 -translate-y-1" : ""
-                }`}
-              />
-            </p>
-          </div>
-        </div>
-
-        {/* Index Number Watermark */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[8rem] md:text-[10rem] text-white/[0.04] font-light pointer-events-none select-none">
-          {String(index + 1).padStart(2, "0")}
-        </div>
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, transparent 40%, var(--kp-bg-surface) 100%)',
+          }}
+        />
       </div>
 
-      {/* Content Section */}
-      <div className="space-y-3 px-1">
-        <h3 className={`font-serif leading-[1.15] text-[#2d2d2d] dark:text-[#e8e0d5]
-                       group-hover:text-[#8b7355] dark:group-hover:text-[#d4ccc0]
-                       transition-all duration-300
-                       ${isCompact ? 'text-xl md:text-2xl' : 'text-2xl md:text-[1.85rem]'}`}>
+      {/* Card Body */}
+      <div style={{ padding: '1.1rem 1.25rem 1.4rem' }}>
+        {/* Tag/Badge */}
+        <span
+          className="inline-block mb-2 font-ui text-xs font-medium tracking-widest uppercase px-2 py-1 rounded"
+          style={{
+            color: 'var(--kp-accent)',
+            backgroundColor: 'var(--kp-accent-faint)',
+          }}
+        >
+          {book.category || 'Umum'}
+        </span>
+
+        {/* Metadata row */}
+        <div className="flex items-center gap-1.5 mb-1">
+          <span className="font-ui text-xs" style={{ color: 'var(--kp-text-muted)' }}>
+            {book.readTime || '5 menit'}
+          </span>
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--kp-text-subtle)' }}></div>
+          {(book.stats?.views ?? 0) > 0 && (
+            <span className="font-ui text-xs flex items-center gap-1" style={{ color: 'var(--kp-text-muted)' }}>
+              <Eye size={11} />
+              {formatViews(book.stats?.views ?? 0)}
+            </span>
+          )}
+        </div>
+
+        {/* Title */}
+        <h3
+          className="font-display text-base leading-[1.4] mb-1"
+          style={{ color: 'var(--kp-text-primary)' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--kp-accent)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--kp-text-primary)';
+          }}
+        >
           {book.title}
         </h3>
 
-        {book.subtitle && (
-          <p className="text-sm text-[#6a6a6a] dark:text-stone-400 font-medium tracking-wide line-clamp-1">
-            {book.subtitle}
-          </p>
-        )}
-
-        <p className={`text-[15px] leading-[1.7] text-[#4a4a4a] dark:text-stone-400 line-clamp-2
-                      group-hover:text-[#6a6a6a] dark:group-hover:text-stone-300
-                      transition-colors duration-300`}>
-          &ldquo;{book.preview}&rdquo;
+        {/* Excerpt */}
+        <p className="font-body text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--kp-text-secondary)' }}>
+          {book.preview || book.subtitle || 'Tidak ada deskripsi tersedia.'}
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 mt-2 border-t border-[#e5e2dd] dark:border-stone-700/50">
-          <div className="flex items-center gap-3">
-            <button
-              className={`p-2 rounded-full transition-all duration-300
-                         ${isBookmarked
-                           ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400'
-                           : 'hover:bg-[#e5e2dd]/50 dark:hover:bg-stone-800 text-[#6a6a6a] hover:text-[#8b7355] dark:hover:text-stone-300'
-                         }`}
-              onClick={handleBookmarkToggle}
-              aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
-            >
-              <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
-            </button>
-            <span className="text-[11px] uppercase tracking-wider text-[#6a6a6a] dark:text-stone-500 font-medium">
-              {book.category}
-            </span>
-          </div>
+        <div className="flex items-center justify-between pt-3 mt-3" style={{ borderTop: '1px solid var(--kp-border)' }}>
+          <button
+            className="p-2 rounded-full transition-colors duration-200"
+            style={{
+              color: isBookmarked ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
+            }}
+            onClick={handleBookmarkToggle}
+            onMouseEnter={(e) => {
+              if (!isBookmarked) {
+                e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+            aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
+          >
+            <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
+          </button>
 
-          <div className={`flex items-center gap-1 text-xs font-medium text-[#6a6a6a] dark:text-stone-400
-                          transition-all duration-300
-                          ${isHovered ? "opacity-100 translate-x-0" : "opacity-60 -translate-x-1"}`}>
-            Lihat detail
-            <ArrowRight size={14} className={`transition-transform duration-300 ${isHovered ? "translate-x-1" : ""}`} />
+          <div className="flex items-center gap-1 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
+            Baca
+            <ArrowRight size={14} />
           </div>
         </div>
       </div>
 
       {/* Bookmark Toast Notification */}
       {showBookmarkToast && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-[#2c1810] dark:bg-[#1a1816] text-[#f4e4d4] dark:text-[#e8e0d5] px-4 py-2 rounded-full text-sm font-medium shadow-lg border border-[#8b7355]/30 dark:border-stone-700/50 animate-bounce">
+        <div
+          className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded-full text-sm font-medium animate-bounce"
+          style={{
+            backgroundColor: 'var(--kp-bg-invert)',
+            color: 'var(--kp-text-on-dark)',
+            boxShadow: 'var(--kp-shadow-md)',
+          }}
+        >
           ✓ Ditambahkan ke bookmark
         </div>
       )}

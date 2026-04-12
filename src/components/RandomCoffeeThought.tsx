@@ -44,21 +44,21 @@ export default function RandomCoffeeThought() {
   return (
     <section className="py-32 px-6 text-center relative z-10">
       <div className="max-w-xl mx-auto">
-        <p className="text-[10px] tracking-[0.4em] uppercase opacity-40 mb-4">
+        <p className="font-ui text-xs tracking-widest uppercase mb-4" style={{ opacity: 0.4 }}>
           Butuh teman ngopi?
         </p>
 
-        <h3 className="font-serif text-3xl md:text-4xl mb-6 opacity-90">
+        <h3 className="font-display text-3xl md:text-4xl mb-6" style={{ opacity: 0.9 }}>
           Random Coffee Thought
         </h3>
 
-        <p className="text-sm opacity-60 mb-10">
+        <p className="font-body text-sm mb-10" style={{ opacity: 0.6 }}>
           Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.
         </p>
 
-        <div className="min-h-[80px] flex items-center justify-center mb-10">
+        <div className="min-h-[80px] flex items-center justify-center mb-10 p-6 rounded-lg" style={{ backgroundColor: 'var(--kp-bg-surface)', border: '1px solid var(--kp-border)' }}>
           {currentQuote && (
-            <p className="text-lg font-serif italic text-[#8b7355] leading-relaxed animate-fade-in">
+            <p className="font-display text-lg italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-accent)' }}>
               &ldquo;{currentQuote.text}&rdquo;
             </p>
           )}
@@ -66,9 +66,17 @@ export default function RandomCoffeeThought() {
 
         <button
           onClick={randomThought}
-          className="inline-flex items-center gap-2 px-8 py-4 
-                   bg-[#8b7355] text-white rounded-full
-                   hover:bg-[#6b5635] transition-all text-sm tracking-wider"
+          className="inline-flex items-center gap-2 px-8 py-4 font-ui text-sm font-medium rounded-full transition-colors duration-200"
+          style={{
+            backgroundColor: 'var(--kp-accent)',
+            color: 'var(--kp-text-on-dark)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--kp-text-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--kp-accent)';
+          }}
         >
           <RefreshCcw size={16} />
           Random Thought

@@ -71,18 +71,25 @@ export default async function BookPage({ params }: BookPageProps) {
   }
 
   return (
-    <main className="bg-[#faf8f5] dark:bg-[#1a1816] text-[#2b2b2b] dark:text-[#e8e0d5] transition-colors duration-700 w-full">
+    <main className="transition-colors duration-700 w-full" style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-text-primary)' }}>
 
       <ReadingProgressRestore />
 
       {/* NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/90 dark:bg-[#1a1816]/90 backdrop-blur-sm border-b border-[#8b7355]/10 shadow-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm shadow-sm" style={{ backgroundColor: 'rgba(250,247,242,0.94)', borderBottom: '1px solid var(--kp-border)' }}>
 
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
 
           <Link
             href="/buku"
-            className="flex items-center gap-2 text-sm opacity-60 hover:opacity-100 transition-opacity"
+            className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
+            style={{ color: 'var(--kp-text-muted)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--kp-text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--kp-text-muted)';
+            }}
           >
             <ArrowLeft size={18} />
             <span>Kembali ke Rak</span>
@@ -115,7 +122,7 @@ export default async function BookPage({ params }: BookPageProps) {
           <div className="grid md:grid-cols-2 gap-12 items-start">
 
             {/* COVER */}
-            <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative aspect-[4/3] rounded-lg overflow-hidden" style={{ boxShadow: 'var(--kp-shadow-lg)' }}>
 
               <Image
                 src={book.cover}
@@ -130,9 +137,15 @@ export default async function BookPage({ params }: BookPageProps) {
             {/* CONTENT */}
             <div className="space-y-6">
 
-              <div className="flex flex-wrap items-center gap-3 text-[10px] tracking-[0.2em] uppercase opacity-40">
+              <div className="flex flex-wrap items-center gap-3 font-ui text-xs tracking-widest uppercase" style={{ opacity: 0.4 }}>
 
-                <span className="px-3 py-1 rounded-full bg-[#8b7355]/10 text-[#8b7355]">
+                <span
+                  className="px-3 py-1 rounded-full"
+                  style={{
+                    color: 'var(--kp-accent)',
+                    backgroundColor: 'var(--kp-accent-faint)',
+                  }}
+                >
                   {book.category}
                 </span>
 
@@ -148,22 +161,22 @@ export default async function BookPage({ params }: BookPageProps) {
 
               </div>
 
-              <h1 className="font-serif text-3xl md:text-4xl leading-tight opacity-90">
+              <h1 className="font-display text-3xl md:text-4xl leading-tight">
                 {book.title}
               </h1>
 
               {book.subtitle && (
-                <p className="text-lg opacity-60 italic">
+                <p className="font-body text-lg italic" style={{ opacity: 0.6 }}>
                   {book.subtitle}
                 </p>
               )}
 
-              <p className="text-sm leading-relaxed opacity-70">
+              <p className="font-body text-sm leading-relaxed" style={{ opacity: 0.7 }}>
                 {book.excerpt}
               </p>
 
               {book.stats && (
-                <div className="flex items-center gap-6 text-xs opacity-40 py-4 border-y border-[#8b7355]/10">
+                <div className="flex items-center gap-6 text-xs font-ui py-4" style={{ opacity: 0.4, borderTop: '1px solid var(--kp-border)', borderBottom: '1px solid var(--kp-border)' }}>
 
                   <span>
                     {book.stats.views.toLocaleString("id-ID")} kali dibaca
@@ -176,9 +189,9 @@ export default async function BookPage({ params }: BookPageProps) {
                 </div>
               )}
 
-              <div className="p-6 rounded-lg bg-[#8b7355]/5 border-l-2 border-[#8b7355]/30">
+              <div className="p-6 rounded-lg" style={{ backgroundColor: 'var(--kp-bg-surface)', borderLeft: '2px solid var(--kp-accent)' }}>
 
-                <p className="font-serif italic text-sm opacity-60">
+                <p className="font-display italic text-sm" style={{ opacity: 0.6 }}>
                   "{book.preview}"
                 </p>
 
@@ -191,7 +204,17 @@ export default async function BookPage({ params }: BookPageProps) {
 
                   <a
                     href={book.downloadUrl}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-[#2b2b2b] dark:bg-[#e8e0d5] text-white dark:text-[#1a1816] rounded-lg hover:opacity-90 transition-opacity text-sm tracking-wider"
+                    className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-medium rounded-lg transition-colors duration-200"
+                    style={{
+                      backgroundColor: 'var(--kp-text-primary)',
+                      color: 'var(--kp-bg-base)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--kp-text-primary)';
+                    }}
                   >
 
                     <Download size={18} />
@@ -204,7 +227,19 @@ export default async function BookPage({ params }: BookPageProps) {
                 {/* FIXED BUTTON */}
                 <Link
                   href={`/buku/${book.slug}/baca`}
-                  className="flex items-center justify-center gap-2 px-6 py-3 border border-[#8b7355]/30 rounded-lg hover:bg-[#8b7355]/5 transition-colors text-sm tracking-wider opacity-80"
+                  className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-normal rounded-lg transition-colors duration-200"
+                  style={{
+                    border: '1px solid var(--kp-border)',
+                    opacity: 0.8,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
+                    e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.borderColor = 'var(--kp-border)';
+                  }}
                 >
 
                   <BookOpen size={18} />
@@ -219,10 +254,13 @@ export default async function BookPage({ params }: BookPageProps) {
                 <div className="flex flex-wrap gap-2 pt-4">
 
                   {book.tags.map((tag) => (
-
                     <span
                       key={tag}
-                      className="px-3 py-1 text-xs rounded-full bg-black/5 dark:bg-white/5 opacity-60"
+                      className="px-3 py-1 text-xs font-ui rounded-full"
+                      style={{
+                        backgroundColor: 'var(--kp-bg-surface)',
+                        opacity: 0.6,
+                      }}
                     >
 
                       #{tag}
