@@ -1,71 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RefreshCcw, Send } from "lucide-react";
+import { supabase } from "@/src/lib/supabase";
 
 interface Quote {
   id: number;
   text: string;
   author: string;
   category?: string;
-  submittedBy?: string;
-  submittedAt?: string;
+  created_at?: string;
 }
 
-const dummyQuotes: Quote[] = [
-  {
-    id: 1,
-    text: "Hari ini mungkin berat, tapi kamu sudah sampai di sini — dan itu sudah lebih dari cukup.",
-    author: "Kelas Pekerja",
-    category: "Kehidupan",
-  },
-  {
-    id: 2,
-    text: "Kopi itu seperti kehidupan, terkadang pahit di awal tapi manis di akhir jika kamu sabar menikmatinya.",
-    author: "Barista Bijak",
-    category: "Kopi",
-  },
-  {
-    id: 3,
-    text: "Jangan bandingkan prosesmu dengan highlight orang lain. Mereka juga punya chapter yang tidak mereka share.",
-    author: "Anonim",
-    category: "Refleksi",
-  },
-  {
-    id: 4,
-    text: "Shift malam itu bukan hukuman, itu adalah waktu di mana dunia tidur dan kamu bertumbuh.",
-    author: "Pekerja Malam",
-    category: "Kehidupan",
-  },
-  {
-    id: 5,
-    text: "Kadang hal terbaik yang bisa kamu lakukan bukan menyelesaikan semua masalah, tapi cukup hadir dan bertahan.",
-    author: "Kelas Pekerja",
-    category: "Filosofi",
-  },
-  {
-    id: 6,
-    text: "Kopi tidak akan menyelesaikan masalahmu, tapi setidaknya kamu akan lebih kuat untuk menghadapinya.",
-    author: "Pecinta Kopi",
-    category: "Kopi",
-  },
-  {
-    id: 7,
-    text: "Setiap shift yang selesai adalah kemenangan kecil yang layak dirayakan dengan secangkir kopi.",
-    author: "Kelas Pekerja",
-    category: "Kehidupan",
-  },
-  {
-    id: 8,
-    text: "Jangan lupa istirahat. Bukan karena kamu lemah, tapi karena kamu butuh mengisi ulang untuk tetap kuat.",
-    author: "Self-Care",
-    category: "Refleksi",
-  },
-];
-
 export default function QuotesPage() {
-  const [currentQuote, setCurrentQuote] = useState<Quote>(dummyQuotes[0]);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   // Form state
   const [quoteText, setQuoteText] = useState("");
@@ -74,9 +25,39 @@ export default function QuotesPage() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [submitMessage, setSubmitMessage] = useState("");
 
+  // Fetch quotes from Supabase
+  useEffect(() => {
+    const fetchQuotes = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('quotes')
+          .select('*')
+          .eq('is_approved', true)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching quotes:', error);
+        } else if (data) {
+          setQuotes(data);
+          if (data.length > 0) {
+            setCurrentQuote(data[Math.floor(Math.random() * data.length)]);
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuotes();
+  }, []);
+
   const getRandomQuote = () => {
-    const randomIndex = Math.floor(Math.random() * dummyQuotes.length);
-    setCurrentQuote(dummyQuotes[randomIndex]);
+    if (quotes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      setCurrentQuote(quotes[randomIndex]);
+    }
   };
 
   const handleSubmitQuote = async (e: React.FormEvent) => {
@@ -143,62 +124,72 @@ export default function QuotesPage() {
       {/* Main Quote Display */}
       <div className="px-6 pb-16">
         <div className="max-w-4xl mx-auto">
-          <div
-            className="relative rounded-2xl overflow-hidden p-8 md:p-12"
-            style={{
-              background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))',
-              border: '1px solid var(--kp-border)',
-            }}
-          >
-            {/* Decorative quote mark */}
+          {loading ? (
+            <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
+              Memuat quotes...
+            </div>
+          ) : !currentQuote ? (
+            <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
+              Belum ada quote tersedia.
+            </div>
+          ) : (
             <div
-              className="absolute top-6 left-8 text-8xl leading-none select-none"
-              style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}
+              className="relative rounded-2xl overflow-hidden p-8 md:p-12"
+              style={{
+                background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))',
+                border: '1px solid var(--kp-border)',
+              }}
             >
-              &ldquo;
-            </div>
-
-            <p
-              className="relative z-10 font-serif text-2xl md:text-3xl italic leading-relaxed mb-6"
-              style={{ color: 'var(--kp-text-primary)' }}
-            >
-              {currentQuote.text}
-            </p>
-
-            <div className="flex items-center justify-between mt-8">
-              <div>
-                <p
-                  className="font-sans text-sm font-medium"
-                  style={{ color: 'var(--kp-text-muted)' }}
-                >
-                  — {currentQuote.author}
-                </p>
-                {currentQuote.category && (
-                  <span
-                    className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium"
-                    style={{
-                      backgroundColor: 'var(--kp-accent-light)',
-                      color: 'var(--kp-accent)',
-                      border: '1px solid var(--kp-border)',
-                    }}
-                  >
-                    {currentQuote.category}
-                  </span>
-                )}
-              </div>
-              <button
-                onClick={getRandomQuote}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-                style={{
-                  backgroundColor: 'var(--kp-accent)',
-                  color: 'var(--kp-text-on-dark)',
-                }}
+              {/* Decorative quote mark */}
+              <div
+                className="absolute top-6 left-8 text-8xl leading-none select-none"
+                style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}
               >
-                <RefreshCcw size={16} />
-                Quote Baru
-              </button>
+                &ldquo;
+              </div>
+
+              <p
+                className="relative z-10 font-serif text-2xl md:text-3xl italic leading-relaxed mb-6"
+                style={{ color: 'var(--kp-text-primary)' }}
+              >
+                {currentQuote.text}
+              </p>
+
+              <div className="flex items-center justify-between mt-8">
+                <div>
+                  <p
+                    className="font-sans text-sm font-medium"
+                    style={{ color: 'var(--kp-text-muted)' }}
+                  >
+                    — {currentQuote.author}
+                  </p>
+                  {currentQuote.category && (
+                    <span
+                      className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        backgroundColor: 'var(--kp-accent-light)',
+                        color: 'var(--kp-accent)',
+                        border: '1px solid var(--kp-border)',
+                      }}
+                    >
+                      {currentQuote.category}
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={getRandomQuote}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+                  style={{
+                    backgroundColor: 'var(--kp-accent)',
+                    color: 'var(--kp-text-on-dark)',
+                  }}
+                >
+                  <RefreshCcw size={16} />
+                  Quote Baru
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

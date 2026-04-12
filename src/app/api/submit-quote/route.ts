@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/src/lib/supabase";
 
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 export async function POST(request: NextRequest) {
   try {
-    if (!DISCORD_WEBHOOK_URL) {
-      return NextResponse.json(
-        { error: "Webhook tidak ditemukan di env" },
-        { status: 500 }
-      );
-    }
-
     const body = await request.json();
     const text = String(body.text || "").trim();
     const author = String(body.author || "Anonymous").trim();
@@ -23,9 +17,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Build Discord message
-    const message = `
-💭 **Quote Baru**
+    // Save to Supabase (not approved by default)
+    const { data: quoteData, error: dbError } = await supabase
+      .from('quotes')
+      .insert({
+        text,
+        author,
+        category,
+        is_approved: false, // Requires admin approval
+      })
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error("Supabase error:", dbError);
+      return NextResponse.json(
+        { error: "Gagal menyimpan quote ke database" },
+        { status: 500 }
+      );
+    }
+
+    // Send to Discord notification
+    if (DISCORD_WEBHOOK_URL) {
+      const message = `
+💭 **Quote Baru (Perlu Approval)**
 
 "${text}"
 
@@ -38,34 +53,33 @@ export async function POST(request: NextRequest) {
       hour: '2-digit',
       minute: '2-digit'
     })}
+🆔 ID: ${quoteData.id}
 `;
 
-    // Send to Discord
-    const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: message,
-        allowed_mentions: { parse: [] }, // Disable mentions for safety
-      }),
-    });
+      try {
+        const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: message,
+            allowed_mentions: { parse: [] },
+          }),
+        });
 
-    const responseText = await discordResponse.text();
-
-    if (!discordResponse.ok) {
-      console.error("Discord error:", responseText);
-      return NextResponse.json(
-        { error: "Gagal mengirim ke Discord: " + responseText },
-        { status: 500 }
-      );
+        if (!discordResponse.ok) {
+          console.error("Discord error:", await discordResponse.text());
+        }
+      } catch (discordError) {
+        console.error("Discord send error:", discordError);
+      }
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Quote berhasil dikirim! Terima kasih sudah berbagi.",
+        message: "Quote berhasil dikirim! Menunggu approval admin untuk ditampilkan di website.",
       },
       { status: 200 }
     );
