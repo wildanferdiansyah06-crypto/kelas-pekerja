@@ -82,14 +82,8 @@ export default async function BookPage({ params }: BookPageProps) {
 
           <Link
             href="/buku"
-            className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
-            style={{ color: 'var(--kp-text-muted)' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--kp-text-primary)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--kp-text-muted)';
-            }}
+            className="flex items-center gap-2 text-sm font-ui transition-colors duration-200 hover:opacity-100"
+            style={{ color: 'var(--kp-text-muted)', opacity: 0.7 }}
           >
             <ArrowLeft size={18} />
             <span>Kembali ke Rak</span>
@@ -204,16 +198,10 @@ export default async function BookPage({ params }: BookPageProps) {
 
                   <a
                     href={book.downloadUrl}
-                    className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-medium rounded-lg transition-colors duration-200"
+                    className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-medium rounded-lg transition-colors duration-200 hover:bg-[var(--kp-accent)]"
                     style={{
                       backgroundColor: 'var(--kp-text-primary)',
                       color: 'var(--kp-bg-base)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--kp-accent)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'var(--kp-text-primary)';
                     }}
                   >
 
@@ -227,18 +215,10 @@ export default async function BookPage({ params }: BookPageProps) {
                 {/* FIXED BUTTON */}
                 <Link
                   href={`/buku/${book.slug}/baca`}
-                  className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-normal rounded-lg transition-colors duration-200"
+                  className="flex items-center justify-center gap-2 px-6 py-3 font-ui text-sm font-normal rounded-lg transition-colors duration-200 hover:opacity-100"
                   style={{
                     border: '1px solid var(--kp-border)',
-                    opacity: 0.8,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
-                    e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.borderColor = 'var(--kp-border)';
+                    opacity: 0.7,
                   }}
                 >
 
