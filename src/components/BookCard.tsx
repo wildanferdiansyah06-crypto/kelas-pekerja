@@ -103,7 +103,7 @@ export default function BookCard({
     >
       {/* Card Image Area */}
       <div
-        className="relative aspect-[3/4] overflow-hidden"
+        className="relative aspect-[2/3] overflow-hidden"
       >
         {book.cover && (
           <Image
@@ -131,21 +131,21 @@ export default function BookCard({
       </div>
 
       {/* Card Body */}
-      <div style={{ padding: '1rem' }}>
+      <div style={{ padding: '0.75rem' }}>
         {/* Title */}
         <h3
-          className="font-serif font-semibold text-base leading-[1.4] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
+          className="font-serif font-semibold text-sm leading-[1.3] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
           style={{ color: 'var(--kp-text-primary)' }}
         >
           {book.title}
         </h3>
 
         {/* Metadata */}
-        <div className="flex items-center gap-3 text-xs font-sans mt-2" style={{ color: 'var(--kp-text-muted)' }}>
+        <div className="flex items-center gap-2 text-[10px] font-sans mt-1" style={{ color: 'var(--kp-text-muted)' }}>
           <span>{book.pages || 'N/A'} halaman</span>
           <span>·</span>
           <span className="flex items-center gap-1">
-            <Clock size={11} />
+            <Clock size={10} />
             {book.readTime || '5 menit'}
           </span>
         </div>
