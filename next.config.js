@@ -15,14 +15,33 @@ const nextConfig = {
         hostname: "*.googleusercontent.com",
       },
     ],
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
 
-
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  
   // Experimental config buat App Router (Next.js 13+)
   experimental: {
     serverActions: {
       bodySizeLimit: '50mb'
-    }
+    },
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
+
+  // Enable SWC minification for better performance
+  swcMinify: true,
+
+  // Optimize bundle size
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{member}}',
+    },
   },
 };
 

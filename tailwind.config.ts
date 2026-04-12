@@ -16,6 +16,28 @@ const config: Config = {
     "bg-neutral-900",
   ],
   theme: {
+    screens: {
+      // Mobile breakpoints - based on common device widths
+      'xs': '375px',   // iPhone SE, small phones
+      'sm': '390px',   // iPhone 12/13/14, standard mobile
+      'md': '414px',   // iPhone Max, larger phones
+      'lg': '428px',   // iPhone 14 Pro Max, largest phones
+      
+      // Tablet breakpoints
+      'tablet': '768px',    // iPad mini, small tablets
+      'laptop': '1024px',   // iPad Pro, small laptops
+      
+      // Desktop breakpoints
+      'xl': '1280px',   // MacBook Air 13", standard desktop
+      '2xl': '1440px',  // MacBook Air 15", larger desktops
+      '3xl': '1536px',  // MacBook Pro 14", high-res desktops
+      '4xl': '1728px',  // MacBook Pro 16", ultra-wide
+      
+      // Custom breakpoints for specific device ranges
+      'mobile-only': { 'max': '767px' },
+      'tablet-only': { 'min': '768px', 'max': '1023px' },
+      'desktop-only': { 'min': '1024px' },
+    },
     extend: {
       // ==========================================
       // COLORS - Kelas Pekerja Palette

@@ -14,12 +14,16 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
+  preload: true,
+  adjustFontFallback: "Arial",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  preload: true,
+  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
@@ -76,6 +80,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  themeColor: "#3d2817",
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({

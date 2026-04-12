@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { getOrCreateUser, updateReadingProgress } from '@/src/lib/user';
@@ -10,6 +10,9 @@ export default function ReadingProgress() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [currentBookId, setCurrentBookId] = useState<string | null>(null);
+  const tickingRef = useRef(false);
+  const lastScrollYRef = useRef(0);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Extract book ID from pathname if it's a book page
@@ -22,61 +25,75 @@ export default function ReadingProgress() {
     }
   }, [pathname]);
 
+  const updateProgress = useCallback(() => {
+    const doc = document.documentElement;
+
+    if (!doc) return;
+
+    const scrollHeight = doc.scrollHeight - window.innerHeight;
+    const scrolled = window.scrollY || window.pageYOffset;
+
+    if (scrollHeight <= 0) {
+      setProgress(0);
+      return;
+    }
+
+    const value = (scrolled / scrollHeight) * 100;
+    setProgress(value);
+
+    // Save progress to Sanity for logged-in users (debounced)
+    if (session?.user && currentBookId) {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          const user = await getOrCreateUser(
+            session.user.email || "",
+            session.user.name || "",
+            session.user.image || ""
+          );
+          if (currentBookId) {
+            await updateReadingProgress(user._id, currentBookId, Math.round(value));
+          }
+        } catch (error) {
+          console.error('Failed to save reading progress:', error);
+        }
+      }, 2000); // Increased debounce to 2 seconds for better performance
+    }
+  }, [session, currentBookId]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    let saveTimeout: NodeJS.Timeout;
-
-    const updateProgress = () => {
-      const doc = document.documentElement;
-
-      if (!doc) return;
-
-      const scrollHeight = doc.scrollHeight - window.innerHeight;
-      const scrolled = window.scrollY || window.pageYOffset;
-
-      if (scrollHeight <= 0) {
-        setProgress(0);
-        return;
-      }
-
-      const value = (scrolled / scrollHeight) * 100;
-      setProgress(value);
-
-      // Save progress to Sanity for logged-in users (debounced)
-      if (session?.user && currentBookId) {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(async () => {
-          try {
-            const user = await getOrCreateUser(
-              session.user.email || "",
-              session.user.name || "",
-              session.user.image || ""
-            );
-            if (currentBookId) {
-              await updateReadingProgress(user._id, currentBookId, Math.round(value));
-            }
-          } catch (error) {
-            console.error('Failed to save reading progress:', error);
-          }
-        }, 1000); // Debounce for 1 second
+    const handleScroll = () => {
+      if (!tickingRef.current) {
+        tickingRef.current = true;
+        requestAnimationFrame(() => {
+          updateProgress();
+          tickingRef.current = false;
+        });
       }
     };
 
+    // Initial progress
     updateProgress();
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    // Use passive listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', updateProgress);
-      clearTimeout(saveTimeout);
+      window.removeEventListener('scroll', handleScroll);
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
     };
-  }, [session, currentBookId]);
+  }, [updateProgress]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-[#8b7355]/10">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-[#8b7355]/10 pointer-events-none">
       <div
-        className="h-full bg-[#8b7355] transition-all duration-150"
+        className="h-full bg-[#8b7355] transition-all duration-150 will-change-transform"
         style={{ width: `${progress}%` }}
       />
     </div>

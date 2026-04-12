@@ -32,15 +32,15 @@ useEffect(() => {
 setMounted(true);
 }, []);
 
-// Auto-hide navbar on scroll - Performance optimized
+// Auto-hide navbar on scroll - Performance optimized for mobile
 useEffect(() => {
   if (!mounted) return;
 
   let ticking = false;
-  const scrollThreshold = 100;
+  const scrollThreshold = 50; // Reduced threshold for better mobile UX
   let scrollDirection = 'up';
   let lastScrollTime = 0;
-  const throttleDelay = 16; // ~60fps
+  const throttleDelay = 100; // Increased throttle for better mobile performance (10fps instead of 60fps)
   
   const handleScroll = () => {
     const now = performance.now();
