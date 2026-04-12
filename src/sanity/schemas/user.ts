@@ -124,10 +124,9 @@ const userSchema = {
     select: {
       name: 'name',
       email: 'email',
-      image: 'image',
     },
     prepare(selection: any) {
-      const { name, email, image } = selection;
+      const { name, email } = selection;
       return {
         title: name || 'No name',
         subtitle: email || 'No email',
