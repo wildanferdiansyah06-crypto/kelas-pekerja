@@ -31,12 +31,12 @@ const userSchema = {
           type: 'object',
           fields: [
             {
-              name: '_id',
+              name: 'id',
               title: 'ID',
               type: 'string',
             },
             {
-              name: '_type',
+              name: 'type',
               title: 'Type',
               type: 'string',
             },
@@ -83,7 +83,7 @@ const userSchema = {
               type: 'object',
               fields: [
                 {
-                  name: '_id',
+                  name: 'id',
                   title: 'ID',
                   type: 'string',
                 },

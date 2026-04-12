@@ -93,7 +93,7 @@ export default defineType({
           ],
         }),
         defineField({
-          name: 'quote',
+          name: 'quoteBlock',
           title: 'Quote',
           type: 'object',
           fields: [
