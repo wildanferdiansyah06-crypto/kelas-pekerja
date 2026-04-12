@@ -113,7 +113,7 @@ export default function HomePageClient({
                 </h1>
 
                 {/* Subtext */}
-                <p className="font-serif text-lg max-w-lg mb-6 leading-relaxed" style={{ color: 'var(--kp-text-secondary)' }}>
+                <p className="font-serif text-lg max-w-lg mb-6 leading-relaxed" style={{ color: '#ffffff' }}>
                   Kumpulan bacaan ringan untuk jiwa yang lelah, ditemani secangkir kopi di waktu senggang.
                 </p>
               </div>
@@ -123,13 +123,13 @@ export default function HomePageClient({
                 <Link
                   href="/buku"
                   className="px-8 py-3.5 rounded-full font-sans text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-center"
-                  style={{ backgroundColor: 'var(--kp-accent)', color: 'var(--kp-text-on-dark)' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent-hover)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-accent)'; }}
+                  style={{ backgroundColor: '#ffffff', color: '#2c1e0f' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#f5f5f5'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
                 >
                   Mulai Membaca
                 </Link>
-                <button className="px-8 py-3.5 rounded-full border font-sans text-sm font-semibold transition-all duration-200" style={{ borderColor: 'var(--kp-border)', color: 'var(--kp-text-primary)' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
+                <button className="px-8 py-3.5 rounded-full border font-sans text-sm font-semibold transition-all duration-200" style={{ borderColor: '#ffffff', color: '#ffffff', backgroundColor: 'transparent' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}>
                   Jelajahi Koleksi
                 </button>
               </div>
