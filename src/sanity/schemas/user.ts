@@ -127,6 +127,14 @@ const userSchema = {
       subtitle: 'email',
       media: 'image',
     },
+    prepare(selection: any) {
+      const { title, subtitle, media } = selection;
+      return {
+        title: title || 'No name',
+        subtitle: subtitle || 'No email',
+        media: media,
+      };
+    },
   },
 }
 
