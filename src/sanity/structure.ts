@@ -25,5 +25,5 @@ export const structure: StructureResolver = (S) =>
       S.listItem()
         .title('Konfigurasi')
         .icon(() => '⚙️')
-        .child(S.documentTypeList('config').title('Konfigurasi')),
+        .child(S.documentTypeList('siteConfig').title('Konfigurasi')),
     ])
