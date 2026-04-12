@@ -74,9 +74,24 @@ export default function BooksGridClient({
           FOOTER INFO
          ========================= */}
       <div className="mt-32 text-center" style={{ animation: "fade-in 0.6s ease-out" }}>
-        <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border transition-colors duration-300 ${isDark ? 'border-[#e8e0d5]/10 hover:border-[#e8e0d5]/20' : 'border-[#d4d0c8] hover:border-[#8b7355]/40'}`}>
-          <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-[#e8e0d5]/40' : 'bg-[#8b7355]/40'}`} />
-          <span className={`text-sm tracking-wide ${isDark ? 'text-[#bfae9c] opacity-50' : 'text-[#6a6a6a]'}`}>
+        <div 
+          className="inline-flex items-center gap-3 px-6 py-3 rounded-full border transition-colors duration-300"
+          style={{
+            borderColor: 'var(--kp-border)',
+            color: 'var(--kp-text-muted)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--kp-accent)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--kp-border)';
+          }}
+        >
+          <span 
+            className="w-2 h-2 rounded-full animate-pulse"
+            style={{ backgroundColor: 'var(--kp-accent)', opacity: 0.4 }}
+          />
+          <span className="text-sm tracking-wide">
             Menampilkan {filteredCount} dari {total} cerita
             {category && category !== "all" && ` • ${category}`}
             {search && ` • "${search}"`}
