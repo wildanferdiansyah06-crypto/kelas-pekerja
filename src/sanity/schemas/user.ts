@@ -132,7 +132,7 @@ const userSchema = {
       return {
         title: title || 'No name',
         subtitle: subtitle || 'No email',
-        media: media,
+        media: media && typeof media === 'object' ? media : '👤',
       };
     },
   },
