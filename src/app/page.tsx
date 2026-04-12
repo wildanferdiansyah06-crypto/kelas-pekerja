@@ -5,10 +5,10 @@ import { Suspense } from "react";
 // Loading fallback component
 function HomePageLoading() {
   return (
-    <div className="flex items-center justify-center bg-[#faf8f5] dark:bg-[#1a1816]">
+    <div className="flex items-center justify-center bg-[#faf9f7] dark:bg-[#1a1816]">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b7355] dark:border-[#a08060] mx-auto mb-4"></div>
-        <p className="text-[#8b7355] dark:text-[#a08060] text-sm">Memuat...</p>
+        <p className="text-[#6a6a6a] dark:text-[#a08060] text-sm">Memuat...</p>
       </div>
     </div>
   );
@@ -17,7 +17,7 @@ function HomePageLoading() {
 // Error fallback component
 function HomePageError() {
   return (
-    <div className="flex items-center justify-center bg-[#faf8f5] dark:bg-[#1a1816]">
+    <div className="flex items-center justify-center bg-[#faf9f7] dark:bg-[#1a1816]">
       <div className="text-center">
         <p className="text-red-500 mb-4">Gagal memuat halaman</p>
         <button
