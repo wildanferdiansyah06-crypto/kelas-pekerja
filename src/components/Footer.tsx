@@ -83,7 +83,7 @@ export default function Footer() {
   return (
     <footer
       className="
-        relative mt-24 overflow-hidden
+        relative overflow-hidden
         bg-[#fdf0e0] dark:bg-[#110d08]
         border-t border-[#e2cdb0] dark:border-[#2a1f14]
       "
