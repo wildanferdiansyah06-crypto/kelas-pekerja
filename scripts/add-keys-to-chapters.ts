@@ -32,19 +32,48 @@ async function addKeysToChapters() {
     // Check if chapters already have _key
     const hasKeys = book.chapters.every((chapter: any) => chapter._key)
     if (hasKeys) {
-      console.log(`Skipping ${book.title} - chapters already have _key`)
+      // Check if content blocks also have _key
+      let needsUpdate = false
+      const chaptersWithKeys = book.chapters.map((chapter: any, chapterIndex: number) => ({
+        ...chapter,
+        _key: chapter._key || `chapter-${chapterIndex + 1}`,
+        content: chapter.content?.map((block: any, blockIndex: number) => ({
+          ...block,
+          _key: block._key || `block-${chapterIndex + 1}-${blockIndex + 1}`,
+        })) || [],
+      }))
+
+      // Check if any blocks were missing keys
+      const blocksMissingKeys = book.chapters.some((chapter: any) =>
+        chapter.content?.some((block: any) => !block._key)
+      )
+
+      if (blocksMissingKeys) {
+        try {
+          await client.patch(book._id).set({ chapters: chaptersWithKeys }).commit()
+          console.log(`✓ Added _key to content blocks in: ${book.title}`)
+        } catch (error) {
+          console.error(`✗ Failed to add _key to content blocks in ${book.title}:`, error)
+        }
+      } else {
+        console.log(`Skipping ${book.title} - chapters and content blocks already have _key`)
+      }
       continue
     }
 
-    // Add _key to each chapter
-    const chaptersWithKeys = book.chapters.map((chapter: any, index: number) => ({
+    // Add _key to each chapter and content blocks
+    const chaptersWithKeys = book.chapters.map((chapter: any, chapterIndex: number) => ({
       ...chapter,
-      _key: `chapter-${index + 1}`,
+      _key: `chapter-${chapterIndex + 1}`,
+      content: chapter.content?.map((block: any, blockIndex: number) => ({
+        ...block,
+        _key: `block-${chapterIndex + 1}-${blockIndex + 1}`,
+      })) || [],
     }))
 
     try {
       await client.patch(book._id).set({ chapters: chaptersWithKeys }).commit()
-      console.log(`✓ Added _key to chapters in: ${book.title}`)
+      console.log(`✓ Added _key to chapters and content blocks in: ${book.title}`)
     } catch (error) {
       console.error(`✗ Failed to add _key to ${book.title}:`, error)
     }
