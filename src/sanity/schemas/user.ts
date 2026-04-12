@@ -17,10 +17,8 @@ const userSchema = {
     {
       name: 'image',
       title: 'Profile Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
+      type: 'string',
+      description: 'URL gambar profil (bisa dari Google atau sumber lain)',
     },
     {
       name: 'bookmarks',
@@ -53,7 +51,8 @@ const userSchema = {
             {
               name: 'cover',
               title: 'Cover',
-              type: 'image',
+              type: 'string',
+              description: 'URL cover gambar',
             },
             {
               name: 'slug',
@@ -123,16 +122,16 @@ const userSchema = {
   ],
   preview: {
     select: {
-      title: 'name',
-      subtitle: 'email',
-      media: 'image',
+      name: 'name',
+      email: 'email',
+      image: 'image',
     },
     prepare(selection: any) {
-      const { title, subtitle, media } = selection;
+      const { name, email, image } = selection;
       return {
-        title: title || 'No name',
-        subtitle: subtitle || 'No email',
-        media: media && typeof media === 'object' ? media : '👤',
+        title: name || 'No name',
+        subtitle: email || 'No email',
+        media: '👤',
       };
     },
   },
