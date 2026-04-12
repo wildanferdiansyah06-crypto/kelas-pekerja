@@ -60,7 +60,7 @@
   }
 
   ::selection {
-    @apply bg-accent/30;
+    background-color: var(--kp-accent-faint);
   }
 
   :focus-visible {
