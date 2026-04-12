@@ -37,7 +37,7 @@ export default function BooksGridClient({
         <section className="mb-20" style={{ animation: "fade-in 0.6s ease-out" }}>
           <div className="flex items-center gap-3 mb-8">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <h2 className={`text-sm tracking-[0.2em] uppercase font-medium ${isDark ? 'text-[#d4a574] opacity-60' : 'text-[#8b7355]'}`}>
+            <h2 className={`text-sm tracking-[0.1em] uppercase font-medium ${isDark ? 'text-[#d4a574] opacity-60' : 'text-[#8b7355]'}`}>
               Paling Banyak Dibaca Minggu Ini
             </h2>
           </div>
