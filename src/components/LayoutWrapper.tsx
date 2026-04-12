@@ -1,7 +1,17 @@
 "use client";
 
-import Navbar from "@/src/components/Navbar";
-import Footer from "@/src/components/Footer";
+import dynamic from 'next/dynamic';
+
+// Dynamic imports to reduce initial bundle size
+const Navbar = dynamic(() => import("@/src/components/Navbar"), {
+  loading: () => <div className="h-16 w-full bg-slate-50 dark:bg-[#1a1816]" />,
+  ssr: true,
+});
+
+const Footer = dynamic(() => import("@/src/components/Footer"), {
+  loading: () => <div className="h-20 w-full bg-slate-50 dark:bg-[#1a1816]" />,
+  ssr: true,
+});
 
 export default function LayoutWrapper({
   children,

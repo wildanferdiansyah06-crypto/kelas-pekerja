@@ -91,9 +91,9 @@ export default function ReadingProgress() {
   }, [updateProgress]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-[#8b7355]/10 pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-slate-200 dark:bg-[#8b7355]/10 pointer-events-none">
       <div
-        className="h-full bg-[#8b7355] transition-all duration-150 will-change-transform"
+        className="h-full bg-slate-600 dark:bg-[#8b7355] transition-all duration-150 will-change-transform"
         style={{ width: `${progress}%` }}
       />
     </div>

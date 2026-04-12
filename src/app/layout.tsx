@@ -5,17 +5,22 @@ import "../styles/performance.css";
 
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { NavbarProvider } from "@/src/contexts/NavbarContext";
-import ReadingProgress from "@/src/components/ReadingProgress";
+import dynamic from 'next/dynamic';
 import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
+
+// Dynamic import for ReadingProgress to reduce initial bundle
+const ReadingProgress = dynamic(() => import("@/src/components/ReadingProgress"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
   preload: true,
-  adjustFontFallback: "Arial",
 });
 
 const inter = Inter({
@@ -23,7 +28,6 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
   preload: true,
-  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
@@ -80,7 +84,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#3d2817",
+  themeColor: "#f8fafc",
   colorScheme: "dark light",
 };
 
@@ -92,7 +96,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08] text-[#d4a574] dark:bg-[#1a1816] dark:text-[#e8e0d5]`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 text-slate-700 dark:bg-gradient-to-br dark:from-[#1a1816] dark:via-[#2c2420] dark:to-[#1a1816] dark:text-[#e8e0d5] noise-texture subtle-variation`}
       >
         <SessionProvider>
           <ThemeProvider>
