@@ -30,12 +30,8 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '50mb'
     },
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-
-  // Enable SWC minification for better performance
-  swcMinify: true,
 
   // Optimize bundle size
   modularizeImports: {

@@ -5,16 +5,10 @@ import "../styles/performance.css";
 
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 import { NavbarProvider } from "@/src/contexts/NavbarContext";
-import dynamic from 'next/dynamic';
+import ReadingProgress from "@/src/components/ReadingProgress";
 import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
-
-// Dynamic import for ReadingProgress to reduce initial bundle
-const ReadingProgress = dynamic(() => import("@/src/components/ReadingProgress"), {
-  ssr: false,
-  loading: () => null,
-});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],

@@ -29,7 +29,7 @@ async function deleteDuplicate() {
   const books = await client.fetch(`*[_type == "book"]{_id, title, slug}`)
   console.log(`Found ${books.length} books\n`)
   
-  books.forEach(book => {
+  books.forEach((book: any) => {
     console.log(`- ${book.title} (${book.slug?.current}) [ID: ${book._id}]`)
   })
 }

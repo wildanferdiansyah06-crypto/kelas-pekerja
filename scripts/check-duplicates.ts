@@ -59,7 +59,7 @@ async function checkDuplicates() {
   }
 
   console.log('\n=== All books ===')
-  books.forEach(book => {
+  books.forEach((book: any) => {
     console.log(`- ${book.title} (${book.slug?.current}) [ID: ${book._id}]`)
   })
 }
