@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 const footerLinks = {
   bacaan: [
@@ -39,6 +40,46 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes("@")) {
+      setNewsletterStatus("error");
+      setNewsletterMessage("Email tidak valid");
+      return;
+    }
+
+    setNewsletterStatus("loading");
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setNewsletterStatus("success");
+        setNewsletterMessage(data.message || "Terima kasih!");
+        setEmail("");
+      } else {
+        setNewsletterStatus("error");
+        setNewsletterMessage(data.error || "Gagal mengirim");
+      }
+    } catch (error) {
+      setNewsletterStatus("error");
+      setNewsletterMessage("Terjadi kesalahan");
+    }
+  };
+
   return (
     <footer
       className="
@@ -182,9 +223,11 @@ export default function Footer() {
               <p className="text-xs text-[#9c7a55] dark:text-[#7a6248] mb-2">
                 Dapat notifikasi cerita baru:
               </p>
-              <div className="flex gap-2">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="emailmu@..."
                   className="
                     flex-1 min-w-0 px-3 py-2 rounded-lg text-xs
@@ -198,6 +241,8 @@ export default function Footer() {
                   "
                 />
                 <button
+                  type="submit"
+                  disabled={newsletterStatus === "loading"}
                   className="
                     px-3 py-2 rounded-lg text-xs font-semibold shrink-0
                     bg-[#a0714f] dark:bg-[#c9915a]
@@ -205,11 +250,23 @@ export default function Footer() {
                     hover:bg-[#7c5230] dark:hover:bg-[#e0a96a]
                     active:scale-95
                     transition-all duration-200
+                    disabled:opacity-50 disabled:cursor-not-allowed
                   "
                 >
-                  Ikuti →
+                  {newsletterStatus === "loading" ? "..." : "Ikuti →"}
                 </button>
-              </div>
+              </form>
+              {newsletterMessage && (
+                <p
+                  className={`text-xs mt-2 ${
+                    newsletterStatus === "success"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
+                >
+                  {newsletterMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>
