@@ -181,7 +181,7 @@ export default function TentangPage() {
                 <div className="flex gap-4 mt-8">
 
                   <a
-                    href="https://github.com/wildanferdiansyah06-crypto"
+                    href="https://github.com/wildanferdiansyah06-crypto/kelas-pekerja"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 rounded-full backdrop-blur-sm border transition-all duration-300 hover:scale-110 shadow-md"
