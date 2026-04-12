@@ -78,7 +78,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#f8fafc",
+  themeColor: "#3d2817",
   colorScheme: "dark light",
 };
 
@@ -90,7 +90,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 text-slate-700 dark:bg-gradient-to-br dark:from-[#1a1816] dark:via-[#2c2420] dark:to-[#1a1816] dark:text-[#e8e0d5] noise-texture subtle-variation`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased transition-colors duration-500 bg-gradient-to-br from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7] text-[#2d2d2d] dark:bg-gradient-to-br dark:from-[#2c1810] dark:via-[#3d2817] dark:to-[#1a0e08] dark:text-[#d4a574]`}
       >
         <SessionProvider>
           <ThemeProvider>

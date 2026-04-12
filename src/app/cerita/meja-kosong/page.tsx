@@ -52,20 +52,20 @@ export default function MejaKosongPage() {
     hover: 'hover:bg-stone-800/40',
     highlight: 'bg-amber-950/30 border-amber-800/40'
   } : {
-    bg: 'bg-[#fafaf9]',
-    bgGradient: 'from-stone-50 via-[#f5f5f4] to-stone-100',
-    text: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    textHeading: 'text-stone-800',
-    border: 'border-stone-200',
-    borderLight: 'border-stone-300',
-    divider: 'bg-stone-200',
-    accent: 'text-amber-700',
-    accentBg: 'bg-amber-50/60',
-    accentBorder: 'border-amber-200',
+    bg: 'bg-[#faf9f7]',
+    bgGradient: 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
+    text: 'text-[#4a4a4a]',
+    textMuted: 'text-[#6a6a6a]',
+    textHeading: 'text-[#2d2d2d]',
+    border: 'border-[#e5e2dd]',
+    borderLight: 'border-[#d4d0c8]',
+    divider: 'bg-[#e5e2dd]',
+    accent: 'text-[#8b7355]',
+    accentBg: 'bg-[#e5e2dd]/50',
+    accentBorder: 'border-[#d4d0c8]',
     card: 'bg-white/60',
-    hover: 'hover:bg-stone-100/80',
-    highlight: 'bg-amber-50/80 border-amber-300/60'
+    hover: 'hover:bg-[#f5f3f0]/80',
+    highlight: 'bg-[#e5e2dd]/80 border-[#d4d0c8]/60'
   };
 
   const fontSizeClasses = fontSize === 'large' ? {

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import { Moon, Sun, Coffee, BookOpen, ChevronUp, Quote, Settings2, X, Type, Palette, Eye, EyeOff } from 'lucide-react';
+import { useReducedMotion } from "@/src/hooks/useReducedMotion";
 
 export default function SeniMenyeduhiKehidupanPage() {
   const [darkMode, setDarkMode] = useState(true);
@@ -14,6 +15,8 @@ export default function SeniMenyeduhiKehidupanPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
   
+  const reducedMotion = useReducedMotion();
+
   // Smooth progress untuk reading indicator
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -84,16 +87,16 @@ export default function SeniMenyeduhiKehidupanPage() {
     tocActive: 'bg-amber-500/10 text-amber-500',
     progress: 'bg-amber-600'
   } : {
-    bg: 'bg-[#fafaf9]',
-    bgGradient: 'from-stone-50 via-[#f5f5f4] to-stone-100',
-    text: 'text-stone-600',
-    textMuted: 'text-stone-400',
-    textHeading: 'text-stone-900',
-    accent: 'text-amber-700',
-    accentBg: 'bg-amber-100/50',
-    accentBorder: 'border-amber-300',
-    secondary: 'text-orange-600',
-    border: 'border-stone-200',
+    bg: 'bg-[#faf9f7]',
+    bgGradient: 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
+    text: 'text-[#4a4a4a]',
+    textMuted: 'text-[#6a6a6a]',
+    textHeading: 'text-[#2d2d2d]',
+    accent: 'text-[#8b7355]',
+    accentBg: 'bg-[#e5e2dd]/50',
+    accentBorder: 'border-[#d4d0c8]',
+    secondary: 'text-[#6b5d4f]',
+    border: 'border-[#e5e2dd]',
     card: 'bg-white/60',
     hover: 'hover:bg-stone-100/80',
     quoteBorder: 'border-l-amber-600',
