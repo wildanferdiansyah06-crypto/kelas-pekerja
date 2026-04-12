@@ -9,6 +9,7 @@ import ReadingProgress from "@/src/components/ReadingProgress";
 import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
+import Footer from "@/src/components/Footer";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -110,6 +111,7 @@ export default function RootLayout({
           </ThemeProvider>
         </SessionProvider>
         <SpeedInsights />
+        <Footer />
       </body>
     </html>
   );
