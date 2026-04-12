@@ -14,14 +14,13 @@ Frontend (Next.js 15 + React 18)
    Static & Dynamic Rendering
 ```
 
-### Keunggulan Arsitektur Ini:
+### Arsitektur:
 
 - ⚡ **Hybrid Rendering**: Static + Dynamic rendering untuk optimal performance
 - 🔧 **CMS-powered**: Konten dikelola via Sanity Studio, bukan hardcode
 - 🔐 **Authentication**: Login dengan Google OAuth via NextAuth
 - 📱 **SEO-Friendly**: Proper meta tags dan structured data
 - 🚀 **Siap Scale**: Architecture yang scalable dan maintainable
-- 💰 **Gratis Hosting**: Vercel, Netlify, atau lainnya
 
 ## 🚀 Quick Start
 
