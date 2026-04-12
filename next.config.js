@@ -28,6 +28,8 @@ const nextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
+  swcMinify: true,
+  productionBrowserSourceMaps: false,
   
   // Experimental config buat App Router (Next.js 13+)
   experimental: {
@@ -42,6 +44,58 @@ const nextConfig = {
     'lucide-react': {
       transform: 'lucide-react/dist/esm/icons/{{member}}',
     },
+  },
+
+  // Webpack optimizations
+  webpack: (config, { isServer }) => {
+    // Optimize production builds
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            commons: {
+              name: 'commons',
+              chunks: 'all',
+              minChunks: 2,
+            },
+          },
+        },
+      };
+    }
+    return config;
+  },
+
+  // Headers for caching
+  async headers() {
+    return [
+      {
+        source: '/:all*(svg|jpg|png|webp|avif)',
+        locale: false,
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+        ],
+      },
+    ];
   },
 };
 
