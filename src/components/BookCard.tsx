@@ -142,7 +142,7 @@ export default function BookCard({
 
         {/* Metadata */}
         <div className="flex items-center gap-2 text-[10px] font-sans mt-1" style={{ color: 'var(--kp-text-muted)' }}>
-          <span>{book.pages || 'N/A'} halaman</span>
+          <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
           <span>·</span>
           <span className="flex items-center gap-1">
             <Clock size={10} />
