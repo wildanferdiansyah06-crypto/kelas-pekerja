@@ -84,7 +84,7 @@ export default function HomePageClient({
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=80"
+              src="https://images.pexels.com/photos/30266551/pexels-photo-30266551/free-photo-of-cozy-autumn-coffee-with-old-books-and-music.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=1920"
               alt="Hero background"
               fill
               priority
