@@ -45,11 +45,9 @@ export default function Footer() {
   const [newsletterMessage, setNewsletterMessage] = useState("");
   const [networkStatus, setNetworkStatus] = useState<{
     text: string;
-    color: string;
     dotColor: string;
   }>({
     text: "Memeriksa koneksi...",
-    color: "text-gray-500",
     dotColor: "bg-gray-500",
   });
 
@@ -61,7 +59,6 @@ export default function Footer() {
       if (!connection) {
         setNetworkStatus({
           text: "Koneksi stabil",
-          color: "text-green-500",
           dotColor: "bg-green-500",
         });
         return;
@@ -73,31 +70,26 @@ export default function Footer() {
       if (!navigator.onLine) {
         setNetworkStatus({
           text: "Koneksi terputus",
-          color: "text-red-500",
           dotColor: "bg-red-500",
         });
       } else if (effectiveType === 'slow-2g' || effectiveType === '2g' || downlink < 0.5) {
         setNetworkStatus({
           text: "Koneksi lambat",
-          color: "text-red-500",
           dotColor: "bg-red-500",
         });
       } else if (effectiveType === '3g' || (downlink >= 0.5 && downlink < 2)) {
         setNetworkStatus({
           text: "Koneksi sedang",
-          color: "text-yellow-500",
           dotColor: "bg-yellow-500",
         });
       } else if (effectiveType === '4g' || downlink >= 2) {
         setNetworkStatus({
           text: "Koneksi cepat",
-          color: "text-green-500",
           dotColor: "bg-green-500",
         });
       } else {
         setNetworkStatus({
           text: "Koneksi stabil",
-          color: "text-green-500",
           dotColor: "bg-green-500",
         });
       }
@@ -410,7 +402,7 @@ export default function Footer() {
             <span
               className={`w-1.5 h-1.5 rounded-full animate-pulse ${networkStatus.dotColor}`}
             />
-            <span className={networkStatus.color}>{networkStatus.text}</span>
+            <span>{networkStatus.text}</span>
           </div>
 
           {/* Kanan: Made with */}
