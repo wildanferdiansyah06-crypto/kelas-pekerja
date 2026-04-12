@@ -406,7 +406,7 @@ export default function TulisanPage() {
               </p>
               <span className="absolute -bottom-8 -right-4 text-6xl md:text-8xl text-[#8b7355]/20 font-serif">"</span>
             </div>
-            <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
+            <Link href="/tulis" className="inline-flex items-center gap-3 px-8 py-4 bg-[#8b7355] text-white rounded-lg hover:bg-[#c7b299] transition-all duration-300 text-base font-medium shadow-md hover:shadow-lg hover:-translate-y-0.5">
               <PenLine size={20} />
               Mulai Menulis
             </Link>
