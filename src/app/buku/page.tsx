@@ -36,7 +36,7 @@ function makeSlug(title: string): string {
 function EmptyState({ hasFilters = false, isDark = false }: { hasFilters?: boolean; isDark?: boolean }) {
   return (
     <div className="text-center py-32" style={{ animation: 'fade-in 0.6s ease-out' }}>
-      <div className={`w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-105 ${isDark ? 'bg-[#e8e0d5]/5' : 'bg-[#3d2817]/10'}`}>
+      <div className={`w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-105 ${isDark ? 'bg-[#e8e0d5]/5' : 'bg-[#e5e2dd]/30'}`}>
         <svg
           className="w-10 h-10 opacity-30"
           fill="none"
@@ -47,14 +47,14 @@ function EmptyState({ hasFilters = false, isDark = false }: { hasFilters?: boole
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.5}
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18, 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5  16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18, 16.5 18c-1.746 0-3.332.477-4.5 1.253"
           />
         </svg>
       </div>
-      <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>
+      <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#2d2d2d]'}`}>
         {hasFilters ? "Tidak ada buku yang cocok" : "Rak masih terlalu ringan"}
       </p>
-      <p className={`text-base opacity-40 max-w-md mx-auto mb-8 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
+      <p className={`text-base opacity-40 max-w-md mx-auto mb-8 ${isDark ? 'text-[#bfae9c]' : 'text-[#6a6a6a]'}`}>
         {hasFilters 
           ? "Coba ubah filter kategori atau kata kunci pencarian" 
           : "Belum banyak cerita di sini. Jadi yang pertama berbagi pengalaman lo."}
@@ -62,7 +62,7 @@ function EmptyState({ hasFilters = false, isDark = false }: { hasFilters?: boole
       {!hasFilters && (
         <Link 
           href="/tulis"
-          className={`inline-flex items-center gap-2 px-6 py-3 border rounded-full transition-all duration-300 ${isDark ? 'border-[#e8e0d5] hover:bg-[#e8e0d5] hover:text-[#2b2b2b]' : 'border-[#8b4513]/30 hover:bg-[#8b7355] hover:text-[#f4e4d4]'}`}
+          className={`inline-flex items-center gap-2 px-6 py-3 border rounded-full transition-all duration-300 ${isDark ? 'border-[#e8e0d5] hover:bg-[#e8e0d5] hover:text-[#2b2b2b]' : 'border-[#d4d0c8] text-[#4a4a4a] hover:bg-[#8b7355] hover:text-[#f4e4d4]'}`}
         >
           <span>Tulis Pengalaman Lo</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,9 +79,9 @@ function GridSkeleton({ isDark = false }: { isDark?: boolean }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="animate-pulse">
-          <div className={`aspect-[16/10] rounded-lg mb-6 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />
-          <div className={`h-6 rounded w-3/4 mb-3 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />
-          <div className={`h-4 rounded w-1/2 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />
+          <div className={`aspect-[16/10] rounded-lg mb-6 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`} />
+          <div className={`h-6 rounded w-3/4 mb-3 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`} />
+          <div className={`h-4 rounded w-1/2 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`} />
         </div>
       ))}
     </div>
@@ -94,9 +94,9 @@ function FeaturedCard({ book, index, onSelect, isDark = false }: { book: Book & 
   return (
     <div
       onClick={() => onSelect(book)}
-      className={`group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border transition-all duration-500 hover:shadow-lg cursor-pointer ${isDark ? 'border-[#e8e0d5]/10 hover:border-[#e8e0d5]/30' : 'border-[#8b4513]/20 hover:border-[#8b7355]/40'}`}
+      className={`group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border transition-all duration-500 hover:shadow-lg cursor-pointer ${isDark ? 'border-[#e8e0d5]/10 hover:border-[#e8e0d5]/30' : 'border-[#e5e2dd] hover:border-[#8b7355]/40'}`}
     >
-      <div className={`aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg flex-shrink-0 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`}>
+      <div className={`aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg flex-shrink-0 ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`}>
         {book.cover ? (
           <Image
             src={book.cover}
@@ -121,15 +121,15 @@ function FeaturedCard({ book, index, onSelect, isDark = false }: { book: Book & 
           {book.category || "Umum"}
         </span>
 
-        <h3 className={`font-serif text-2xl md:text-3xl leading-tight mb-3 group-hover:opacity-70 transition-opacity ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>
+        <h3 className={`font-serif text-2xl md:text-3xl leading-tight mb-3 group-hover:opacity-70 transition-opacity ${isDark ? 'text-[#f4e4d4]' : 'text-[#2d2d2d]'}`}>
           {book.title}
         </h3>
 
-        <p className={`text-base opacity-60 leading-relaxed line-clamp-3 mb-4 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
+        <p className={`text-base opacity-60 leading-relaxed line-clamp-3 mb-4 ${isDark ? 'text-[#bfae9c]' : 'text-[#4a4a4a]'}`}>
           &ldquo;{(book.excerpt?.substring(0, 150) || book.subtitle || "Tidak ada deskripsi")}...&rdquo;
         </p>
 
-        <div className={`flex items-center gap-4 text-xs opacity-40 mt-auto ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
+        <div className={`flex items-center gap-4 text-xs opacity-40 mt-auto ${isDark ? 'text-[#bfae9c]' : 'text-[#6a6a6a]'}`}>
           <span>{book.readTime || "5 min read"}</span>
           <span>•</span>
           <span>{author}</span>
@@ -239,29 +239,29 @@ function PageContent() {
   const hasBooks = booksWithSlugs.length > 0;
 
   return (
-    <main className={`transition-colors duration-500 w-full ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
+    <main className={`transition-colors duration-500 w-full ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]'}`}>
       <section className="pt-32 pb-16 px-6 w-full">
         <div className="max-w-6xl mx-auto text-center">
-          <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`} style={{ animation: 'fade-in 0.6s ease-out' }}>
+          <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#8b7355]'}`} style={{ animation: 'fade-in 0.6s ease-out' }}>
             Perpustakaan Mini
           </p>
 
-          <h1 className={`font-serif text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tight ${isDark ? 'text-[#f4e4d4]' : 'text-[#f4e4d4]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}>
+          <h1 className={`font-serif text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tight ${isDark ? 'text-[#f4e4d4]' : 'text-[#2d2d2d]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}>
             Rak Buku
           </h1>
 
-          <p className={`text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-6 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}>
+          <p className={`text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-6 ${isDark ? 'text-[#bfae9c]' : 'text-[#4a4a4a]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}>
             &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff,
             dan pekerja kantoran yang gak diajarin di sekolah.&rdquo;
           </p>
 
-          <div className={`flex items-center justify-center gap-6 text-sm ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}>
+          <div className={`flex items-center justify-center gap-6 text-sm ${isDark ? 'text-[#bfae9c]' : 'text-[#6a6a6a]'}`} style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}>
             <span className="flex items-center gap-2">
-              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`}>{total}</span> cerita
+              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#8b7355]'}`}>{total}</span> cerita
             </span>
             <span className="opacity-30">|</span>
             <span className="flex items-center gap-2">
-              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`}>{uniqueCategories.length}</span> kategori
+              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#8b7355]'}`}>{uniqueCategories.length}</span> kategori
             </span>
             <span className="opacity-30">|</span>
             <span className="flex items-center gap-2">
@@ -274,11 +274,11 @@ function PageContent() {
 
       <section className="px-6 pb-16 w-full">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
-          <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
+          <Suspense fallback={<div className={`h-12 w-40 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
           </Suspense>
 
-          <Suspense fallback={<div className={`h-12 w-72 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#3d2817]/20'}`} />}>
+          <Suspense fallback={<div className={`h-12 w-72 animate-pulse rounded-lg ${isDark ? 'bg-[#e8e0d5]/10' : 'bg-[#e5e2dd]/30'}`} />}>
             <SearchBar initialSearch={search} />
           </Suspense>
         </div>
@@ -288,8 +288,8 @@ function PageContent() {
         <div className="max-w-6xl mx-auto">
           {error ? (
             <div className="text-center py-32">
-              <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>Terjadi kesalahan</p>
-              <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>{error.message}</p>
+              <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#2d2d2d]'}`}>Terjadi kesalahan</p>
+              <p className={`text-base opacity-40 ${isDark ? 'text-[#bfae9c]' : 'text-[#6a6a6a]'}`}>{error.message}</p>
             </div>
           ) : hasBooks ? (
             <Suspense fallback={<GridSkeleton isDark={isDark} />}>
