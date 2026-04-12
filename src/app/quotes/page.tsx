@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { RefreshCcw, Send } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { RefreshCcw, Send, Share2, Heart } from "lucide-react";
 import { supabase } from "@/src/lib/supabase";
 
 interface Quote {
@@ -14,9 +14,10 @@ interface Quote {
 
 export default function QuotesPage() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
-  const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   // Form state
   const [quoteText, setQuoteText] = useState("");
@@ -39,9 +40,6 @@ export default function QuotesPage() {
           console.error('Error fetching quotes:', error);
         } else if (data) {
           setQuotes(data);
-          if (data.length > 0) {
-            setCurrentQuote(data[Math.floor(Math.random() * data.length)]);
-          }
         }
       } catch (error) {
         console.error('Error:', error);
@@ -53,12 +51,35 @@ export default function QuotesPage() {
     fetchQuotes();
   }, []);
 
-  const getRandomQuote = () => {
-    if (quotes.length > 0) {
-      const randomIndex = Math.floor(Math.random() * quotes.length);
-      setCurrentQuote(quotes[randomIndex]);
-    }
-  };
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (isPaused || !scrollContainerRef.current) return;
+
+    const scrollContainer = scrollContainerRef.current;
+    let animationFrameId: number;
+    let scrollPosition = 0;
+    const scrollSpeed = 0.5; // pixels per frame
+
+    const scroll = () => {
+      if (!isPaused && scrollContainer) {
+        scrollPosition += scrollSpeed;
+        scrollContainer.scrollTop = scrollPosition;
+
+        // Reset to top when reaching bottom
+        if (scrollPosition >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
+          scrollPosition = 0;
+          scrollContainer.scrollTop = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isPaused, quotes]);
 
   const handleSubmitQuote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +109,7 @@ export default function QuotesPage() {
 
       if (response.ok) {
         setSubmitStatus("success");
-        setSubmitMessage(data.message || "Quote berhasil dikirim!");
+        setSubmitMessage(data.message || "Terima kasih!");
         setQuoteText("");
         setAuthor("");
       } else {
@@ -98,6 +119,26 @@ export default function QuotesPage() {
     } catch (error) {
       setSubmitStatus("error");
       setSubmitMessage("Terjadi kesalahan");
+    }
+  };
+
+  const handleShare = async (quote: Quote) => {
+    const shareText = `"${quote.text}" — ${quote.author} ☕`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Quote Pekerja',
+          text: shareText,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.log('Share failed:', error);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(shareText);
+      alert('Quote disalin ke clipboard!');
     }
   };
 
@@ -121,73 +162,90 @@ export default function QuotesPage() {
         </div>
       </div>
 
-      {/* Main Quote Display */}
+      {/* Main Quote Display - Scrolling List */}
       <div className="px-6 pb-16">
         <div className="max-w-4xl mx-auto">
           {loading ? (
             <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
               Memuat quotes...
             </div>
-          ) : !currentQuote ? (
+          ) : quotes.length === 0 ? (
             <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
               Belum ada quote tersedia.
             </div>
           ) : (
             <div
-              className="relative rounded-2xl overflow-hidden p-8 md:p-12"
+              ref={scrollContainerRef}
+              className="space-y-6 overflow-y-auto max-h-[600px] pr-2 scrollbar-thin"
               style={{
-                background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))',
-                border: '1px solid var(--kp-border)',
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'var(--kp-accent) var(--kp-bg-surface)',
               }}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
-              {/* Decorative quote mark */}
-              <div
-                className="absolute top-6 left-8 text-8xl leading-none select-none"
-                style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}
-              >
-                &ldquo;
-              </div>
-
-              <p
-                className="relative z-10 font-serif text-2xl md:text-3xl italic leading-relaxed mb-6"
-                style={{ color: 'var(--kp-text-primary)' }}
-              >
-                {currentQuote.text}
-              </p>
-
-              <div className="flex items-center justify-between mt-8">
-                <div>
-                  <p
-                    className="font-sans text-sm font-medium"
-                    style={{ color: 'var(--kp-text-muted)' }}
-                  >
-                    — {currentQuote.author}
-                  </p>
-                  {currentQuote.category && (
-                    <span
-                      className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium"
-                      style={{
-                        backgroundColor: 'var(--kp-accent-light)',
-                        color: 'var(--kp-accent)',
-                        border: '1px solid var(--kp-border)',
-                      }}
-                    >
-                      {currentQuote.category}
-                    </span>
-                  )}
-                </div>
-                <button
-                  onClick={getRandomQuote}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+              {quotes.map((quote) => (
+                <div
+                  key={quote.id}
+                  className="relative rounded-2xl overflow-hidden p-6 md:p-8 transition-all duration-200 hover:scale-[1.02]"
                   style={{
-                    backgroundColor: 'var(--kp-accent)',
-                    color: 'var(--kp-text-on-dark)',
+                    background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))',
+                    border: '1px solid var(--kp-border)',
                   }}
                 >
-                  <RefreshCcw size={16} />
-                  Quote Baru
-                </button>
-              </div>
+                  {/* Decorative quote mark */}
+                  <div
+                    className="absolute top-4 left-6 text-6xl leading-none select-none"
+                    style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}
+                  >
+                    &ldquo;
+                  </div>
+
+                  <p
+                    className="relative z-10 font-serif text-lg md:text-xl italic leading-relaxed mb-4"
+                    style={{ color: 'var(--kp-text-primary)' }}
+                  >
+                    {quote.text}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-6">
+                    <div>
+                      <p
+                        className="font-sans text-sm font-medium"
+                        style={{ color: 'var(--kp-text-muted)' }}
+                      >
+                        — {quote.author}
+                      </p>
+                      {quote.category && (
+                        <span
+                          className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium"
+                          style={{
+                            backgroundColor: 'var(--kp-accent-light)',
+                            color: 'var(--kp-accent)',
+                            border: '1px solid var(--kp-border)',
+                          }}
+                        >
+                          {quote.category}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleShare(quote)}
+                        className="flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-all duration-200 hover:scale-105"
+                        style={{
+                          backgroundColor: 'var(--kp-accent)',
+                          color: 'var(--kp-text-on-dark)',
+                        }}
+                        title="Share quote"
+                      >
+                        <Share2 size={14} />
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
