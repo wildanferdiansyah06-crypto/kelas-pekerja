@@ -399,7 +399,13 @@ export default function TulisanPage() {
         {/* FINAL CTA */}
         <section className={`px-4 sm:px-6 py-24 border-t ${colors.border}`}>
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-xl sm:text-3xl md:text-4xl font-light italic text-[#c7b299] mb-6 leading-relaxed tracking-wide">"Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri"</p>
+            <div className="relative mb-8">
+              <span className="absolute -top-4 -left-4 text-6xl md:text-8xl text-[#8b7355]/20 font-serif">"</span>
+              <p className="text-2xl sm:text-4xl md:text-5xl font-serif text-[#c7b299] mb-6 leading-relaxed">
+                Ceritamu adalah jejak yang membantu orang lain menemukan jalan mereka sendiri
+              </p>
+              <span className="absolute -bottom-8 -right-4 text-6xl md:text-8xl text-[#8b7355]/20 font-serif">"</span>
+            </div>
             <Link href="/tulis" className="inline-flex items-center gap-3 px-10 py-5 bg-[#8b7355] text-white rounded-full hover:bg-[#c7b299] transition-all text-base font-medium shadow-xl shadow-[#8b7355]/20">
               <PenLine size={20} />
               Mulai Menulis
