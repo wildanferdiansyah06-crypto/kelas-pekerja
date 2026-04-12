@@ -37,7 +37,7 @@ export default function CategoryFilter({ activeCategory = 'all', books }: Catego
   const uniqueCategories = ['all', ...Array.from(uniqueCategoriesSet)];
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide max-w-full">
+    <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full">
       {uniqueCategories.map((cat) => (
         <Link
           key={cat}
