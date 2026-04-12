@@ -91,119 +91,64 @@ export default function BookCard({
 
   const cardContent = (
     <article
-      className="relative h-full group cursor-pointer"
+      className="relative h-full group cursor-pointer card-hover"
       style={{
         opacity: 0,
         animationDelay,
         animation: 'fade-in-up 0.6s ease-out forwards',
-        backgroundColor: 'var(--kp-bg-base)',
+        backgroundColor: 'var(--kp-bg-surface)',
         border: '1px solid var(--kp-border)',
-        borderRadius: '10px',
+        borderRadius: '1rem',
         overflow: 'hidden',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
-        e.currentTarget.style.boxShadow = 'var(--kp-shadow-md)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--kp-border)';
-        e.currentTarget.style.boxShadow = 'none';
       }}
     >
       {/* Card Image Area */}
       <div
-        className="relative h-40"
-        style={{ backgroundColor: 'var(--kp-bg-elevated)' }}
+        className="relative aspect-[3/4] overflow-hidden"
       >
         {book.cover && (
           <Image
             src={book.cover}
             alt={book.title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         )}
-        {/* Overlay gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to bottom, transparent 40%, var(--kp-bg-surface) 100%)',
-          }}
-        />
+        {/* Category badge */}
+        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-black/40 backdrop-blur-sm text-white border border-white/20">
+          {book.category || 'Umum'}
+        </div>
+        {/* Bookmark button */}
+        <button
+          className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-[var(--kp-accent)] transition-all duration-200"
+          onClick={handleBookmarkToggle}
+          aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
+        >
+          <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
+        </button>
+        {/* Bottom gradient overlay */}
+        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
 
       {/* Card Body */}
-      <div style={{ padding: '1.1rem 1.25rem 1.4rem' }}>
-        {/* Tag/Badge */}
-        <span
-          className="inline-block mb-2 font-ui text-xs font-medium tracking-widest uppercase px-2 py-1 rounded"
-          style={{
-            color: 'var(--kp-accent)',
-            backgroundColor: 'var(--kp-accent-faint)',
-          }}
-        >
-          {book.category || 'Umum'}
-        </span>
-
-        {/* Metadata row */}
-        <div className="flex items-center gap-1.5 mb-1">
-          <span className="font-ui text-xs" style={{ color: 'var(--kp-text-muted)' }}>
-            {book.readTime || '5 menit'}
-          </span>
-          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: 'var(--kp-text-subtle)' }}></div>
-          {(book.stats?.views ?? 0) > 0 && (
-            <span className="font-ui text-xs flex items-center gap-1" style={{ color: 'var(--kp-text-muted)' }}>
-              <Eye size={11} />
-              {formatViews(book.stats?.views ?? 0)}
-            </span>
-          )}
-        </div>
-
+      <div style={{ padding: '1rem' }}>
         {/* Title */}
         <h3
-          className="font-display text-base leading-[1.4] mb-1"
+          className="font-display font-semibold text-base leading-[1.4] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
           style={{ color: 'var(--kp-text-primary)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--kp-accent)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'var(--kp-text-primary)';
-          }}
         >
           {book.title}
         </h3>
 
-        {/* Excerpt */}
-        <p className="font-body text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--kp-text-secondary)' }}>
-          {book.preview || book.subtitle || 'Tidak ada deskripsi tersedia.'}
-        </p>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 mt-3" style={{ borderTop: '1px solid var(--kp-border)' }}>
-          <button
-            className="p-2 rounded-full transition-colors duration-200"
-            style={{
-              color: isBookmarked ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
-            }}
-            onClick={handleBookmarkToggle}
-            onMouseEnter={(e) => {
-              if (!isBookmarked) {
-                e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-            aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
-          >
-            <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
-          </button>
-
-          <div className="flex items-center gap-1 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
-            Baca
-            <ArrowRight size={14} />
-          </div>
+        {/* Metadata */}
+        <div className="flex items-center gap-3 text-xs font-ui mt-2" style={{ color: 'var(--kp-text-muted)' }}>
+          <span>{book.pages || 'N/A'} halaman</span>
+          <span>·</span>
+          <span className="flex items-center gap-1">
+            <Clock size={11} />
+            {book.readTime || '5 menit'}
+          </span>
         </div>
       </div>
 

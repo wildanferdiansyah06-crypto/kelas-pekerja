@@ -40,18 +40,29 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSearch} className="relative">
+    <form onSubmit={handleSearch} className="relative flex-1">
+      <span className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--kp-text-muted)' }}>🔍</span>
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Cari buku..."
-        className="w-full md:w-64 pl-10 pr-10 py-2 rounded-full
-                 bg-[#e5e2dd]/30 border border-[#d4d0c8]
-                 focus:outline-none focus:border-[#8b7355]/50
-                 text-sm placeholder:opacity-40 dark:bg-[#8b7355]/5 dark:border-[#8b7355]/20 dark:focus:border-[#8b7355]/50"
+        className="w-full pl-10 pr-10 py-3 rounded-xl font-ui text-sm
+                 focus:outline-none focus:ring-2 transition-all duration-200"
+        style={{
+          backgroundColor: 'var(--kp-bg-surface)',
+          border: '1px solid var(--kp-border)',
+          color: 'var(--kp-text-primary)',
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = 'var(--kp-accent)';
+          e.currentTarget.style.boxShadow = '0 0 0 2px var(--kp-accent)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = 'var(--kp-border)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       />
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40" />
 
       {search && (
         <button
@@ -59,6 +70,7 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
           onClick={clearSearch}
           className="absolute right-3 top-1/2 -translate-y-1/2
                    opacity-40 hover:opacity-100 transition-opacity"
+          style={{ color: 'var(--kp-text-muted)' }}
         >
           <X className="w-4 h-4" />
         </button>

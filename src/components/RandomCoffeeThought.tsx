@@ -56,31 +56,34 @@ export default function RandomCoffeeThought() {
           Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.
         </p>
 
-        <div className="min-h-[80px] flex items-center justify-center mb-10 p-6 rounded-lg" style={{ backgroundColor: 'var(--kp-bg-surface)', border: '1px solid var(--kp-border)' }}>
+        <div className="relative rounded-2xl overflow-hidden p-8 mb-10" style={{ background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))', border: '1px solid var(--kp-border)' }}>
+          {/* Dekoratif quote mark */}
+          <div className="absolute top-4 left-6 text-8xl leading-none select-none" style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}>
+            &ldquo;
+          </div>
+
           {currentQuote && (
-            <p className="font-display text-lg italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-accent)' }}>
-              &ldquo;{currentQuote.text}&rdquo;
+            <p className="relative z-10 font-display text-xl italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-text-primary)' }}>
+              {currentQuote.text}
             </p>
           )}
-        </div>
 
-        <button
-          onClick={randomThought}
-          className="inline-flex items-center gap-2 px-8 py-4 font-ui text-sm font-medium rounded-full transition-colors duration-200"
-          style={{
-            backgroundColor: 'var(--kp-accent)',
-            color: 'var(--kp-text-on-dark)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--kp-text-primary)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--kp-accent)';
-          }}
-        >
-          <RefreshCcw size={16} />
-          Random Thought
-        </button>
+          <div className="flex items-center justify-between mt-6">
+            <span className="text-sm font-medium" style={{ color: 'var(--kp-text-muted)' }}>
+              — Coffee Thought
+            </span>
+            <button
+              onClick={randomThought}
+              className="px-4 py-1.5 rounded-full text-sm font-ui font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{
+                backgroundColor: 'var(--kp-accent)',
+                color: 'var(--kp-text-on-dark)',
+              }}
+            >
+              Acak Quote ↺
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

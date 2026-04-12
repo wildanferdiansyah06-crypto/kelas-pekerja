@@ -17,6 +17,34 @@ const navigation = [
 { label: "Tentang", href: "/tentang" },
 ];
 
+// Clock component
+function ClockWidget() {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      className="px-3 py-1 rounded-full font-mono text-sm"
+      style={{
+        backgroundColor: 'var(--kp-accent-light)',
+        color: 'var(--kp-text-primary)',
+      }}
+    >
+      {time}
+    </div>
+  );
+}
+
 export default function Navbar() {
 const pathname = usePathname();
 const { theme, toggleTheme } = useTheme();
@@ -113,8 +141,8 @@ return (
     {/* Logo */}
     <Link
       href="/"
-      className="flex items-center gap-2.5 font-display text-xl"
-      style={{ color: 'var(--kp-text-primary)' }}
+      className="flex items-center gap-2.5 font-serif text-xl font-bold"
+      style={{ color: 'var(--kp-accent)' }}
     >
       <div
         className="w-7 h-7 rounded-md flex items-center justify-center"
@@ -131,19 +159,22 @@ return (
         <Link
           key={item.href}
           href={item.href}
-          className="font-ui text-sm font-normal transition-colors duration-150"
+          className="font-ui text-sm font-normal transition-all duration-200 border-b-2"
           style={{
             color: pathname === item.href ? 'var(--kp-text-primary)' : 'var(--kp-text-muted)',
             fontWeight: pathname === item.href ? '500' : '400',
+            borderColor: pathname === item.href ? 'var(--kp-accent)' : 'transparent',
           }}
           onMouseEnter={(e) => {
             if (pathname !== item.href) {
               e.currentTarget.style.color = 'var(--kp-text-primary)';
+              e.currentTarget.style.borderColor = 'var(--kp-accent)';
             }
           }}
           onMouseLeave={(e) => {
             if (pathname !== item.href) {
               e.currentTarget.style.color = 'var(--kp-text-muted)';
+              e.currentTarget.style.borderColor = 'transparent';
             }
           }}
         >
@@ -167,6 +198,11 @@ return (
           {item.label}
         </Link>
       ))}
+    </div>
+
+    {/* Clock Widget - Desktop */}
+    <div className="hidden md:block">
+      <ClockWidget />
     </div>
 
     {/* Right Controls */}
@@ -258,7 +294,7 @@ return (
       {/* Theme Toggle */}
       <button
         onClick={toggleTheme}
-        className="p-2 rounded-full font-ui transition-colors duration-200"
+        className="p-2 rounded-full font-ui transition-all duration-200 hover:rotate-12 active:scale-90"
         style={{ color: 'var(--kp-text-muted)' }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = 'var(--kp-text-primary)';

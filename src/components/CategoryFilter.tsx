@@ -43,15 +43,30 @@ export default function CategoryFilter({ activeCategory = 'all', books }: Catego
           key={cat}
           href={`/buku?category=${cat}`}
           className={cn(
-            "flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm whitespace-nowrap transition-all duration-300",
+            "flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-200",
             activeCategory === cat
-              ? "border-[#8b7355] bg-[#8b7355] text-[#f4e4d4] dark:border-[#e8e0d5] dark:bg-[#e8e0d5] dark:text-[#2b2b2b]"
-              : "border-[#d4d0c8] text-[#4a4a4a] hover:border-[#8b7355] hover:text-[#2d2d2d] hover:bg-[#e5e2dd]/30 dark:border-[#e8e0d5]/20 dark:text-[#cbb8a5] dark:hover:border-[#e8e0d5]/40 dark:hover:text-[#f4e4d4]"
+              ? ""
+              : ""
           )}
+          style={{
+            backgroundColor: activeCategory === cat ? 'var(--kp-accent)' : 'var(--kp-bg-surface)',
+            borderColor: activeCategory === cat ? 'var(--kp-accent)' : 'var(--kp-border)',
+            color: activeCategory === cat ? 'var(--kp-text-on-dark)' : 'var(--kp-text-secondary)',
+          }}
+          onMouseEnter={(e) => {
+            if (activeCategory !== cat) {
+              e.currentTarget.style.borderColor = 'var(--kp-accent)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (activeCategory !== cat) {
+              e.currentTarget.style.borderColor = 'var(--kp-border)';
+            }
+          }}
         >
           {CATEGORY_LABELS[cat] || cat}
           <span className={cn(
-            "text-xs",
+            "text-xs font-ui",
             activeCategory === cat ? "opacity-70" : "opacity-40"
           )}>
             ({counts[cat] || 0})

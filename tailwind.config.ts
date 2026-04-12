@@ -73,16 +73,8 @@ const config: Config = {
         display: ['var(--font-display)', 'Georgia', 'serif'],
         body:    ['var(--font-body)', 'Georgia', 'serif'],
         ui:      ['var(--font-ui)', 'system-ui', 'sans-serif'],
-        serif: [
-          "'Lora'",
-          "Georgia",
-          "serif",
-        ],
-        sans: [
-          "'DM Sans'",
-          "system-ui",
-          "sans-serif",
-        ],
+        serif: ['var(--font-display)', 'var(--font-body)', 'Georgia', 'serif'],
+        sans: ['var(--font-ui)', 'system-ui', 'sans-serif'],
       },
       typography: ({ theme }: { theme: any }) => ({
         DEFAULT: {
