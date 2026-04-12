@@ -61,6 +61,7 @@ export async function getBooks(filters?: {
     featured: book.featured || false,
     stats: book.stats || { views: 0, downloads: 0 },
     tags: book.tags || [],
+    chapters: book.chapters || [],
   }));
 
   return {
