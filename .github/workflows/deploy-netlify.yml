@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Deploy to Netlify
     runs-on: ubuntu-latest
+    if: false  # Temporarily disabled - deployment handled via Vercel
     
     steps:
       - name: Checkout code
