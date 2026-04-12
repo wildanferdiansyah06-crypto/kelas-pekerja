@@ -144,12 +144,6 @@ return (
       className="flex items-center gap-2.5 font-serif text-xl font-bold"
       style={{ color: 'var(--kp-accent)' }}
     >
-      <div
-        className="w-7 h-7 rounded-md flex items-center justify-center"
-        style={{ backgroundColor: 'var(--kp-accent)' }}
-      >
-        <span className="text-sm">☕</span>
-      </div>
       Kelas Pekerja
     </Link>
 
