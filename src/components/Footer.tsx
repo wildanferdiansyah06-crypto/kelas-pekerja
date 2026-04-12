@@ -5,12 +5,9 @@ import Link from "next/link";
 const footerLinks = {
   bacaan: [
     { label: "Semua Buku", href: "/buku" },
-    { label: "Barista", href: "/buku?category=barista" },
-    { label: "Cafe", href: "/buku?category=cafe" },
-    { label: "Retail", href: "/buku?category=retail" },
-    { label: "Kantoran", href: "/buku?category=kantoran" },
-    { label: "Kitchen", href: "/buku?category=kitchen" },
-    { label: "Umum", href: "/buku?category=umum" },
+    { label: "Kategori Refleksi", href: "/buku?category=refleksi" },
+    { label: "Kategori Kehidupan", href: "/buku?category=kehidupan" },
+    { label: "Kategori Filosofi", href: "/buku?category=filosofi" },
   ],
   eksplorasi: [
     { label: "Quote Acak", href: "/quotes" },
