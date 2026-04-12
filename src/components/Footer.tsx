@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const footerLinks = {
   bacaan: [
@@ -43,10 +43,89 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [networkStatus, setNetworkStatus] = useState<{
+    text: string;
+    color: string;
+    dotColor: string;
+  }>({
+    text: "Memeriksa koneksi...",
+    color: "text-gray-500",
+    dotColor: "bg-gray-500",
+  });
+
+  // Network detection
+  useEffect(() => {
+    const updateNetworkStatus = () => {
+      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+
+      if (!connection) {
+        setNetworkStatus({
+          text: "Koneksi stabil",
+          color: "text-green-500",
+          dotColor: "bg-green-500",
+        });
+        return;
+      }
+
+      const effectiveType = connection.effectiveType;
+      const downlink = connection.downlink;
+
+      if (!navigator.onLine) {
+        setNetworkStatus({
+          text: "Koneksi terputus",
+          color: "text-red-500",
+          dotColor: "bg-red-500",
+        });
+      } else if (effectiveType === 'slow-2g' || effectiveType === '2g' || downlink < 0.5) {
+        setNetworkStatus({
+          text: "Koneksi lambat",
+          color: "text-red-500",
+          dotColor: "bg-red-500",
+        });
+      } else if (effectiveType === '3g' || (downlink >= 0.5 && downlink < 2)) {
+        setNetworkStatus({
+          text: "Koneksi sedang",
+          color: "text-yellow-500",
+          dotColor: "bg-yellow-500",
+        });
+      } else if (effectiveType === '4g' || downlink >= 2) {
+        setNetworkStatus({
+          text: "Koneksi cepat",
+          color: "text-green-500",
+          dotColor: "bg-green-500",
+        });
+      } else {
+        setNetworkStatus({
+          text: "Koneksi stabil",
+          color: "text-green-500",
+          dotColor: "bg-green-500",
+        });
+      }
+    };
+
+    updateNetworkStatus();
+
+    // Listen for network changes
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+
+    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+    if (connection) {
+      connection.addEventListener('change', updateNetworkStatus);
+    }
+
+    return () => {
+      window.removeEventListener('online', updateNetworkStatus);
+      window.removeEventListener('offline', updateNetworkStatus);
+      if (connection) {
+        connection.removeEventListener('change', updateNetworkStatus);
+      }
+    };
+  }, []);
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes("@")) {
       setNewsletterStatus("error");
       setNewsletterMessage("Email tidak valid");
@@ -329,13 +408,9 @@ export default function Footer() {
           {/* Tengah: Status dot */}
           <div className="flex items-center gap-2">
             <span
-              className="
-                w-1.5 h-1.5 rounded-full
-                bg-emerald-500 dark:bg-emerald-400
-                animate-pulse
-              "
+              className={`w-1.5 h-1.5 rounded-full animate-pulse ${networkStatus.dotColor}`}
             />
-            <span>Semua sistem berjalan normal</span>
+            <span className={networkStatus.color}>{networkStatus.text}</span>
           </div>
 
           {/* Kanan: Made with */}
