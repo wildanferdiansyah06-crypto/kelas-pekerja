@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Book } from "@/src/types";
 import BookCard from "./BookCard";
-import BookPreviewModal from "./BookPreviewModal";
+const BookPreviewModal = lazy(() => import("./BookPreviewModal"));
 
 interface BooksGridClientProps {
   featuredBooks: (Book & { slug: string })[];
@@ -102,11 +102,13 @@ export default function BooksGridClient({
       {/* =========================
           MODAL
          ========================= */}
-      <BookPreviewModal
-        book={selectedBook}
-        isOpen={!!selectedBook}
-        onClose={() => setSelectedBook(null)}
-      />
+      <Suspense fallback={null}>
+        <BookPreviewModal
+          book={selectedBook}
+          isOpen={!!selectedBook}
+          onClose={() => setSelectedBook(null)}
+        />
+      </Suspense>
     </>
   );
 }
