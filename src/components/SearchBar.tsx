@@ -47,9 +47,9 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Cari buku..."
         className="w-full md:w-64 pl-10 pr-10 py-2 rounded-full
-                 bg-[#8b7355]/5 border border-[#8b7355]/20
+                 bg-[#e5e2dd]/30 border border-[#d4d0c8]
                  focus:outline-none focus:border-[#8b7355]/50
-                 text-sm placeholder:opacity-40"
+                 text-sm placeholder:opacity-40 dark:bg-[#8b7355]/5 dark:border-[#8b7355]/20 dark:focus:border-[#8b7355]/50"
       />
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40" />
 
@@ -57,7 +57,7 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
         <button
           type="button"
           onClick={clearSearch}
-          className="absolute right-3 top-1/2 -translate-y-1/2 
+          className="absolute right-3 top-1/2 -translate-y-1/2
                    opacity-40 hover:opacity-100 transition-opacity"
         >
           <X className="w-4 h-4" />
