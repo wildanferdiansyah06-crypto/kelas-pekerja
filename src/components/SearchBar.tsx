@@ -41,13 +41,12 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
 
   return (
     <form onSubmit={handleSearch} className="relative flex-1">
-      <span className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--kp-text-muted)' }}>🔍</span>
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Cari buku..."
-        className="w-full pl-10 pr-10 py-3 rounded-xl font-sans text-sm
+        className="w-full px-4 py-2.5 rounded-xl font-sans text-sm
                  focus:outline-none focus:ring-2 transition-all duration-200"
         style={{
           backgroundColor: 'var(--kp-bg-surface)',
@@ -63,18 +62,6 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
           e.currentTarget.style.boxShadow = 'none';
         }}
       />
-
-      {search && (
-        <button
-          type="button"
-          onClick={clearSearch}
-          className="absolute right-3 top-1/2 -translate-y-1/2
-                   opacity-40 hover:opacity-100 transition-opacity"
-          style={{ color: 'var(--kp-text-muted)' }}
-        >
-          <X className="w-4 h-4" />
-        </button>
-      )}
     </form>
   );
 }
