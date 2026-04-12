@@ -570,17 +570,17 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
           {/* Content Section */}
 
-          <div className="p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col h-full overflow-y-auto max-h-[50vh] sm:max-h-[55vh] md:max-h-[450px] lg:max-h-[500px]">
+          <div className="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col h-full overflow-y-auto max-h-[40vh] sm:max-h-[45vh] md:max-h-[350px] lg:max-h-[400px]">
 
             {/* Header */}
 
-            <div className="mb-4 sm:mb-6">
+            <div className="mb-3 sm:mb-4">
 
-              <h2 
+              <h2
 
                 id="modal-title"
 
-                className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[1.1] mb-2 sm:mb-3 text-stone-800 dark:text-[#e8e4df]"
+                className="font-serif text-lg sm:text-xl md:text-2xl lg:text-3xl leading-[1.1] mb-1.5 sm:mb-2 text-stone-800 dark:text-[#e8e4df]"
 
               >
 
@@ -606,7 +606,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
             {/* Meta Info */}
 
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-stone-500 dark:text-stone-400 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-stone-200 dark:border-stone-700/50">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-stone-500 dark:text-stone-400 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-stone-200 dark:border-stone-700/50">
 
               <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
 
@@ -646,7 +646,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
             {/* Preview Text */}
 
-            <div className="flex-grow mb-4 sm:mb-6">
+            <div className="flex-grow mb-3 sm:mb-4">
 
               <p className="text-sm sm:text-base md:text-[17px] leading-[1.7] sm:leading-[1.85] text-stone-600 dark:text-stone-300 font-serif">
 
@@ -662,7 +662,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
             {book.tags && book.tags.length > 0 && (
 
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
 
                 {book.tags.slice(0, 4).map((tag) => (
 
