@@ -28,7 +28,6 @@ const nextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
-  swcMinify: true,
   productionBrowserSourceMaps: false,
   
   // Experimental config buat App Router (Next.js 13+)
