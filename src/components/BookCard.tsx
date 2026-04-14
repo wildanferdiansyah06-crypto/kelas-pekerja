@@ -103,7 +103,7 @@ export default function BookCard({
     >
       {/* Card Image Area */}
       <div
-        className="relative aspect-[2/3] overflow-hidden"
+        className="relative aspect-[1/1] overflow-hidden"
       >
         {book.cover && (
           <Image
@@ -115,37 +115,37 @@ export default function BookCard({
           />
         )}
         {/* Category badge */}
-        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-black/40 backdrop-blur-sm text-white border border-white/20">
+        <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-black/40 backdrop-blur-sm text-white border border-white/20">
           {book.category || 'Umum'}
         </div>
         {/* Bookmark button */}
         <button
-          className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-[var(--kp-accent)] transition-all duration-200"
+          className="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-[var(--kp-accent)] transition-all duration-200"
           onClick={handleBookmarkToggle}
           aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
         >
-          <Bookmark size={14} className={isBookmarked ? "fill-current" : ""} />
+          <Bookmark size={12} className={isBookmarked ? "fill-current" : ""} />
         </button>
         {/* Bottom gradient overlay */}
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
 
       {/* Card Body */}
-      <div style={{ padding: '0.75rem' }}>
+      <div style={{ padding: '0.5rem' }}>
         {/* Title */}
         <h3
-          className="font-serif font-semibold text-sm leading-[1.3] mb-1 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
+          className="font-serif font-semibold text-xs leading-[1.2] mb-0.5 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
           style={{ color: 'var(--kp-text-primary)' }}
         >
           {book.title}
         </h3>
 
         {/* Metadata */}
-        <div className="flex items-center gap-2 text-[10px] font-sans mt-1" style={{ color: 'var(--kp-text-muted)' }}>
+        <div className="flex items-center gap-2 text-[9px] font-sans mt-0.5" style={{ color: 'var(--kp-text-muted)' }}>
           <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
           <span>·</span>
           <span className="flex items-center gap-1">
-            <Clock size={10} />
+            <Clock size={9} />
             {book.readTime || '5 menit'}
           </span>
         </div>
