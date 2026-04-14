@@ -1,168 +1,123 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import {
-  Bookmark,
-  ArrowUpRight,
-  ArrowRight,
-  Eye,
-  Clock,
-  BookOpen,
-  Flame,
-  ArrowUp
-} from 'lucide-react';
-import { Book } from '@/src/types';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Eye, ArrowUpRight, Clock, ArrowRight } from "lucide-react";
+import { Book } from "@/src/types";
 
 interface BookCardProps {
   book: Book;
   index?: number;
-  variant?: 'default' | 'compact' | 'featured';
   href?: string;
   onClick?: () => void;
-  className?: string;
 }
 
-export default function BookCard({
-  book,
-  index = 0,
-  variant = 'default',
-  href,
-  onClick,
-  className = ''
-}: BookCardProps) {
+export default function BookCard({ book, index = 0, href, onClick }: BookCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [showBookmarkToast, setShowBookmarkToast] = useState(false);
 
-  const animationDelay = `${index * 100}ms`;
+  const linkHref = href ?? `/buku/${book.slug ?? ""}`;
 
-  // Load bookmark state from localStorage on mount
-  useEffect(() => {
-    try {
-      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-      setIsBookmarked(bookmarks.includes(book.slug));
-    } catch (error) {
-      console.error('Error loading bookmarks:', error);
-      setIsBookmarked(false);
-    }
-  }, [book.slug]);
-
-  // Handle bookmark toggle
-  const handleBookmarkToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    try {
-      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-      const newBookmarked = !isBookmarked;
-
-      if (newBookmarked) {
-        if (!bookmarks.includes(book.slug)) {
-          bookmarks.push(book.slug);
-          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-          setShowBookmarkToast(true);
-          setTimeout(() => setShowBookmarkToast(false), 2000);
-        }
-      } else {
-        const index = bookmarks.indexOf(book.slug);
-        if (index > -1) {
-          bookmarks.splice(index, 1);
-          localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-        }
-      }
-
-      setIsBookmarked(newBookmarked);
-    } catch (error) {
-      console.error('Error saving bookmark:', error);
-    }
-  };
-  
-  const isCompact = variant === "compact";
-  const isFeatured = variant === "featured";
-
-  const formatViews = (views: number) => {
-    if (views >= 1000) {
-      return `${(views / 1000).toFixed(1)}k`;
-    }
-    return views.toString();
-  };
+  if (!book?.slug && !href) {
+    console.warn("BookCard missing slug:", book);
+  }
 
   const cardContent = (
     <article
-      className="relative h-full group cursor-pointer card-hover rounded-2xl overflow-hidden"
-      style={{
-        opacity: 0,
-        animationDelay,
-        animation: 'fade-in-up 0.6s ease-out forwards',
-        backgroundColor: 'var(--kp-bg-surface)',
-        border: '1px solid var(--kp-border)',
-        boxShadow: 'var(--kp-shadow-md)',
-      }}
+      className="relative cursor-pointer"
+      style={{ animationDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Card Image Area */}
       <div
-        className="relative aspect-[3/2] overflow-hidden"
+        className="relative aspect-[16/10] w-full mb-8 overflow-hidden rounded-lg
+                   shadow-[0_8px_30px_-12px_rgba(0,0,0,0.2)]
+                   group-hover:shadow-[0_25px_50px_-20px_rgba(0,0,0,0.4)]
+                   group-hover:-translate-y-3
+                   transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
       >
-        {book.cover && (
-          <Image
-            src={book.cover}
-            alt={book.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          />
-        )}
-        {/* Category badge */}
-        <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-black/40 backdrop-blur-sm text-white border border-white/20">
-          {book.category || 'Umum'}
-        </div>
-        {/* Bookmark button */}
-        <button
-          className="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm text-white hover:bg-[var(--kp-accent)] transition-all duration-200"
-          onClick={handleBookmarkToggle}
-          aria-label={isBookmarked ? "Hapus bookmark" : "Bookmark"}
+        <Image
+          src={book.cover}
+          alt={book.title}
+          fill
+          className="object-cover opacity-95
+                     group-hover:opacity-100 group-hover:scale-[1.08]
+                     transition-all duration-1000 ease-out"
+          sizes="(max-width:768px) 100vw,
+                 (max-width:1200px) 50vw,
+                 33vw"
+          priority={index < 2}
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+
+        <div
+          className={`absolute top-5 right-5 w-12 h-12 rounded-full
+                     bg-white/15 backdrop-blur-md border border-white/20
+                     flex items-center justify-center
+                     transition-all duration-500
+                     ${isHovered ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
         >
-          <Bookmark size={12} className={isBookmarked ? "fill-current" : ""} />
-        </button>
-        {/* Title overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-          <h3
-            className="font-serif font-semibold text-sm leading-[1.2] line-clamp-2 text-white"
-          >
-            {book.title}
-          </h3>
+          <Eye size={20} className="text-white/90" />
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <div className="flex items-center gap-4 text-white/80 text-xs mb-3">
+            <span className="flex items-center gap-1.5">
+              <Clock size={12} />
+              {book.readTime || '5 menit'}
+            </span>
+
+            <span className="w-1 h-1 rounded-full bg-white/50" />
+
+            <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <p className="text-white/90 text-sm font-medium tracking-wide flex items-center gap-2">
+              Baca selengkapnya
+              <ArrowUpRight
+                size={16}
+                className={`transition-all duration-500 ${
+                  isHovered ? "translate-x-1 -translate-y-1" : ""
+                }`}
+              />
+            </p>
+          </div>
+        </div>
+
+        <div className="absolute top-5 left-5 font-serif text-6xl text-white/10 font-light">
+          {String(index + 1).padStart(2, "0")}
         </div>
       </div>
 
-      {/* Bookmark Toast Notification */}
-      {showBookmarkToast && (
-        <div
-          className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-4 py-2 rounded-full text-sm font-medium animate-bounce"
-          style={{
-            backgroundColor: 'var(--kp-bg-invert)',
-            color: 'var(--kp-text-on-dark)',
-            boxShadow: 'var(--kp-shadow-md)',
-          }}
-        >
-          ✓ Ditambahkan ke bookmark
-        </div>
-      )}
+      <div className="space-y-4">
+        <h3 className="font-serif text-2xl md:text-3xl leading-[1.15] opacity-85 group-hover:opacity-100 transition-all duration-300" style={{ color: 'var(--kp-text-primary)' }}>
+          {book.title}
+        </h3>
 
-      {/* Global Styles for Animation */}
-      <style jsx global>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(25px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        <p className="text-base leading-[1.7] opacity-60 line-clamp-3" style={{ color: 'var(--kp-text-secondary)' }}>
+          {book.excerpt}
+        </p>
+
+        <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--kp-border)' }}>
+          {book.stats ? (
+            <div className="flex items-center gap-4 text-xs opacity-40" style={{ color: 'var(--kp-text-muted)' }}>
+              <span className="flex items-center gap-1.5">
+                <Eye size={12} />
+                {book.stats.views.toLocaleString("id-ID")} dibaca
+              </span>
+            </div>
+          ) : (
+            <div className="text-xs opacity-40" style={{ color: 'var(--kp-text-muted)' }}>Kelas Pekerja</div>
+          )}
+
+          <div className="flex items-center gap-1 text-xs font-medium opacity-60" style={{ color: 'var(--kp-text-muted)' }}>
+            Lihat detail
+            <ArrowRight size={14} />
+          </div>
+        </div>
+      </div>
     </article>
   );
 
@@ -170,7 +125,7 @@ export default function BookCard({
     return (
       <div 
         onClick={onClick} 
-        className="block w-full cursor-pointer h-full"
+        className="group block w-full"
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && onClick()}
@@ -180,13 +135,11 @@ export default function BookCard({
     );
   }
 
-  const linkHref = href ?? `/buku/${book.slug}`;
-
   return (
-    <Link 
-      href={linkHref} 
-      prefetch 
-      className="block w-full h-full"
+    <Link
+      href={linkHref}
+      prefetch
+      className="group block w-full"
     >
       {cardContent}
     </Link>
