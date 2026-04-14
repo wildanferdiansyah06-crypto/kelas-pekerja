@@ -47,23 +47,48 @@ export async function getBooks(filters?: {
   }
 
   // Transform Sanity data to match Book type
-  const books: Book[] = sanityBooks.map((book) => ({
-    id: book._id,
-    slug: book.slug?.current || '',
-    title: book.title,
-    subtitle: book.subtitle || '',
-    excerpt: book.excerpt || '',
-    preview: book.preview || '',
-    category: book.category || 'kehidupan',
-    pages: 0, // Sanity doesn't have pages, default to 0
-    readTime: book.readTime || '5 menit',
-    cover: book.cover ? urlFor(book.cover).url() : '',
-    publishedAt: book.publishedAt || '',
-    featured: book.featured || false,
-    stats: book.stats || { views: 0, downloads: 0 },
-    tags: book.tags || [],
-    chapters: book.chapters || [],
-  }));
+  const books: Book[] = sanityBooks.map((book) => {
+    let coverUrl = '';
+    try {
+      if (book.cover) {
+        // Check if cover is a Sanity image asset or a direct URL
+        if (typeof book.cover === 'string') {
+          // Direct URL (e.g., from Unsplash, Pexels, etc.)
+          coverUrl = book.cover;
+        } else if (book.cover._type === 'image' || book.cover.asset) {
+          // Sanity image asset
+          const imageUrl = urlFor(book.cover);
+          if (imageUrl && typeof imageUrl.url === 'function') {
+            coverUrl = imageUrl.url() || '';
+          }
+        } else if (book.cover.url) {
+          // Cover has a url property
+          coverUrl = book.cover.url;
+        }
+      }
+    } catch (error) {
+      console.error('Error generating cover URL for book:', book.title, error);
+      coverUrl = '';
+    }
+
+    return {
+      id: book._id,
+      slug: book.slug?.current || '',
+      title: book.title,
+      subtitle: book.subtitle || '',
+      excerpt: book.excerpt || '',
+      preview: book.preview || '',
+      category: book.category || 'kehidupan',
+      pages: 0, // Sanity doesn't have pages, default to 0
+      readTime: book.readTime || '5 menit',
+      cover: coverUrl,
+      publishedAt: book.publishedAt || '',
+      featured: book.featured || false,
+      stats: book.stats || { views: 0, downloads: 0 },
+      tags: book.tags || [],
+      chapters: book.chapters || [],
+    };
+  });
 
   return {
     books,
@@ -79,6 +104,30 @@ export async function getBook(slug: string) {
     throw new Error("Book not found");
   }
 
+  // Generate cover URL with error handling
+  let coverUrl = '';
+  try {
+    if (sanityBook.cover) {
+      // Check if cover is a Sanity image asset or a direct URL
+      if (typeof sanityBook.cover === 'string') {
+        // Direct URL (e.g., from Unsplash, Pexels, etc.)
+        coverUrl = sanityBook.cover;
+      } else if (sanityBook.cover._type === 'image' || sanityBook.cover.asset) {
+        // Sanity image asset
+        const imageUrl = urlFor(sanityBook.cover);
+        if (imageUrl && typeof imageUrl.url === 'function') {
+          coverUrl = imageUrl.url() || '';
+        }
+      } else if (sanityBook.cover.url) {
+        // Cover has a url property
+        coverUrl = sanityBook.cover.url;
+      }
+    }
+  } catch (error) {
+    console.error('Error generating cover URL for book:', sanityBook.title, error);
+    coverUrl = '';
+  }
+
   // Transform Sanity data to match Book type
   const book: Book = {
     id: sanityBook._id,
@@ -90,7 +139,7 @@ export async function getBook(slug: string) {
     category: sanityBook.category || 'kehidupan',
     pages: sanityBook.pages || 0,
     readTime: sanityBook.readTime || '5 menit',
-    cover: sanityBook.cover ? urlFor(sanityBook.cover).url() : '',
+    cover: coverUrl,
     publishedAt: sanityBook.publishedAt || '',
     featured: sanityBook.featured || false,
     stats: sanityBook.stats || { views: 0, downloads: 0 },
