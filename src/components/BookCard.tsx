@@ -126,17 +126,14 @@ export default function BookCard({
         >
           <Bookmark size={12} className={isBookmarked ? "fill-current" : ""} />
         </button>
-      </div>
-
-      {/* Card Body */}
-      <div style={{ padding: '0.5rem 0.5rem 0.25rem 0.5rem' }}>
-        {/* Title */}
-        <h3
-          className="font-serif font-semibold text-[11px] leading-[1.1] mb-0 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
-          style={{ color: 'var(--kp-text-primary)' }}
-        >
-          {book.title}
-        </h3>
+        {/* Title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+          <h3
+            className="font-serif font-semibold text-sm leading-[1.2] line-clamp-2 text-white"
+          >
+            {book.title}
+          </h3>
+        </div>
       </div>
 
       {/* Bookmark Toast Notification */}
