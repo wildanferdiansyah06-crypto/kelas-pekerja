@@ -265,7 +265,7 @@ function PageContent() {
   return (
     <main className="transition-colors duration-500 w-full" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
       <section className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 px-4 sm:px-6 w-full">
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto text-center">
           <div
             className="font-ui text-[10px] sm:text-xs font-medium tracking-widest uppercase mb-3 sm:mb-4"
             style={{ color: 'var(--kp-accent)', animation: 'fade-in 0.6s ease-out' }}
@@ -312,7 +312,7 @@ function PageContent() {
         className="px-4 sm:px-6 pb-8 sm:pb-12 md:pb-16 w-full border-b"
         style={{ borderColor: 'var(--kp-border)' }}
       >
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between">
+        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between">
           <Suspense fallback={<div className="h-10 sm:h-12 w-32 sm:w-40 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
           </Suspense>
@@ -324,7 +324,7 @@ function PageContent() {
       </section>
 
       <section className="px-4 sm:px-6 pb-16 sm:pb-24 md:pb-32 w-full">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto">
           {error ? (
             <div className="text-center py-24 sm:py-32">
               <p className="font-display text-xl sm:text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>Terjadi kesalahan</p>
