@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   LIGHT MODE DESIGN TOKENS — KELAS PEKERJA
+   DARK MODE DESIGN TOKENS — KELAS PEKERJA
 ============================================ */
 :root {
   /* --- Typography --- */
@@ -11,45 +11,6 @@
   --font-body: 'Playfair Display', serif;
   --font-ui: 'Inter', sans-serif;
 
-  /* --- Backgrounds --- */
-  --kp-bg-base:        #fdf6ee;   /* krem hangat, bukan putih polos */
-  --kp-bg-surface:     #fff9f2;   /* card / navbar background */
-  --kp-bg-muted:       #f0e6d3;   /* section alt background */
-  --kp-bg-invert:      #1c1410;   /* Footer, CTA gelap (tetap gelap di light mode) */
-
-  /* --- Text --- */
-  --kp-text-primary:   #2c1e0f;   /* coklat tua pekat */
-  --kp-text-secondary: #6b4c2a;   /* coklat medium */
-  --kp-text-muted:     #9c7a55;   /* abu-coklat untuk placeholder */
-  --kp-text-subtle:    #b8a898;   /* Placeholder, footer caption */
-  --kp-text-on-dark:   #f5f0e8;   /* Teks di atas bg-invert */
-
-  /* --- Accent — Coffee --- */
-  --kp-accent:         #a0714f;   /* kopi susu */
-  --kp-accent-hover:   #7c5230;   /* kopi pekat hover */
-  --kp-accent-light:   #e8d5b7;   /* kopi muda untuk badge/chip */
-  --kp-accent-faint:   #f0e8dc;   /* Tag background, highlight area */
-
-  /* --- Borders --- */
-  --kp-border:         #e2cdb0;
-  --kp-border-medium:  #f0e6d3;
-  --kp-border-strong:  rgba(100, 75, 50, 0.45);
-
-  /* --- Typography --- */
-  --kp-font-display:   var(--font-display), 'Georgia', serif;
-  --kp-font-body:      var(--font-body), 'Georgia', serif;
-  --kp-font-ui:        var(--font-ui), system-ui, sans-serif;
-
-  /* --- Shadow --- */
-  --kp-shadow-sm:  0 1px 8px rgba(50, 30, 10, 0.06);
-  --kp-shadow-md:  0 4px 24px rgba(100, 60, 20, 0.08);
-  --kp-shadow-lg:  0 8px 32px rgba(100, 60, 20, 0.16);
-}
-
-/* ============================================
-   DARK MODE DESIGN TOKENS — KELAS PEKERJA
-============================================ */
-.dark {
   /* --- Backgrounds --- */
   --kp-bg-base:        #0f0b07;   /* hitam dengan undertone coklat */
   --kp-bg-surface:     #1a1410;   /* card / navbar */
@@ -73,6 +34,11 @@
   --kp-border:         #2e2018;
   --kp-border-medium:  #1f1610;
   --kp-border-strong:  #3d2a1a;
+
+  /* --- Typography --- */
+  --kp-font-display:   var(--font-display), 'Georgia', serif;
+  --kp-font-body:      var(--font-body), 'Georgia', serif;
+  --kp-font-ui:        var(--font-ui), system-ui, sans-serif;
 
   /* --- Shadow --- */
   --kp-shadow-sm:  0 1px 8px rgba(0, 0, 0, 0.3);

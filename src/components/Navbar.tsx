@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Sun, Moon, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { useTheme } from "@/src/components/ThemeProvider";
 import { useNavbar } from "@/src/contexts/NavbarContext";
 import { useSession, signOut } from "next-auth/react";
@@ -47,7 +47,7 @@ function ClockWidget() {
 
 export default function Navbar() {
 const pathname = usePathname();
-const { theme, toggleTheme } = useTheme();
+const { theme } = useTheme();
 const { isVisible: contextVisible } = useNavbar();
 const { data: session } = useSession();
 
@@ -284,24 +284,6 @@ return (
           )}
         </div>
       )}
-
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className="p-2 rounded-full font-ui transition-all duration-200 hover:rotate-12 active:scale-90"
-        style={{ color: 'var(--kp-text-muted)' }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.color = 'var(--kp-text-primary)';
-          e.currentTarget.style.backgroundColor = 'var(--kp-bg-surface)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.color = 'var(--kp-text-muted)';
-          e.currentTarget.style.backgroundColor = 'transparent';
-        }}
-        aria-label="Toggle theme"
-      >
-        {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-      </button>
 
       {/* Mobile Menu Button */}
       <button
