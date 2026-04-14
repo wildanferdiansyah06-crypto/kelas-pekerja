@@ -218,5 +218,71 @@ export const categories = [
 ========================= */
 
 export async function incrementView(slug: string) {
-  console.log(`View incremented for: ${slug}`);
+  try {
+    const { supabase } = await import('./supabase');
+    
+    // Check if view record exists
+    const { data: existing } = await supabase
+      .from('book_views')
+      .select('views')
+      .eq('slug', slug)
+      .single();
+
+    if (existing) {
+      // Increment existing views
+      await supabase
+        .from('book_views')
+        .update({ views: existing.views + 1 })
+        .eq('slug', slug);
+    } else {
+      // Create new view record
+      await supabase
+        .from('book_views')
+        .insert({ slug, views: 1 });
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error incrementing view:', error);
+    return false;
+  }
+}
+
+export async function getBookView(slug: string): Promise<number> {
+  try {
+    const { supabase } = await import('./supabase');
+    
+    const { data } = await supabase
+      .from('book_views')
+      .select('views')
+      .eq('slug', slug)
+      .single();
+
+    return data?.views || 0;
+  } catch (error) {
+    console.error('Error getting book views:', error);
+    return 0;
+  }
+}
+
+export async function getAllBookViews(): Promise<Record<string, number>> {
+  try {
+    const { supabase } = await import('./supabase');
+    
+    const { data } = await supabase
+      .from('book_views')
+      .select('slug, views');
+
+    const viewsMap: Record<string, number> = {};
+    data?.forEach(item => {
+      if (item.slug) {
+        viewsMap[item.slug] = item.views || 0;
+      }
+    });
+
+    return viewsMap;
+  } catch (error) {
+    console.error('Error getting all book views:', error);
+    return {};
+  }
 }

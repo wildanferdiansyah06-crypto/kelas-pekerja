@@ -28,6 +28,21 @@ export default function BooksGridClient({
 }: BooksGridClientProps) {
   const [selectedBook, setSelectedBook] = useState<(Book & { slug: string }) | null>(null);
 
+  const handleBookClick = async (book: Book & { slug: string }) => {
+    // Increment view count
+    try {
+      await fetch('/api/increment-view', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: book.slug })
+      });
+    } catch (error) {
+      console.error('Error incrementing view:', error);
+    }
+
+    setSelectedBook(book);
+  };
+
   return (
     <>
       {/* =========================
@@ -49,7 +64,7 @@ export default function BooksGridClient({
                 key={book.id}
                 book={book}
                 index={index}
-                onClick={() => setSelectedBook(book)}
+                onClick={() => handleBookClick(book)}
               />
             ))}
           </div>
@@ -65,7 +80,7 @@ export default function BooksGridClient({
             key={book.id}
             book={book}
             index={index}
-            onClick={() => setSelectedBook(book)}
+            onClick={() => handleBookClick(book)}
           />
         ))}
       </div>

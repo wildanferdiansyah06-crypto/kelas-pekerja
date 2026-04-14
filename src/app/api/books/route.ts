@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getBooks } from '@/src/lib/api'
+import { getBooks, getAllBookViews } from '@/src/lib/api'
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +16,22 @@ export async function GET(request: Request) {
       limit,
     })
 
-    return NextResponse.json(result)
+    // Get real-time view counts from Supabase
+    const viewCounts = await getAllBookViews()
+
+    // Merge view counts with books
+    const booksWithViews = result.books.map(book => ({
+      ...book,
+      stats: {
+        ...book.stats,
+        views: viewCounts[book.slug] || book.stats?.views || 0
+      }
+    }))
+
+    return NextResponse.json({
+      books: booksWithViews,
+      total: result.total
+    })
   } catch (error) {
     console.error('Error in /api/books:', error)
     return NextResponse.json(
