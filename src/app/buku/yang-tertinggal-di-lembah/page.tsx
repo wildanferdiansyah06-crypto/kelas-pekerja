@@ -7,7 +7,7 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from 'next/link';
 
 export default function YangTertinggalDiLembahPage() {
-  const { theme: globalTheme, toggleTheme } = useTheme();
+  const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -188,14 +188,6 @@ export default function YangTertinggalDiLembahPage() {
             </motion.button>
 
             <div className={`flex items-center gap-2 p-2 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl w-fit`}>
-              <motion.button
-                whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
-                onClick={toggleTheme}
-                className={`p-3 rounded-full ${darkMode ? 'hover:bg-[#2a2622]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
-              >
-                {darkMode ? <Sun size={18} strokeWidth={1.5} className={theme.accent} /> : <Moon size={18} strokeWidth={1.5} className={theme.accent} />}
-              </motion.button>
               <div className={`w-px h-4 ${darkMode ? 'bg-[#3d352b]' : 'bg-[#c4b8a3]'}`} />
               <motion.a
                 href="#prolog"

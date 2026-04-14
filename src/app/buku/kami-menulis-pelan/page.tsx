@@ -10,7 +10,7 @@ import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function KamiMenulisPelanPage() {
 
-  const { theme: globalTheme, toggleTheme } = useTheme();
+  const { theme: globalTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
 
@@ -1867,58 +1867,6 @@ export default function KamiMenulisPelanPage() {
 
 
             <div className={`p-3 border-t`} style={{ borderColor: darkMode ? 'rgba(139, 115, 85, 0.2)' : 'rgba(161, 98, 7, 0.2)' }}>
-
-              <button
-
-                onClick={toggleTheme}
-
-                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors`}
-
-                style={{ backgroundColor: darkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)' }}
-
-              >
-
-                <div 
-
-                  className={`w-8 h-8 rounded-full flex items-center justify-center`}
-
-                  style={{ backgroundColor: darkMode ? 'rgba(139, 115, 85, 0.15)' : 'rgba(161, 98, 7, 0.15)' }}
-
-                >
-
-                  {darkMode ? (
-
-                    <svg className={`w-4 h-4 ${theme.accent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-
-                    </svg>
-
-                  ) : (
-
-                    <svg className={`w-4 h-4 ${theme.accent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-
-                    </svg>
-
-                  )}
-
-                </div>
-
-                <span className={`text-sm ${theme.text}`}>
-
-                  {darkMode ? 'Mode Terang' : 'Mode Gelap'}
-
-                </span>
-
-                <span className={`ml-auto text-xs ${theme.accentMuted}`}>
-
-                  {darkMode ? '☀️' : '🌙'}
-
-                </span>
-
-              </button>
 
             </div>
 

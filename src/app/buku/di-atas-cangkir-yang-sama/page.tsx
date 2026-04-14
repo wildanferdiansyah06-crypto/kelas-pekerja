@@ -7,7 +7,7 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from 'next/link';
 
 export default function CoffeeBookPage() {
-  const { theme: globalTheme, toggleTheme } = useTheme();
+  const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -176,15 +176,6 @@ export default function CoffeeBookPage() {
             </motion.button>
 
             <div className={`flex items-center gap-2 p-2 rounded-2xl ${theme.float} backdrop-blur-xl border ${theme.border} shadow-2xl w-fit`}>
-              <motion.button
-                whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
-                whileTap={prefersReducedMotion ? {} : { scale: 0.9 }}
-                onClick={toggleTheme}
-                className={`p-3 rounded-xl ${darkMode ? 'hover:bg-neutral-800' : 'hover:bg-stone-200'} transition-colors`}
-              >
-                {darkMode ? <Sun size={20} className={theme.accent} /> : <Moon size={20} className={theme.accent} />}
-              </motion.button>
-
               <div className={`w-px h-6 ${darkMode ? 'bg-neutral-700' : 'bg-stone-300'}`} />
 
               <motion.a

@@ -5,7 +5,7 @@ import { Moon, Sun, BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } 
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function CahayaItuPage() {
-  const { theme: globalTheme, toggleTheme } = useTheme();
+  const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -160,13 +160,6 @@ export default function CahayaItuPage() {
           </button>
 
           <div className={`flex items-center gap-1 p-1.5 rounded-full ${theme.float} backdrop-blur-md border ${theme.border} shadow-xl w-fit`}>
-            <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
-            >
-              {darkMode ? <Sun size={16} className={theme.accent} strokeWidth={1.5} /> : <Moon size={16} className={theme.accent} strokeWidth={1.5} />}
-            </button>
-            <div className={`w-px h-3 ${darkMode ? 'bg-[#3d3428]' : 'bg-[#c4b8a3]'}`} />
             <a
               href="#pembuka"
               className={`p-2 rounded-full ${darkMode ? 'hover:bg-[#2a2520]' : 'hover:bg-[#e0d9cc]'} transition-colors duration-300`}
