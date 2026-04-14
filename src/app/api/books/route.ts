@@ -18,15 +18,20 @@ export async function GET(request: Request) {
 
     // Get real-time view counts from Supabase
     const viewCounts = await getAllBookViews()
+    console.log('View counts from Supabase:', viewCounts)
 
     // Use only Supabase views for all books
-    const booksWithViews = result.books.map(book => ({
-      ...book,
-      stats: {
-        ...book.stats,
-        views: viewCounts[book.slug] || 0
+    const booksWithViews = result.books.map(book => {
+      const supabaseViews = viewCounts[book.slug] || 0
+      console.log(`Book: ${book.slug}, Supabase views: ${supabaseViews}`)
+      return {
+        ...book,
+        stats: {
+          ...book.stats,
+          views: supabaseViews
+        }
       }
-    }))
+    })
 
     return NextResponse.json({
       books: booksWithViews,
