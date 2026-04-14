@@ -51,19 +51,31 @@ export async function getBooks(filters?: {
     let coverUrl = '';
     try {
       if (book.cover) {
-        // Check if cover is a Sanity image asset or a direct URL
+        // Check if cover is a string (direct URL)
         if (typeof book.cover === 'string') {
-          // Direct URL (e.g., from Unsplash, Pexels, etc.)
           coverUrl = book.cover;
-        } else if (book.cover._type === 'image' || book.cover.asset) {
-          // Sanity image asset
+        }
+        // Check if cover has a url property that is an external URL
+        else if (book.cover.url && typeof book.cover.url === 'string') {
+          const url = book.cover.url;
+          // If it starts with http/https, it's an external URL
+          if (url.startsWith('http://') || url.startsWith('https://')) {
+            coverUrl = url;
+          }
+          // Otherwise, it might be a Sanity asset reference, try urlFor
+          else if (book.cover.asset || book.cover._type === 'image') {
+            const imageUrl = urlFor(book.cover);
+            if (imageUrl && typeof imageUrl.url === 'function') {
+              coverUrl = imageUrl.url() || '';
+            }
+          }
+        }
+        // Check if it's a Sanity image asset
+        else if (book.cover.asset || (book.cover._type === 'image' && !book.cover.url)) {
           const imageUrl = urlFor(book.cover);
           if (imageUrl && typeof imageUrl.url === 'function') {
             coverUrl = imageUrl.url() || '';
           }
-        } else if (book.cover.url) {
-          // Cover has a url property
-          coverUrl = book.cover.url;
         }
       }
     } catch (error) {
@@ -108,19 +120,31 @@ export async function getBook(slug: string) {
   let coverUrl = '';
   try {
     if (sanityBook.cover) {
-      // Check if cover is a Sanity image asset or a direct URL
+      // Check if cover is a string (direct URL)
       if (typeof sanityBook.cover === 'string') {
-        // Direct URL (e.g., from Unsplash, Pexels, etc.)
         coverUrl = sanityBook.cover;
-      } else if (sanityBook.cover._type === 'image' || sanityBook.cover.asset) {
-        // Sanity image asset
+      }
+      // Check if cover has a url property that is an external URL
+      else if (sanityBook.cover.url && typeof sanityBook.cover.url === 'string') {
+        const url = sanityBook.cover.url;
+        // If it starts with http/https, it's an external URL
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+          coverUrl = url;
+        }
+        // Otherwise, it might be a Sanity asset reference, try urlFor
+        else if (sanityBook.cover.asset || sanityBook.cover._type === 'image') {
+          const imageUrl = urlFor(sanityBook.cover);
+          if (imageUrl && typeof imageUrl.url === 'function') {
+            coverUrl = imageUrl.url() || '';
+          }
+        }
+      }
+      // Check if it's a Sanity image asset
+      else if (sanityBook.cover.asset || (sanityBook.cover._type === 'image' && !sanityBook.cover.url)) {
         const imageUrl = urlFor(sanityBook.cover);
         if (imageUrl && typeof imageUrl.url === 'function') {
           coverUrl = imageUrl.url() || '';
         }
-      } else if (sanityBook.cover.url) {
-        // Cover has a url property
-        coverUrl = sanityBook.cover.url;
       }
     }
   } catch (error) {
