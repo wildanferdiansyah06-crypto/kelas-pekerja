@@ -19,12 +19,12 @@ export async function GET(request: Request) {
     // Get real-time view counts from Supabase
     const viewCounts = await getAllBookViews()
 
-    // Merge view counts with books
+    // Use only Supabase views for all books
     const booksWithViews = result.books.map(book => ({
       ...book,
       stats: {
         ...book.stats,
-        views: viewCounts[book.slug] || book.stats?.views || 0
+        views: viewCounts[book.slug] || 0
       }
     }))
 
