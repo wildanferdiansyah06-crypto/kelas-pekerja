@@ -103,7 +103,7 @@ export default function BookCard({
     >
       {/* Card Image Area */}
       <div
-        className="relative aspect-[1/1] overflow-hidden"
+        className="relative aspect-[3/2] overflow-hidden"
       >
         {book.cover && (
           <Image
@@ -126,29 +126,17 @@ export default function BookCard({
         >
           <Bookmark size={12} className={isBookmarked ? "fill-current" : ""} />
         </button>
-        {/* Bottom gradient overlay */}
-        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
 
       {/* Card Body */}
-      <div style={{ padding: '0.5rem' }}>
+      <div style={{ padding: '0.5rem 0.5rem 0.25rem 0.5rem' }}>
         {/* Title */}
         <h3
-          className="font-serif font-semibold text-xs leading-[1.2] mb-0.5 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
+          className="font-serif font-semibold text-[11px] leading-[1.1] mb-0 line-clamp-2 group-hover:text-[var(--kp-accent)] transition-colors"
           style={{ color: 'var(--kp-text-primary)' }}
         >
           {book.title}
         </h3>
-
-        {/* Metadata */}
-        <div className="flex items-center gap-2 text-[9px] font-sans mt-0.5" style={{ color: 'var(--kp-text-muted)' }}>
-          <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
-          <span>·</span>
-          <span className="flex items-center gap-1">
-            <Clock size={9} />
-            {book.readTime || '5 menit'}
-          </span>
-        </div>
       </div>
 
       {/* Bookmark Toast Notification */}
