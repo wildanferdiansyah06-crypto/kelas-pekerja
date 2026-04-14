@@ -1,5 +1,6 @@
 import { Book, Quote, SiteConfig } from "@/src/types";
 import { client } from "@/src/sanity/lib/client";
+import { urlFor } from "@/src/sanity/lib/image";
 
 /* =========================
    BOOKS
@@ -56,7 +57,7 @@ export async function getBooks(filters?: {
     category: book.category || 'kehidupan',
     pages: 0, // Sanity doesn't have pages, default to 0
     readTime: book.readTime || '5 menit',
-    cover: book.cover?.url || '',
+    cover: book.cover ? urlFor(book.cover).url() : '',
     publishedAt: book.publishedAt || '',
     featured: book.featured || false,
     stats: book.stats || { views: 0, downloads: 0 },
@@ -89,7 +90,7 @@ export async function getBook(slug: string) {
     category: sanityBook.category || 'kehidupan',
     pages: sanityBook.pages || 0,
     readTime: sanityBook.readTime || '5 menit',
-    cover: sanityBook.cover?.url || '',
+    cover: sanityBook.cover ? urlFor(sanityBook.cover).url() : '',
     publishedAt: sanityBook.publishedAt || '',
     featured: sanityBook.featured || false,
     stats: sanityBook.stats || { views: 0, downloads: 0 },

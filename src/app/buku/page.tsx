@@ -264,24 +264,24 @@ function PageContent() {
 
   return (
     <main className="transition-colors duration-500 w-full" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
-      <section className="pt-32 pb-16 px-6 w-full">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 px-4 sm:px-6 w-full">
         <div className="max-w-6xl mx-auto text-center">
           <div
-            className="font-ui text-xs font-medium tracking-widest uppercase mb-4"
+            className="font-ui text-[10px] sm:text-xs font-medium tracking-widest uppercase mb-3 sm:mb-4"
             style={{ color: 'var(--kp-accent)', animation: 'fade-in 0.6s ease-out' }}
           >
             Perpustakaan Mini
           </div>
 
           <h1
-            className="font-display text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tight"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 tracking-tight"
             style={{ color: 'var(--kp-text-primary)', animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}
           >
             Rak Buku
           </h1>
 
           <p
-            className="font-body text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-6"
+            className="font-body text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0"
             style={{ color: 'var(--kp-text-secondary)', animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}
           >
             &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff,
@@ -289,7 +289,7 @@ function PageContent() {
           </p>
 
           <div
-            className="flex items-center justify-center gap-6 text-sm font-ui"
+            className="flex items-center justify-center gap-4 sm:gap-6 text-[10px] sm:text-xs md:text-sm font-ui flex-wrap"
             style={{ color: 'var(--kp-text-muted)', animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}
           >
             <span className="flex items-center gap-2">
@@ -309,26 +309,26 @@ function PageContent() {
       </section>
 
       <section
-        className="px-6 pb-16 w-full border-b"
+        className="px-4 sm:px-6 pb-8 sm:pb-12 md:pb-16 w-full border-b"
         style={{ borderColor: 'var(--kp-border)' }}
       >
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
-          <Suspense fallback={<div className="h-12 w-40 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between">
+          <Suspense fallback={<div className="h-10 sm:h-12 w-32 sm:w-40 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
             <CategoryFilter activeCategory={category} books={booksWithSlugs} />
           </Suspense>
 
-          <Suspense fallback={<div className="h-12 w-72 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
+          <Suspense fallback={<div className="h-10 sm:h-12 w-56 sm:w-72 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
             <SearchBar initialSearch={search} />
           </Suspense>
         </div>
       </section>
 
-      <section className="px-6 pb-32 w-full">
+      <section className="px-4 sm:px-6 pb-16 sm:pb-24 md:pb-32 w-full">
         <div className="max-w-6xl mx-auto">
           {error ? (
-            <div className="text-center py-32">
-              <p className="font-display text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>Terjadi kesalahan</p>
-              <p className="font-body text-base" style={{ color: 'var(--kp-text-muted)', opacity: 0.4 }}>{error.message}</p>
+            <div className="text-center py-24 sm:py-32">
+              <p className="font-display text-xl sm:text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>Terjadi kesalahan</p>
+              <p className="font-body text-sm sm:text-base" style={{ color: 'var(--kp-text-muted)', opacity: 0.4 }}>{error.message}</p>
             </div>
           ) : hasBooks ? (
             <Suspense fallback={<GridSkeleton />}>

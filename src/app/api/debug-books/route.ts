@@ -20,6 +20,8 @@ export async function GET() {
         published: book.publishedAt,
         stats: book.stats,
         featured: book.featured,
+        cover: book.cover,
+        coverUrl: book.cover?.url,
       }))
     });
   } catch (error) {

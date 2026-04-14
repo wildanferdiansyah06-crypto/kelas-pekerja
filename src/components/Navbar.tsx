@@ -34,7 +34,7 @@ function ClockWidget() {
 
   return (
     <div
-      className="px-3 py-1 rounded-full font-mono text-sm"
+      className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full font-mono text-[10px] sm:text-xs md:text-sm"
       style={{
         backgroundColor: 'var(--kp-accent-light)',
         color: 'var(--kp-text-primary)',
@@ -129,19 +129,19 @@ if (!mounted) return null;
 
 return (
 <nav
-  className={`fixed top-0 left-0 right-0 z-[100] h-16 transition-all duration-200 ease-out ${finalVisibility ? 'translate-y-0' : '-translate-y-full'}`}
+  className={`fixed top-0 left-0 right-0 z-[100] h-14 sm:h-16 transition-all duration-200 ease-out ${finalVisibility ? 'translate-y-0' : '-translate-y-full'}`}
   style={{
     backgroundColor: 'var(--kp-bg-base)',
     borderBottom: '1px solid var(--kp-border)',
   }}
 >
   {/* Container */}
-  <div className="max-w-7xl mx-auto px-6 tablet:px-12 h-16 flex items-center justify-between">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 tablet:px-12 h-14 sm:h-16 flex items-center justify-between">
 
     {/* Logo */}
     <Link
       href="/"
-      className="flex items-center gap-2.5 font-serif text-xl font-bold"
+      className="flex items-center gap-2 sm:gap-2.5 font-serif text-lg sm:text-xl font-bold"
       style={{ color: 'var(--kp-accent)' }}
     >
       Kelas Pekerja
@@ -178,12 +178,12 @@ return (
     </div>
 
     {/* Mobile Navigation - Horizontal Scroll */}
-    <div className="md:hidden flex items-center gap-4 overflow-x-auto scrollbar-hide flex-1 mx-4">
+    <div className="md:hidden flex items-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide flex-1 mx-2 sm:mx-4">
       {navigation.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className="font-ui text-sm font-normal whitespace-nowrap transition-colors duration-150"
+          className="font-ui text-xs sm:text-sm font-normal whitespace-nowrap transition-colors duration-150 px-2 py-1"
           style={{
             color: pathname === item.href ? 'var(--kp-text-primary)' : 'var(--kp-text-muted)',
             fontWeight: pathname === item.href ? '500' : '400',
@@ -309,19 +309,19 @@ return (
   {/* Mobile Menu - User Actions Only */}
   <div
     className={`md:hidden transition-all duration-300 ease-out overflow-hidden ${
-      isMenuOpen ? 'max-h-48 opacity-100 border-t' : 'max-h-0 opacity-0'
+      isMenuOpen ? 'max-h-40 sm:max-h-48 opacity-100 border-t' : 'max-h-0 opacity-0'
     }`}
     style={{
       borderColor: 'var(--kp-border)',
       backgroundColor: 'var(--kp-bg-base)',
     }}
   >
-    <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col gap-2 sm:gap-3">
 
       {/* Mobile User Profile Full Display */}
       {session?.user && (
         <div
-          className="flex items-center gap-3 px-3 py-2 rounded-full border"
+          className="flex items-center gap-2 sm:gap-3 px-3 py-2 rounded-full border"
           style={{
             backgroundColor: 'var(--kp-bg-surface)',
             borderColor: 'var(--kp-border)',
@@ -333,11 +333,11 @@ return (
               alt={session.user.name || 'User'}
               width={24}
               height={24}
-              className="w-6 h-6 rounded-full object-cover"
+              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover"
             />
           )}
           <span
-            className="text-sm truncate max-w-[120px]"
+            className="text-xs sm:text-sm truncate max-w-[100px] sm:max-w-[120px]"
             style={{ color: 'var(--kp-text-muted)' }}
           >
             {session.user.name || 'User'}
@@ -352,20 +352,20 @@ return (
             signOut({ callbackUrl: '/' });
             setIsMenuOpen(false);
           }}
-          className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
+          className="flex items-center gap-2 text-xs sm:text-sm font-ui transition-colors duration-200 px-2 py-2"
           style={{ color: 'var(--kp-text-muted)' }}
         >
-          <LogOut size={16} />
+          <LogOut size={16} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Keluar</span>
         </button>
       ) : (
         <Link
           href="/auth/signin"
           onClick={() => setIsMenuOpen(false)}
-          className="flex items-center gap-2 text-sm font-ui transition-colors duration-200"
+          className="flex items-center gap-2 text-xs sm:text-sm font-ui transition-colors duration-200 px-2 py-2"
           style={{ color: 'var(--kp-text-muted)' }}
         >
-          <User size={16} />
+          <User size={16} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Masuk</span>
         </Link>
       )}
