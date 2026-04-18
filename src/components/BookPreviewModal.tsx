@@ -242,7 +242,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
           {/* Cover Image */}
 
-          <div className="relative aspect-[16/9] h-32 overflow-hidden">
+          <div className="relative aspect-[4/5] sm:aspect-[16/9] h-48 sm:h-32 overflow-hidden">
 
             {book.cover ? (
 
