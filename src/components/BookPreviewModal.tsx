@@ -92,10 +92,10 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       />
 
       {/* Modal Container */}
+      {/* Mobile: slide up from bottom, rounded top corners only */}
       <div
         ref={modalRef}
         className="relative w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl
-          /* Mobile: slide up from bottom, rounded top corners only */
           max-h-[92vh] sm:max-h-[85vh] md:max-h-[80vh]
           rounded-t-2xl sm:rounded-xl md:rounded-2xl
           bg-[#faf9f7] dark:bg-[#141210]
