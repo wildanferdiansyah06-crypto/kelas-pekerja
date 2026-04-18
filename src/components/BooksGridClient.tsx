@@ -58,7 +58,7 @@ export default function BooksGridClient({
           </div>
 
           {/* ✅ PAKAI BookCard BIAR SAMA PERSIS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 2xl:gap-x-20 gap-y-8 sm:gap-y-10 lg:gap-y-12 xl:gap-y-16 2xl:gap-y-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 2xl:gap-x-20 gap-y-8 sm:gap-y-10 lg:gap-y-12 xl:gap-y-16 2xl:gap-y-20">
             {featuredBooks.map((book, index) => (
               <BookCard
                 key={book.id}
@@ -74,7 +74,7 @@ export default function BooksGridClient({
       {/* =========================
           REGULAR GRID
          ========================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 2xl:gap-x-20 gap-y-8 sm:gap-y-10 lg:gap-y-12 xl:gap-y-16 2xl:gap-y-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-4 sm:gap-x-8 lg:gap-x-12 xl:gap-x-16 2xl:gap-x-20 gap-y-8 sm:gap-y-10 lg:gap-y-12 xl:gap-y-16 2xl:gap-y-20">
         {regularBooks.map((book, index) => (
           <BookCard
             key={book.id}
