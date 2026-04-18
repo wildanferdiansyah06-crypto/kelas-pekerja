@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
 import { Book } from "@/src/types";
 import BookCard from "./BookCard";
 const BookPreviewModal = lazy(() => import("./BookPreviewModal"));
@@ -28,19 +28,23 @@ export default function BooksGridClient({
 }: BooksGridClientProps) {
   const [selectedBook, setSelectedBook] = useState<(Book & { slug: string }) | null>(null);
 
-  const handleBookClick = async (book: Book & { slug: string }) => {
-    // Increment view count
-    try {
-      await fetch('/api/increment-view', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: book.slug })
-      });
-    } catch (error) {
-      console.error('Error incrementing view:', error);
-    }
+  // Preload modal component on mount to eliminate first-click delay
+  useEffect(() => {
+    import("./BookPreviewModal");
+  }, []);
 
+  const handleBookClick = (book: Book & { slug: string }) => {
+    // Show modal immediately
     setSelectedBook(book);
+
+    // Increment view count in background (non-blocking)
+    fetch('/api/increment-view', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: book.slug })
+    }).catch(error => {
+      console.error('Error incrementing view:', error);
+    });
   };
 
   return (
