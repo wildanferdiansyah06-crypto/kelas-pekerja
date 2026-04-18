@@ -95,7 +95,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       {/* Mobile: slide up from bottom, rounded top corners only */}
       <div
         ref={modalRef}
-        className="relative w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[92vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-t-2xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col sm:block transform-gpu will-change-transform overflow-hidden"
+        className="relative w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[92vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-t-2xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleTabKey}
         style={{
@@ -230,7 +230,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
         </div>
 
         {/* ─── DESKTOP LAYOUT (unchanged) ─── */}
-        <div className="hidden sm:grid sm:grid-cols-[320px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-[420px_1fr] xl:grid-cols-[480px_1fr] gap-0">
+        <div className="hidden sm:grid sm:grid-cols-[320px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-[420px_1fr] xl:grid-cols-[480px_1fr] gap-0 h-full">
 
           {/* Cover */}
           <div className="relative aspect-[4/5] sm:aspect-auto sm:h-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
@@ -270,7 +270,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
           </div>
 
           {/* Content */}
-          <div className="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col h-full overflow-y-auto max-h-[40vh] sm:max-h-[45vh] md:max-h-[350px] lg:max-h-[400px]">
+          <div className="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col h-full overflow-y-auto">
             <div className="mb-3 sm:mb-4">
               <h2
                 id="modal-title"
