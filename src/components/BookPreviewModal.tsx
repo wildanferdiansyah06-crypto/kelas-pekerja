@@ -117,7 +117,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
         <div className="flex flex-col sm:hidden flex-1 overflow-hidden">
 
           {/* Cover — fixed height banner, no conflicting aspect-ratio */}
-          <div className="relative w-full h-52 shrink-0 overflow-hidden">
+          <div className="relative w-full h-36 shrink-0 overflow-hidden">
             {book.cover ? (
               <>
                 <Image
@@ -133,20 +133,20 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
               </>
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center bg-stone-200 dark:bg-stone-800">
-                <BookOpen size={32} className="text-stone-400 dark:text-stone-600 mb-2" />
-                <span className="text-sm text-stone-500 dark:text-stone-500">Tidak ada cover</span>
+                <BookOpen size={28} className="text-stone-400 dark:text-stone-600 mb-2" />
+                <span className="text-xs text-stone-500 dark:text-stone-500">Tidak ada cover</span>
               </div>
             )}
 
             {/* Badges — stacked vertically, no overlap */}
-            <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+            <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
               {book.featured && (
-                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg w-fit">
-                  <Flame size={10} className="fill-current" />
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg w-fit">
+                  <Flame size={8} className="fill-current" />
                   <span>Featured</span>
                 </div>
               )}
-              <span className="px-2.5 py-1 rounded-full text-xs font-medium tracking-wide bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-sm shadow-sm ring-1 ring-stone-200 dark:ring-stone-700 w-fit">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-sm shadow-sm ring-1 ring-stone-200 dark:ring-stone-700 w-fit">
                 {book.category || "Umum"}
               </span>
             </div>
@@ -154,53 +154,53 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
           {/* Scrollable content */}
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            <div className="p-4 flex flex-col gap-3">
+            <div className="p-3 flex flex-col gap-2">
 
               {/* Title & subtitle */}
               <div>
                 <h2
                   id="modal-title"
-                  className="font-serif text-xl leading-tight mb-1.5 text-stone-800 dark:text-[#e8e4df]"
+                  className="font-serif text-lg leading-tight mb-1 text-stone-800 dark:text-[#e8e4df]"
                 >
                   {book.title}
                 </h2>
                 {book.subtitle && (
-                  <p className="text-sm text-stone-500 dark:text-stone-400 font-medium leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-stone-400 font-medium leading-relaxed">
                     {book.subtitle}
                   </p>
                 )}
               </div>
 
               {/* Meta chips */}
-              <div className="flex flex-wrap gap-2 pb-3 border-b border-stone-200 dark:border-stone-700/50">
-                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2.5 py-1 rounded-full text-xs">
-                  <Clock size={11} />
+              <div className="flex flex-wrap gap-1.5 pb-2 border-b border-stone-200 dark:border-stone-700/50">
+                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
+                  <Clock size={10} />
                   {book.readTime || "5 menit baca"}
                 </span>
                 {book.stats?.views !== undefined && (
-                  <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2.5 py-1 rounded-full text-xs">
-                    <Eye size={11} />
+                  <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
+                    <Eye size={10} />
                     {formatViews(book.stats.views)} dibaca
                   </span>
                 )}
-                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2.5 py-1 rounded-full text-xs">
-                  <BookOpen size={11} />
+                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
+                  <BookOpen size={10} />
                   {author}
                 </span>
               </div>
 
               {/* Preview text */}
-              <p className="text-sm leading-[1.75] text-stone-600 dark:text-stone-300 font-serif">
+              <p className="text-xs leading-[1.6] text-stone-600 dark:text-stone-300 font-serif">
                 &ldquo;{previewText}&rdquo;
               </p>
 
               {/* Tags */}
               {book.tags && book.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-1">
                   {book.tags.slice(0, 4).map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-2.5 py-1 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-700"
+                      className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-700"
                     >
                       #{tag}
                     </span>
@@ -211,18 +211,18 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
           </div>
 
           {/* CTA — sticky at bottom, outside scroll area */}
-          <div className="shrink-0 px-4 pb-6 pt-3 border-t border-stone-200 dark:border-stone-700/50 bg-[#faf9f7] dark:bg-[#141210] flex flex-col gap-2">
+          <div className="shrink-0 px-3 pb-4 pt-2 border-t border-stone-200 dark:border-stone-700/50 bg-[#faf9f7] dark:bg-[#141210] flex flex-col gap-1.5">
             <Link
               href={`/buku/${book.slug}`}
-              className="group flex items-center justify-center gap-2 w-full px-4 py-3.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium text-sm transition-opacity duration-200 touch-manipulation"
+              className="group flex items-center justify-center gap-2 w-full px-3 py-2.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium text-xs transition-opacity duration-200 touch-manipulation"
               onClick={onClose}
             >
               Baca Selengkapnya
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <button
               onClick={onClose}
-              className="flex items-center justify-center w-full px-4 py-3 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 text-sm font-medium touch-manipulation"
+              className="flex items-center justify-center w-full px-3 py-2 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 text-xs font-medium touch-manipulation"
             >
               Tutup Preview
             </button>
