@@ -79,7 +79,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 md:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -92,10 +92,10 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       />
 
       {/* Modal Container */}
-      {/* Mobile: slide up from bottom, rounded top corners only */}
+      {/* Mobile: centered popup, smaller size */}
       <div
         ref={modalRef}
-        className="relative w-full mx-4 sm:mx-0 sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[50vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-t-2xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
+        className="relative w-full max-w-[320px] sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[70vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleTabKey}
         style={{
@@ -114,7 +114,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
         </button>
 
         {/* ─── MOBILE LAYOUT ─── */}
-        <div className="flex flex-col sm:hidden flex-1 overflow-hidden">
+        <div className="flex flex-col sm:hidden flex-1 overflow-hidden h-full">
 
           {/* Cover — fixed height banner, no conflicting aspect-ratio */}
           <div className="relative w-full h-36 shrink-0 overflow-hidden">
