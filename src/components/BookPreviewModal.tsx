@@ -95,7 +95,7 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       {/* Mobile: slide up from bottom, rounded top corners only */}
       <div
         ref={modalRef}
-        className="relative w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[92vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-t-2xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
+        className="relative w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[60vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-t-2xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleTabKey}
         style={{
