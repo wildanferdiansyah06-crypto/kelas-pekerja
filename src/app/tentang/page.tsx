@@ -269,7 +269,7 @@ export default function TentangPage() {
 
 
                 <p className="font-body text-sm sm:text-base md:text-base lg:text-lg leading-relaxed mb-6 max-w-lg mx-auto lg:mx-0" style={{ color: 'var(--kp-text-secondary)' }}>
-                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis dan develop web di sela-sela waktu - bukan untuk menjadi terkenal, tetapi untuk tetap waras.
+                  Seseorang yang mencoba memahami hidupnya melalui kata kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis - bukan untuk menjadi terkenal, tetapi untuk tetap waras.
                 </p>
 
 
