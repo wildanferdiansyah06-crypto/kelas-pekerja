@@ -9,11 +9,12 @@ import { useNavbar } from "@/src/contexts/NavbarContext";
 
 interface BookPreviewModalProps {
   book: (Book & { slug: string }) | null;
+  index?: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewModalProps) {
+export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: BookPreviewModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const { hideNavbar, showNavbar } = useNavbar();
@@ -95,11 +96,11 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
       {/* Mobile: centered popup, smaller size */}
       <div
         ref={modalRef}
-        className="relative w-full max-w-[320px] sm:max-w-2xl md:max-w-4xl lg:max-w-5xl max-h-[70vh] sm:max-h-[85vh] md:max-h-[80vh] rounded-xl sm:rounded-xl md:rounded-2xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
+        className="relative w-full max-w-[min(500px,calc(100vw-32px))] md:max-w-3xl lg:max-w-5xl xl:max-w-6xl max-h-[88vh] md:max-h-[80vh] rounded-2xl md:rounded-3xl bg-[#faf9f7] dark:bg-[#141210] shadow-2xl ring-1 ring-[#e5e2dd] dark:ring-stone-800 flex flex-col transform-gpu will-change-transform overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleTabKey}
         style={{
-          animation: 'modal-enter 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
+          animation: 'modal-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
           transform: 'translateZ(0)'
         }}
       >
@@ -113,94 +114,106 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
           <X size={16} className="sm:size-5" strokeWidth={2} />
         </button>
 
-        {/* ─── MOBILE LAYOUT ─── */}
-        <div className="flex flex-col sm:hidden flex-1 overflow-hidden h-full">
+        {/* ─── MOBILE LAYOUT (Stacked) ─── */}
+        <div className="flex flex-col md:hidden flex-1 overflow-hidden h-full">
+          {/* Visual Handle for Mobile Sheet Look */}
+          <div className="flex justify-center pt-2 pb-1 shrink-0">
+            <div className="w-10 h-1 rounded-full bg-stone-300 dark:bg-stone-700 opacity-50" />
+          </div>
 
-          {/* Cover — fixed height banner, no conflicting aspect-ratio */}
-          <div className="relative w-full h-36 shrink-0 overflow-hidden">
+          {/* Cover — with BookCard style overlays for mobile */}
+          <div className="relative w-full aspect-[16/10] shrink-0 overflow-hidden bg-stone-100 dark:bg-stone-900 group">
             {book.cover ? (
               <>
                 <Image
                   src={book.cover}
                   alt={`Cover buku ${book.title}`}
                   fill
-                  className="object-cover"
-                  sizes="100vw"
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 480px"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                
+                {/* Decorative Index Number (01, 02, etc) */}
+                <div className="absolute top-2 left-4 font-serif text-6xl text-white/10 font-light pointer-events-none">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+
+                {/* Eye Icon Top Right */}
+                <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <Eye size={20} className="text-white/80" />
+                </div>
+
+                {/* Bottom Metadata Overlay */}
+                <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end">
+                  <div className="flex items-center gap-3 text-white/80 text-[11px] font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={12} />
+                      {book.readTime || "5 menit"}
+                    </span>
+                    <span className="w-0.5 h-0.5 rounded-full bg-white/40" />
+                    <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5 text-white/90 text-[11px] font-semibold tracking-wide">
+                    Baca selengkapnya
+                    <ArrowRight size={12} className="opacity-80" />
+                  </div>
+                </div>
               </>
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-stone-200 dark:bg-stone-800">
-                <BookOpen size={28} className="text-stone-400 dark:text-stone-600 mb-2" />
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <BookOpen size={32} className="text-stone-400 dark:text-stone-600 mb-2" />
                 <span className="text-xs text-stone-500 dark:text-stone-500">Tidak ada cover</span>
               </div>
             )}
-
-            {/* Badges — stacked vertically, no overlap */}
-            <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-              {book.featured && (
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg w-fit">
-                  <Flame size={8} className="fill-current" />
-                  <span>Featured</span>
-                </div>
-              )}
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-sm shadow-sm ring-1 ring-stone-200 dark:ring-stone-700 w-fit">
-                {book.category || "Umum"}
-              </span>
-            </div>
           </div>
 
-          {/* Scrollable content */}
+          {/* Scrollable content — improved padding and typography */}
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            <div className="p-3 flex flex-col gap-2">
+            <div className="px-5 py-4 flex flex-col gap-4">
 
-              {/* Title & subtitle */}
+              {/* Title & subtitle — larger and clearer */}
               <div>
                 <h2
                   id="modal-title"
-                  className="font-serif text-lg leading-tight mb-1 text-stone-800 dark:text-[#e8e4df]"
+                  className="font-serif text-xl sm:text-2xl leading-tight mb-2 text-stone-900 dark:text-[#e8e4df] font-semibold"
                 >
                   {book.title}
                 </h2>
                 {book.subtitle && (
-                  <p className="text-xs text-stone-500 dark:text-stone-400 font-medium leading-relaxed">
+                  <p className="text-sm text-stone-500 dark:text-stone-400 font-medium leading-relaxed">
                     {book.subtitle}
                   </p>
                 )}
               </div>
 
-              {/* Meta chips */}
-              <div className="flex flex-wrap gap-1.5 pb-2 border-b border-stone-200 dark:border-stone-700/50">
-                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
-                  <Clock size={10} />
-                  {book.readTime || "5 menit baca"}
-                </span>
-                {book.stats?.views !== undefined && (
-                  <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
-                    <Eye size={10} />
-                    {formatViews(book.stats.views)} dibaca
+              {/* Category Badge below image in content section for mobile */}
+              <div className="flex flex-wrap gap-2 mb-1">
+                {book.featured && (
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-500 border border-amber-500/20">
+                    FEATURED
                   </span>
                 )}
-                <span className="flex items-center gap-1 bg-stone-100 dark:bg-stone-800/50 px-2 py-0.5 rounded-full text-[10px]">
-                  <BookOpen size={10} />
-                  {author}
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-700">
+                  {book.category || "Umum"}
                 </span>
               </div>
 
-              {/* Preview text */}
-              <p className="text-xs leading-[1.6] text-stone-600 dark:text-stone-300 font-serif">
+
+              {/* Preview text — better line height and font size */}
+              <p className="text-[15px] leading-[1.7] text-stone-600 dark:text-stone-300 font-serif italic opacity-90">
                 &ldquo;{previewText}&rdquo;
               </p>
 
-              {/* Tags */}
+              {/* Tags — consistent sizing */}
               {book.tags && book.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {book.tags.slice(0, 4).map((tag) => (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {book.tags.slice(0, 5).map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border border-stone-200 dark:border-stone-700"
+                      className="text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800/50 text-stone-500 dark:text-stone-400 border border-stone-200/50 dark:border-stone-700/50"
                     >
                       #{tag}
                     </span>
@@ -210,67 +223,69 @@ export default function BookPreviewModal({ book, isOpen, onClose }: BookPreviewM
             </div>
           </div>
 
-          {/* CTA — sticky at bottom, outside scroll area */}
-          <div className="shrink-0 px-3 pb-4 pt-2 border-t border-stone-200 dark:border-stone-700/50 bg-[#faf9f7] dark:bg-[#141210] flex flex-col gap-1.5">
+          {/* CTA — rearranged side-by-side on mobile */}
+          <div className="shrink-0 px-5 pb-6 pt-3 border-t border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-[#141210]/80 backdrop-blur-xl flex gap-x-3">
             <Link
               href={`/buku/${book.slug}`}
-              className="group flex items-center justify-center gap-2 w-full px-3 py-2.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium text-xs transition-opacity duration-200 touch-manipulation"
+              className="group flex-1 flex items-center justify-center gap-2 px-3 py-2.5 bg-stone-900 dark:bg-[#c9a66b] text-white dark:text-stone-950 rounded-lg font-semibold text-[13px] shadow-lg shadow-black/5 active:scale-[0.98] transition-all touch-manipulation"
               onClick={onClose}
             >
-              Baca Selengkapnya
-              <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+              <span className="truncate">Baca Buku</span>
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1 shrink-0" />
             </Link>
             <button
               onClick={onClose}
-              className="flex items-center justify-center w-full px-3 py-2 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors duration-200 text-xs font-medium touch-manipulation"
+              className="flex-1 flex items-center justify-center px-3 py-2.5 border border-stone-200 dark:border-stone-800 text-stone-500 dark:text-stone-400 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-900 transition-colors duration-200 text-[13px] font-medium touch-manipulation"
             >
-              Tutup Preview
+              Tutup
             </button>
           </div>
         </div>
 
-        {/* ─── DESKTOP LAYOUT (unchanged) ─── */}
-        <div className="hidden sm:grid sm:grid-cols-[320px_1fr] md:grid-cols-[380px_1fr] lg:grid-cols-[420px_1fr] xl:grid-cols-[480px_1fr] gap-0 h-full">
+        {/* ─── TABLET/DESKTOP LAYOUT (Side-by-Side) ─── */}
+        <div className="hidden md:grid md:grid-cols-[280px_1fr] lg:grid-cols-[380px_1fr] xl:grid-cols-[440px_1fr] gap-0 h-full">
 
-          {/* Cover */}
-          <div className="relative aspect-[4/5] sm:aspect-auto sm:h-full min-h-[300px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden">
+          {/* Cover Column — ensuring it perfectly follows the grid height */}
+          <div className="relative h-full min-h-[400px] overflow-hidden bg-stone-100 dark:bg-stone-900">
             {book.cover ? (
               <>
                 <Image
                   src={book.cover}
                   alt={`Cover buku ${book.title}`}
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                  sizes="(max-width:640px) 280px, (max-width:768px) 320px, (max-width:1024px) 380px, (max-width:1280px) 420px, 480px"
+                  className="object-cover object-center transition-transform duration-1000 group-hover:scale-105"
+                  sizes="(max-width: 768px) 320px, (max-width: 1024px) 380px, (max-width: 1280px) 420px, 480px"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-black/40" />
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-50" />
+                {/* Refined gradient for desktop depth */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent hidden md:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                
+                {/* Subtle shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-white/10 opacity-30 pointer-events-none" />
               </>
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-stone-200 dark:bg-stone-800">
+              <div className="w-full h-full flex flex-col items-center justify-center">
                 <BookOpen size={40} className="text-stone-400 dark:text-stone-600 mb-4" />
-                <span className="text-sm text-stone-500 dark:text-stone-500">Tidak ada cover</span>
+                <span className="text-sm text-stone-500 dark:text-stone-500 font-medium">Tidak ada cover</span>
               </div>
             )}
 
-            {book.featured && (
-              <div className="absolute top-3 left-3 z-10">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
-                  <Flame size={10} className="fill-current" />
-                  <span>Featured</span>
+            <div className="absolute top-5 left-6 z-10 flex flex-col gap-2.5">
+              {book.featured && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xl">
+                  <Flame size={12} className="fill-current" />
+                  <span>FEATURED</span>
                 </div>
-              </div>
-            )}
-            <div className={`absolute ${book.featured ? 'top-12' : 'top-3'} left-3 z-10`}>
-              <span className="px-3 py-1.5 rounded-full text-xs font-medium tracking-wide bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-sm shadow-sm ring-1 ring-stone-200 dark:ring-stone-700">
+              )}
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-md shadow-lg ring-1 ring-stone-200/50 dark:ring-stone-700/50 w-fit">
                 {book.category || "Umum"}
               </span>
             </div>
           </div>
 
-          {/* Content */}
-          <div className="p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col h-full overflow-y-auto">
+          {/* Content — with safe padding to avoid close button overlap */}
+          <div className="p-6 sm:p-8 md:p-10 lg:p-12 pt-14 md:pt-16 lg:pt-20 flex flex-col h-full overflow-y-auto">
             <div className="mb-3 sm:mb-4">
               <h2
                 id="modal-title"
