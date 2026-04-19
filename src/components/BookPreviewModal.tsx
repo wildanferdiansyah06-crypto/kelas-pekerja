@@ -104,15 +104,6 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
           transform: 'translateZ(0)'
         }}
       >
-        {/* Close Button */}
-        <button
-          ref={closeButtonRef}
-          onClick={onClose}
-          className="absolute top-3 right-3 z-20 p-2 sm:p-2.5 rounded-full bg-stone-100/90 dark:bg-stone-800/90 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 transition-colors duration-200 touch-manipulation"
-          aria-label="Tutup preview"
-        >
-          <X size={16} className="sm:size-5" strokeWidth={2} />
-        </button>
 
         {/* ─── MOBILE LAYOUT (Stacked) ─── */}
         <div className="flex flex-col md:hidden flex-1 overflow-hidden h-full">
