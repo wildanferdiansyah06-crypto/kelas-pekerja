@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { subscribeNewsletter } from "@/src/lib/java-api";
 
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 export async function POST(request: NextRequest) {
   try {
-    if (!DISCORD_WEBHOOK_URL) {
-      return NextResponse.json(
-        { error: "Webhook tidak ditemukan di env" },
-        { status: 500 }
-      );
-    }
-
     const body = await request.json();
     const email = String(body.email || "").trim();
 
@@ -21,6 +15,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Save to Java backend
+    const result = await subscribeNewsletter(email);
+
+    if (!result.success) {
+      console.error("Java backend error:", result);
+      return NextResponse.json(
+        { error: "Gagal subscribe newsletter" },
+        { status: 500 }
+      );
+    }
+
     // Build Discord message
     const message = `
 📬 **Newsletter Subscription**
@@ -28,35 +33,35 @@ export async function POST(request: NextRequest) {
 Ada yang baru subscribe newsletter!
 
 📧 ${email}
-📅 ${new Date().toLocaleDateString('id-ID', { 
-      year: 'numeric', 
-      month: 'long', 
+📅 ${new Date().toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     })}
 `;
 
-    // Send to Discord
-    const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: message,
-        allowed_mentions: { parse: [] }, // Disable mentions for safety
-      }),
-    });
+    // Send to Discord notification
+    if (DISCORD_WEBHOOK_URL) {
+      try {
+        const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            content: message,
+            allowed_mentions: { parse: [] }, // Disable mentions for safety
+          }),
+        });
 
-    const responseText = await discordResponse.text();
-
-    if (!discordResponse.ok) {
-      console.error("Discord error:", responseText);
-      return NextResponse.json(
-        { error: "Gagal mengirim ke Discord: " + responseText },
-        { status: 500 }
-      );
+        if (!discordResponse.ok) {
+          console.error("Discord error:", await discordResponse.text());
+        }
+      } catch (discordError) {
+        console.error("Discord send error:", discordError);
+      }
     }
 
     return NextResponse.json(

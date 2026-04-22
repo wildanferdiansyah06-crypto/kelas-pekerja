@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { incrementView } from '@/src/lib/api'
+import { incrementBookView } from '@/src/lib/java-api'
 
 export async function POST(request: Request) {
   try {
@@ -13,10 +13,10 @@ export async function POST(request: Request) {
       )
     }
 
-    const success = await incrementView(slug)
+    const result = await incrementBookView(slug)
 
-    if (success) {
-      const response = NextResponse.json({ success: true })
+    if (result.success) {
+      const response = NextResponse.json({ success: true, views: result.views })
       // Don't cache view increment requests
       response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate')
       response.headers.set('Pragma', 'no-cache')

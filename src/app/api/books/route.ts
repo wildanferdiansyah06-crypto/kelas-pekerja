@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getBooks, getAllBookViews } from '@/src/lib/api'
+import { fetchBooks, getAllBookViews } from '@/src/lib/java-api'
 
 export async function GET(request: Request) {
   try {
@@ -9,23 +9,23 @@ export async function GET(request: Request) {
     const featured = searchParams.get('featured') === 'true'
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined
 
-    const result = await getBooks({
+    const result = await fetchBooks({
       category: category === 'all' ? undefined : category,
       search,
       featured,
       limit,
     })
 
-    // Get real-time view counts from Supabase
+    // Get real-time view counts from Java backend
     const viewCounts = await getAllBookViews()
 
-    // Use only Supabase views for all books
-    const booksWithViews = result.books.map(book => {
-      const supabaseViews = viewCounts[book.slug] || 0
+    // Use Java backend views for all books
+    const booksWithViews = result.books.map((book: any) => {
+      const javaViews = viewCounts[book.slug] || 0
       return {
         ...book,
         stats: {
-          views: supabaseViews,
+          views: javaViews,
           downloads: book.stats?.downloads || 0
         }
       }

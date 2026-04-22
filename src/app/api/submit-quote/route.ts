@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/lib/supabase";
+import { submitQuote } from "@/src/lib/java-api";
 
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
@@ -17,20 +17,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save to Supabase (not approved by default)
-    const { data: quoteData, error: dbError } = await supabase
-      .from('quotes')
-      .insert({
-        text,
-        author,
-        category,
-        is_approved: false, // Requires admin approval
-      })
-      .select()
-      .single();
+    // Save to Java backend (not approved by default)
+    const quoteData = await submitQuote({ text, author, category });
 
-    if (dbError) {
-      console.error("Supabase error:", dbError);
+    if (!quoteData.success) {
+      console.error("Java backend error:", quoteData);
       return NextResponse.json(
         { error: "Gagal menyimpan quote ke database" },
         { status: 500 }
@@ -46,14 +37,14 @@ export async function POST(request: NextRequest) {
 
 ✍️ ${author}
 🏷️ ${category}
-📅 ${new Date().toLocaleDateString('id-ID', { 
-      year: 'numeric', 
-      month: 'long', 
+📅 ${new Date().toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     })}
-🆔 ID: ${quoteData.id}
+🆔 ID: ${quoteData.quote?.id}
 `;
 
       try {

@@ -1,19 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { submitStory } from "@/src/lib/java-api";
 
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 export async function POST(request: NextRequest) {
   try {
-    if (!DISCORD_WEBHOOK_URL) {
-      return NextResponse.json(
-        { error: "Webhook tidak ditemukan di env" },
-        { status: 500 }
-      );
-    }
-
     // Parse form data (multipart/form-data)
     const formData = await request.formData();
-    
+
     const title = String(formData.get("title") || "");
     const author = String(formData.get("author") || "Anonymous");
     const email = String(formData.get("email") || "Tidak disertakan");
@@ -28,7 +22,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Collect files
+    // Generate slug from title
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    // Save to Java backend
+    const storyData = await submitStory({
+      slug,
+      title,
+      content,
+      author,
+      category,
+    });
+
+    if (!storyData.success) {
+      console.error("Java backend error:", storyData);
+      return NextResponse.json(
+        { error: "Gagal menyimpan cerita ke database" },
+        { status: 500 }
+      );
+    }
+
+    // Collect files for Discord
     const files: File[] = [];
     for (let i = 0; i < fileCount; i++) {
       const file = formData.get(`file-${i}`) as File | null;
@@ -45,8 +59,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Build Discord message
-    const truncatedContent = content.length > 1500 
-      ? content.slice(0, 1500) + "...\n\n*(Cerita dipotong, lihat full di dashboard)*" 
+    const truncatedContent = content.length > 1500
+      ? content.slice(0, 1500) + "...\n\n*(Cerita dipotong, lihat full di dashboard)*"
       : content;
 
     const message = `
@@ -58,11 +72,12 @@ ${truncatedContent}
 🏷️ ${category}
 📧 ${email}
 📎 ${files.length > 0 ? `${files.length} file dilampirkan` : "Tidak ada lampiran"}
+🆔 ID: ${storyData.story?.id}
 `;
 
     // Prepare Discord webhook payload
     const discordFormData = new FormData();
-    
+
     // Add JSON payload
     discordFormData.append("payload_json", JSON.stringify({
       content: message,
@@ -75,6 +90,14 @@ ${truncatedContent}
     });
 
     // Send to Discord
+    if (!DISCORD_WEBHOOK_URL) {
+      console.error("Discord webhook URL not configured");
+      return NextResponse.json(
+        { error: "Webhook tidak ditemukan di env" },
+        { status: 500 }
+      );
+    }
+
     const discordResponse = await fetch(DISCORD_WEBHOOK_URL, {
       method: "POST",
       body: discordFormData,
