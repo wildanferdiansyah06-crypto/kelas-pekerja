@@ -6,9 +6,9 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { slug } = body
 
-    if (!slug) {
+    if (!slug || typeof slug !== 'string') {
       return NextResponse.json(
-        { error: 'Slug is required' },
+        { error: 'Valid slug is required' },
         { status: 400 }
       )
     }
@@ -16,7 +16,11 @@ export async function POST(request: Request) {
     const success = await incrementView(slug)
 
     if (success) {
-      return NextResponse.json({ success: true })
+      const response = NextResponse.json({ success: true })
+      // Don't cache view increment requests
+      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate')
+      response.headers.set('Pragma', 'no-cache')
+      return response
     } else {
       return NextResponse.json(
         { error: 'Failed to increment view' },

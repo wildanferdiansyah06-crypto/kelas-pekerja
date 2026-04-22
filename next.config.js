@@ -46,6 +46,9 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 
+  // Turbopack config (empty to use defaults with Turbopack)
+  turbopack: {},
+
   // Optimize bundle size
   modularizeImports: {
     'lucide-react': {

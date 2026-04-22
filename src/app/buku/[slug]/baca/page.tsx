@@ -4,17 +4,15 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Download, Clock, BookOpen } from "lucide-react"
 
-import { getBook } from "@/src/lib/api"
-import booksData from "@/public/data/books.json"
+import { getBook, getBooks, incrementView, getBookView } from "@/src/lib/api"
 import { Book } from "@/src/types"
 
 import BookmarkButton from "@/src/components/BookmarkButton"
 import ShareButtons from "@/src/components/ShareButtons"
 import ReadingProgressRestore from "@/src/components/ReadingProgressRestore"
 
-const books = booksData.books as Book[]
-
 export async function generateStaticParams() {
+  const { books } = await getBooks()
   return books.map((book) => ({
     slug: book.slug,
   }))
@@ -28,22 +26,23 @@ export async function generateMetadata({
 
   const { slug } = await params
 
-  const book = books.find((b) => b.slug === slug)
+  try {
+    const data = await getBook(slug)
+    const book = data.book as Book
 
-  if (!book) {
+    return {
+      title: `${book.title} | Kelas Pekerja`,
+      description: book.excerpt,
+      openGraph: {
+        title: book.title,
+        description: book.excerpt,
+        images: [book.cover],
+      },
+    }
+  } catch {
     return {
       title: "Buku Tidak Ditemukan | Kelas Pekerja",
     }
-  }
-
-  return {
-    title: `${book.title} | Kelas Pekerja`,
-    description: book.excerpt,
-    openGraph: {
-      title: book.title,
-      description: book.excerpt,
-      images: [book.cover],
-    },
   }
 }
 
@@ -57,16 +56,23 @@ export default async function BookPage({ params }: BookPageProps) {
 
   const { slug } = await params
 
-  let book: Book | undefined
+  let book: Book
 
   try {
     const data = await getBook(slug)
     book = data.book as Book
-  } catch {
-    book = books.find((b) => b.slug === slug)
-  }
 
-  if (!book) {
+    // Increment view count in background (non-blocking)
+    incrementView(slug).catch(err => console.error('Failed to increment view:', err))
+
+    // Get real-time view count from Supabase
+    const realTimeViews = await getBookView(slug)
+    book.stats = {
+      views: realTimeViews,
+      downloads: book.stats?.downloads || 0
+    }
+  } catch (error) {
+    console.error('Error fetching book:', error)
     notFound()
   }
 

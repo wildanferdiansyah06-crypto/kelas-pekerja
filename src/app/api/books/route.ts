@@ -18,25 +18,29 @@ export async function GET(request: Request) {
 
     // Get real-time view counts from Supabase
     const viewCounts = await getAllBookViews()
-    console.log('View counts from Supabase:', viewCounts)
 
     // Use only Supabase views for all books
     const booksWithViews = result.books.map(book => {
       const supabaseViews = viewCounts[book.slug] || 0
-      console.log(`Book: ${book.slug}, Supabase views: ${supabaseViews}`)
       return {
         ...book,
         stats: {
-          ...book.stats,
-          views: supabaseViews
+          views: supabaseViews,
+          downloads: book.stats?.downloads || 0
         }
       }
     })
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       books: booksWithViews,
       total: result.total
     })
+
+    // Cache for 5 minutes (300 seconds) with revalidation
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+    response.headers.set('CDN-Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+
+    return response
   } catch (error) {
     console.error('Error in /api/books:', error)
     return NextResponse.json(
