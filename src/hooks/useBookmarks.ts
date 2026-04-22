@@ -41,7 +41,7 @@ const loadBookmarks = async () => {
       }));
 
       setBookmarks(transformedBookmarks);
-    } catch (error) {
+    } catch {
       // Fallback to localStorage
       loadLocalBookmarks();
     }

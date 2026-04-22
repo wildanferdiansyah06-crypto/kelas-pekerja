@@ -2,7 +2,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { cn } from "@/src/lib/utils";
 
 interface CategoryFilterProps {
@@ -21,8 +20,6 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default function CategoryFilter({ activeCategory = 'all', books }: CategoryFilterProps) {
-  const searchParams = useSearchParams();
-  
   // Hitung count per kategori
   const counts = books.reduce((acc, book) => {
     const cat = book.category?.toLowerCase() || 'umum';

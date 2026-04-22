@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RefreshCcw } from "lucide-react";
 
 interface Quote {
   id: number;

@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import { Moon, Sun, Coffee, BookOpen, ChevronUp, Quote, Settings2, X, Type, Palette, Eye, EyeOff } from 'lucide-react';
-import { useReducedMotion } from "@/src/hooks/useReducedMotion";
 
 export default function SeniMenyeduhiKehidupanPage() {
   const [darkMode, setDarkMode] = useState(true);
@@ -14,8 +13,6 @@ export default function SeniMenyeduhiKehidupanPage() {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
-  
-  const reducedMotion = useReducedMotion();
 
   // Smooth progress untuk reading indicator
   const smoothProgress = useSpring(scrollYProgress, {

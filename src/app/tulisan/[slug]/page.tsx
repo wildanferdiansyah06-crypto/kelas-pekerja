@@ -72,10 +72,9 @@ export default function TulisanDetailPage() {
   const posts = (postsData as any).posts || [];
   const postIndex = posts.findIndex((p: any) => p.slug === slug);
   const post = posts[postIndex];
-  
+
   const nextPost = posts[postIndex + 1] || posts[0];
-  const prevPost = postIndex > 0 ? posts[postIndex - 1] : posts[posts.length - 1];
-  
+
   const sameCategory = posts.filter((p: any) => 
     p.category === post?.category && p.slug !== slug
   ).slice(0, 3);
@@ -153,7 +152,7 @@ export default function TulisanDetailPage() {
         await navigator.share(shareData);
         setShareSuccess(true);
         setTimeout(() => setShareSuccess(false), 2000);
-      } catch (err) {
+      } catch {
         console.log('Share cancelled');
       }
     } else {
@@ -183,8 +182,6 @@ export default function TulisanDetailPage() {
 
   const shareToLinkedIn = useCallback(() => {
     const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(post?.title || '');
-    const summary = encodeURIComponent(post?.hook || '');
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
     setShowShareMenu(false);
   }, [post]);

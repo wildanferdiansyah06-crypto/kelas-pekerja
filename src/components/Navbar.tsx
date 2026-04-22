@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, User, LogOut } from "lucide-react";
-import { useTheme } from "@/src/components/ThemeProvider";
 import { useNavbar } from "@/src/contexts/NavbarContext";
 import { useSession, signOut } from "next-auth/react";
 
@@ -47,7 +46,6 @@ function ClockWidget() {
 
 export default function Navbar() {
 const pathname = usePathname();
-const { theme } = useTheme();
 const { isVisible: contextVisible } = useNavbar();
 const { data: session } = useSession();
 

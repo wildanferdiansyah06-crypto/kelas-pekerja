@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Moon, Sun, BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
 import Link from 'next/link';
 
@@ -16,10 +16,6 @@ export default function CoffeeBookPage() {
   const [readingProgress, setReadingProgress] = useState(0);
   const [completedChapters, setCompletedChapters] = useState<number[]>([]);
   
-  // FIX: Hooks di top level
-  const { scrollYProgress } = useScroll();
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -43,7 +39,7 @@ export default function CoffeeBookPage() {
       let currentChapter = 1;
       const newlyCompleted: number[] = [];
       
-      chapters.forEach((chapter, index) => {
+      chapters.forEach((chapter) => {
         const rect = chapter.getBoundingClientRect();
         const chapterNum = Number(chapter.getAttribute('data-chapter'));
         
@@ -1298,7 +1294,7 @@ export default function CoffeeBookPage() {
                       link: "/cerita/racikan-pertama",  // ✅ SUDAH BENAR
                       highlight: "Setiap racikan adalah doa yang tidak kita sadari."
                     }
-                  ].map((story, idx) => (
+                  ].map((story) => (
                     <Link href={story.link} key={story.title}>
                       <motion.div
                         whileHover={prefersReducedMotion ? {} : { y: -8 }}

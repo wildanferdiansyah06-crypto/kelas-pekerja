@@ -17,6 +17,11 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       "react/no-unescaped-entities": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/forbid-prop-types": "off",
+      "react/jsx-no-bind": "off",
+      "react/no-children-prop": "off",
+      "react/jsx-key": "off",
     },
   },
   {

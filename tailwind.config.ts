@@ -23,47 +23,46 @@ const config: Config = {
       'sm': '390px',   // iPhone 12/13/14, standard mobile
       'md': '414px',   // iPhone Max, larger phones
       'lg': '428px',   // iPhone 14 Pro Max, largest phones
-      
+
       // Tablet breakpoints
       'tablet': '768px',    // iPad mini, small tablets
       'laptop': '1024px',   // iPad Pro, small laptops
-      
+
       // Desktop breakpoints
       'xl': '1280px',   // MacBook Air 13", standard desktop
       '2xl': '1440px',  // MacBook Air 15", larger desktops
       '3xl': '1536px',  // MacBook Pro 14", high-res desktops
       '4xl': '1728px',  // MacBook Pro 16", ultra-wide
-      
+
       // Custom breakpoints for specific device ranges
       'mobile-only': { 'max': '767px' },
       'tablet-only': { 'min': '768px', 'max': '1023px' },
-      'desktop-only': { 'min': '1024px' },
     },
     extend: {
-      // ==========================================
-      // COLORS - Kelas Pekerja Light Mode Palette
-      // ==========================================
       colors: {
-        kp: {
-          // Backgrounds
-          'bg-base':     '#fdf6ee',
-          'bg-surface':  '#fff9f2',
-          'bg-elevated': '#f0e6d3',
-          'bg-invert':   '#1c1410',
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        "kp-bg-base": "var(--kp-bg-base)",
+        "kp-bg-surface": "var(--kp-bg-surface)",
+        "kp-bg-elevated": "var(--kp-bg-elevated)",
+        "kp-text-primary": "var(--kp-text-primary)",
+        "kp-text-secondary": "var(--kp-text-secondary)",
+        "kp-text-muted": "var(--kp-text-muted)",
+        "kp-accent": "var(--kp-accent)",
+        "kp-accent-faint": "var(--kp-accent-faint)",
+        "kp-border": "var(--kp-border)",
+        "kp-border-medium": "var(--kp-border-medium)",
+        "kp-shadow-lg": "var(--kp-shadow-lg)",
+        'text-secondary': '#6b4c2a',
+        'text-muted':     '#9c7a55',
+        'text-subtle':    '#b8a898',
+        'text-on-dark':   '#f5f0e8',
 
-          // Text
-          'text-primary':   '#2c1e0f',
-          'text-secondary': '#6b4c2a',
-          'text-muted':     '#9c7a55',
-          'text-subtle':    '#b8a898',
-          'text-on-dark':   '#f5f0e8',
-
-          // Accent
-          'accent':       '#a0714f',
-          'accent-hover': '#7c5230',
-          'accent-light': '#e8d5b7',
-          'accent-faint': '#f0e8dc',
-        },
+        // Accent
+        'accent':       '#a0714f',
+        'accent-hover': '#7c5230',
+        'accent-light': '#e8d5b7',
+        'accent-faint': '#f0e8dc',
       },
 
       // ==========================================
@@ -211,7 +210,7 @@ const config: Config = {
   plugins: [
     typography,
     // Custom plugin for line-clamp (since Tailwind 3.3+ moved it to core)
-    function({ addUtilities }: { addUtilities: Function }) {
+    function({ addUtilities }: { addUtilities: (utilities: any) => void }) {
       addUtilities({
         ".line-clamp-2": {
           display: "-webkit-box",

@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, PenLine, Coffee, Eye, Infinity } from "lucide-react";
+import { ArrowRight, PenLine, Coffee, Eye } from "lucide-react";
 
 function getRelativeTime(dateString: string): string {
   try {
@@ -21,47 +20,23 @@ function getRelativeTime(dateString: string): string {
     if (diffInDays < 7) return `${diffInDays} hari lalu`;
     if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
     return `${Math.floor(diffInDays / 30)} bulan lalu`;
-  } catch (error) {
+  } catch {
     return "Tanggal tidak diketahui";
   }
 }
 
 interface HomePageClientProps {
   featuredBooks: any[];
-  allBooks: any[];
   latestBooks: any[];
   mostRelatable: any[];
-  totalViews: number;
-  totalDownloads: number;
-  config: any;
 }
 
-export default function HomePageClient({ 
-  featuredBooks = [], 
-  allBooks = [], 
-  latestBooks = [], 
-  mostRelatable = [], 
-  totalViews = 0, 
-  totalDownloads = 0, 
-  config = {} 
+export default function HomePageClient({
+  featuredBooks = [],
+  latestBooks = [],
+  mostRelatable = []
 }: HomePageClientProps) {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-  const [hasError, setHasError] = React.useState(false);
-
-  React.useEffect(() => {
-    try {
-      setMounted(true);
-    } catch (error) {
-      console.error('Error in HomePageClient mount:', error);
-      setHasError(true);
-    }
-  }, []);
-  
-  const isDark = mounted && theme === "dark";
-
-  // Error boundary fallback
-  if (hasError) {
+  if (!featuredBooks.length && !latestBooks.length) {
     return (
       <div className="flex items-center justify-center">
         <div className="text-center">

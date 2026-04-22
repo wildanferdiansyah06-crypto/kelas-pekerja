@@ -42,16 +42,6 @@ export default function BookmarkPage() {
   // Filter books that are bookmarked
   const bookmarkedBooks = books.filter(book => bookmarks.includes(book.slug));
 
-  const handleRemoveBookmark = (slug: string) => {
-    try {
-      const updatedBookmarks = bookmarks.filter(b => b !== slug);
-      localStorage.setItem('bookmarks', JSON.stringify(updatedBookmarks));
-      setBookmarks(updatedBookmarks);
-    } catch (error) {
-      console.error('Error removing bookmark:', error);
-    }
-  };
-
   return (
     <main className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
       <section className="pt-32 pb-16 px-6">

@@ -3,6 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,13 +64,13 @@ export default function SignInPage() {
         </div>
 
         <div className="mt-8 text-center">
-          <a
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-[#d4a574] dark:text-[#c7b299] hover:text-[#f4e4d4] dark:hover:text-[#e8e0d5] transition-colors"
           >
             <LogIn size={16} />
             Kembali ke beranda
-          </a>
+          </Link>
         </div>
       </div>
     </div>

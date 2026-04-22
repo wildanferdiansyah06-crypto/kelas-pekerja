@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Search, X } from 'lucide-react';
 
 interface SearchBarProps {
   initialSearch?: string;
@@ -29,13 +28,6 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
     }
 
     params.delete('page');
-    router.push(`/buku?${params.toString()}`);
-  };
-
-  const clearSearch = () => {
-    setSearch('');
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('search');
     router.push(`/buku?${params.toString()}`);
   };
 

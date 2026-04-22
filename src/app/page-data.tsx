@@ -4,7 +4,7 @@ export async function getPageData() {
   try {
   const featuredData = await getFeaturedBooks(2);
   const config = await getConfig();
-  const allBooksData = await getBooks(); // Fetch all books without limit
+  const allBooksData = await getBooks();
 
   const featuredBooks = featuredData.books;
   const allBooks = allBooksData.books;
@@ -20,16 +20,11 @@ export async function getPageData() {
     mostRelatable.push(...remaining.slice(0, 3 - mostRelatable.length));
   }
 
-  const totalViews = allBooks.reduce((sum, book) => sum + (book.stats?.views || 0), 0);
-  const totalDownloads = allBooks.reduce((sum, book) => sum + (book.stats?.downloads || 0), 0);
-
   return {
     featuredBooks,
     allBooks,
     latestBooks,
     mostRelatable,
-    totalViews,
-    totalDownloads,
     config
   };
   } catch (error) {
@@ -39,8 +34,6 @@ export async function getPageData() {
       allBooks: [],
       latestBooks: [],
       mostRelatable: [],
-      totalViews: 0,
-      totalDownloads: 0,
       config: { tagline: "Tentang malam yang tak pernah benar-benar tidur..." }
     };
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Moon, Sun, BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
+import { BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function CahayaItuPage() {

@@ -77,7 +77,7 @@ export default async function BookPage({ params }: BookPageProps) {
   }
 
   return (
-    <main className="transition-colors duration-700 w-full" style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-text-primary)' }}>
+    <main className="transition-colors duration-700 w-full bg-kp-bg-base text-kp-text-primary">
 
       <ReadingProgressRestore />
 
@@ -88,8 +88,7 @@ export default async function BookPage({ params }: BookPageProps) {
 
           <Link
             href="/buku"
-            className="flex items-center gap-2 text-sm font-ui transition-colors duration-200 hover:opacity-100"
-            style={{ color: 'var(--kp-text-muted)', opacity: 0.7 }}
+            className="flex items-center gap-2 text-sm font-ui transition-colors duration-200 hover:opacity-100 text-kp-text-muted opacity-70"
           >
             <ArrowLeft size={18} />
             <span>Kembali ke Rak</span>

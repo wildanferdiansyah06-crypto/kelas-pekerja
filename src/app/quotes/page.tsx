@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { RefreshCcw, Send, Share2, Heart } from "lucide-react";
+import { Send, Share2 } from "lucide-react";
 import { supabase } from "@/src/lib/supabase";
 
 interface Quote {
@@ -116,7 +116,7 @@ export default function QuotesPage() {
         setSubmitStatus("error");
         setSubmitMessage(data.error || "Gagal mengirim quote");
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
       setSubmitMessage("Terjadi kesalahan");
     }

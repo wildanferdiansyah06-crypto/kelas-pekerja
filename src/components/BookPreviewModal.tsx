@@ -3,7 +3,7 @@
 import { useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Clock, ArrowRight, BookOpen, Flame, Eye } from "lucide-react";
+import { Clock, ArrowRight, BookOpen, Flame, Eye } from "lucide-react";
 import { Book } from "@/src/types";
 import { useNavbar } from "@/src/contexts/NavbarContext";
 

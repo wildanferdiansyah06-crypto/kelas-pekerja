@@ -8,15 +8,11 @@ import Image from 'next/image';
 
 import Link from 'next/link';
 
-import { Mail, MapPin, Coffee, Code, Book, Clock, ExternalLink, Github, Instagram, User, MessageCircle } from 'lucide-react';
-
-import { useTheme } from "@/src/components/ThemeProvider";
+import { Mail, MapPin, Coffee, Book, ExternalLink, Github, Instagram, MessageCircle } from 'lucide-react';
 
 
 
 export default function TentangPage() {
-
-  const { theme: globalTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
 

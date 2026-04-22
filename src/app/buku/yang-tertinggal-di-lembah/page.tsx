@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Moon, Sun, BookOpen, Mountain, ChevronRight, X, Compass, Check, Feather, Wind, Heart, Quote } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { BookOpen, Mountain, ChevronRight, X, Compass, Check, Wind, Heart, Quote } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
-import Link from 'next/link';
 
 export default function YangTertinggalDiLembahPage() {
   const { theme: globalTheme } = useTheme();
@@ -15,9 +14,6 @@ export default function YangTertinggalDiLembahPage() {
   const [showFloatingMenu, setShowFloatingMenu] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [completedChapters, setCompletedChapters] = useState<number[]>([]);
-  
-  const { scrollYProgress } = useScroll();
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   const prefersReducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;

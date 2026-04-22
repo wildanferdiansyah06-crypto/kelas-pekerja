@@ -11,7 +11,6 @@ export default function ReadingProgress() {
   const pathname = usePathname();
   const [currentBookId, setCurrentBookId] = useState<string | null>(null);
   const tickingRef = useRef(false);
-  const lastScrollYRef = useRef(0);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {

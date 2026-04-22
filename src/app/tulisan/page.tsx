@@ -110,7 +110,7 @@ export default function TulisanPage() {
   }), [isDark]);
 
   // Memoized computed values
-  const { featuredPost, regularPosts, trendingPosts, filteredPosts, showFeatured } = useMemo(() => {
+  const { featuredPost, trendingPosts, filteredPosts, showFeatured } = useMemo(() => {
     const featured = posts.find((p: any) => p.isFeatured);
     const regular = posts.filter((p: any) => !p.isFeatured);
     const trending = [...posts]
@@ -125,7 +125,6 @@ export default function TulisanPage() {
 
     return {
       featuredPost: featured,
-      regularPosts: regular,
       trendingPosts: trending,
       filteredPosts: filtered,
       showFeatured: show

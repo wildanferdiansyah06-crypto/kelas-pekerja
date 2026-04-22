@@ -1,12 +1,9 @@
 "use client";
 
-import { Suspense, useState, useEffect, useMemo } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useTheme } from "@/src/components/ThemeProvider";
 
-import BookCard from "@/src/components/BookCard";
 import CategoryFilter from "@/src/components/CategoryFilter";
 import SearchBar from "@/src/components/SearchBar";
 import BooksGridClient from "@/src/components/BooksGridClient";
@@ -106,66 +103,6 @@ function GridSkeleton() {
   );
 }
 
-function FeaturedCard({ book, index, onSelect }: { book: Book & { slug: string }; index: number; onSelect: (b: Book & { slug: string }) => void }) {
-  const author = (book as any).author || "Kelas Pekerja";
-
-  return (
-    <div
-      onClick={() => onSelect(book)}
-      className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border transition-all duration-500 hover:shadow-lg cursor-pointer"
-      style={{
-        borderColor: 'var(--kp-border)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--kp-border-medium)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--kp-border)';
-      }}
-    >
-      <div className="aspect-[3/4] md:w-48 md:h-64 relative overflow-hidden rounded-lg flex-shrink-0" style={{ backgroundColor: 'var(--kp-bg-elevated)' }}>
-        {book.cover ? (
-          <Image
-            src={book.cover}
-            alt={book.title}
-            fill
-            className="object-cover"
-            sizes="(max-width:768px) 100vw, 200px"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <svg className="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18, 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18, 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2c1810]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
-
-      <div className="flex flex-col justify-center">
-        <span className="inline-flex items-center gap-2 text-[10px] tracking-wider uppercase mb-3 font-ui" style={{ opacity: 0.5 }}>
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--kp-accent)' }} />
-          {book.category || "Umum"}
-        </span>
-
-        <h3 className="font-display text-2xl md:text-3xl leading-tight mb-3 group-hover:opacity-70 transition-opacity" style={{ color: 'var(--kp-text-primary)' }}>
-          {book.title}
-        </h3>
-
-        <p className="font-body text-base leading-relaxed line-clamp-3 mb-4" style={{ color: 'var(--kp-text-secondary)', opacity: 0.6 }}>
-          &ldquo;{(book.excerpt?.substring(0, 150) || book.subtitle || "Tidak ada deskripsi")}...&rdquo;
-        </p>
-
-        <div className="flex items-center gap-4 text-xs font-ui mt-auto" style={{ color: 'var(--kp-text-muted)', opacity: 0.4 }}>
-          <span>{book.readTime || "5 min read"}</span>
-          <span>•</span>
-          <span>{author}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function GridWithData({
   books,
   total,
@@ -215,8 +152,6 @@ function GridWithData({
 }
 
 function PageContent() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const searchParams = useSearchParams();
 
   const [booksWithSlugs, setBooksWithSlugs] = useState<(Book & { slug: string })[]>([]);

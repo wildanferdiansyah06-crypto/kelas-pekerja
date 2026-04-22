@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 
-import { ArrowLeft, PenLine, Send, Coffee, CheckCircle, Loader2, FileUp, X, Star, Quote, Sparkles, Users, Eye, Award, Heart, TrendingUp, Shield } from "lucide-react";
+import { ArrowLeft, Send, Coffee, CheckCircle, Loader2, FileUp, X, Star, Quote, Sparkles, Eye, Heart, TrendingUp, Shield } from "lucide-react";
 
 import { useState, useRef, useEffect } from "react";
 

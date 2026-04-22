@@ -145,7 +145,7 @@ export default function Footer() {
         setNewsletterStatus("error");
         setNewsletterMessage(data.error || "Gagal mengirim");
       }
-    } catch (error) {
+    } catch {
       setNewsletterStatus("error");
       setNewsletterMessage("Terjadi kesalahan");
     }
