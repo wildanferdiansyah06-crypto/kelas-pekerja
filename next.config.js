@@ -50,11 +50,12 @@ const nextConfig = {
   turbopack: {},
 
   // Optimize bundle size
-  modularizeImports: {
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{member}}',
-    },
-  },
+  // Disabled - causes circular dependency issues with Next.js 16.2.4 + Turbopack
+  // modularizeImports: {
+  //   'lucide-react': {
+  //     transform: 'lucide-react/dist/esm/icons/{{member}}',
+  //   },
+  // },
 
   // Webpack optimizations
   webpack: (config, { isServer }) => {
