@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/quotes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class QuoteController {
     
     private final QuoteRepository quoteRepository;

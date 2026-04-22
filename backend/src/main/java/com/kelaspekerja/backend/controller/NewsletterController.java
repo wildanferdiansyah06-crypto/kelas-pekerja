@@ -9,7 +9,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/newsletter")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class NewsletterController {
     
     @PostMapping

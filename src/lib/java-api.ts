@@ -12,8 +12,14 @@ export async function fetchBooks(params?: {
   if (params?.featured) queryParams.append('featured', 'true');
   if (params?.limit) queryParams.append('limit', params.limit.toString());
 
-  const response = await fetch(`${JAVA_API_URL}/books?${queryParams}`);
-  if (!response.ok) throw new Error('Failed to fetch books');
+  const response = await fetch(`${JAVA_API_URL}/books?${queryParams}`, {
+    cache: 'no-store'
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Java API error:', response.status, errorText);
+    throw new Error('Failed to fetch books');
+  }
   return response.json();
 }
 

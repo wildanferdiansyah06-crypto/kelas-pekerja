@@ -9,21 +9,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/books/**", "/quotes/**", "/stories/**", "/book-views/**", "/newsletter/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .oauth2Login(oauth2 -> oauth2
-                .loginPage("/oauth2/authorization/google")
+                .anyRequest().permitAll()
             );
-        
+
         return http.build();
     }
-    
+
 }

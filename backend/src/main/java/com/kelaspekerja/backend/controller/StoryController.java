@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/stories")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class StoryController {
     
     private final StoryRepository storyRepository;

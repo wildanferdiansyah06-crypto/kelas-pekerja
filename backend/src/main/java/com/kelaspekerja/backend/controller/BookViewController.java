@@ -11,7 +11,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/book-views")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class BookViewController {
     
     private final BookViewRepository bookViewRepository;
