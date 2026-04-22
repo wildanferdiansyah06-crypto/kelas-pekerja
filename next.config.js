@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Test auto-deploy webhook
 const nextConfig = {
   images: {
     remotePatterns: [
