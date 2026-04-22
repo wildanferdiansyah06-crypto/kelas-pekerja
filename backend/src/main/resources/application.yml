@@ -21,6 +21,29 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
     open-in-view: false
+
+---
+# Production profile for PostgreSQL/Supabase
+spring:
+  config:
+    activate:
+      on-profile: production
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    open-in-view: false
   
   security:
     oauth2:
