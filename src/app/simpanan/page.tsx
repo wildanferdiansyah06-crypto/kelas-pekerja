@@ -166,4 +166,4 @@ export default function BookmarksPage() {
       </div>
     </main>
   );
-            }
+}
