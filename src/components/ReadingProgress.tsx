@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { getOrCreateUser, updateReadingProgress } from '@/src/lib/user';
 
 export default function ReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -47,14 +46,17 @@ export default function ReadingProgress() {
       }
       saveTimeoutRef.current = setTimeout(async () => {
         try {
-          const user = await getOrCreateUser(
-            session.user.email || "",
-            session.user.name || "",
-            session.user.image || ""
-          );
-          if (currentBookId) {
-            await updateReadingProgress(user._id, currentBookId, Math.round(value));
-          }
+          await fetch('/api/reading-progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: session.user.email || "",
+              name: session.user.name || "",
+              image: session.user.image || "",
+              bookSlug: currentBookId,
+              progress: Math.round(value)
+            })
+          });
         } catch (error) {
           console.error('Failed to save reading progress:', error);
         }

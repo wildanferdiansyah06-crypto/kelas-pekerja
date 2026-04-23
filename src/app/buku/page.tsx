@@ -166,7 +166,6 @@ function PageContent() {
 
   useEffect(() => {
     // Fetch books from API route
-    console.log('Fetching books from API...');
     fetch('/api/books')
       .then(res => {
         if (!res.ok) {
@@ -175,8 +174,6 @@ function PageContent() {
         return res.json();
       })
       .then(({ books, total: totalBooks }: BooksResponse) => {
-        console.log('Books fetched:', books);
-        console.log('Total books:', totalBooks);
         setTotal(totalBooks);
 
         const slugs = books.map((book) => ({
@@ -184,8 +181,6 @@ function PageContent() {
           slug: book.slug || bookSlugMap[book.title] || makeSlug(book.title),
         }));
 
-        console.log('Books with slugs:', slugs);
-        console.log('Has books:', slugs.length > 0);
         setBooksWithSlugs(slugs);
 
         const allCategories = books.map(b => b.category).filter(Boolean) as string[];
