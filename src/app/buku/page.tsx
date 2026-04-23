@@ -15,10 +15,12 @@ interface BooksResponse {
 }
 
 const bookSlugMap: Record<string, string> = {
+  "Cahaya Itu": "cahaya-itu",
+  "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
   "Di Atas Cangkir Yang Sama": "di-atas-cangkir-yang-sama",
   "Di Balik Bar": "di-balik-bar",
   "Kami Menulis Pelan": "kami-menulis-pelan",
-  "Seni Menyeduh Kehidupan": "seni-menyeduh-kehidupan",
+  "Yang Tertinggal di Lembah": "yang-tertinggal-di-lembah",
 };
 
 function makeSlug(title: string): string {
@@ -131,8 +133,8 @@ function GridWithData({
   }
 
   const hasFilters = !!(category || search);
-  const featured = !hasFilters ? filtered.slice(0, 2) : [];
-  const regular = !hasFilters ? filtered.slice(2) : filtered;
+  const featured = !hasFilters ? filtered.filter(b => b.featured) : [];
+  const regular = !hasFilters ? filtered.filter(b => !b.featured) : filtered;
 
   if (filtered.length === 0) {
     return <EmptyState hasFilters={hasFilters} />;
@@ -179,10 +181,11 @@ function PageContent() {
 
         const slugs = books.map((book) => ({
           ...book,
-          slug: bookSlugMap[book.title] || makeSlug(book.title),
+          slug: book.slug || bookSlugMap[book.title] || makeSlug(book.title),
         }));
 
         console.log('Books with slugs:', slugs);
+        console.log('Has books:', slugs.length > 0);
         setBooksWithSlugs(slugs);
 
         const allCategories = books.map(b => b.category).filter(Boolean) as string[];
