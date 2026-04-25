@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eye, ArrowUpRight, Clock, ArrowRight } from "lucide-react";
 import { Book } from "@/src/types";
+import BookmarkButton from "./BookmarkButton";
 
 interface BookCardProps {
   book: Book;
@@ -62,6 +63,17 @@ export default function BookCard({ book, index = 0, href, onClick }: BookCardPro
                      ${isHovered ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}
         >
           <Eye size={16} className="text-white/90 w-4 h-4 sm:w-6 sm:h-6" />
+        </div>
+
+        <div className="absolute bottom-2 sm:bottom-4 md:bottom-5 right-2 sm:right-4 md:right-5">
+          <BookmarkButton
+            item={{
+              id: book.id,
+              type: 'book',
+              title: book.title,
+              slug: book.slug
+            }}
+          />
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 lg:p-6">

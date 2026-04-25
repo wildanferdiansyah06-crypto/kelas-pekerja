@@ -6,6 +6,8 @@ import { useTheme } from "@/src/components/ThemeProvider";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { useBookmarks } from "@/src/hooks/useBookmarks";
+import { useLikes } from "@/src/hooks/useLikes";
 import { 
   PenLine, 
   Clock, 
@@ -43,11 +45,11 @@ export default function TulisanDetailPage() {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
   const [showNextModal, setShowNextModal] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [bookmarked, setBookmarked] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+  const { isLiked, toggleLike } = useLikes();
   
   const { scrollYProgress } = useScroll();
 
@@ -84,17 +86,12 @@ export default function TulisanDetailPage() {
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
 
-  // Load liked & bookmarked from localStorage
+  // Set like count from post data
   useEffect(() => {
-    if (!post) return;
-    
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
-    const bookmarkedPosts = JSON.parse(localStorage.getItem('bookmarkedPosts') || '[]');
-    
-    setLiked(likedPosts.includes(slug));
-    setBookmarked(bookmarkedPosts.includes(slug));
-    setLikeCount(post.likes || 0);
-  }, [slug, post]);
+    if (post) {
+      setLikeCount(post.likes || 0);
+    }
+  }, [post]);
 
   // Scroll tracking
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -109,35 +106,29 @@ export default function TulisanDetailPage() {
 
   // Like handler
   const handleLike = useCallback(() => {
-    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    if (!post) return;
     
-    if (liked) {
-      const newLiked = likedPosts.filter((id: string) => id !== slug);
-      localStorage.setItem('likedPosts', JSON.stringify(newLiked));
-      setLikeCount(prev => prev - 1);
-    } else {
-      likedPosts.push(slug);
-      localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
-      setLikeCount(prev => prev + 1);
-    }
+    toggleLike({
+      id: post._id || slug,
+      type: 'post',
+      title: post.title,
+      slug: post.slug
+    });
     
-    setLiked(!liked);
-  }, [liked, slug]);
+    setLikeCount(prev => isLiked(post._id || slug) ? prev - 1 : prev + 1);
+  }, [post, slug, isLiked, toggleLike]);
 
   // Bookmark handler
   const handleBookmark = useCallback(() => {
-    const bookmarkedPosts = JSON.parse(localStorage.getItem('bookmarkedPosts') || '[]');
+    if (!post) return;
     
-    if (bookmarked) {
-      const newBookmarked = bookmarkedPosts.filter((id: string) => id !== slug);
-      localStorage.setItem('bookmarkedPosts', JSON.stringify(newBookmarked));
-    } else {
-      bookmarkedPosts.push(slug);
-      localStorage.setItem('bookmarkedPosts', JSON.stringify(bookmarkedPosts));
-    }
-    
-    setBookmarked(!bookmarked);
-  }, [bookmarked, slug]);
+    toggleBookmark({
+      id: post._id || slug,
+      type: 'post',
+      title: post.title,
+      slug: post.slug
+    });
+  }, [post, slug, toggleBookmark]);
 
   // Share handlers
   const handleNativeShare = useCallback(async () => {
@@ -290,9 +281,9 @@ export default function TulisanDetailPage() {
             <button 
               onClick={handleLike}
               className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm transition-all
-                ${liked ? 'bg-red-500/10 text-red-500' : 'hover:bg-neutral-800/10'}`}
+                ${isLiked(post?._id || slug) ? 'bg-red-500/10 text-red-500' : 'hover:bg-neutral-800/10'}`}
             >
-              <Heart size={16} fill={liked ? "currentColor" : "none"} />
+              <Heart size={16} fill={isLiked(post?._id || slug) ? "currentColor" : "none"} />
               <span className="hidden sm:inline">{likeCount}</span>
             </button>
             <Link 
@@ -375,9 +366,9 @@ export default function TulisanDetailPage() {
             <div className="flex items-center gap-1">
               <button 
                 onClick={handleBookmark}
-                className={`p-2 rounded-full transition-colors ${bookmarked ? 'text-[#8b7355]' : colors.textSubtle} hover:bg-neutral-800/10`}
+                className={`p-2 rounded-full transition-colors ${isBookmarked(post?._id || slug) ? 'text-[#8b7355]' : colors.textSubtle} hover:bg-neutral-800/10`}
               >
-                <Bookmark size={16} fill={bookmarked ? "currentColor" : "none"} />
+                <Bookmark size={16} fill={isBookmarked(post?._id || slug) ? "currentColor" : "none"} />
               </button>
               <button 
                 onClick={handleNativeShare}
@@ -482,10 +473,10 @@ export default function TulisanDetailPage() {
                 <button 
                   onClick={handleLike}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all
-                    ${liked ? 'border-red-500/50 bg-red-500/10 text-red-500' : 'border-[#8b7355]/30 text-[#8b7355] hover:bg-[#8b7355]/10'}`}
+                    ${isLiked(post?._id || slug) ? 'border-red-500/50 bg-red-500/10 text-red-500' : 'border-[#8b7355]/30 text-[#8b7355] hover:bg-[#8b7355]/10'}`}
                 >
-                  <Heart size={16} fill={liked ? "currentColor" : "none"} />
-                  <span>{liked ? 'Tersimpan' : 'Suka'}</span>
+                  <Heart size={16} fill={isLiked(post?._id || slug) ? "currentColor" : "none"} />
+                  <span>{isLiked(post?._id || slug) ? 'Tersimpan' : 'Suka'}</span>
                 </button>
                 <button 
                   onClick={handleNativeShare}

@@ -27,11 +27,15 @@ export default function BookmarkButton({ item }: BookmarkButtonProps) {
 
   return (
     <button
-      onClick={() => toggleBookmark(item)}
-      className={`p-2 rounded-full transition-all duration-300 ${
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleBookmark(item);
+      }}
+      className={`p-2 rounded-full transition-all duration-300 bg-white/90 backdrop-blur-md border border-white/30 shadow-lg ${
         bookmarked 
-          ? 'bg-[#8b7355]/20 text-[#8b7355]' 
-          : 'hover:bg-[#8b7355]/10 opacity-60 hover:opacity-100'
+          ? 'text-[#8b7355]' 
+          : 'text-gray-600 hover:text-[#8b7355]'
       }`}
       title={bookmarked ? 'Hapus dari simpanan' : 'Simpan untuk nanti'}
     >

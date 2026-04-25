@@ -154,3 +154,71 @@ export async function getUserReadingProgress(userId: string) {
 
   return user?.readingProgress || [];
 }
+
+// Add like to user
+export async function addLike(userId: string, postId: string, postType: "post") {
+  // Fetch the actual post data to store first
+  const contentQuery = `*[_type == "post" && _id == $postId][0]{_id, title, slug}`;
+
+  const content = await client.fetch(contentQuery, { postId });
+
+  if (!content) {
+    throw Error(`post not found`);
+  }
+
+  // Fetch current user state
+  const query = `*[_type == "user" && _id == $userId][0]`;
+  const user = await client.fetch(query, { userId });
+
+  if (!user) {
+    throw Error("User not found");
+  }
+
+  // Check if like already exists
+  const existingLike = user.likedPosts?.find(
+    (b: any) => b._id === postId
+  );
+
+  if (existingLike) {
+    return user; // Already liked
+  }
+
+  // Add the like
+  const likeData = {
+    ...content,
+    _type: postType,
+  };
+
+  const updatedUser = await client.patch(userId)
+    .setIfMissing({ likedPosts: [] })
+    .append("likedPosts", [likeData])
+    .commit();
+
+  return updatedUser;
+}
+
+// Remove like from user
+export async function removeLike(userId: string, postId: string) {
+  const query = `*[_type == "user" && _id == $userId][0]`;
+  const user = await client.fetch(query, { userId });
+
+  if (!user) {
+    throw Error("User not found");
+  }
+
+  const updatedLikedPosts = user.likedPosts?.filter(
+    (b: any) => b._id !== postId
+  );
+
+  const updatedUser = await client.patch(userId).set({ likedPosts: updatedLikedPosts }).commit();
+
+  return updatedUser;
+}
+
+// Get user liked posts
+export async function getUserLikedPosts(userId: string) {
+  const query = `*[_type == "user" && _id == $userId][0]{likedPosts}`;
+  const user = await client.fetch(query, { userId });
+
+  return user?.likedPosts || [];
+}

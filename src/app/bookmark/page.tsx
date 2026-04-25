@@ -4,23 +4,14 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@/src/components/ThemeProvider';
 import BookCard from '@/src/components/BookCard';
 import { Book } from '@/src/types';
+import { useBookmarks } from '@/src/hooks/useBookmarks';
 
 export default function BookmarkPage() {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const [bookmarks, setBookmarks] = useState<string[]>([]);
+  const { bookmarks } = useBookmarks();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Load bookmark slugs from localStorage
-    try {
-      const savedBookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-      setBookmarks(savedBookmarks);
-    } catch (error) {
-      console.error('Error loading bookmarks:', error);
-    }
-  }, []);
 
   useEffect(() => {
     // Fetch all books
@@ -40,7 +31,9 @@ export default function BookmarkPage() {
   }, []);
 
   // Filter books that are bookmarked
-  const bookmarkedBooks = books.filter(book => bookmarks.includes(book.slug));
+  const bookmarkedBooks = books.filter(book => 
+    bookmarks.some(b => b.slug === book.slug)
+  );
 
   return (
     <main className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-gradient-to-br from-[#0f0e0c] via-[#1a1815] to-[#0d0c0a]' : 'bg-gradient-to-br from-[#2c1810] via-[#3d2817] to-[#1a0e08]'}`}>
