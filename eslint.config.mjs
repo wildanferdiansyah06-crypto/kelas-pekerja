@@ -23,6 +23,11 @@ export default [
       "react/no-children-prop": "off",
       "react/jsx-key": "off",
     },
+    settings: {
+      next: {
+        rootDir: ["./"],
+      },
+    },
   },
   {
     ignores: ["**/*.d.ts", "**/node_modules/**", "**/.next/**", "**/dist/**"],
