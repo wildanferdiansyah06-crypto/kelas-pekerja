@@ -1,20 +1,20 @@
-import nextPlugin from "@next/eslint-plugin-next";
-import reactPlugin from "eslint-plugin-react";
-import hooksPlugin from "eslint-plugin-react-hooks";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 import tseslint from "typescript-eslint";
 
-export default [
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   ...tseslint.configs.recommended,
   {
-    files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
-    plugins: {
-      "@next/next": nextPlugin,
-      react: reactPlugin,
-      "react-hooks": hooksPlugin,
-    },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs["core-web-vitals"].rules,
       "react/no-unescaped-entities": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "react/jsx-props-no-spreading": "off",
@@ -23,13 +23,10 @@ export default [
       "react/no-children-prop": "off",
       "react/jsx-key": "off",
     },
-    settings: {
-      next: {
-        rootDir: ["./"],
-      },
-    },
   },
   {
     ignores: ["**/*.d.ts", "**/node_modules/**", "**/.next/**", "**/dist/**"],
   },
 ];
+
+export default eslintConfig;
