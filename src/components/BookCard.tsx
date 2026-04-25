@@ -65,7 +65,10 @@ export default function BookCard({ book, index = 0, href, onClick }: BookCardPro
           <Eye size={16} className="text-white/90 w-4 h-4 sm:w-6 sm:h-6" />
         </div>
 
-        <div className="absolute bottom-2 sm:bottom-4 md:bottom-5 right-2 sm:right-4 md:right-5">
+        <div 
+          className="absolute bottom-2 sm:bottom-4 md:bottom-5 right-2 sm:right-4 md:right-5 z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
           <BookmarkButton
             item={{
               id: book.id,
