@@ -4,19 +4,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, Download, Clock, BookOpen } from "lucide-react"
 
-import { getBook, getBooks, incrementView, getBookView } from "@/src/lib/api"
+import { getBook, incrementView, getBookView } from "@/src/lib/api"
 import { Book } from "@/src/types"
 
 import BookmarkButton from "@/src/components/BookmarkButton"
 import ShareButtons from "@/src/components/ShareButtons"
 import ReadingProgressRestore from "@/src/components/ReadingProgressRestore"
 
-export async function generateStaticParams() {
-  const { books } = await getBooks()
-  return books.map((book) => ({
-    slug: book.slug,
-  }))
-}
+// Removed generateStaticParams to make page dynamic and avoid build-time issues
 
 export async function generateMetadata({
   params,
