@@ -9,7 +9,7 @@ jobs:
   deploy:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    if: false  # Temporarily disabled - deployment handled via Vercel GitHub integration
+    # Enabled for GitHub Actions deployment testing
     
     steps:
       - name: Checkout code
