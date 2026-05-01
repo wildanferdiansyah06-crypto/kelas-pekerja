@@ -6,6 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Disable CDN temporarily to see changes immediately
+  useCdn: process.env.NODE_ENV === 'production', // Use CDN in production
   token: process.env.SANITY_API_TOKEN, // Add API token for authentication
+  ignoreBrowserTokenWarning: true, // Suppress browser token warning
 })

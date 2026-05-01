@@ -28,7 +28,10 @@ export async function getPageData() {
     config
   };
   } catch (error) {
-    console.error('Error in getPageData:', error);
+    // Silently handle errors during build to avoid warnings
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error in getPageData:', error);
+    }
     return {
       featuredBooks: [],
       allBooks: [],
