@@ -2,7 +2,16 @@
 
 Platform literasi modern dengan Next.js 15, Sanity CMS, dan NextAuth untuk manajemen konten dan autentikasi.
 
-## 🏗️ Arsitektur
+## 📊 Project Status
+
+### ✅ Latest Updates (v2.0.0)
+- **Build Optimization**: Clean build without warnings
+- **Environment Setup**: Improved .env configuration
+- **Error Handling**: Better API error suppression during build
+- **Cross-Platform**: Tested on multiple Linux distributions
+- **Performance**: Optimized bundle sizes and loading times
+
+### 🏗️ Arsitektur
 
 ```
 Frontend (Next.js 15 + React 18)
@@ -24,6 +33,12 @@ Frontend (Next.js 15 + React 18)
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+- **Node.js**: v18+ (recommended: use NVM)
+- **npm**: v9+ (comes with Node.js)
+- **Git**: Latest version
+
 ### 1. Clone & Install
 
 ```bash
@@ -32,14 +47,22 @@ cd kelas-pekerja
 npm install
 ```
 
-### 2. Environment Variables
+### 2. Environment Setup
 
-Copy `.env.example` ke `.env.local` dan isi:
+Copy `.env.example` ke `.env.local`:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` dan isi nilai yang diperlukan:
 
 ```bash
 # Sanity CMS
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+SANITY_API_TOKEN=your_token
 
 # NextAuth
 NEXTAUTH_URL=http://localhost:3000
@@ -48,6 +71,14 @@ NEXTAUTH_SECRET=your_secret_key
 # Google OAuth
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+
+# Optional
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_SPEED_INSIGHTS_ENABLED=true
 ```
 
 ### 3. Development
@@ -58,23 +89,18 @@ npm run dev
 # Sanity Studio: http://localhost:3000/y
 ```
 
-### 4. Build
+### 4. Build & Test
 
 ```bash
+# Build untuk production
 npm run build
-```
 
-### 5. Testing
+# Jalankan production server
+npm start
 
-```bash
-# Unit tests
+# Run tests
 npm test
-
-# E2E tests
 npm run test:e2e
-
-# Test with UI
-npm run test:e2e:ui
 ```
 
 ## 📁 Struktur Data (Sanity CMS)
@@ -287,41 +313,102 @@ export default defineConfig({
 })
 ```
 
+## �️ Setup Instructions
+
+### Fresh Install (New Distro/Device)
+
+1. **Install Node.js via NVM**:
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+   nvm install --lts
+   nvm use --lts
+   ```
+
+2. **Install Git**:
+   ```bash
+   # Ubuntu/Debian
+   sudo apt update && sudo apt install git
+   # Atau via Snap
+   sudo snap install git --classic
+   ```
+
+3. **Configure Git**:
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "your.email@example.com"
+   ```
+
+4. **Clone & Setup Project**:
+   ```bash
+   git clone https://github.com/wildanferdiansyah06-crypto/kelas-pekerja.git
+   cd kelas-pekerja
+   npm install
+   cp .env.example .env.local
+   # Edit .env.local dengan credentials Anda
+   ```
+
+5. **Verify Installation**:
+   ```bash
+   npm run build  # Should complete without errors
+   npm run dev     # Start development server
+   ```
+
+### Build Verification
+
+Project ini telah diuji dan berhasil dibuild dengan:
+- ✅ Node.js LTS (via NVM)
+- ✅ Clean build tanpa warnings
+- ✅ 28 halaman static + dynamic
+- ✅ Optimal bundle sizes (211kB shared JS)
+
 ## 🐛 Troubleshooting
 
-### Build Error: "Cannot find module"
+### Build Errors
 
+**Error: "supabaseUrl is required"**
 ```bash
-rm -rf node_modules package-lock.json
-npm install
+# Solution: Copy .env.example
+cp .env.example .env.local
+# Edit .env.local dengan Supabase credentials
 ```
 
-### Sanity Studio Error
-
-Jika Sanity Studio error saat membuka user documents:
-- Clear browser cache (Ctrl+F5)
-- Tunggu deployment selesai
-- Restart development server
-
-### NextAuth Issues
-
-Jika login gagal:
-- Pastikan environment variables ter-set dengan benar
-- Cek Google OAuth credentials di Google Cloud Console
-- Pastikan `NEXTAUTH_URL` sesuai dengan domain
-
-### Images not loading
-
-Pastikan image URLs valid dan accessible. Untuk Sanity images, gunakan `urlFor()` helper dari `src/sanity/lib/image.ts`.
-
-### Sanity Connection Issues
-
+**Error: "projectId can only contain only a-z, 0-9 and dashes"**
 ```bash
-# Cek Sanity connection
-npx sanity manage
+# Solution: Pastikan NEXT_PUBLIC_SANITY_PROJECT_ID valid format
+# Contoh: testproject (bukan your_project_id)
+```
 
-# Re-deploy Sanity Studio
-npx sanity deploy
+**Error: "Unauthorized - Session not found"**
+```bash
+# Solution: Check SANITY_API_TOKEN di .env.local
+# Atau hapus token untuk development
+```
+
+### Common Issues
+
+**Node.js not found**:
+```bash
+# Install NVM dan Node.js LTS
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+```
+
+**Git authentication failed**:
+```bash
+# Setup GitHub Personal Access Token
+# 1. Buka github.com/settings/tokens
+# 2. Generate new token (centang 'repo' permission)
+# 3. Gunakan token sebagai password saat git push
+```
+
+**Dependencies not installing**:
+```bash
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
 ```
 
 ## 📄 License
