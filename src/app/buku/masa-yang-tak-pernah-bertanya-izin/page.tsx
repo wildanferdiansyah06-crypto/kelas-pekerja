@@ -194,7 +194,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
         {/* Content Sections */}
         <div className={`space-y-16 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
           
-          {/* Section 1 */}
+          {/* Catatan untuk Pembaca */}
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -202,20 +202,748 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Masa Itu Pernahkah Minta Izin?
+            <div className={`py-8 px-6 rounded-2xl ${darkMode ? 'bg-gray-900/50' : 'bg-amber-50'}`}>
+              <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                Catatan untuk Pembaca
+              </h2>
+              <p className="mb-4 leading-relaxed">
+                Buku ini bukan tentang perubahan besar. Buku ini tentangmu yang dulu pernah duduk di lantai kamar, menatap langit-langit, dan merasa bahwa segalanya akan selalu begini.
+              </p>
+              <p className="leading-relaxed">
+                Kamu salah. Bukan karena segalanya berubah. Tapi karena kamu tidak pernah sadar kapan perubahan itu terjadi.
+              </p>
+            </div>
+          </motion.section>
+
+          {/* BAGIAN PERTAMA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              BAGIAN PERTAMA: HARI-HARI YANG SAMA
             </h2>
-            
+          </motion.div>
+
+          {/* Bab 1 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              1. Alarm yang Sama
+            </h3>
             <p className="mb-4 leading-relaxed">
-              Masa itu tidak pernah bertanya izin. Dia datang, lewat, dan pergi begitu saja, meninggalkan kita dengan tumpukan kenangan yang kadang terlalu berat untuk dibawa. Kita tidak pernah tahu kapan exactly masa itu akan berubah. Satu detik kita masih di situ, detik berikutnya kita sudah di sini, dan kita tidak pernah benar-benar siap.
+              Pagi itu, seperti pagi kemarin, dan kemarinnya lagi.
             </p>
-            
             <p className="mb-4 leading-relaxed">
-              Mungkin itu yang membuatnya begitu menakutkan—ketidakpastian. Kita suka merasa berada di kendali, suka merasa bahwa kita bisa memutuskan kapan harus mulai dan kapan harus berhenti. Tapi masa? Masa tidak peduli dengan rencana kita. Dia bergerak sesuai jamnya sendiri, tanpa mempedulikan apakah kita sudah siap atau belum.
+              Bunyi alarm dari ponsel yang sudah mulai lemot. Kamu menekan tombol snooze. Sekali. Dua kali. Tiga kali. Hingga akhirnya terpaksa bangun karena takut terlambat.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak ingat kapan kebiasaan ini dimulai. Yang kamu tahu, ini sudah berlangsung lama. Terlalu lama, mungkin.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamar mandi. Sikat gigi. Air mengalir. Cermin yang sama. Wajah yang sama. Hanya rambut yang sedikit lebih panjang dari bulan lalu. Atau mungkin lebih pendek? Kamu tidak yakin.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Di dapur, ibumu menyiapkan sarapan. Menu yang sama. Nasi, telur, kecap. Kamu duduk di kursi yang sama. Meja yang sama. Piring yang sama.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              "Hati-hati di jalan," kata ibumu. Seperti biasa. Kamu mengangguk. Seperti biasa.
+            </p>
+            <p className="leading-relaxed">
+              Dan kamu berangkat.
             </p>
           </motion.section>
 
-          {/* Quote 1 */}
+          {/* Bab 2 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              2. Jalan yang Sama
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Jalan itu masih sama.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Trotoar yang retak di sebelah kiri, yang sudah retak sejak kamu masih SMA. Pohon mangga tua yang rindangnya masih sama, meski daun-daunnya sudah berganti berkali-kali. Warung kopi di sudut yang selalu ramai pagi-pagi, dengan pemiliknya yang selalu sibuk mengaduk kopi sambil melihat ponsel.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu lewat di sini setiap hari. Setiap. Hari.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Terkadang kamu melihat wajah-wajah yang sama. Bapak-bapak yang jogging dengan kaos lusuh. Ibu-ibu yang membawa tas belanjaan. Anak sekolah yang berlarian, tasnya terbuka, buku-buku hampir jatuh.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak mengenal mereka. Tapi kamu mengenal wajah mereka.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dan entah kenapa, itu menenangkan.
+            </p>
+            <p className="leading-relaxed">
+              Seperti mengetahui bahwa di dunia yang terus berputar, ada hal-hal yang tetap diam di tempatnya.
+            </p>
+          </motion.section>
+
+          {/* Bab 3 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              3. Ruang yang Sama
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Meja kerjamu masih di tempat yang sama.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Komputer yang sama. Kursi yang sama. Pemandangan dari jendela yang sama-gedung-gedung yang kamu sudah hafal bentuknya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Rekan kerja duduk di meja sebelah. Dia membuka laptop. Mengetik. Minum kopi. Sama seperti kemarin.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu menatap layar. Email yang sama. Laporan yang sama. Deadline yang sama. Jam berlalu tanpa suara.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak sadar kapan matahari mulai condong ke barat. Yang kamu tahu, tiba-tiba sudah jam lima sore.
+            </p>
+            <p className="leading-relaxed">
+              Dan kamu pulang.
+            </p>
+          </motion.section>
+
+          {/* Bab 4 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              4. Malam yang Sama
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Malam itu datang tanpa peringatan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Seperti malam-malam sebelumnya, kamu duduk di sofa. Menonton sesuatu di layar. Atau mungkin tidak menonton apa-apa-kamu tidak benar-benar memperhatikan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Ponsel di tangan. Gulir ke bawah. Ke bawah. Ke bawah.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Foto seseorang yang baru menikah. Teman lama yang pindah ke kota lain. Seseorang yang memposting foto masa kecilnya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu berhenti sejenak di foto itu. Masa kecil.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu mencoba mengingat. Bukan wajah-wajah, bukan nama-nama. Tapi rasanya. Rasa menjadi anak kecil yang tidak tahu apa-apa, yang berlari tanpa lelah, yang tertawa tanpa alasan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak bisa.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena kamu lupa. Tapi karena rasanya sudah terlalu jauh. Seperti mencoba meraih seseorang di ujung terowongan yang gelap.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu menutup ponsel.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Langit-langit kamarmu masih sama. Lampu yang sama. Suasana yang sama. Kamu tidur.
+            </p>
+            <p className="leading-relaxed">
+              Dan besok, semuanya akan sama lagi.
+            </p>
+          </motion.section>
+
+          {/* Bab 5 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              5. Yang Berubah Tanpa Izin
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Suatu hari, tanpa kamu sadari, sesuatu berbeda.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan perubahan besar. Bukan sesuatu yang bisa kamu tunjuk dan katakan, "Ini berbeda." Tapi ada.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Mungkin itu bunyi langkah kakimu di koridor yang sedikit lebih berat dari dulu. Mungkin itu cara kamu mengunci pintu yang sekarang dilakukan tanpa berpikir. Mungkin itu ekspresi wajahmu di cermin yang tidak lagi terlihat asing.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak tahu kapan semua ini terjadi.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Yang kamu tahu, suatu pagi kamu bangun dan merasa... berbeda. Bukan lebih baik. Bukan lebih buruk. Hanya berbeda.
+            </p>
+            <p className="leading-relaxed">
+              Seperti buku yang sudah dibaca setengahnya. Halaman-halaman awal masih sama, tapi kamu sudah bukan pembaca yang sama.
+            </p>
+          </motion.section>
+
+          {/* Bab 6 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              6. Yang Hilang di Antara Hari
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Ada hal-hal yang hilang tanpa pamit.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan barang. Bukan orang. Tapi... sesuatu yang lebih sulit dijelaskan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Cara tertawamu yang dulu lebih keras. Cara marahmu yang dulu lebih cepat reda. Cara berharapmu yang dulu lebih berani.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak sadar kapan mereka pergi.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Mungkin saat kamu terlalu sibuk memikirkan hari esok. Mungkin saat kamu terlalu lelah menatap hari ini. Mungkin saat kamu terlalu cepat melupakan hari kemarin.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Yang tersisa hanya bayangan mereka.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bayangan yang kadang muncul tiba-tiba-saat aroma kopi tertentu, saat lagu lama diputar, saat seseorang memanggil namamu dengan cara yang sudah lama tidak kamu dengar.
+            </p>
+            <p className="leading-relaxed">
+              Dan untuk sekejap, kamu kembali menjadi dirimu yang dulu. Sebelum pergi lagi.
+            </p>
+          </motion.section>
+
+          {/* Bab 7 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              7. Yang Tersisa di Balik Pintu
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Pintu kamar lamamu masih ada.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Di rumah orangtuamu. Di ujung koridor. Dengan goresan-goresan pensil di permukaannya-tinggi badanmu yang dicatat setiap tahun, dari umur lima hingga tujuh belas.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak pernah menghapusnya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Entah kenapa.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Mungkin karena di balik pintu itu, ada dunia yang sudah tidak pernah kamu masuki lagi. Dunia di mana segalanya masih sederhana. Di mana masalah terbesarmu adalah PR matematika yang belum selesai. Di masa depan masih terasa jauh dan tidak menakutkan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu membuka pintu itu terakhir kali kapan? Tiga tahun lalu? Lima? Kamu tidak ingat.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Yang kamu ingat, setiap kali kamu pulang ke rumah orangtuamu, kamu selalu melewati koridor itu. Tapi kamu tidak pernah membuka pintunya.
+            </p>
+            <p className="leading-relaxed">
+              Seperti takut akan menemukan sesuatu yang sudah tidak kamu kenali. Atau lebih buruk-menemukan sesuatu yang masih persis sama, sementara kamu sudah berubah.
+            </p>
+          </motion.section>
+
+          {/* Bab 8 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              8. Yang Tertinggal di Laci
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Di laci meja kerjamu, ada sesuatu yang sudah lama tidak kamu lihat. Surat.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan email. Bukan chat. Tapi surat tulisan tangan, di atas kertas yang sudah menguning di tepinya. Dari seseorang yang dulu kamu anggap akan selalu ada.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak membukanya lagi. Kamu hanya tahu dia ada di sana, bersama pena yang sudah kering tintanya, dan kenangan yang sudah tidak lagi sama.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Ada kalanya kamu ingin membacanya lagi. Tapi kamu takut.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Takut bahwa kata-kata yang dulu terasa hangat sekarang terasa asing. Takut bahwa rasa yang dulu terasa nyata sekarang terasa palsu. Takut bahwa orang yang menulisnya dan orang yang membacanya sekarang adalah dua orang yang berbeda.
+            </p>
+            <p className="leading-relaxed">
+              Jadi kamu menutup laci. Dan berpura-pura lupa.
+            </p>
+          </motion.section>
+
+          {/* BAGIAN KETIGA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              BAGIAN KETIGA: SUARA-SUARA DARI MASA LALU
+            </h2>
+          </motion.div>
+
+          {/* Bab 9 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              9. Lagu yang Salah Waktu
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Radio di taksi memutar lagu itu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Lagu yang kamu tidak dengar selama bertahun-tahun.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Suara gitar yang sama. Lirik yang sama. Tapi rasanya... berbeda.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dulu, lagu ini tentang seseorang yang kamu cintai. Sekarang, lagu ini tentang seseorang yang kamu lupakan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena kamu ingin melupakan. Tapi karena waktu tidak pernah bertanya apakah kamu siap untuk melepaskan.
+            </p>
+            <p className="leading-relaxed">
+              Kamu menatap jendela taksi. Kota yang sama, tapi tidak lagi terlihat sama. Atau mungkin, kamu yang tidak lagi sama.
+            </p>
+          </motion.section>
+
+          {/* Bab 10 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              10. Foto yang Tidak Kamu Ambil
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Galeri ponselmu penuh dengan foto.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Makanan. Pemandangan. Selfie. Tapi ada satu foto yang tidak pernah kamu ambil. Foto dirimu, dulu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan wajah. Bukan pakaian. Tapi momen.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Momen saat kamu masih percaya bahwa segalanya akan baik-baik saja. Saat kamu masih berani bermimpi tanpa takut jatuh. Saat kamu masih bisa tertawa tanpa merasa bersalah.
+            </p>
+            <p className="leading-relaxed">
+              Kamu tidak punya foto itu. Karena saat itu terjadi, kamu terlalu sibuk hidup untuk menyadari bahwa itu adalah momen yang perlu diabadikan.
+            </p>
+          </motion.section>
+
+          {/* Bab 11 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              11. Tempat yang Tidak Pernah Kamu Kunjungi Lagi
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Ada sebuah tempat.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan tempat istimewa. Bukan tempat indah. Hanya sebuah bangku di taman, di dekat kolam yang airnya tidak pernah bening.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu duduk di sana, dulu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dengan seseorang. Atau sendiri. Kamu tidak ingat dengan pasti.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Yang kamu ingat, angin di sana terasa berbeda. Lebih lambat. Lebih lembut. Seperti dunia sedang menunggumu menarik napas.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak pernah kembali ke sana.
+            </p>
+            <p className="leading-relaxed">
+              Bukan karena kamu tidak mau. Tapi karena kamu takut tempat itu sudah berubah. Atau lebih buruk-takut bahwa tempat itu masih sama, tapi kamu sudah tidak lagi bisa merasakan apa yang dulu kamu rasakan.
+            </p>
+          </motion.section>
+
+          {/* Bab 12 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              12. Nama yang Tidak Pernah Kamu Ucapkan Lagi
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Ada nama yang tidak pernah kamu ucapkan lagi.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena kamu lupa. Tapi karena mengucapkannya terasa seperti membuka pintu yang sudah lama terkunci.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Pintu ke ruangan yang penuh dengan debu dan bayangan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak tahu apa yang akan kamu temukan di sana.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Mungkin kenangan yang masih hangat. Mungkin luka yang belum sembuh. Mungkin hanya keheningan yang terlalu keras untuk ditahan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Jadi kamu membiarkan nama itu diam. Di sudut pikiranmu.
+            </p>
+            <p className="leading-relaxed">
+              Tidak mati. Tidak hidup. Hanya... ada.
+            </p>
+          </motion.section>
+
+          {/* BAGIAN KEEMPAT */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              BAGIAN KEEMPAT: SAAT KAMU MENYADARI
+            </h2>
+          </motion.div>
+
+          {/* Bab 13 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              13. Cermin yang Berbeda
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Suatu pagi, kamu menatap cermin.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan cermin yang biasa. Bukan cermin di kamar mandi atau di mobil. Tapi cermin di mata seseorang. Seseorang yang baru kamu kenal.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dia melihatmu, dan untuk sekejap, kamu melihat dirimu dari sudut pandang yang tidak pernah kamu lihat sebelumnya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan lebih baik. Bukan lebih buruk. Hanya berbeda. Dan kamu sadar-
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dirimu yang dulu, yang sekarang, dan yang akan datang, adalah orang-orang yang berbeda.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena kamu berubah secara drastis. Tapi karena setiap hari, setiap jam, setiap detik, ada bagian kecil dari dirimu yang berganti.
+            </p>
+            <p className="leading-relaxed">
+              Seperti sungai yang airnya selalu berbeda, meski sungainya tetap sama.
+            </p>
+          </motion.section>
+
+          {/* Bab 14 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              14. Pertanyaan yang Tidak Pernah Terjawab
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Ada pertanyaan yang selalu kamu bawa.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              "Apakah aku sudah menjadi orang yang dulu aku inginkan?" Kamu tidak punya jawaban.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena kamu tidak tahu. Tapi karena pertanyaan itu sendiri sudah berubah maknanya. Dulu, itu tentang impian. Sekarang, itu tentang sesuatu yang lebih rumit.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Tentang apakah kamu masih mengenali dirimu sendiri. Tentang apakah kamu masih bisa merasa sesuatu yang dulu kamu rasakan. Tentang apakah kamu masih... kamu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dan kamu sadar, mungkin tidak ada jawaban yang benar. Hanya perjalanan.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Yang terus berjalan.
+            </p>
+            <p className="leading-relaxed">
+              Tanpa henti.
+            </p>
+          </motion.section>
+
+          {/* Bab 15 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              15. Yang Kamu Rindukan Sebenarnya
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Kamu rindu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan pada tempat. Bukan pada orang. Tapi pada rasanya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Rasa menjadi seseorang yang masih punya waktu yang tidak terbatas. Rasa menjadi seseorang yang masih percaya bahwa masa depan adalah sesuatu yang indah. Rasa menjadi seseorang yang masih bisa menangis dan tertawa tanpa merasa lelah.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu rindu pada dirimu yang dulu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena dirimu sekarang lebih buruk. Tapi karena dirimu dulu adalah seseorang yang kamu sudah tidak bisa jadi lagi.
+            </p>
+            <p className="leading-relaxed">
+              Dan itu bukan tragedi. Itu hanya... hidup.
+            </p>
+          </motion.section>
+
+          {/* BAGIAN KELIMA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              BAGIAN KELIMA: YANG TETAP ADA
+            </h2>
+          </motion.div>
+
+          {/* Bab 16 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              16. Yang Tidak Pernah Pergi
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Tapi di tengah semua yang berubah, ada hal-hal yang tetap. Bukan banyak. Tapi cukup.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Cara kamu menatap langit saat sedang bingung. Cara kamu menggigit bibir saat sedang cemas. Cara kamu tersenyum saat melihat sesuatu yang lucu, meski kamu sudah lupa apa yang membuatmu tertawa dulu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Ada bagian dari dirimu yang tidak pernah berubah.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bagian yang masih anak kecil yang berlari di halaman rumah. Bagian yang masih remaja yang menulis diary dengan huruf-huruf miring. Bagian yang masih pemuda yang berani bermimpi.
+            </p>
+            <p className="leading-relaxed">
+              Mereka masih ada. Tidak di permukaan. Tapi di dalam. Menunggu.
+            </p>
+          </motion.section>
+
+          {/* Bab 17 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              17. Yang Kamu Bawa
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Setiap hari yang kamu jalani, setiap momen yang kamu lewati, setiap orang yang kamu temui-mereka semua meninggalkan sesuatu padamu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan barang. Tapi jejak.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Jejak di cara kamu berbicara. Jejak di cara kamu melihat dunia. Jejak di cara kamu merasa. Kamu adalah kumpulan dari semua yang pernah kamu alami.
+            </p>
+            <p className="leading-relaxed">
+              Bukan sempurna. Tapi utuh. Dan mungkin, itu cukup.
+            </p>
+          </motion.section>
+
+          {/* Bab 18 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              18. Yang Akan Datang
+            </h3>
+            <p className="mb-4 leading-relaxed">
+              Kamu tidak tahu apa yang akan datang. Tidak ada yang tahu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Tapi ada satu hal yang kamu tahu pasti-
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Suatu hari nanti, kamu akan menatap ke belakang.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Ke hari ini. Ke momen ini. Ke dirimu yang sedang membaca ini. Dan kamu akan merasa rindu.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Rindu pada sesuatu yang kamu tidak sadari sedang kamu miliki. Jadi mungkin, yang bisa kamu lakukan sekarang hanyalah... Menarik napas.
+            </p>
+            <p className="leading-relaxed">
+              Dan mencoba merasakannya. Sebelum ia pergi.
+            </p>
+          </motion.section>
+
+          {/* EPILOG */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              EPILOG: PAGI INI
+            </h2>
+          </motion.div>
+
+          {/* Epilog */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <p className="mb-4 leading-relaxed">
+              Pagi ini, alarm berbunyi lagi. Seperti biasa.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu menekan snooze. Sekali. Dua kali.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Tapi kali ini, sebelum kamu bangun, kamu berhenti sejenak. Menatap langit-langit.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dan untuk pertama kalinya dalam waktu yang lama, kamu sadar- Hari ini adalah hari yang tidak akan pernah kamu miliki lagi.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Bukan karena spesial. Bukan karena berbeda. Tapi karena setiap hari adalah satu-satunya kesempatan untuk merasakannya.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Kamu bangun.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Membuka jendela.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Dan untuk sekejap, angin pagi terasa seperti sesuatu yang pernah kamu kenal.
+            </p>
+            <p className="mb-4 leading-relaxed">
+              Sesuatu yang sudah lama hilang. Atau mungkin...
+            </p>
+            <p className="leading-relaxed">
+              Sesuatu yang baru saja datang.
+            </p>
+          </motion.section>
+
+          {/* Akhir */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center py-12"
+          >
+            <p className={`text-2xl font-bold ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Akhir
+            </p>
+          </motion.div>
+
+          {/* Catatan Penulis */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <div className={`py-8 px-6 rounded-2xl ${darkMode ? 'bg-gray-900/50' : 'bg-amber-50'}`}>
+              <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+                Catatan Penulis
+              </h2>
+              <p className="mb-4 leading-relaxed">
+                Buku ini bukan tentang jawaban. Buku ini tentang pertanyaan-pertanyaan yang kita semua bawa. Pertanyaan tentang siapa kita dulu, siapa kita sekarang, dan siapa kita akan menjadi.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                Tidak ada yang bisa menjawabnya. Tidak ada yang perlu menjawabnya. Yang penting, kita terus bertanya.
+              </p>
+              <p className="leading-relaxed">
+                Dan terus merasa.
+              </p>
+            </div>
+          </motion.section>
+
+          {/* Quote Penutup */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -229,319 +957,9 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
           >
             <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
             <p className="text-xl italic mb-4">
-              "Waktu tidak pernah menunggu siapapun. Dia berlalu, mengubah segalanya, dan kita hanya bisa menonton dari pinggir, berharap kita bisa menangkap momen-momen yang benar-benar berharga sebelum mereka hilang selamanya."
+              "Hari ini akan menjadi kenangan. Entah kenangan yang indah, atau kenangan yang biasa saja. Tapi itu akan menjadi kenangan. Dan suatu hari nanti, kamu akan rindu padanya. Jadi rasakanlah. Sekarang. Sebelum ia pergi."
             </p>
           </motion.div>
-
-          {/* Section 2 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Orang-Orang yang Pergi Tanpa Pamit
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Ada orang-orang yang pergi tanpa pamit. Mereka ada di hidup kita suatu hari, dan besoknya mereka sudah tidak. Tidak ada drama, tidak ada perpisahan yang dramatis, hanya keheningan yang tiba-tiba menjadi terlalu berat. Dan kita duduk di sana, bertanya-tanya apa yang salah, apa yang kurang, kenapa mereka memilih pergi begitu saja.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Tapi mungkin itu juga bagian dari masa. Masa yang membawa orang-orang itu pergi, tanpa pernah bertanya izin kepada kita. Tanpa pernah mempertimbangkan apakah kita sudah siap kehilangan mereka atau belum. Mereka pergi, dan kita harus belajar hidup tanpa mereka, meskipun rasanya seperti kehilangan sebagian dari diri sendiri.
-            </p>
-          </motion.section>
-
-          {/* Section 3 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Belajar Menerima Ketidakpastian
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Bagian tersulit dari masa adalah belajar menerima bahwa tidak semua hal bisa dikendalikan. Kita bisa merencanakan, kita bisa berusaha, tapi pada akhirnya, masa yang menentukan. Ada hal-hal yang terjadi di luar kendali kita, dan terkadang yang terbaik yang bisa kita lakukan adalah menerima dan terus bergerak maju.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Menerima tidak berarti menyerah. Menerima berarti memahami bahwa ada hal-hal yang tidak bisa kita ubah, dan fokus pada hal-hal yang masih bisa kita lakukan. Masa mungkin tidak pernah bertanya izin, tapi kita masih punya pilihan tentang bagaimana kita merespons perubahannya.
-            </p>
-          </motion.section>
-
-          {/* Quote 2 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`py-8 px-6 rounded-2xl border-l-4 ${
-              darkMode 
-                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
-                : 'bg-amber-50 border-amber-500 text-gray-700'
-            }`}
-          >
-            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
-            <p className="text-xl italic mb-4">
-              "Kita tidak bisa menghentikan waktu, tapi kita bisa memilih bagaimana menghabiskannya. Setiap detik adalah kesempatan untuk menciptakan kenangan yang berharga, untuk menjadi orang yang lebih baik, untuk mencintai lebih dalam."
-            </p>
-          </motion.div>
-
-          {/* Section 4 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Kenangan yang Tertinggal
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Masa meninggalkan kenangan. Beberapa kenangan indah yang membuat kita tersenyum meskipun sudah bertahun-tahun berlalu. Beberapa kenangan menyakitkan yang masih bisa membuat kita menangis jika diingat kembali. Tapi semua kenangan itu adalah bagian dari kita, membentuk siapa kita hari ini.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Mungkin itu hadiah terbesar dari masa—kenangan. Meskipun masa tidak pernah bertanya izin sebelum membawa perubahan, dia meninggalkan jejak-jejak yang bisa kita pegang. Kenangan-kenangan yang mengingatkan kita bahwa kita pernah hidup, pernah mencintai, pernah merasa, pernah ada.
-            </p>
-          </motion.section>
-
-          {/* Section 5 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Hidup di Masa Sekarang
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Jika masa tidak pernah bertanya izin, maka satu-satunya hal yang bisa kita lakukan adalah hidup sepenuhnya di masa sekarang. Jangan menunggu masa yang "tepat" karena masa yang tepat tidak pernah benar-benar ada. Hari ini adalah satu-satunya waktu yang kita miliki.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Cintai sekarang. Tertawalah sekarang. Berkarya sekarang. Jangan tunda kebahagiaan untuk masa depan yang tidak pasti. Masa mungkin tidak pernah bertanya izin, tapi kita masih punya kebebasan untuk memilih bagaimana kita mengisi setiap detik yang diberikan kepada kita.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Ada keindahan dalam ketidakpastian. Ketika kita tidak tahu apa yang akan terjadi besok, kita belajar menghargai hari ini lebih dalam. Setiap pagi adalah hadiah, setiap senja adalah kesempatan untuk bersyukur, setiap malam adalah waktu untuk merenung.
-            </p>
-          </motion.section>
-
-          {/* Quote 3 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`py-8 px-6 rounded-2xl border-l-4 ${
-              darkMode 
-                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
-                : 'bg-amber-50 border-amber-500 text-gray-700'
-            }`}
-          >
-            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
-            <p className="text-xl italic mb-4">
-              "Kita sering menunggu waktu yang tepat untuk melakukan sesuatu, padahal waktu yang tepat itu tidak pernah datang. Yang ada adalah waktu sekarang, dan itu sudah cukup."
-            </p>
-          </motion.div>
-
-          {/* Section 6 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Seni Melepaskan
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Salah satu pelajaran terbesar dari masa adalah seni melepaskan. Masa mengajarkan kita bahwa tidak semua hal bisa bertahan selamanya. Ada yang harus pergi, ada yang harus berubah, ada yang harus berakhir. Dan menggenggam erat hal-hal yang sudah seharusnya pergi hanya akan membuat kita sakit.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Melepaskan bukan berarti melupakan. Melepaskan berarti menerima bahwa sesuatu sudah berakhir, tapi tetap menghargai kenangannya. Melepaskan berarti memberi ruang untuk hal-hal baru yang mungkin akan datang. Melepaskan adalah bentuk cinta yang paling ikhlas—mengizinkan sesuatu pergi meskipun masih menyakitkan.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Kadang melepaskan adalah keputusan yang paling berani yang bisa kita buat. Keputusan untuk tidak lagi meratapi apa yang sudah hilang, tapi mulai mensyukuri apa yang masih ada. Keputusan untuk tidak lagi terjebak di masa lalu, tapi mulai membangun masa depan.
-            </p>
-          </motion.section>
-
-          {/* Section 7 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Pertemuan yang Tidak Disengaja
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Ada pertemuan-pertemuan yang terjadi tanpa sengaja. Kita bertemu seseorang di tempat yang tidak terduga, pada waktu yang tidak tepat, dan tiba-tiba hidup kita berubah. Masa membawa kita ke persimpangan-persimpangan yang tidak pernah kita bayangkan, dan di sana kita menemukan orang-orang yang mengubah segalanya.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Mungkin itu keajaiban masa—bagaimana dia bisa menghubungkan dua orang yang seharusnya tidak pernah bertemu. Bagaimana dia bisa menciptakan momen-momen yang sepertinya ditulis khusus untuk kita, meskipun kita tidak pernah merencanakannya.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Tapi pertemuan-pertemuan itu juga mengajarkan kita bahwa tidak semua yang indah akan bertahan. Ada pertemuan yang hanya singkat, ada yang berlangsung lama, ada yang meninggalkan jejak mendalam, ada yang hanya lewat seperti angin. Dan semua itu adalah bagian dari perjalanan.
-            </p>
-          </motion.section>
-
-          {/* Quote 4 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`py-8 px-6 rounded-2xl border-l-4 ${
-              darkMode 
-                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
-                : 'bg-amber-50 border-amber-500 text-gray-700'
-            }`}
-          >
-            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
-            <p className="text-xl italic mb-4">
-              "Orang-orang datang ke hidup kita untuk suatu alasan. Ada yang untuk sesaat, ada yang untuk selamanya, tapi semuanya meninggalkan sesuatu—kenangan, pelajaran, atau perubahan."
-            </p>
-          </motion.div>
-
-          {/* Section 8 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Menemukan Makna dalam Perubahan
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Setiap perubahan membawa pelajaran. Setiap akhir adalah awal baru. Setiap kehilangan adalah kesempatan untuk menemukan sesuatu yang lain. Masa tidak pernah bertanya izin, tapi dia selalu memberi pelajaran jika kita bersedia mendengarkan.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Kadang pelajaran itu menyakitkan. Kadang kita harus kehilangan sesuatu yang sangat berharga sebelum kita mengerti nilainya. Kadang kita harus melalui masa-masa gelap sebelum menemukan cahaya. Tapi semua itu adalah bagian dari proses menjadi manusia yang lebih utuh.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Mencari makna dalam perubahan bukan berarti mencari alasan untuk menderita. Mencari makna berarti mencari cara untuk tumbuh dari pengalaman, untuk menjadi lebih kuat, lebih bijaksana, lebih berempati. Berarti mengubah luka menjadi kekuatan, kecewa menjadi hikmah, kehilangan menjadi syukur untuk apa yang masih ada.
-            </p>
-          </motion.section>
-
-          {/* Section 9 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Masa dan Keterbatasan Manusia
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Kita adalah makhluk yang terbatas. Kita punya waktu yang terbatas, energi yang terbatas, kemampuan yang terbatas. Masa terus bergerak tanpa henti, sementara kita berusaha mengejar, berusaha menangkap, berusaha mengendalikan. Dan di antara semua itu, kita belajar tentang kerendahan hati.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Masa mengajarkan kita bahwa kita tidak bisa memiliki segalanya. Tidak bisa menguasai segalanya. Tidak bisa mengubah segalanya. Dan mungkin itu sebenarnya kabar gembira—karena beban itu terlalu berat untuk satu orang. Masa mengajarkan kita untuk menerima keterbatasan, untuk bersyukur dengan apa yang ada, untuk tidak terobsesi dengan apa yang tidak bisa kita capai.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Di tengah keterbatasan itu, kita menemukan kebebasan. Kebebasan untuk tidak harus sempurna. Kebebasan untuk tidak harus memiliki semua jawaban. Kebebasan untuk hanya menjadi manusia—imperfect, flawed, tapi tetap berharga.
-            </p>
-          </motion.section>
-
-          {/* Quote 5 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`py-8 px-6 rounded-2xl border-l-4 ${
-              darkMode 
-                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
-                : 'bg-amber-50 border-amber-500 text-gray-700'
-            }`}
-          >
-            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
-            <p className="text-xl italic mb-4">
-              "Keterbatasan bukan kelemahan. Keterbatasan adalah pengingat bahwa kita manusia, dan manusia tidak pernah dimaksudkan untuk menjadi sempurna atau tak terbatas."
-            </p>
-          </motion.div>
-
-          {/* Section 10 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Warisan yang Kita Tinggalkan
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Masa akan terus bergerak, tapi apa yang kita tinggalkan akan tetap ada. Bukan dalam bentuk benda atau harta, tapi dalam bentuk pengaruh—pada orang-orang yang kita cintai, pada karya yang kita buat, pada jejak kebaikan yang kita sebarkan.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Setiap kata yang kita ucapkan, setiap tindakan yang kita lakukan, setiap keputusan yang kita buat—semua itu meninggalkan jejak. Jejak yang mungkin kecil, tapi bisa berarti besar bagi orang lain. Masa mungkin tidak pernah bertanya izin, tapi kita masih punya kebebasan untuk memilih jejak apa yang ingin kita tinggalkan.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Mungkin warisan terbaik bukan monumen atau pencapaian yang megah. Mungkin warisan terbaik adalah menjadi orang yang baik—yang membuat orang lain merasa dihargai, yang memberi kehangatan di masa-masa dingin, yang mengingatkan orang lain bahwa mereka tidak sendirian.
-            </p>
-          </motion.section>
-
-          {/* Section 11 */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="prose prose-lg max-w-none"
-          >
-            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
-              Harapan di Tengah Ketidakpastian
-            </h2>
-            
-            <p className="mb-4 leading-relaxed">
-              Di tengah semua ketidakpastian yang masa bawa, ada satu hal yang tetap pasti: harapan. Harapan bahwa hari esok bisa lebih baik. Harapan bahwa kita bisa bertahan. Harapan bahwa ada makna di balik semua ini.
-            </p>
-            
-            <p className="mb-4 leading-relaxed">
-              Harapan bukan berita pasti bahwa segalanya akan baik-baik saja. Harapan adalah keputusan untuk terus bergerak maju meskipun tidak yakin akan hasilnya. Harapan adalah keberanian untuk percaya bahwa ada kemungkinan baik di antara semua kemungkinan buruk.
-            </p>
-
-            <p className="mb-4 leading-relaxed">
-              Dan kadang, harapan itu datang dari hal-hal sederhana. Senyuman seorang teman. Kehangatan secangkir kopi. Matahari terbit yang indah. Hal-hal kecil yang mengingatkan kita bahwa hidup masih layak dijalani, meskipun masa terus bergerak tanpa henti.
-            </p>
-          </motion.section>
 
           {/* Closing */}
           <motion.div
