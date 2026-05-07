@@ -295,6 +295,10 @@ export async function incrementView(slug: string) {
   try {
     const { supabase } = await import('./supabase');
     
+    if (!supabase) {
+      return false;
+    }
+    
     // Check if view record exists
     const { data: existing } = await supabase
       .from('book_views')
@@ -326,6 +330,10 @@ export async function getBookView(slug: string): Promise<number> {
   try {
     const { supabase } = await import('./supabase');
     
+    if (!supabase) {
+      return 0;
+    }
+    
     const { data } = await supabase
       .from('book_views')
       .select('views')
@@ -342,6 +350,10 @@ export async function getBookView(slug: string): Promise<number> {
 export async function getAllBookViews(): Promise<Record<string, number>> {
   try {
     const { supabase } = await import('./supabase');
+    
+    if (!supabase) {
+      return {};
+    }
     
     const { data } = await supabase
       .from('book_views')
