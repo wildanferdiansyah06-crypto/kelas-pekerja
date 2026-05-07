@@ -1,0 +1,26 @@
+
+> kelas-pekerja@2.0.0 build
+> next build
+
+   ▲ Next.js 15.5.15
+   - Experiments (use with caution):
+     · serverActions
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.2s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/28) ...
+   Generating static pages (7/28) 
+   Generating static pages (14/28) 
+Error occurred prerendering page "/quotes". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: supabaseUrl is required.
+    at <unknown> (.next/server/app/quotes/page.js:38:47038)
+    at new cG (.next/server/app/quotes/page.js:38:47289)
+    at 92544 (.next/server/app/quotes/page.js:38:58329)
+    at Object.c [as require] (.next/server/webpack-runtime.js:1:128) {
+  digest: '144475640'
+}
+Export encountered an error on /quotes/page: /quotes, exiting the build.
+ ⨯ Next.js build worker exited with code: 1 and signal: null
