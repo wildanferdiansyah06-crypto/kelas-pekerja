@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Send, Share2 } from "lucide-react";
-import { supabase } from "@/src/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/src/lib/supabase";
 
 interface Quote {
   id: number;
@@ -11,6 +11,40 @@ interface Quote {
   category?: string;
   created_at?: string;
 }
+
+// Fallback quotes when Supabase is not configured
+const FALLBACK_QUOTES: Quote[] = [
+  {
+    id: 1,
+    text: "Kopi tidak menyelesaikan masalah, tapi kopi membuat masalah terasa bisa diselesaikan.",
+    author: "Pekerja Shift Malam",
+    category: "Kopi"
+  },
+  {
+    id: 2,
+    text: "Shift terakhir selalu yang terpanjang, tapi juga yang paling berharga.",
+    author: "Karyawan Loyal",
+    category: "Kehidupan"
+  },
+  {
+    id: 3,
+    text: "Satu cangkir kopi, ribuan cerita.",
+    author: "Barista Senior",
+    category: "Refleksi"
+  },
+  {
+    id: 4,
+    text: "Lelah itu wajar, menyerah itu pilihan.",
+    author: "Kepala Shift",
+    category: "Filosofi"
+  },
+  {
+    id: 5,
+    text: "Senyum pelanggan adalah bonus gaji terbaik.",
+    author: "Staff Frontline",
+    category: "Kehidupan"
+  }
+];
 
 export default function QuotesPage() {
   const [quotes, setQuotes] = useState<Quote[]>([]);
@@ -25,12 +59,20 @@ export default function QuotesPage() {
   const [category, setCategory] = useState("Kehidupan");
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [submitMessage, setSubmitMessage] = useState("");
+  const [usingFallback, setUsingFallback] = useState(false);
 
   // Fetch quotes from Supabase
   useEffect(() => {
     const fetchQuotes = async () => {
+      if (!isSupabaseConfigured) {
+        setQuotes(FALLBACK_QUOTES);
+        setUsingFallback(true);
+        setLoading(false);
+        return;
+      }
+
       try {
-        const { data, error } = await supabase
+        const { data, error } = await supabase!
           .from('quotes')
           .select('*')
           .eq('is_approved', true)
@@ -38,11 +80,19 @@ export default function QuotesPage() {
 
         if (error) {
           console.error('Error fetching quotes:', error);
-        } else if (data) {
+          setQuotes(FALLBACK_QUOTES);
+          setUsingFallback(true);
+        } else if (data && data.length > 0) {
           setQuotes(data);
+          setUsingFallback(false);
+        } else {
+          setQuotes(FALLBACK_QUOTES);
+          setUsingFallback(true);
         }
       } catch (error) {
         console.error('Error:', error);
+        setQuotes(FALLBACK_QUOTES);
+        setUsingFallback(true);
       } finally {
         setLoading(false);
       }
@@ -174,6 +224,14 @@ export default function QuotesPage() {
               Belum ada quote tersedia.
             </div>
           ) : (
+            <>
+              {usingFallback && (
+                <div className="mb-6 text-center py-3 px-4 rounded-lg" style={{ backgroundColor: 'var(--kp-accent-light)', border: '1px solid var(--kp-border)' }}>
+                  <p className="text-sm" style={{ color: 'var(--kp-text-secondary)' }}>
+                    🔒 Mode Demo - Menggunakan quotes default (Supabase belum dikonfigurasi)
+                  </p>
+                </div>
+              )}
             <div
               ref={scrollContainerRef}
               className="space-y-6 overflow-y-auto max-h-[600px] pr-2 scrollbar-thin"
@@ -247,6 +305,7 @@ export default function QuotesPage() {
                 </div>
               ))}
             </div>
+            </>
           )}
         </div>
       </div>
@@ -254,18 +313,26 @@ export default function QuotesPage() {
       {/* Submit Button */}
       <div className="px-6 pb-16">
         <div className="max-w-4xl mx-auto text-center">
-          <button
-            onClick={() => setShowSubmitForm(!showSubmitForm)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-            style={{
-              backgroundColor: showSubmitForm ? 'var(--kp-bg-surface)' : 'var(--kp-accent)',
-              color: showSubmitForm ? 'var(--kp-text-primary)' : 'var(--kp-text-on-dark)',
-              border: '1px solid var(--kp-border)',
-            }}
-          >
-            <Send size={16} />
-            {showSubmitForm ? 'Tutup Form' : 'Kirim Quote'}
-          </button>
+          {!isSupabaseConfigured ? (
+            <div className="py-3 px-4 rounded-lg inline-block" style={{ backgroundColor: 'var(--kp-bg-surface)', border: '1px solid var(--kp-border)' }}>
+              <p className="text-sm" style={{ color: 'var(--kp-text-muted)' }}>
+                📝 Submit quote dinonaktifkan (Supabase belum dikonfigurasi)
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowSubmitForm(!showSubmitForm)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+              style={{
+                backgroundColor: showSubmitForm ? 'var(--kp-bg-surface)' : 'var(--kp-accent)',
+                color: showSubmitForm ? 'var(--kp-text-primary)' : 'var(--kp-text-on-dark)',
+                border: '1px solid var(--kp-border)',
+              }}
+            >
+              <Send size={16} />
+              {showSubmitForm ? 'Tutup Form' : 'Kirim Quote'}
+            </button>
+          )}
         </div>
       </div>
 
