@@ -333,6 +333,214 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             <p className="mb-4 leading-relaxed">
               Cintai sekarang. Tertawalah sekarang. Berkarya sekarang. Jangan tunda kebahagiaan untuk masa depan yang tidak pasti. Masa mungkin tidak pernah bertanya izin, tapi kita masih punya kebebasan untuk memilih bagaimana kita mengisi setiap detik yang diberikan kepada kita.
             </p>
+
+            <p className="mb-4 leading-relaxed">
+              Ada keindahan dalam ketidakpastian. Ketika kita tidak tahu apa yang akan terjadi besok, kita belajar menghargai hari ini lebih dalam. Setiap pagi adalah hadiah, setiap senja adalah kesempatan untuk bersyukur, setiap malam adalah waktu untuk merenung.
+            </p>
+          </motion.section>
+
+          {/* Quote 3 */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`py-8 px-6 rounded-2xl border-l-4 ${
+              darkMode 
+                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
+                : 'bg-amber-50 border-amber-500 text-gray-700'
+            }`}
+          >
+            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
+            <p className="text-xl italic mb-4">
+              "Kita sering menunggu waktu yang tepat untuk melakukan sesuatu, padahal waktu yang tepat itu tidak pernah datang. Yang ada adalah waktu sekarang, dan itu sudah cukup."
+            </p>
+          </motion.div>
+
+          {/* Section 6 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Seni Melepaskan
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Salah satu pelajaran terbesar dari masa adalah seni melepaskan. Masa mengajarkan kita bahwa tidak semua hal bisa bertahan selamanya. Ada yang harus pergi, ada yang harus berubah, ada yang harus berakhir. Dan menggenggam erat hal-hal yang sudah seharusnya pergi hanya akan membuat kita sakit.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Melepaskan bukan berarti melupakan. Melepaskan berarti menerima bahwa sesuatu sudah berakhir, tapi tetap menghargai kenangannya. Melepaskan berarti memberi ruang untuk hal-hal baru yang mungkin akan datang. Melepaskan adalah bentuk cinta yang paling ikhlas—mengizinkan sesuatu pergi meskipun masih menyakitkan.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Kadang melepaskan adalah keputusan yang paling berani yang bisa kita buat. Keputusan untuk tidak lagi meratapi apa yang sudah hilang, tapi mulai mensyukuri apa yang masih ada. Keputusan untuk tidak lagi terjebak di masa lalu, tapi mulai membangun masa depan.
+            </p>
+          </motion.section>
+
+          {/* Section 7 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Pertemuan yang Tidak Disengaja
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Ada pertemuan-pertemuan yang terjadi tanpa sengaja. Kita bertemu seseorang di tempat yang tidak terduga, pada waktu yang tidak tepat, dan tiba-tiba hidup kita berubah. Masa membawa kita ke persimpangan-persimpangan yang tidak pernah kita bayangkan, dan di sana kita menemukan orang-orang yang mengubah segalanya.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Mungkin itu keajaiban masa—bagaimana dia bisa menghubungkan dua orang yang seharusnya tidak pernah bertemu. Bagaimana dia bisa menciptakan momen-momen yang sepertinya ditulis khusus untuk kita, meskipun kita tidak pernah merencanakannya.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Tapi pertemuan-pertemuan itu juga mengajarkan kita bahwa tidak semua yang indah akan bertahan. Ada pertemuan yang hanya singkat, ada yang berlangsung lama, ada yang meninggalkan jejak mendalam, ada yang hanya lewat seperti angin. Dan semua itu adalah bagian dari perjalanan.
+            </p>
+          </motion.section>
+
+          {/* Quote 4 */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`py-8 px-6 rounded-2xl border-l-4 ${
+              darkMode 
+                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
+                : 'bg-amber-50 border-amber-500 text-gray-700'
+            }`}
+          >
+            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
+            <p className="text-xl italic mb-4">
+              "Orang-orang datang ke hidup kita untuk suatu alasan. Ada yang untuk sesaat, ada yang untuk selamanya, tapi semuanya meninggalkan sesuatu—kenangan, pelajaran, atau perubahan."
+            </p>
+          </motion.div>
+
+          {/* Section 8 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Menemukan Makna dalam Perubahan
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Setiap perubahan membawa pelajaran. Setiap akhir adalah awal baru. Setiap kehilangan adalah kesempatan untuk menemukan sesuatu yang lain. Masa tidak pernah bertanya izin, tapi dia selalu memberi pelajaran jika kita bersedia mendengarkan.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Kadang pelajaran itu menyakitkan. Kadang kita harus kehilangan sesuatu yang sangat berharga sebelum kita mengerti nilainya. Kadang kita harus melalui masa-masa gelap sebelum menemukan cahaya. Tapi semua itu adalah bagian dari proses menjadi manusia yang lebih utuh.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Mencari makna dalam perubahan bukan berarti mencari alasan untuk menderita. Mencari makna berarti mencari cara untuk tumbuh dari pengalaman, untuk menjadi lebih kuat, lebih bijaksana, lebih berempati. Berarti mengubah luka menjadi kekuatan, kecewa menjadi hikmah, kehilangan menjadi syukur untuk apa yang masih ada.
+            </p>
+          </motion.section>
+
+          {/* Section 9 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Masa dan Keterbatasan Manusia
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Kita adalah makhluk yang terbatas. Kita punya waktu yang terbatas, energi yang terbatas, kemampuan yang terbatas. Masa terus bergerak tanpa henti, sementara kita berusaha mengejar, berusaha menangkap, berusaha mengendalikan. Dan di antara semua itu, kita belajar tentang kerendahan hati.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Masa mengajarkan kita bahwa kita tidak bisa memiliki segalanya. Tidak bisa menguasai segalanya. Tidak bisa mengubah segalanya. Dan mungkin itu sebenarnya kabar gembira—karena beban itu terlalu berat untuk satu orang. Masa mengajarkan kita untuk menerima keterbatasan, untuk bersyukur dengan apa yang ada, untuk tidak terobsesi dengan apa yang tidak bisa kita capai.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Di tengah keterbatasan itu, kita menemukan kebebasan. Kebebasan untuk tidak harus sempurna. Kebebasan untuk tidak harus memiliki semua jawaban. Kebebasan untuk hanya menjadi manusia—imperfect, flawed, tapi tetap berharga.
+            </p>
+          </motion.section>
+
+          {/* Quote 5 */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`py-8 px-6 rounded-2xl border-l-4 ${
+              darkMode 
+                ? 'bg-gray-900/50 border-amber-500 text-gray-300' 
+                : 'bg-amber-50 border-amber-500 text-gray-700'
+            }`}
+          >
+            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
+            <p className="text-xl italic mb-4">
+              "Keterbatasan bukan kelemahan. Keterbatasan adalah pengingat bahwa kita manusia, dan manusia tidak pernah dimaksudkan untuk menjadi sempurna atau tak terbatas."
+            </p>
+          </motion.div>
+
+          {/* Section 10 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Warisan yang Kita Tinggalkan
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Masa akan terus bergerak, tapi apa yang kita tinggalkan akan tetap ada. Bukan dalam bentuk benda atau harta, tapi dalam bentuk pengaruh—pada orang-orang yang kita cintai, pada karya yang kita buat, pada jejak kebaikan yang kita sebarkan.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Setiap kata yang kita ucapkan, setiap tindakan yang kita lakukan, setiap keputusan yang kita buat—semua itu meninggalkan jejak. Jejak yang mungkin kecil, tapi bisa berarti besar bagi orang lain. Masa mungkin tidak pernah bertanya izin, tapi kita masih punya kebebasan untuk memilih jejak apa yang ingin kita tinggalkan.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Mungkin warisan terbaik bukan monumen atau pencapaian yang megah. Mungkin warisan terbaik adalah menjadi orang yang baik—yang membuat orang lain merasa dihargai, yang memberi kehangatan di masa-masa dingin, yang mengingatkan orang lain bahwa mereka tidak sendirian.
+            </p>
+          </motion.section>
+
+          {/* Section 11 */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="prose prose-lg max-w-none"
+          >
+            <h2 className={`text-3xl font-bold mb-6 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              Harapan di Tengah Ketidakpastian
+            </h2>
+            
+            <p className="mb-4 leading-relaxed">
+              Di tengah semua ketidakpastian yang masa bawa, ada satu hal yang tetap pasti: harapan. Harapan bahwa hari esok bisa lebih baik. Harapan bahwa kita bisa bertahan. Harapan bahwa ada makna di balik semua ini.
+            </p>
+            
+            <p className="mb-4 leading-relaxed">
+              Harapan bukan berita pasti bahwa segalanya akan baik-baik saja. Harapan adalah keputusan untuk terus bergerak maju meskipun tidak yakin akan hasilnya. Harapan adalah keberanian untuk percaya bahwa ada kemungkinan baik di antara semua kemungkinan buruk.
+            </p>
+
+            <p className="mb-4 leading-relaxed">
+              Dan kadang, harapan itu datang dari hal-hal sederhana. Senyuman seorang teman. Kehangatan secangkir kopi. Matahari terbit yang indah. Hal-hal kecil yang mengingatkan kita bahwa hidup masih layak dijalani, meskipun masa terus bergerak tanpa henti.
+            </p>
           </motion.section>
 
           {/* Closing */}
