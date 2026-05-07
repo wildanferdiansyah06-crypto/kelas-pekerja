@@ -107,6 +107,24 @@
         "downloads": 0
       },
       "tags": ["refleksi", "kelelahan", "pengorbanan", "kehancuran", "cahaya", "pelita"]
+    },
+    {
+      "id": "7",
+      "slug": "masa-yang-tak-pernah-bertanya-izin",
+      "title": "Masa yang Tak Pernah Bertanya Izin",
+      "subtitle": "Tentang Waktu yang Berlalu Tanpa Permisi dan Kenangan yang Tertinggal",
+      "excerpt": "Masa itu tidak pernah bertanya izin. Dia datang, lewat, dan pergi begitu saja, meninggalkan kita dengan tumpukan kenangan yang kadang terlalu berat untuk dibawa.",
+      "preview": "Buku ini tentang bagaimana waktu mengubah segalanya tanpa pernah meminta persetujuan kita. Tentang masa lalu yang tiba-tiba menjadi masa kini yang sudah berlalu, tentang orang-orang yang pergi tanpa pamit, dan tentang bagaimana kita belajar menerima bahwa tidak semua hal bisa dikendalikan.",
+      "category": "refleksi",
+      "readTime": "40 menit",
+      "cover": "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-05-07",
+      "featured": true,
+      "stats": {
+        "views": 0,
+        "downloads": 0
+      },
+      "tags": ["waktu", "kenangan", "perubahan", "penerimaan", "kehidupan", "refleksi"]
     }
   ]
 }
