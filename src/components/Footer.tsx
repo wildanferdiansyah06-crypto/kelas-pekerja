@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Mail, ArrowRight, Github, Instagram, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Github, Instagram, MessageCircle, Sparkles } from "lucide-react";
 
 const footerLinks = {
   bacaan: [

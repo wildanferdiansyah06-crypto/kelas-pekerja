@@ -3,7 +3,7 @@
 import postsData from "@/public/data/posts.json";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { PenLine, Clock, ArrowRight, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen, Coffee } from "lucide-react";
+import { PenLine, Clock, ArrowRight, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
 import { useState, useMemo, useCallback, memo } from "react";
 
 // Memoized animation variants to prevent recreation
