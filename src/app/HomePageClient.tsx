@@ -153,11 +153,11 @@ export default function HomePageClient({
             </div>
             
             {/* Right side - Abstract Visual/Book representation */}
-            <div className="hidden lg:block relative w-full max-w-sm aspect-[3/4] animate-float-slow delay-700">
-              <div className="absolute inset-0 rounded-2xl glass-card overflow-hidden shadow-2xl">
+            <Link href="/buku" className="hidden lg:block relative w-full max-w-sm aspect-[3/4] animate-float-slow delay-700 group">
+              <div className="absolute inset-0 rounded-2xl glass-card overflow-hidden shadow-2xl transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(212,165,116,0.3)] group-hover:scale-[1.02]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[rgba(212,165,116,0.15)] to-transparent" />
                 <div className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center">
-                  <div className="w-16 h-16 rounded-full border border-[rgba(212,165,116,0.3)] flex items-center justify-center mb-6 glow-amber">
+                  <div className="w-16 h-16 rounded-full border border-[rgba(212,165,116,0.3)] flex items-center justify-center mb-6 glow-amber group-hover:scale-110 transition-transform duration-300">
                     <PenLine size={24} style={{ color: 'var(--kp-accent)' }} />
                   </div>
                   <h3 className="font-display text-2xl italic mb-4" style={{ color: 'var(--kp-text-primary)' }}>Arsip Sunyi</h3>
@@ -169,8 +169,8 @@ export default function HomePageClient({
                 <div className="absolute top-0 right-1 bottom-0 w-[1px] bg-[rgba(255,255,255,0.05)]" />
                 <div className="absolute top-0 right-3 bottom-0 w-[1px] bg-[rgba(255,255,255,0.05)]" />
               </div>
-              <div className="absolute -inset-4 rounded-[2rem] border border-[rgba(212,165,116,0.1)] blur-[1px] -z-10 animate-glow-pulse" />
-            </div>
+              <div className="absolute -inset-4 rounded-[2rem] border border-[rgba(212,165,116,0.1)] blur-[1px] -z-10 animate-glow-pulse group-hover:border-[rgba(212,165,116,0.3)] transition-colors duration-300" />
+            </Link>
           </div>
         </div>
       </section>
