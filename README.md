@@ -40,7 +40,7 @@ Frontend (Next.js 15 + React 18)
 - **Git**: Latest version
 
 ### 1. Clone & Install
-
+.
 ```bash
 git clone https://github.com/wildanferdiansyah06-crypto/kelas-pekerja.git
 cd kelas-pekerja

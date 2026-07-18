@@ -3,6 +3,7 @@
 import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Book as BookIcon, Sparkles } from "lucide-react";
 
 import CategoryFilter from "@/src/components/CategoryFilter";
 import SearchBar from "@/src/components/SearchBar";
@@ -34,25 +35,11 @@ function makeSlug(title: string): string {
 
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
   return (
-    <div className="text-center py-32" style={{ animation: 'fade-in 0.6s ease-out' }}>
+    <div className="text-center py-32 animate-fade-in-up">
       <div
-        className="w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-105"
-        style={{ backgroundColor: 'var(--kp-bg-surface)' }}
+        className="w-24 h-24 mx-auto mb-8 rounded-full flex items-center justify-center glass-card glow-amber"
       >
-        <svg
-          className="w-10 h-10"
-          style={{ opacity: 0.3 }}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18, 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5  16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18, 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-          />
-        </svg>
+        <BookIcon size={32} style={{ color: 'var(--kp-accent)', opacity: 0.5 }} />
       </div>
       <p className="font-display text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>
         {hasFilters ? "Tidak ada buku yang cocok" : "Rak masih terlalu ringan"}
@@ -65,20 +52,20 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
       {!hasFilters && (
         <Link
           href="/tulis"
-          className="inline-flex items-center gap-2 px-6 py-3 font-ui text-sm font-medium rounded-full transition-colors duration-200"
+          className="inline-flex items-center gap-2 px-6 py-3 font-ui text-sm font-medium rounded-full transition-all duration-300 glass"
           style={{
-            border: '1px solid var(--kp-border)',
+            border: '1px solid rgba(212, 165, 116, 0.2)',
             color: 'var(--kp-text-muted)',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = 'var(--kp-accent)';
-            e.currentTarget.style.color = 'var(--kp-text-primary)';
-            e.currentTarget.style.backgroundColor = 'var(--kp-accent-faint)';
+            e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.5)';
+            e.currentTarget.style.color = 'var(--kp-accent)';
+            e.currentTarget.style.boxShadow = '0 0 20px rgba(212, 165, 116, 0.1)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = 'var(--kp-border)';
+            e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.2)';
             e.currentTarget.style.color = 'var(--kp-text-muted)';
-            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.boxShadow = 'none';
           }}
         >
           <span>Tulis Pengalaman Lo</span>
@@ -95,10 +82,10 @@ function GridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
       {[...Array(4)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-[16/10] rounded-lg mb-4" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
-          <div className="h-6 rounded w-3/4 mb-2" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
-          <div className="h-4 rounded w-1/2" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
+        <div key={i} className="animate-pulse glass-card rounded-2xl p-6">
+          <div className="aspect-[16/10] rounded-lg mb-4 animate-shimmer" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
+          <div className="h-6 rounded-full w-3/4 mb-3" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
+          <div className="h-4 rounded-full w-1/2" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />
         </div>
       ))}
     </div>
@@ -197,69 +184,95 @@ function PageContent() {
 
   return (
     <main className="transition-colors duration-500 w-full" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
-      <section className="pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-14 md:pb-16 px-4 sm:px-6 w-full">
-        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto text-center">
+
+      {/* ═══════════════════════════════
+          HERO HEADER — Cinematic
+      ═══════════════════════════════ */}
+      <section className="relative pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 px-6 overflow-hidden">
+        {/* Background ambient glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(212,165,116,0.06),transparent_70%)] pointer-events-none" />
+
+        {/* Floating particles */}
+        <div className="absolute top-1/3 left-[15%] animate-firefly particle" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-1/4 right-[20%] animate-firefly particle" style={{ animationDelay: '1.5s' }} />
+
+        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto text-center relative z-10">
           <div
-            className="font-ui text-[10px] sm:text-xs font-medium tracking-widest uppercase mb-3 sm:mb-4"
-            style={{ color: 'var(--kp-accent)', animation: 'fade-in 0.6s ease-out' }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-ui font-medium tracking-wider uppercase mb-6 glass animate-fade-in-up"
+            style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
           >
+            <Sparkles size={12} className="animate-pulse" />
             Perpustakaan Mini
           </div>
 
           <h1
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 tracking-tight"
-            style={{ color: 'var(--kp-text-primary)', animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}
+            className="typography-h1 mb-6 animate-slide-in-up delay-100"
+            style={{ color: 'var(--kp-text-primary)' }}
           >
             Rak Buku
           </h1>
 
           <p
-            className="font-body text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0"
-            style={{ color: 'var(--kp-text-secondary)', animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}
+            className="font-body text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 animate-fade-in-up delay-200 text-balance"
+            style={{ color: 'var(--kp-text-secondary)' }}
           >
             &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff,
             dan pekerja kantoran yang gak diajarin di sekolah.&rdquo;
           </p>
 
+          {/* Stats */}
           <div
-            className="flex items-center justify-center gap-4 sm:gap-6 text-[10px] sm:text-xs md:text-sm font-ui flex-wrap"
-            style={{ color: 'var(--kp-text-muted)', animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}
+            className="inline-flex items-center gap-5 sm:gap-8 text-xs sm:text-sm font-ui glass px-6 py-3 rounded-full border animate-fade-in-up delay-300"
+            style={{ borderColor: 'rgba(212, 165, 116, 0.15)' }}
           >
             <span className="flex items-center gap-2">
-              <span className="font-semibold" style={{ color: 'var(--kp-accent)' }}>{total}</span> cerita
+              <span className="font-semibold text-glow" style={{ color: 'var(--kp-accent)' }}>{total}</span>
+              <span style={{ color: 'var(--kp-text-muted)' }}>cerita</span>
             </span>
-            <span style={{ opacity: '0.3' }}>|</span>
+            <span className="w-[1px] h-4" style={{ backgroundColor: 'rgba(212, 165, 116, 0.2)' }} />
             <span className="flex items-center gap-2">
-              <span className="font-semibold" style={{ color: 'var(--kp-accent)' }}>{uniqueCategories.length}</span> kategori
+              <span className="font-semibold text-glow" style={{ color: 'var(--kp-accent)' }}>{uniqueCategories.length}</span>
+              <span style={{ color: 'var(--kp-text-muted)' }}>kategori</span>
             </span>
-            <span style={{ opacity: '0.3' }}>|</span>
+            <span className="w-[1px] h-4" style={{ backgroundColor: 'rgba(212, 165, 116, 0.2)' }} />
             <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--kp-accent)' }} />
-              diupdate mingguan
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--kp-accent)', boxShadow: '0 0 6px rgba(212, 165, 116, 0.5)' }} />
+              <span style={{ color: 'var(--kp-text-muted)' }}>diupdate mingguan</span>
             </span>
+          </div>
+        </div>
+
+        {/* Bottom fade line */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-[rgba(212,165,116,0.15)] to-transparent" />
+      </section>
+
+      {/* ═══════════════════════════════
+          FILTER BAR — Glassmorphism
+      ═══════════════════════════════ */}
+      <section className="px-6 pb-8 sm:pb-12 w-full">
+        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto">
+          <div
+            className="flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between glass rounded-2xl px-6 py-4 border"
+            style={{ borderColor: 'rgba(212, 165, 116, 0.08)' }}
+          >
+            <Suspense fallback={<div className="h-10 sm:h-12 w-32 sm:w-40 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
+              <CategoryFilter activeCategory={category} books={booksWithSlugs} />
+            </Suspense>
+
+            <Suspense fallback={<div className="h-10 sm:h-12 w-56 sm:w-72 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
+              <SearchBar initialSearch={search} />
+            </Suspense>
           </div>
         </div>
       </section>
 
-      <section
-        className="px-4 sm:px-6 pb-8 sm:pb-12 md:pb-16 w-full border-b"
-        style={{ borderColor: 'var(--kp-border)' }}
-      >
-        <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex flex-col md:flex-row gap-4 sm:gap-6 items-center justify-between">
-          <Suspense fallback={<div className="h-10 sm:h-12 w-32 sm:w-40 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
-            <CategoryFilter activeCategory={category} books={booksWithSlugs} />
-          </Suspense>
-
-          <Suspense fallback={<div className="h-10 sm:h-12 w-56 sm:w-72 animate-pulse rounded-lg" style={{ backgroundColor: 'var(--kp-bg-elevated)' }} />}>
-            <SearchBar initialSearch={search} />
-          </Suspense>
-        </div>
-      </section>
-
-      <section className="px-4 sm:px-6 pb-16 sm:pb-24 md:pb-32 w-full">
+      {/* ═══════════════════════════════
+          BOOKS GRID — Untouched grid component
+      ═══════════════════════════════ */}
+      <section className="px-6 pb-16 sm:pb-24 md:pb-32 w-full">
         <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto">
           {error ? (
-            <div className="text-center py-24 sm:py-32">
+            <div className="text-center py-24 sm:py-32 glass-card rounded-2xl">
               <p className="font-display text-xl sm:text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>Terjadi kesalahan</p>
               <p className="font-body text-sm sm:text-base" style={{ color: 'var(--kp-text-muted)', opacity: 0.4 }}>{error.message}</p>
             </div>
@@ -278,7 +291,14 @@ function PageContent() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 rounded-full animate-spin" style={{ borderColor: 'rgba(212, 165, 116, 0.3)', borderTopColor: 'var(--kp-accent)' }} />
+          <span className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>Memuat rak buku...</span>
+        </div>
+      </div>
+    }>
       <PageContent />
     </Suspense>
   );

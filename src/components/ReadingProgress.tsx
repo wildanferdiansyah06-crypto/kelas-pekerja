@@ -60,7 +60,7 @@ export default function ReadingProgress() {
         } catch (error) {
           console.error('Failed to save reading progress:', error);
         }
-      }, 2000); // Increased debounce to 2 seconds for better performance
+      }, 2000);
     }
   }, [session, currentBookId]);
 
@@ -92,10 +92,17 @@ export default function ReadingProgress() {
   }, [updateProgress]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-[#e5e2dd] dark:bg-[#8b7355]/10 pointer-events-none">
+    <div
+      className="fixed top-0 left-0 right-0 z-[110] h-[2px] pointer-events-none"
+      style={{ background: 'rgba(212, 165, 116, 0.08)' }}
+    >
       <div
-        className="h-full bg-[#6a6a6a] dark:bg-[#8b7355] transition-all duration-150 will-change-transform"
-        style={{ width: `${progress}%` }}
+        className="h-full transition-all duration-150 will-change-transform"
+        style={{
+          width: `${progress}%`,
+          background: 'linear-gradient(90deg, var(--kp-accent), #e8c47c)',
+          boxShadow: progress > 0 ? '0 0 8px rgba(212, 165, 116, 0.4), 0 0 20px rgba(212, 165, 116, 0.15)' : 'none',
+        }}
       />
     </div>
   );

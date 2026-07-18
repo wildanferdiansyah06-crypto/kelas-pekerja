@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import "../styles/performance.css";
 
@@ -10,12 +10,12 @@ import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
 
-const playfairDisplay = Playfair_Display({
+const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
   preload: true,
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const inter = Inter({
@@ -80,8 +80,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#7c5c3a",
-  colorScheme: "light dark",
+  themeColor: "#0a0908",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -92,12 +92,15 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${playfairDisplay.variable} ${inter.variable} font-display antialiased transition-colors duration-500`}
+        className={`${cormorantGaramond.variable} ${inter.variable} font-display antialiased`}
         style={{
           backgroundColor: 'var(--kp-bg-base)',
           color: 'var(--kp-text-primary)',
         }}
       >
+        {/* Grain texture overlay */}
+        <div className="grain-overlay" aria-hidden="true" />
+
         <SessionProvider>
           <ThemeProvider>
             <NavbarProvider>

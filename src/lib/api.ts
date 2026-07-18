@@ -1,6 +1,8 @@
 import { Book, Quote, SiteConfig } from "@/src/types";
 import { client } from "@/src/sanity/lib/client";
 import { urlFor } from "@/src/sanity/lib/image";
+import booksData from "../../public/data/books.json";
+import quotesData from "../../public/data/quotes.json";
 
 /* =========================
    BOOKS
@@ -36,7 +38,38 @@ export async function getBooks(filters?: {
     params.limit = filters.limit;
   }
 
-  const sanityBooks = await client.fetch<any[]>(query, params);
+  let sanityBooks;
+  try {
+    sanityBooks = await client.fetch<any[]>(query, params);
+  } catch (error) {
+    console.error('Error fetching books from Sanity:', error);
+    
+    // Fallback to local data
+    let localBooks = booksData.books || [];
+    
+    if (filters?.category && filters.category !== "all") {
+      localBooks = localBooks.filter((b: any) => b.category === filters.category);
+    }
+    if (filters?.featured) {
+      localBooks = localBooks.filter((b: any) => b.featured);
+    }
+    if (filters?.search) {
+      const s = filters.search.toLowerCase();
+      localBooks = localBooks.filter((b: any) => 
+        b.title.toLowerCase().includes(s) || 
+        (b.excerpt && b.excerpt.toLowerCase().includes(s)) ||
+        (b.tags && b.tags.some((t: string) => t.toLowerCase().includes(s)))
+      );
+    }
+    if (filters?.limit) {
+      localBooks = localBooks.slice(0, filters.limit);
+    }
+    
+    return {
+      books: localBooks as unknown as Book[],
+      total: localBooks.length,
+    };
+  }
 
   // Handle null response
   if (!sanityBooks) {
@@ -110,7 +143,17 @@ export async function getBooks(filters?: {
 
 export async function getBook(slug: string) {
   const query = `*[_type == "book" && slug.current == $slug][0]`;
-  const sanityBook = await client.fetch<any>(query, { slug });
+  let sanityBook;
+  
+  try {
+    sanityBook = await client.fetch<any>(query, { slug });
+  } catch (error) {
+    console.error('Error fetching book from Sanity:', error);
+    const localBooks = booksData.books || [];
+    const found = localBooks.find((b: any) => b.slug === slug);
+    if (found) return { book: found as unknown as Book };
+    throw new Error("Book not found");
+  }
 
   if (!sanityBook) {
     throw new Error("Book not found");
@@ -191,7 +234,19 @@ export async function getFeaturedBooks(limit = 3) {
 
 export async function getRandomQuote() {
   const query = `*[_type == "quote"] | order(rand())`;
-  const quotes = await client.fetch<Quote[]>(query);
+  let quotes: Quote[] = [];
+  
+  try {
+    quotes = await client.fetch<Quote[]>(query);
+  } catch (error) {
+    console.error('Error fetching quotes from Sanity:', error);
+    quotes = (quotesData.quotes as unknown as Quote[]) || [];
+  }
+  
+  if (!quotes || quotes.length === 0) {
+    return { quote: null, total: 0 };
+  }
+
   const random = quotes[Math.floor(Math.random() * quotes.length)];
 
   return {
@@ -223,7 +278,23 @@ export async function getQuotes(filters?: {
     params.limit = filters.limit;
   }
 
-  const quotes = await client.fetch<Quote[]>(query, params);
+  let quotes: Quote[] = [];
+  try {
+    quotes = await client.fetch<Quote[]>(query, params);
+  } catch (error) {
+    console.error('Error fetching quotes from Sanity:', error);
+    quotes = (quotesData.quotes as unknown as Quote[]) || [];
+    
+    if (filters?.category) {
+      quotes = quotes.filter((q: any) => q.category === filters.category);
+    }
+    if (filters?.mood) {
+      quotes = quotes.filter((q: any) => q.mood === filters.mood);
+    }
+    if (filters?.limit) {
+      quotes = quotes.slice(0, filters.limit);
+    }
+  }
 
   return {
     quotes,

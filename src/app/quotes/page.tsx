@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Send, Share2 } from "lucide-react";
+import { Send, Share2, Quote, Sparkles, Coffee } from "lucide-react";
 import { supabase, isSupabaseConfigured } from "@/src/lib/supabase";
 
-interface Quote {
+interface QuoteItem {
   id: number;
   text: string;
   author: string;
@@ -13,7 +13,7 @@ interface Quote {
 }
 
 // Fallback quotes when Supabase is not configured
-const FALLBACK_QUOTES: Quote[] = [
+const FALLBACK_QUOTES: QuoteItem[] = [
   {
     id: 1,
     text: "Kopi tidak menyelesaikan masalah, tapi kopi membuat masalah terasa bisa diselesaikan.",
@@ -47,12 +47,12 @@ const FALLBACK_QUOTES: Quote[] = [
 ];
 
 export default function QuotesPage() {
-  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [quotes, setQuotes] = useState<QuoteItem[]>([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
+
   // Form state
   const [quoteText, setQuoteText] = useState("");
   const [author, setAuthor] = useState("");
@@ -108,14 +108,13 @@ export default function QuotesPage() {
     const scrollContainer = scrollContainerRef.current;
     let animationFrameId: number;
     let scrollPosition = 0;
-    const scrollSpeed = 0.5; // pixels per frame
+    const scrollSpeed = 0.5;
 
     const scroll = () => {
       if (!isPaused && scrollContainer) {
         scrollPosition += scrollSpeed;
         scrollContainer.scrollTop = scrollPosition;
 
-        // Reset to top when reaching bottom
         if (scrollPosition >= scrollContainer.scrollHeight - scrollContainer.clientHeight) {
           scrollPosition = 0;
           scrollContainer.scrollTop = 0;
@@ -133,7 +132,7 @@ export default function QuotesPage() {
 
   const handleSubmitQuote = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!quoteText.trim() || !author.trim()) {
       setSubmitStatus("error");
       setSubmitMessage("Quote dan penulis wajib diisi");
@@ -172,9 +171,9 @@ export default function QuotesPage() {
     }
   };
 
-  const handleShare = async (quote: Quote) => {
+  const handleShare = async (quote: QuoteItem) => {
     const shareText = `"${quote.text}" — ${quote.author} ☕`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -186,114 +185,149 @@ export default function QuotesPage() {
         console.log('Share failed:', error);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(shareText);
       alert('Quote disalin ke clipboard!');
     }
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
-      {/* Header */}
-      <div className="pt-32 pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen relative" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
+
+      {/* Background ambient */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-[radial-gradient(ellipse_at_top_right,rgba(212,165,116,0.04),transparent_60%)]" />
+        <div className="absolute bottom-1/3 left-0 w-1/3 h-1/3 bg-[radial-gradient(ellipse_at_bottom_left,rgba(212,165,116,0.03),transparent_60%)]" />
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute top-[20%] left-[10%] animate-firefly particle" style={{ animationDelay: '0s' }} />
+      <div className="absolute top-[30%] right-[15%] animate-firefly particle" style={{ animationDelay: '2s' }} />
+
+      {/* ═══════════════════════════════
+          HEADER
+      ═══════════════════════════════ */}
+      <div className="relative z-10 pt-28 sm:pt-32 pb-16 sm:pb-20 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-ui font-medium tracking-wider uppercase mb-6 glass animate-fade-in-up"
+            style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
+          >
+            <Coffee size={12} />
+            Kata-Kata Pekerja
+          </div>
+
           <h1
-            className="font-serif text-4xl md:text-5xl font-bold mb-4 text-center"
+            className="typography-h1 mb-6 animate-slide-in-up delay-100"
             style={{ color: 'var(--kp-text-primary)' }}
           >
-            ☕ Quote Pekerja
+            Quote Pekerja
           </h1>
           <p
-            className="font-serif text-lg text-center max-w-2xl mx-auto"
+            className="font-body text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200"
             style={{ color: 'var(--kp-text-secondary)' }}
           >
             Kumpulan kata-kata yang menemani secangkir kopi di tengah shift yang panjang.
           </p>
+
+          {/* Decorative divider */}
+          <div className="mt-12 flex justify-center items-center gap-6">
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent to-[var(--kp-accent)] opacity-40" />
+            <Quote size={18} style={{ color: 'var(--kp-accent)' }} className="opacity-60" />
+            <div className="w-24 h-[1px] bg-gradient-to-l from-transparent to-[var(--kp-accent)] opacity-40" />
+          </div>
         </div>
       </div>
 
-      {/* Main Quote Display - Scrolling List */}
-      <div className="px-6 pb-16">
+      {/* ═══════════════════════════════
+          QUOTES LIST
+      ═══════════════════════════════ */}
+      <div className="relative z-10 px-6 pb-16">
         <div className="max-w-4xl mx-auto">
           {loading ? (
-            <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
-              Memuat quotes...
+            <div className="text-center py-16">
+              <div className="w-8 h-8 border-2 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: 'rgba(212, 165, 116, 0.3)', borderTopColor: 'var(--kp-accent)' }} />
+              <span className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>Memuat quotes...</span>
             </div>
           ) : quotes.length === 0 ? (
-            <div className="text-center py-12" style={{ color: 'var(--kp-text-muted)' }}>
-              Belum ada quote tersedia.
+            <div className="text-center py-16 glass-card rounded-2xl">
+              <Coffee size={32} className="mx-auto mb-4 opacity-30" style={{ color: 'var(--kp-accent)' }} />
+              <p className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>Belum ada quote tersedia.</p>
             </div>
           ) : (
             <>
               {usingFallback && (
-                <div className="mb-6 text-center py-3 px-4 rounded-lg" style={{ backgroundColor: 'var(--kp-accent-light)', border: '1px solid var(--kp-border)' }}>
-                  <p className="text-sm" style={{ color: 'var(--kp-text-secondary)' }}>
-                    🔒 Mode Demo - Menggunakan quotes default (Supabase belum dikonfigurasi)
+                <div className="mb-8 text-center py-3 px-6 rounded-full glass inline-flex items-center gap-2 mx-auto" style={{ display: 'flex', maxWidth: 'fit-content', margin: '0 auto 2rem auto', border: '1px solid rgba(212, 165, 116, 0.1)' }}>
+                  <Sparkles size={14} style={{ color: 'var(--kp-accent)' }} />
+                  <p className="text-sm font-ui" style={{ color: 'var(--kp-text-muted)' }}>
+                    Mode Demo — Menggunakan quotes default
                   </p>
                 </div>
               )}
-            <div
-              ref={scrollContainerRef}
-              className="space-y-6 overflow-y-auto max-h-[600px] pr-2 scrollbar-thin"
-              style={{
-                scrollbarWidth: 'thin',
-                scrollbarColor: 'var(--kp-accent) var(--kp-bg-surface)',
-              }}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              {quotes.map((quote) => (
-                <div
-                  key={quote.id}
-                  className="relative rounded-2xl overflow-hidden p-6 md:p-8 transition-all duration-200 hover:scale-[1.02]"
-                  style={{
-                    background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))',
-                    border: '1px solid var(--kp-border)',
-                  }}
-                >
-                  {/* Decorative quote mark */}
+
+              <div
+                ref={scrollContainerRef}
+                className="space-y-6 overflow-y-auto max-h-[600px] pr-2 hide-scrollbar"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
+                {quotes.map((quote, index) => (
                   <div
-                    className="absolute top-4 left-6 text-6xl leading-none select-none"
-                    style={{ color: 'var(--kp-accent)', opacity: 0.2, fontFamily: 'var(--font-display)' }}
+                    key={quote.id}
+                    className="glass-card rounded-2xl p-8 md:p-10 relative overflow-hidden group"
+                    style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    &ldquo;
-                  </div>
-
-                  <p
-                    className="relative z-10 font-serif text-lg md:text-xl italic leading-relaxed mb-4"
-                    style={{ color: 'var(--kp-text-primary)' }}
-                  >
-                    {quote.text}
-                  </p>
-
-                  <div className="flex items-center justify-between mt-6">
-                    <div>
-                      <p
-                        className="font-sans text-sm font-medium"
-                        style={{ color: 'var(--kp-text-muted)' }}
-                      >
-                        — {quote.author}
-                      </p>
-                      {quote.category && (
-                        <span
-                          className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium"
-                          style={{
-                            backgroundColor: 'var(--kp-accent-light)',
-                            color: 'var(--kp-accent)',
-                            border: '1px solid var(--kp-border)',
-                          }}
-                        >
-                          {quote.category}
-                        </span>
-                      )}
+                    {/* Decorative quote mark */}
+                    <div
+                      className="absolute top-4 left-6 font-display text-7xl leading-none select-none pointer-events-none"
+                      style={{ color: 'var(--kp-accent)', opacity: 0.08 }}
+                    >
+                      &ldquo;
                     </div>
-                    <div className="flex items-center gap-2">
+
+                    {/* Hover glow */}
+                    <div className="absolute -inset-20 bg-[radial-gradient(circle_at_center,rgba(212,165,116,0.06)_0%,transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                    <p
+                      className="relative z-10 font-display text-xl md:text-2xl italic leading-relaxed mb-6"
+                      style={{ color: 'var(--kp-text-primary)' }}
+                    >
+                      {quote.text}
+                    </p>
+
+                    <div className="relative z-10 flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--kp-border-medium)' }}>
+                      <div>
+                        <p className="font-ui text-sm font-medium mb-1" style={{ color: 'var(--kp-text-secondary)' }}>
+                          — {quote.author}
+                        </p>
+                        {quote.category && (
+                          <span
+                            className="inline-block px-3 py-1 rounded-full text-[10px] font-ui font-semibold tracking-wider uppercase border"
+                            style={{
+                              color: 'var(--kp-accent)',
+                              borderColor: 'rgba(212, 165, 116, 0.2)',
+                              background: 'rgba(212, 165, 116, 0.05)',
+                            }}
+                          >
+                            {quote.category}
+                          </span>
+                        )}
+                      </div>
                       <button
                         onClick={() => handleShare(quote)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-full text-xs font-medium transition-all duration-200 hover:scale-105"
+                        className="flex items-center gap-2 px-4 py-2 rounded-full font-ui text-xs font-medium transition-all duration-300"
                         style={{
-                          backgroundColor: 'var(--kp-accent)',
-                          color: 'var(--kp-text-on-dark)',
+                          background: 'rgba(212, 165, 116, 0.1)',
+                          color: 'var(--kp-accent)',
+                          border: '1px solid rgba(212, 165, 116, 0.2)',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(212, 165, 116, 0.2)';
+                          e.currentTarget.style.boxShadow = '0 0 15px rgba(212, 165, 116, 0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(212, 165, 116, 0.1)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                         title="Share quote"
                       >
@@ -302,31 +336,46 @@ export default function QuotesPage() {
                       </button>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
             </>
           )}
         </div>
       </div>
 
-      {/* Submit Button */}
-      <div className="px-6 pb-16">
+      {/* ═══════════════════════════════
+          SUBMIT SECTION
+      ═══════════════════════════════ */}
+      <div className="relative z-10 px-6 pb-16">
         <div className="max-w-4xl mx-auto text-center">
           {!isSupabaseConfigured ? (
-            <div className="py-3 px-4 rounded-lg inline-block" style={{ backgroundColor: 'var(--kp-bg-surface)', border: '1px solid var(--kp-border)' }}>
-              <p className="text-sm" style={{ color: 'var(--kp-text-muted)' }}>
-                📝 Submit quote dinonaktifkan (Supabase belum dikonfigurasi)
+            <div className="glass-card py-4 px-6 rounded-full inline-flex items-center gap-2">
+              <Sparkles size={14} style={{ color: 'var(--kp-text-muted)' }} />
+              <p className="text-sm font-ui" style={{ color: 'var(--kp-text-muted)' }}>
+                Submit quote dinonaktifkan (Supabase belum dikonfigurasi)
               </p>
             </div>
           ) : (
             <button
               onClick={() => setShowSubmitForm(!showSubmitForm)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-ui text-sm font-semibold transition-all duration-400"
               style={{
-                backgroundColor: showSubmitForm ? 'var(--kp-bg-surface)' : 'var(--kp-accent)',
-                color: showSubmitForm ? 'var(--kp-text-primary)' : 'var(--kp-text-on-dark)',
-                border: '1px solid var(--kp-border)',
+                background: showSubmitForm ? 'transparent' : 'linear-gradient(135deg, var(--kp-accent), #b8834e)',
+                color: showSubmitForm ? 'var(--kp-text-primary)' : '#0a0908',
+                border: showSubmitForm ? '1px solid rgba(212, 165, 116, 0.3)' : 'none',
+                boxShadow: showSubmitForm ? 'none' : '0 0 20px rgba(212, 165, 116, 0.2)',
+              }}
+              onMouseEnter={(e) => {
+                if (!showSubmitForm) {
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(212, 165, 116, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!showSubmitForm) {
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(212, 165, 116, 0.2)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }
               }}
             >
               <Send size={16} />
@@ -336,30 +385,23 @@ export default function QuotesPage() {
         </div>
       </div>
 
-      {/* Submit Form */}
+      {/* ═══════════════════════════════
+          SUBMIT FORM
+      ═══════════════════════════════ */}
       {showSubmitForm && (
-        <div className="px-6 pb-32">
+        <div className="relative z-10 px-6 pb-32 animate-fade-in-up">
           <div className="max-w-2xl mx-auto">
-            <div
-              className="rounded-2xl p-8"
-              style={{
-                backgroundColor: 'var(--kp-bg-surface)',
-                border: '1px solid var(--kp-border)',
-              }}
-            >
-              <h2
-                className="font-serif text-2xl font-bold mb-6"
-                style={{ color: 'var(--kp-text-primary)' }}
-              >
+            <div className="glass-card rounded-2xl p-8 sm:p-10">
+              <h2 className="font-display text-2xl sm:text-3xl mb-2" style={{ color: 'var(--kp-text-primary)' }}>
                 Kirim Quote Kamu
               </h2>
-              
-              <form onSubmit={handleSubmitQuote} className="space-y-4">
+              <p className="font-body text-sm mb-8" style={{ color: 'var(--kp-text-muted)' }}>
+                Kata-kata terbaikmu akan ditinjau sebelum ditampilkan.
+              </p>
+
+              <form onSubmit={handleSubmitQuote} className="space-y-5">
                 <div>
-                  <label
-                    className="block text-sm font-medium mb-2 font-sans"
-                    style={{ color: 'var(--kp-text-secondary)' }}
-                  >
+                  <label className="block text-xs font-ui font-semibold tracking-wider uppercase mb-2" style={{ color: 'var(--kp-accent)' }}>
                     Quote
                   </label>
                   <textarea
@@ -367,81 +409,75 @@ export default function QuotesPage() {
                     onChange={(e) => setQuoteText(e.target.value)}
                     placeholder="Tulis quote yang ingin kamu bagikan..."
                     rows={4}
-                    className="w-full px-4 py-3 rounded-lg text-sm resize-none"
-                    style={{
-                      backgroundColor: 'var(--kp-bg-base)',
-                      border: '1px solid var(--kp-border)',
-                      color: 'var(--kp-text-primary)',
-                    }}
+                    className="w-full px-5 py-4 rounded-xl font-body text-base resize-none glass outline-none transition-all duration-300 focus:border-[rgba(212,165,116,0.4)] placeholder-[var(--kp-text-subtle)]"
+                    style={{ color: 'var(--kp-text-primary)' }}
                   />
                 </div>
 
-                <div>
-                  <label
-                    className="block text-sm font-medium mb-2 font-sans"
-                    style={{ color: 'var(--kp-text-secondary)' }}
-                  >
-                    Penulis
-                  </label>
-                  <input
-                    type="text"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    placeholder="Nama penulis atau sumber"
-                    className="w-full px-4 py-3 rounded-lg text-sm"
-                    style={{
-                      backgroundColor: 'var(--kp-bg-base)',
-                      border: '1px solid var(--kp-border)',
-                      color: 'var(--kp-text-primary)',
-                    }}
-                  />
-                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-ui font-semibold tracking-wider uppercase mb-2" style={{ color: 'var(--kp-accent)' }}>
+                      Penulis
+                    </label>
+                    <input
+                      type="text"
+                      value={author}
+                      onChange={(e) => setAuthor(e.target.value)}
+                      placeholder="Nama penulis atau sumber"
+                      className="w-full px-5 py-3 rounded-xl font-ui text-sm glass outline-none transition-all duration-300 focus:border-[rgba(212,165,116,0.4)] placeholder-[var(--kp-text-subtle)]"
+                      style={{ color: 'var(--kp-text-primary)' }}
+                    />
+                  </div>
 
-                <div>
-                  <label
-                    className="block text-sm font-medium mb-2 font-sans"
-                    style={{ color: 'var(--kp-text-secondary)' }}
-                  >
-                    Kategori
-                  </label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg text-sm"
-                    style={{
-                      backgroundColor: 'var(--kp-bg-base)',
-                      border: '1px solid var(--kp-border)',
-                      color: 'var(--kp-text-primary)',
-                    }}
-                  >
-                    <option value="Kehidupan">Kehidupan</option>
-                    <option value="Kopi">Kopi</option>
-                    <option value="Refleksi">Refleksi</option>
-                    <option value="Filosofi">Filosofi</option>
-                    <option value="Lainnya">Lainnya</option>
-                  </select>
+                  <div>
+                    <label className="block text-xs font-ui font-semibold tracking-wider uppercase mb-2" style={{ color: 'var(--kp-accent)' }}>
+                      Kategori
+                    </label>
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="w-full px-5 py-3 rounded-xl font-ui text-sm glass outline-none transition-all duration-300 focus:border-[rgba(212,165,116,0.4)]"
+                      style={{
+                        color: 'var(--kp-text-primary)',
+                        backgroundColor: 'rgba(13, 11, 9, 0.6)',
+                      }}
+                    >
+                      <option value="Kehidupan">Kehidupan</option>
+                      <option value="Kopi">Kopi</option>
+                      <option value="Refleksi">Refleksi</option>
+                      <option value="Filosofi">Filosofi</option>
+                      <option value="Lainnya">Lainnya</option>
+                    </select>
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitStatus === "loading"}
-                  className="w-full py-3 rounded-lg text-sm font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 rounded-xl font-ui text-sm font-semibold transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   style={{
-                    backgroundColor: 'var(--kp-accent)',
-                    color: 'var(--kp-text-on-dark)',
+                    background: 'linear-gradient(135deg, var(--kp-accent), #b8834e)',
+                    color: '#0a0908',
+                    boxShadow: '0 0 20px rgba(212, 165, 116, 0.15)',
                   }}
                 >
-                  {submitStatus === "loading" ? "Mengirim..." : "Kirim Quote"}
+                  {submitStatus === "loading" ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#0a0908 transparent #0a0908 #0a0908' }} />
+                      Mengirim...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      Kirim Quote
+                    </>
+                  )}
                 </button>
 
                 {submitMessage && (
-                  <p
-                    className={`text-sm ${
-                      submitStatus === "success"
-                        ? "text-emerald-600 dark:text-emerald-400"
-                        : "text-red-600 dark:text-red-400"
-                    }`}
-                  >
+                  <p className={`text-sm font-ui text-center ${
+                    submitStatus === "success" ? "text-emerald-400" : "text-red-400"
+                  }`}>
                     {submitMessage}
                   </p>
                 )}

@@ -4,12 +4,12 @@ import dynamic from 'next/dynamic';
 
 // Dynamic imports to reduce initial bundle size
 const Navbar = dynamic(() => import("@/src/components/Navbar"), {
-  loading: () => <div className="h-16 w-full bg-slate-50 dark:bg-[#1a1816]" />,
+  loading: () => <div className="h-16 w-full" style={{ backgroundColor: 'var(--kp-bg-base)' }} />,
   ssr: true,
 });
 
 const Footer = dynamic(() => import("@/src/components/Footer"), {
-  loading: () => <div className="h-20 w-full bg-slate-50 dark:bg-[#1a1816]" />,
+  loading: () => <div className="h-20 w-full" style={{ backgroundColor: 'var(--kp-bg-invert)' }} />,
   ssr: true,
 });
 
@@ -19,7 +19,7 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
 
       {/* Navbar */}
       <Navbar />
