@@ -1,314 +1,95 @@
-# API Usage Guide
+# Data Access Layer & API Specification
 
-Project ini menggunakan API lokal berbasis JSON untuk mengelola konten. Semua data disimpan di `public/data/` dan diakses melalui `src/lib/api.ts`.
-
----
-
-## Struktur Data
-
-### 1. Books (`public/data/books.json`)
-Menyimpan data buku/ebook yang tersedia.
-
-**Struktur:**
-```json
-{
-  "books": [
-    {
-      "id": "1",
-      "slug": "seni-menyeduh-kehidupan",
-      "title": "Seni Menyeduh Kehidupan",
-      "subtitle": "Catatan tentang...",
-      "excerpt": "Deskripsi singkat...",
-      "preview": "Preview konten...",
-      "category": "kehidupan",
-      "readTime": "25 menit",
-      "cover": "URL gambar",
-      "publishedAt": "2026-01-15",
-      "featured": true,
-      "stats": {
-        "views": 1240,
-        "downloads": 89
-      },
-      "tags": ["kehidupan", "kopi", "mindfulness", "gentle"]
-    }
-  ]
-}
-```
-
-### 2. Posts (`public/data/posts.json`)
-Menyimpan data artikel/tulisan.
-
-**Struktur:**
-```json
-{
-  "posts": [
-    {
-      "slug": "ruang-bagi-tulisan",
-      "title": "Judul Tulisan",
-      "hook": "Hook untuk menarik pembaca",
-      "opening": "Paragraf pembuka",
-      "excerpt": "Ringkasan konten",
-      "category": "Ruang Bagi",
-      "readTime": "2 menit",
-      "date": "2024-01-01",
-      "role": "Pembuka Ruang",
-      "workplace": "Arsip Pikiran",
-      "duration": "Selamanya",
-      "isFeatured": true,
-      "content": [
-        {
-          "type": "paragraph",
-          "text": "Konten paragraf..."
-        },
-        {
-          "type": "quote",
-          "text": "Kutipan..."
-        }
-      ],
-      "impact": "Dampak tulisan...",
-      "related": ["slug-terkait-1", "slug-terkait-2"],
-      "likes": 128
-    }
-  ]
-}
-```
-
-### 3. Quotes (`public/data/quotes.json`)
-Menyimpan data kutipan.
-
-**Struktur:**
-```json
-{
-  "quotes": [
-    {
-      "id": 1,
-      "text": "Teks kutipan...",
-      "category": "kopi",
-      "mood": "melancholic"
-    }
-  ]
-}
-```
-
-### 4. Config (`public/data/config.json`)
-Konfigurasi situs global.
-
-**Struktur:**
-```json
-{
-  "site": {
-    "title": "Kelas Pekerja",
-    "description": "Deskripsi situs...",
-    "tagline": "Tagline...",
-    "url": "https://kelaspekerja.id",
-    "language": "id",
-    "locale": "id_ID"
-  },
-  "author": {
-    "name": "Wildan Ferdiansyah",
-    "bio": "Bio penulis...",
-    "photo": "/wildan.png",
-    "roles": {
-      "past": ["Barista", "Mural Artist"],
-      "current": "Penulis"
-    },
-    "social": {
-      "whatsapp": "6289636357091",
-      "instagram": "_iamwildan_",
-      "email": "wildanferdiansyah06@gmail.com",
-      "twitter": ""
-    },
-    "manifesto": "Aku menulis untuk hadir, bukan untuk memukau."
-  },
-  "navigation": [
-    { "label": "Beranda", "href": "/" },
-    { "label": "Tulisan", "href": "/tulisan" }
-  ],
-  "features": {
-    "darkMode": true,
-    "search": true,
-    "bookmarks": true,
-    "randomQuote": true,
-    "readingTime": true,
-    "comments": false,
-    "newsletter": false
-  }
-}
-```
+This document details the data fetching strategy, GROQ query interface, and persistence endpoints for **Kelas Pekerja**.
 
 ---
 
-## Fungsi API
+## 🏛️ Data Architecture Overview
+
+The system uses a primary-secondary data pipeline designed for high performance, content elasticity, and resilience:
+
+1. **Primary Content Lake (Sanity CMS)**: Stores articles, books, quotes, user profiles, and site configuration. Queried via GROQ (`Graph-Relational Object Queries`).
+2. **Persistence Store (Supabase PostgreSQL)**: Handles relational data, user bookmarks, reading progress tracking, and quote stats using Row Level Security (RLS).
+3. **Resilient Local Fallback Layer (`public/data/`)**: Provides static fallback JSON datasets during static site generation (SSG) if Sanity API endpoints are unreachable.
+
+---
+
+## 🔍 Sanity Content Schemas & GROQ Engine
+
+All Sanity schemas are defined in `src/sanity/schemas/`.
+
+### 1. Book Schema (`book.ts`)
+- **Document Type**: `book`
+- **Fields**: `id`, `slug`, `title`, `subtitle`, `excerpt`, `preview`, `category`, `readTime`, `cover`, `publishedAt`, `featured`, `stats`, `tags`
+
+### 2. Post Schema (`post.ts`)
+- **Document Type**: `post`
+- **Fields**: `slug`, `title`, `hook`, `opening`, `excerpt`, `category`, `readTime`, `date`, `role`, `workplace`, `duration`, `isFeatured`, `content` (Portable Text blocks), `impact`, `related`
+
+### 3. Quote Schema (`quote.ts`)
+- **Document Type**: `quote`
+- **Fields**: `id`, `text`, `category`, `mood`
+
+### 4. User Schema (`user.ts`)
+- **Document Type**: `user`
+- **Fields**: `id`, `name`, `email`, `image`, `role`, `bookmarks`, `readingProgress`
+
+---
+
+## 🛠️ Core API Modules (`src/lib/api.ts`)
 
 ### Books API
 
-#### `getBooks(filters?)`
-Mengambil daftar buku dengan filter opsional.
+#### `getBooks(filters?: BookFilters): Promise<{ books: Book[], total: number }>`
+Executes a GROQ query to retrieve filtered books from Sanity with dynamic parameters.
 
 ```typescript
-const result = await getBooks({
-  category?: string,      // Filter berdasarkan kategori
-  featured?: boolean,     // Hanya buku featured
-  search?: string,        // Pencarian di title, excerpt, tags
-  limit?: number          // Batas jumlah hasil
+// Query Specification
+const query = `*[_type == "book" && category == $category] | order(publishedAt desc)[0...$limit]`;
+
+// Usage Example
+const { books } = await getBooks({
+  category: "kehidupan",
+  featured: true,
+  limit: 5
 });
-
-// Returns: { books: Book[], total: number }
 ```
 
-**Contoh:**
-```typescript
-// Semua buku
-const allBooks = await getBooks();
-
-// Buku featured (max 3)
-const featured = await getBooks({ featured: true, limit: 3 });
-
-// Buku kategori "kehidupan"
-const lifeBooks = await getBooks({ category: "kehidupan" });
-
-// Pencarian
-const searchResults = await getBooks({ search: "kopi" });
-```
-
-#### `getBook(slug)`
-Mengambil satu buku berdasarkan slug.
+#### `getBook(slug: string): Promise<{ book: Book | null }>`
+Retrieves a single book document matching the unique slug identifier.
 
 ```typescript
 const { book } = await getBook("seni-menyeduh-kehidupan");
-
-// Returns: { book: Book }
 ```
 
-#### `getFeaturedBooks(limit?)`
-Shortcut untuk mengambil buku featured.
-
-```typescript
-const { books } = await getFeaturedBooks(3);
-```
+---
 
 ### Quotes API
 
-#### `getRandomQuote()`
-Mengambil kutipan secara acak.
+#### `getRandomQuote(): Promise<{ quote: Quote | null }>`
+Fetches a single quote object dynamically or selects from cache.
 
-```typescript
-const { quote, total } = await getRandomQuote();
-
-// Returns: { quote: Quote, total: number }
-```
-
-#### `getQuotes(filters?)`
-Mengambil kutipan dengan filter.
-
-```typescript
-const { quotes, total } = await getQuotes({
-  category?: string,   // Filter kategori
-  mood?: string,       // Filter mood
-  limit?: number       // Batas jumlah
-});
-```
-
-**Contoh:**
-```typescript
-// Semua kutipan kopi
-const coffeeQuotes = await getQuotes({ category: "kopi" });
-
-// Kutipan mood peaceful
-const peacefulQuotes = await getQuotes({ mood: "peaceful" });
-```
-
-### Config API
-
-#### `getConfig()`
-Mengambil konfigurasi situs.
-
-```typescript
-const config = await getConfig();
-
-// Returns: SiteConfig
-```
+#### `getQuotes(filters?: QuoteFilters): Promise<{ quotes: Quote[], total: number }>`
+Filters quotes by category or mood metrics (`melancholic`, `peaceful`, `reflective`).
 
 ---
 
-## Cara Menambah Konten
+### Configuration API
 
-### Menambah Buku Baru
-
-1. Buka `public/data/books.json`
-2. Tambah objek baru ke array `books`
-3. Pastikan `slug` unik (gunakan kebab-case)
-4. Set `publishedAt` dengan format YYYY-MM-DD
-5. Tambah tags yang relevan
-
-**Contoh:**
-```json
-{
-  "id": "7",
-  "slug": "judul-buku-baru",
-  "title": "Judul Buku Baru",
-  "subtitle": "Subtitle buku...",
-  "excerpt": "Ringkasan...",
-  "preview": "Preview...",
-  "category": "kehidupan",
-  "readTime": "30 menit",
-  "cover": "URL gambar",
-  "publishedAt": "2026-04-15",
-  "featured": false,
-  "stats": { "views": 0, "downloads": 0 },
-  "tags": ["tag1", "tag2"]
-}
-```
-
-### Menambah Tulisan Baru
-
-1. Buka `public/data/posts.json`
-2. Tambah objek baru ke array `posts`
-3. Struktur `content` menggunakan array dengan type:
-   - `paragraph`: teks paragraf
-   - `quote`: kutipan
-4. Tambah `related` dengan array slug tulisan terkait
-
-### Menambah Kutipan Baru
-
-1. Buka `public/data/quotes.json`
-2. Tambah objek baru ke array `quotes`
-3. Pastikan `id` unik
+#### `getConfig(): Promise<SiteConfig>`
+Loads site navigation, author metadata, social media links, and feature flags.
 
 ---
 
-## Kategori Buku
+## 💾 Relational Persistence Layer (`src/lib/user.ts`)
 
-Kategori yang tersedia:
-- `all` - Semua kategori
-- `kehidupan` - Kehidupan
-- `cerita` - Cerita
-- `renungan` - Renungan
-- `proses` - Proses
-- `kopi` - Kopi
-- `pekerja` - Pekerja
-- `filosofi` - Filosofi
-- `catatan-malam` - Catatan Malam
+User bookmark storage and reading tracking interfaces interact directly with Supabase via client instances defined in `src/lib/supabase.ts`.
 
----
+### Bookmark Operations
+- `getUserBookmarks(userId: string)`
+- `addBookmark(userId: string, bookSlug: string)`
+- `removeBookmark(userId: string, bookSlug: string)`
 
-## Catatan Penting
-
-- **ID harus unik**: Pastikan setiap item memiliki ID yang berbeda
-- **Slug harus unik**: Slug digunakan untuk routing, jadi harus unik
-- **Format tanggal**: Gunakan format YYYY-MM-DD
-- **URL gambar**: Gunakan URL absolut atau path relatif dari `public/`
-- **Validasi JSON**: Pastikan format JSON valid (gunakan JSON validator)
-- **Backup**: Selalu backup file JSON sebelum mengedit
-
----
-
-## Migrasi ke Headless CMS
-
-Untuk skala yang lebih besar, pertimbkan migrasi ke:
-- **Sanity.io** - CMS headless dengan editor visual
-- **Contentful** - CMS headless enterprise
-- **Strapi** - CMS headless open-source
-- **Notion API** - Jika menggunakan Notion sebagai CMS
-
-Lihat roadmap untuk rencana migrasi.
+### Reading Progress Operations
+- `updateReadingProgress(userId: string, bookSlug: string, progressPercent: number)`
+- `getReadingProgress(userId: string, bookSlug: string)`

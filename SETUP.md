@@ -1,202 +1,126 @@
-# Panduan Setup Proyek - Kelas Pekerja
+# Developer Onboarding & Local Setup Guide
 
-## Dependensi yang Diperlukan
+This document outlines the local environment configuration, data layer setup, and verification procedures required for development on **Kelas Pekerja**.
 
-### 1. Node.js & npm
-Proyek Anda membutuhkan Node.js (versi 18 atau lebih tinggi) dan npm.
+---
 
-#### Untuk sistem berbasis Ubuntu/Debian:
-```bash
-# Update indeks paket
-sudo apt update
+## 📋 System Requirements
 
-# Install Node.js dan npm
-sudo apt install nodejs npm
+Ensure your local development workstation satisfies the following requirements:
 
-# Atau install Node.js 18+ menggunakan repository NodeSource
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
+| Tool | Version Requirement | Verification Command |
+| :--- | :--- | :--- |
+| **Node.js** | `>= 18.17.0` (LTS Recommended) | `node --version` |
+| **npm** | `>= 9.0.0` | `npm --version` |
+| **Git** | `>= 2.30.0` | `git --version` |
+
+---
+
+## 🔑 Environment Variables Setup
+
+Create a `.env.local` file in the project root directory. Copy the contents from `.env.example` or populate with your service credentials:
+
+```ini
+# Sanity CMS Configuration
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+SANITY_API_TOKEN=your_sanity_api_token
+
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret_key
+
+# Google OAuth Credentials
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Supabase Credentials
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-#### Untuk sistem berbasis Fedora/RHEL:
-```bash
-# Install Node.js dan npm
-sudo dnf install nodejs npm
+---
 
-# Atau menggunakan NodeSource
-curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
-sudo dnf install -y nodejs
+## 💾 Data Layer Initialization
+
+### 1. Supabase Relational Database Setup
+
+1. Log into your Supabase Dashboard and select your project.
+2. Open the **SQL Editor**.
+3. Run the schema migration script located at `supabase-quotes-table.sql`:
+
+```sql
+-- Execute supabase-quotes-table.sql content in SQL Editor
 ```
 
-#### Untuk Arch Linux:
+This creates the requisite tables, indexes, and Row Level Security (RLS) policies for quotes, bookmarks, and user state.
+
+### 2. Sanity Studio CORS Configuration
+
+Ensure your local development URL (`http://localhost:3000`) is allowed in Sanity Management Console:
+
+1. Navigate to `https://manage.sanity.io/`.
+2. Select your project -> **API** -> **CORS Origins**.
+3. Add `http://localhost:3000` with Credentials enabled.
+
+---
+
+## 🚀 Execution & Verification Pipeline
+
+### 1. Dependencies Installation
+
 ```bash
-sudo pacman -S nodejs npm
-```
-
-### 2. Git
-```bash
-# Ubuntu/Debian
-sudo apt install git
-
-# Fedora/RHEL
-sudo dnf install git
-
-# Arch Linux
-sudo pacman -S git
-```
-
-### 3. Alat Tambahan
-```bash
-# Ubuntu/Debian
-sudo apt install curl wget build-essential
-
-# Fedora/RHEL
-sudo dnf install curl wget gcc gcc-c++ make
-
-# Arch Linux
-sudo pacman -S curl wget base-devel
-```
-
-## Langkah Setup Proyek
-
-### 1. Verifikasi Instalasi
-```bash
-node --version  # Harusnya 18.x atau lebih tinggi
-npm --version   # Harusnya 9.x atau lebih tinggi
-git --version
-```
-
-### 2. Install Dependensi Proyek
-```bash
-cd /home/iamwildan/Documents/kelas-pekerja
 npm install
 ```
 
-### 3. Setup Environment
-```bash
-# Copy template environment
-cp .env.example .env
+### 2. Static Analysis & Type Checking
 
-# Edit file .env dengan konfigurasi Anda
-nano .env  # atau gunakan editor pilihan Anda
+Verify code quality and type safety:
+
+```bash
+npm run lint
 ```
 
-### 4. Test Proses Build
+### 3. Unit & Integration Testing
+
+Execute Jest test suites:
+
 ```bash
-npm run build
-```
-
-### 5. Test Server Development
-```bash
-npm run dev
-```
-
-### 6. Konfigurasi Git (jika diperlukan)
-```bash
-git config --global user.name "Nama Anda"
-git config --global user.email "email@contoh.com"
-```
-
-## Dependensi Spesifik Proyek
-
-Proyek Anda mencakup:
-- **Next.js 15** - Framework React
-- **React 18** - Library UI
-- **TypeScript** - Type safety
-- **TailwindCSS** - Framework CSS
-- **Sanity** - Headless CMS
-- **Supabase** - Layanan backend
-- **NextAuth** - Autentikasi
-- **Playwright** - Testing E2E
-- **Jest** - Unit testing
-
-## Masalah Umum & Solusi
-
-### Masalah: Permission denied
-```bash
-# Perbaiki permission npm
-sudo chown -R $(whoami) ~/.npm
-sudo chown -R $(whoami) /usr/local/lib/node_modules
-```
-
-### Masalah: Versi Node.js terlalu lama
-```bash
-# Install n (Node version manager)
-sudo npm install -g n
-sudo n stable
-```
-
-### Masalah: Git belum dikonfigurasi
-```bash
-git config --global user.name "Nama Anda"
-git config --global user.email "email@contoh.com"
-```
-
-### Masalah: Build gagal karena dependensi hilang
-```bash
-# Clean install
-rm -rf node_modules package-lock.json
-npm install
-```
-
-## Testing Setelah Setup
-
-### 1. Test Build
-```bash
-npm run build
-```
-
-### 2. Test Development
-```bash
-npm run dev
-```
-
-### 3. Jalankan Tests
-```bash
+# Run unit tests
 npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### 4. End-to-End Testing (Playwright)
+
+```bash
+# Run headless E2E tests
 npm run test:e2e
+
+# Open interactive Playwright UI
+npm run test:e2e:ui
 ```
 
-### 4. Test Git Push
+### 5. Production Build Verification
+
+Validate that static site generation (SSG) and server component bundles compile cleanly:
+
 ```bash
-git status
-git add .
-git commit -m "Test commit setelah migrasi distro"
-git push origin main
+npm run build
 ```
 
-## Perintah Troubleshooting
+---
 
-### Cek info sistem
-```bash
-uname -a
-cat /etc/os-release
-```
+## ⚡ Operational Troubleshooting
 
-### Cek versi yang terinstall
-```bash
-node --version
-npm --version
-git --version
-```
-
-### Cek konfigurasi npm
-```bash
-npm config list
-```
-
-### Cek dependensi proyek
-```bash
-npm ls --depth=0
-```
-
-## Langkah Selanjutnya
-
-1. Install dependensi yang diperlukan sesuai distro Anda
-2. Verifikasi instalasi
-3. Setup environment variables Anda
-4. Test proses build
-5. Test fungsi git
-6. Jalankan server development
-
-Jika Anda mengalami masalah selama setup, silakan periksa pesan error dan rujuk ke bagian troubleshooting di atas.
+| Issue | Potential Cause | Solution |
+| :--- | :--- | :--- |
+| `Sanity API Error / CORS Blocked` | Missing origin registration | Add `http://localhost:3000` to Sanity Management CORS origins |
+| `Supabase URL Required` | Missing `.env.local` keys | Ensure `NEXT_PUBLIC_SUPABASE_URL` is set prior to starting dev server |
+| `NextAuth Callback Error` | Mismatched redirect URI | Set Google Cloud Console Authorized Redirect URI to `http://localhost:3000/api/auth/callback/google` |

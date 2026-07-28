@@ -1,94 +1,58 @@
-# CI/CD Setup Guide
+# CI/CD Pipeline Architecture & GitHub Actions Guide
 
-## GitHub Actions Workflows
-
-Project ini memiliki 3 workflow GitHub Actions:
-
-### 1. CI Workflow (`.github/workflows/ci.yml`)
-Trigger: Push ke branch `main` atau `develop`, serta Pull Request
-
-Jobs:
-- **Lint**: Menjalankan ESLint
-- **Type Check**: Validasi TypeScript
-- **Build**: Build project Next.js
-
-### 2. Deploy to Vercel (`.github/workflows/deploy-vercel.yml`)
-Trigger: Push ke branch `main` atau manual trigger
-
-### 3. Deploy to Netlify (`.github/workflows/deploy-netlify.yml`)
-Trigger: Push ke branch `main` atau manual trigger
+This document specifies the Continuous Integration and Continuous Deployment (CI/CD) pipelines configured for **Kelas Pekerja**.
 
 ---
 
-## Setup Secrets di GitHub
+## ⚙️ GitHub Actions Workflows
 
-### Untuk Vercel Deployment
+The repository uses automated GitHub Actions workflows located in `.github/workflows/`.
 
-Buka repository GitHub → Settings → Secrets and variables → Actions → New repository secret
+### 1. Continuous Integration (`ci.yml`)
 
-Tambahkan secrets berikut:
+- **Triggers**: Push events to `main` / `develop` branches, or Pull Requests.
+- **Jobs**:
+  1. **Linting**: Runs ESLint static analysis (`npm run lint`).
+  2. **Type Safety**: Validates TypeScript compilation (`npx tsc --noEmit`).
+  3. **Unit Tests**: Executes Jest test suites (`npm test`).
+  4. **Build Verification**: Ensures Next.js production build compiles without errors (`npm run build`).
 
-1. **VERCEL_TOKEN**
-   - Cara mendapatkan: 
-     - Login ke Vercel
-     - Buka Settings → Tokens
-     - Create token dengan scope "Full Account"
-   - Copy token dan paste ke GitHub secret
+### 2. Automated Deployment (`deploy-vercel.yml`)
 
-2. **VERCEL_ORG_ID**
-   - Cara mendapatkan:
-     - Install Vercel CLI: `npm i -g vercel`
-     - Login: `vercel login`
-     - Jalankan: `vercel link`
-     - Buka file `.vercel/project.json` di project
-     - Copy value dari `orgId`
+- **Triggers**: Successful completion of CI on the `main` branch or manual `workflow_dispatch`.
+- **Target**: Vercel Production Environment via Vercel CLI action.
 
-3. **VERCEL_PROJECT_ID**
-   - Cara mendapatkan:
-     - Dari file `.vercel/project.json` yang sama
-     - Copy value dari `projectId`
+### 3. Backup Deployment Target (`deploy-netlify.yml`)
 
-### Untuk Netlify Deployment
-
-Tambahkan secrets berikut:
-
-1. **NETLIFY_AUTH_TOKEN**
-   - Cara mendapatkan:
-     - Login ke Netlify
-     - Buka User settings → Applications → Personal access tokens
-     - New access token
-     - Copy token dan paste ke GitHub secret
-
-2. **NETLIFY_SITE_ID**
-   - Cara mendapatkan:
-     - Buka site di Netlify dashboard
-     - Site settings → General → Site details
-     - Copy "Site ID" atau "API ID"
+- **Triggers**: Manual `workflow_dispatch` or optional secondary branch push.
+- **Target**: Netlify hosting platform.
 
 ---
 
-## Cara Menggunakan
+## 🔒 Required GitHub Secrets
 
-### CI Workflow (Otomatis)
-Workflow ini berjalan otomatis setiap:
-- Push ke branch `main` atau `develop`
-- Membuat Pull Request ke `main` atau `develop`
+Configure the following encrypted secrets in repository settings (**Settings** -> **Secrets and variables** -> **Actions**):
 
-### Deployment Workflow
+### Vercel Deployment Secrets
 
-#### Opsi 1: Otomatis (Push ke main)
-Deploy otomatis ketika push ke branch `main`
+| Secret Key | Description | Source |
+| :--- | :--- | :--- |
+| `VERCEL_TOKEN` | Personal Access Token with full account deployment rights | Vercel Account Settings -> Tokens |
+| `VERCEL_ORG_ID` | Organization or Team Identifier | `.vercel/project.json` (`orgId`) |
+| `VERCEL_PROJECT_ID` | Specific Vercel Project Identifier | `.vercel/project.json` (`projectId`) |
 
-#### Opsi 2: Manual Trigger
-1. Buka repository GitHub
-2. Masuk ke tab "Actions"
-3. Pilih workflow yang diinginkan (Deploy to Vercel / Deploy to Netlify)
-4. Klik "Run workflow" → Pilih branch → Klik "Run workflow"
+### Netlify Deployment Secrets (Optional)
+
+| Secret Key | Description | Source |
+| :--- | :--- | :--- |
+| `NETLIFY_AUTH_TOKEN` | Personal Access Token for Netlify API | Netlify User Settings -> Access Tokens |
+| `NETLIFY_SITE_ID` | Target site API identifier | Netlify Site Settings -> General |
 
 ---
 
-## Catatan Penting
+## 🚀 Branch Protection Rules
 
-- Hanya aktifkan salah satu deployment workflow (Vercel atau Netlify)
-- Untuk menonaktifkan workflow, rename file dari `*.yml` menjadi `*.yml.disabled`
-- Pastikan branch `main` sudah terproteksi dengan branch protection rules
+To maintain main-branch stability:
+
+1. Require status checks to pass before merging (`CI / lint`, `CI / test`, `CI / build`).
+2. Require code reviews for Pull Requests targeting `main`.
