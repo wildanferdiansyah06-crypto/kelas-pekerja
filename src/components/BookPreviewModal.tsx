@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Clock, ArrowRight, BookOpen, Flame, Eye } from "lucide-react";
 import { Book } from "@/src/types";
 import { useNavbar } from "@/src/contexts/NavbarContext";
+import { useLanguage } from "@/src/contexts/LanguageContext";
+import { getLocalizedBook } from "@/src/lib/utils";
 
 interface BookPreviewModalProps {
   book: (Book & { slug: string }) | null;
@@ -14,10 +16,13 @@ interface BookPreviewModalProps {
   onClose: () => void;
 }
 
-export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: BookPreviewModalProps) {
+export default function BookPreviewModal({ book: rawBook, index = 0, isOpen, onClose }: BookPreviewModalProps) {
+  const { language, t } = useLanguage();
+  const book = rawBook ? (getLocalizedBook(rawBook, language) as Book & { slug: string }) : null;
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const { hideNavbar, showNavbar } = useNavbar();
+
 
   // Lock body scroll and control navbar visibility
   useEffect(() => {
@@ -221,14 +226,14 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
               className="group flex-1 flex items-center justify-center gap-2 px-3 py-2.5 bg-stone-900 dark:bg-[#c9a66b] text-white dark:text-stone-950 rounded-lg font-semibold text-[13px] shadow-lg shadow-black/5 active:scale-[0.98] transition-all touch-manipulation"
               onClick={onClose}
             >
-              <span className="truncate">Baca Buku</span>
+              <span className="truncate">{t.booksPage.readBook}</span>
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1 shrink-0" />
             </Link>
             <button
               onClick={onClose}
               className="flex-1 flex items-center justify-center px-3 py-2.5 border border-stone-200 dark:border-stone-800 text-stone-500 dark:text-stone-400 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-900 transition-colors duration-200 text-[13px] font-medium touch-manipulation"
             >
-              Tutup
+              {t.booksPage.close}
             </button>
           </div>
         </div>
@@ -258,7 +263,7 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <BookOpen size={40} className="text-stone-400 dark:text-stone-600 mb-4" />
-                <span className="text-sm text-stone-500 dark:text-stone-500 font-medium">Tidak ada cover</span>
+                <span className="text-sm text-stone-500 dark:text-stone-500 font-medium">{language === 'en' ? 'No cover' : 'Tidak ada cover'}</span>
               </div>
             )}
 
@@ -270,7 +275,7 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
                 </div>
               )}
               <span className="px-3 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase bg-white/95 dark:bg-stone-900/95 text-stone-800 dark:text-stone-200 backdrop-blur-md shadow-lg ring-1 ring-stone-200/50 dark:ring-stone-700/50 w-fit">
-                {book.category || "Umum"}
+                {book.category || (language === 'en' ? "General" : "Umum")}
               </span>
             </div>
           </div>
@@ -294,12 +299,12 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-stone-500 dark:text-stone-400 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-stone-200 dark:border-stone-700/50">
               <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
                 <Clock size={12} className="sm:size-4" />
-                <span className="truncate">{book.readTime || "5 menit baca"}</span>
+                <span className="truncate">{book.readTime || "5 min read"}</span>
               </span>
               {book.stats?.views !== undefined && (
                 <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
                   <Eye size={12} className="sm:size-4" />
-                  <span className="truncate">{formatViews(book.stats.views)} dibaca</span>
+                  <span className="truncate">{formatViews(book.stats.views)} {t.booksPage.views}</span>
                 </span>
               )}
               <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
@@ -333,14 +338,14 @@ export default function BookPreviewModal({ book, index = 0, isOpen, onClose }: B
                 className="group flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 bg-stone-800 dark:bg-[#c9a66b] text-stone-50 dark:text-stone-900 rounded-full font-medium transition-opacity duration-200 transform-gpu will-change-transform text-sm sm:text-base touch-manipulation"
                 onClick={onClose}
               >
-                Baca Selengkapnya
+                {t.booksPage.readBook}
                 <ArrowRight size={14} className="sm:size-[16px] transition-opacity duration-200" />
               </Link>
               <button
                 onClick={onClose}
                 className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-opacity duration-200 transform-gpu will-change-transform text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-stone-400/50 touch-manipulation"
               >
-                Tutup Preview
+                {t.booksPage.close}
               </button>
             </div>
           </div>

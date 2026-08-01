@@ -3,8 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, AnimatePresence, useSpring } from 'framer-motion';
 import { Moon, Sun, Coffee, BookOpen, ChevronUp, Quote, Settings2, X, Type, Palette } from 'lucide-react';
+import { useReader } from "@/src/contexts/ReaderContext";
+import ReaderControls from "@/src/components/ReaderControls";
+
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function MasaYangTakPernahBertanyaIzinPage() {
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const [darkMode, setDarkMode] = useState(true);
   const [showTexture, setShowTexture] = useState(true);
   const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
@@ -65,10 +71,9 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
   return (
     <div 
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-500 ${
-        darkMode ? 'bg-gray-950 text-gray-100' : 'bg-amber-50 text-gray-900'
-      }`}
+      className={`min-h-screen transition-colors duration-500 w-full ${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass}`}
     >
+      <ReaderControls />
       {backgroundPattern}
       
       {/* Reading Progress Indicator */}
@@ -157,8 +162,8 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
         <ChevronUp size={24} />
       </motion.button>
 
-      {/* Main Content */}
-      <main className={`max-w-4xl mx-auto px-6 py-16 ${fontSize === 'large' ? 'text-xl' : 'text-base'}`}>
+      {/* Main Content - Expanded for Laptop & Desktop Readability */}
+      <main className="max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased">
         
         {/* Hero Section */}
         <motion.div
@@ -176,18 +181,22 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             <Coffee size={64} className={darkMode ? 'text-amber-500' : 'text-amber-600'} />
           </motion.div>
           
-          <h1 className={`font-bold mb-6 ${darkMode ? 'text-gray-100' : 'text-gray-900'}`} style={{ fontSize: fontSize === 'large' ? '3.5rem' : '2.5rem' }}>
-            Masa yang Tak Pernah Bertanya Izin
+          <h1 className={`font-bold mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+            {language === 'en'
+              ? 'Time That Never Asks Permission'
+              : 'Masa yang Tak Pernah Bertanya Izin'}
           </h1>
           
-          <p className={`text-xl mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            Tentang Waktu yang Berlalu Tanpa Permisi dan Kenangan yang Tertinggal
+          <p className={`text-xl lg:text-2xl mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            {language === 'en'
+              ? 'On Time That Passes Without Asking and Memories Left Behind'
+              : 'Tentang Waktu yang Berlalu Tanpa Permisi dan Kenangan yang Tertinggal'}
           </p>
           
           <div className={`flex items-center gap-4 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-            <span>📖 40 menit baca</span>
+            <span>📖 {language === 'en' ? '40 min read' : '40 menit baca'}</span>
             <span>•</span>
-            <span>📅 7 Mei 2026</span>
+            <span>📅 {language === 'en' ? 'May 7, 2026' : '7 Mei 2026'}</span>
           </div>
         </motion.div>
 

@@ -2,11 +2,17 @@ export interface Book {
   id: string
   slug: string
   title: string
+  titleEn?: string
   subtitle?: string
+  subtitleEn?: string
   excerpt: string
+  excerptEn?: string
   content?: string
+  contentEn?: string
   preview: string
+  previewEn?: string
   description?: string
+  descriptionEn?: string
   author?: string
 
   category:
@@ -22,6 +28,7 @@ export interface Book {
 
   pages: number
   readTime: string
+  readTimeEn?: string
   cover: string
 
   downloadUrl?: string
@@ -35,20 +42,27 @@ export interface Book {
   }
 
   tags?: string[]
+  tagsEn?: string[]
   chapters?: Chapter[]
+  chaptersEn?: Chapter[]
 }
 
 export interface Chapter {
   title: string
+  titleEn?: string
   content: any[]
+  contentEn?: any[]
 }
 
 export interface Post {
   id: string
   slug: string
   title: string
+  titleEn?: string
   content: string
+  contentEn?: string
   excerpt: string
+  excerptEn?: string
 
   category?: string
   tags?: string[]
@@ -63,6 +77,7 @@ export interface Post {
 export interface Quote {
   id: number
   text: string
+  textEn?: string
 
   category:
     | "kopi"
@@ -82,6 +97,7 @@ export interface Quote {
 export interface Author {
   name: string
   bio: string
+  bioEn?: string
   photo?: string
 
   roles: {
@@ -97,6 +113,7 @@ export interface Author {
   }
 
   manifesto: string
+  manifestoEn?: string
 }
 
 export interface BankAccount {
@@ -108,8 +125,11 @@ export interface BankAccount {
 
 export interface SiteConfig {
   title: string
+  titleEn?: string
   description: string
+  descriptionEn?: string
   tagline: string
+  taglineEn?: string
 
   author: Author
   accounts?: BankAccount[]
@@ -119,3 +139,4 @@ export interface SiteConfig {
     href: string
   }[]
 }
+

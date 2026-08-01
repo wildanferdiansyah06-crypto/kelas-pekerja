@@ -3,6 +3,7 @@
 import { useState, lazy, Suspense, useEffect } from "react";
 import { Book } from "@/src/types";
 import BookCard from "./BookCard";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 const BookPreviewModal = lazy(() => import("./BookPreviewModal"));
 
 interface BooksGridClientProps {
@@ -26,6 +27,7 @@ export default function BooksGridClient({
   search,
   isDark = false,
 }: BooksGridClientProps) {
+  const { language } = useLanguage();
   const [selectedBook, setSelectedBook] = useState<(Book & { slug: string }) | null>(null);
 
   // Preload modal component on mount to eliminate first-click delay
@@ -57,7 +59,7 @@ export default function BooksGridClient({
           <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
             <h2 className={`text-xs sm:text-sm tracking-[0.1em] uppercase font-medium ${isDark ? 'text-[#d4a574] opacity-60' : 'text-[#8b7355]'}`}>
-              Paling Banyak Dibaca Minggu Ini
+              {language === 'en' ? 'Most Read This Week' : 'Paling Banyak Dibaca Minggu Ini'}
             </h2>
           </div>
 
@@ -111,7 +113,9 @@ export default function BooksGridClient({
             style={{ backgroundColor: 'var(--kp-accent)', opacity: 0.4 }}
           />
           <span className="text-xs sm:text-sm tracking-wide">
-            Menampilkan {filteredCount} dari {total} cerita
+            {language === 'en'
+              ? `Showing ${filteredCount} of ${total} stories`
+              : `Menampilkan ${filteredCount} dari ${total} cerita`}
             {category && category !== "all" && ` • ${category}`}
             {search && ` • "${search}"`}
           </span>

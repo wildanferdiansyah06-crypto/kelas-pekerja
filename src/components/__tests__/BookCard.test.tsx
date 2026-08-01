@@ -25,14 +25,14 @@ describe('BookCard', () => {
     expect(screen.getByText('Test Book')).toBeInTheDocument()
   })
 
-  it('should render book subtitle', () => {
+  it('should render read time', () => {
     render(<BookCard book={mockBook} />)
-    expect(screen.getByText('Test Subtitle')).toBeInTheDocument()
+    expect(screen.getByText(/10 menit/)).toBeInTheDocument()
   })
 
-  it('should render preview text', () => {
+  it('should render excerpt text', () => {
     render(<BookCard book={mockBook} />)
-    expect(screen.getByText(/Test preview content/)).toBeInTheDocument()
+    expect(screen.getByText(/Test excerpt/)).toBeInTheDocument()
   })
 
   it('should call onClick when clicked', () => {

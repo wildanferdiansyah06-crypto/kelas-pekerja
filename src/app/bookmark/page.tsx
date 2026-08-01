@@ -5,8 +5,10 @@ import { useTheme } from '@/src/components/ThemeProvider';
 import BookCard from '@/src/components/BookCard';
 import { Book } from '@/src/types';
 import { useBookmarks } from '@/src/hooks/useBookmarks';
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function BookmarkPage() {
+  const { t, language } = useLanguage();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const { bookmarks } = useBookmarks();
@@ -40,20 +42,20 @@ export default function BookmarkPage() {
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <p className={`text-[11px] tracking-[0.5em] uppercase mb-6 font-medium ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`}>
-            Tersimpan
+            {t.nav.saved}
           </p>
 
           <h1 className={`font-serif text-5xl md:text-6xl lg:text-7xl mb-6 tracking-tight ${isDark ? 'text-[#f4e4d4]' : 'text-[#f4e4d4]'}`}>
-            Bookmark
+            {t.savedPage.title}
           </h1>
 
           <p className={`text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-6 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
-            Buku yang lo simpan untuk dibaca nanti.
+            {t.savedPage.subtitle}
           </p>
 
           <div className={`flex items-center justify-center gap-6 text-sm ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
             <span className="flex items-center gap-2">
-              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`}>{bookmarkedBooks.length}</span> buku tersimpan
+              <span className={`font-semibold ${isDark ? 'text-[#d4a574]' : 'text-[#d4a574]'}`}>{bookmarkedBooks.length}</span> {language === 'en' ? 'books saved' : 'buku tersimpan'}
             </span>
           </div>
         </div>
@@ -64,7 +66,7 @@ export default function BookmarkPage() {
           {loading ? (
             <div className="text-center py-32">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b7355] dark:border-[#a08060] mx-auto mb-4"></div>
-              <p className={`text-[#8b7355] dark:text-[#a08060] text-sm`}>Memuat...</p>
+              <p className={`text-[#8b7355] dark:text-[#a08060] text-sm`}>{t.common.loading}</p>
             </div>
           ) : bookmarkedBooks.length === 0 ? (
             <div className="text-center py-32">
@@ -84,10 +86,12 @@ export default function BookmarkPage() {
                 </svg>
               </div>
               <p className={`font-serif text-2xl opacity-60 mb-4 ${isDark ? 'text-[#f4e4d4]' : 'text-[#8b7355]'}`}>
-                Belum ada bookmark
+                {t.savedPage.emptyState}
               </p>
               <p className={`text-base opacity-40 max-w-md mx-auto mb-8 ${isDark ? 'text-[#bfae9c]' : 'text-[#8b7355]'}`}>
-                Simpan buku yang menarik dengan mengklik tombol bookmark di setiap kartu buku.
+                {language === 'en'
+                  ? 'Save interesting books by clicking the bookmark button on any book card.'
+                  : 'Simpan buku yang menarik dengan mengklik tombol bookmark di setiap kartu buku.'}
               </p>
             </div>
           ) : (

@@ -1,14 +1,18 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import { Send, Share2, Quote, Sparkles, Coffee } from "lucide-react";
 import { supabase, isSupabaseConfigured } from "@/src/lib/supabase";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 interface QuoteItem {
   id: number;
   text: string;
+  textEn?: string;
   author: string;
+  authorEn?: string;
   category?: string;
+  categoryEn?: string;
   created_at?: string;
 }
 
@@ -17,41 +21,58 @@ const FALLBACK_QUOTES: QuoteItem[] = [
   {
     id: 1,
     text: "Kopi tidak menyelesaikan masalah, tapi kopi membuat masalah terasa bisa diselesaikan.",
+    textEn: "Coffee doesn't solve problems, but coffee makes problems feel solvable.",
     author: "Pekerja Shift Malam",
-    category: "Kopi"
+    authorEn: "Night Shift Worker",
+    category: "Kopi",
+    categoryEn: "Coffee"
   },
   {
     id: 2,
     text: "Shift terakhir selalu yang terpanjang, tapi juga yang paling berharga.",
+    textEn: "The last shift is always the longest, but also the most valuable.",
     author: "Karyawan Loyal",
-    category: "Kehidupan"
+    authorEn: "Loyal Employee",
+    category: "Kehidupan",
+    categoryEn: "Life"
   },
   {
     id: 3,
     text: "Satu cangkir kopi, ribuan cerita.",
+    textEn: "One cup of coffee, thousands of stories.",
     author: "Barista Senior",
-    category: "Refleksi"
+    authorEn: "Senior Barista",
+    category: "Refleksi",
+    categoryEn: "Reflection"
   },
   {
     id: 4,
     text: "Lelah itu wajar, menyerah itu pilihan.",
+    textEn: "Feeling tired is natural, giving up is a choice.",
     author: "Kepala Shift",
-    category: "Filosofi"
+    authorEn: "Shift Supervisor",
+    category: "Filosofi",
+    categoryEn: "Philosophy"
   },
   {
     id: 5,
     text: "Senyum pelanggan adalah bonus gaji terbaik.",
+    textEn: "A customer's smile is the best paycheck bonus.",
     author: "Staff Frontline",
-    category: "Kehidupan"
+    authorEn: "Frontline Staff",
+    category: "Kehidupan",
+    categoryEn: "Life"
   }
 ];
 
 export default function QuotesPage() {
+  const { t, language } = useLanguage();
   const [quotes, setQuotes] = useState<QuoteItem[]>([]);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
 
   // Form state
   const [quoteText, setQuoteText] = useState("");
@@ -214,20 +235,22 @@ export default function QuotesPage() {
             style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
           >
             <Coffee size={12} />
-            Kata-Kata Pekerja
+            {language === 'en' ? 'Worker Words' : 'Kata-Kata Pekerja'}
           </div>
 
           <h1
             className="typography-h1 mb-6 animate-slide-in-up delay-100"
             style={{ color: 'var(--kp-text-primary)' }}
           >
-            Quote Pekerja
+            {t.hero.recentQuotes}
           </h1>
           <p
             className="font-body text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200"
             style={{ color: 'var(--kp-text-secondary)' }}
           >
-            Kumpulan kata-kata yang menemani secangkir kopi di tengah shift yang panjang.
+            {language === 'en' 
+              ? 'A collection of words to accompany your coffee in the middle of a long shift.'
+              : 'Kumpulan kata-kata yang menemani secangkir kopi di tengah shift yang panjang.'}
           </p>
 
           {/* Decorative divider */}
@@ -247,12 +270,12 @@ export default function QuotesPage() {
           {loading ? (
             <div className="text-center py-16">
               <div className="w-8 h-8 border-2 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: 'rgba(212, 165, 116, 0.3)', borderTopColor: 'var(--kp-accent)' }} />
-              <span className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>Memuat quotes...</span>
+              <span className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>{t.common.loading}</span>
             </div>
           ) : quotes.length === 0 ? (
             <div className="text-center py-16 glass-card rounded-2xl">
               <Coffee size={32} className="mx-auto mb-4 opacity-30" style={{ color: 'var(--kp-accent)' }} />
-              <p className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>Belum ada quote tersedia.</p>
+              <p className="font-ui text-sm" style={{ color: 'var(--kp-text-muted)' }}>{language === 'en' ? 'No quotes available yet.' : 'Belum ada quote tersedia.'}</p>
             </div>
           ) : (
             <>
@@ -260,7 +283,7 @@ export default function QuotesPage() {
                 <div className="mb-8 text-center py-3 px-6 rounded-full glass inline-flex items-center gap-2 mx-auto" style={{ display: 'flex', maxWidth: 'fit-content', margin: '0 auto 2rem auto', border: '1px solid rgba(212, 165, 116, 0.1)' }}>
                   <Sparkles size={14} style={{ color: 'var(--kp-accent)' }} />
                   <p className="text-sm font-ui" style={{ color: 'var(--kp-text-muted)' }}>
-                    Mode Demo — Menggunakan quotes default
+                    {language === 'en' ? 'Demo Mode — Using default quotes' : 'Mode Demo — Menggunakan quotes default'}
                   </p>
                 </div>
               )}
@@ -292,13 +315,13 @@ export default function QuotesPage() {
                       className="relative z-10 font-display text-xl md:text-2xl italic leading-relaxed mb-6"
                       style={{ color: 'var(--kp-text-primary)' }}
                     >
-                      {quote.text}
+                      {language === 'en' && quote.textEn ? quote.textEn : quote.text}
                     </p>
 
                     <div className="relative z-10 flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--kp-border-medium)' }}>
                       <div>
                         <p className="font-ui text-sm font-medium mb-1" style={{ color: 'var(--kp-text-secondary)' }}>
-                          — {quote.author}
+                          — {language === 'en' && quote.authorEn ? quote.authorEn : quote.author}
                         </p>
                         {quote.category && (
                           <span
@@ -309,7 +332,7 @@ export default function QuotesPage() {
                               background: 'rgba(212, 165, 116, 0.05)',
                             }}
                           >
-                            {quote.category}
+                            {language === 'en' && quote.categoryEn ? quote.categoryEn : quote.category}
                           </span>
                         )}
                       </div>

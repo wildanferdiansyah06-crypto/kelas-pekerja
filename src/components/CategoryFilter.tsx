@@ -3,23 +3,35 @@
 
 import Link from "next/link";
 import { cn } from "@/src/lib/utils";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 interface CategoryFilterProps {
   activeCategory?: string;
   books: { category?: string }[];
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  'all': 'Semua',
-  'barista': 'Barista',
-  'cafe': 'Cafe',
-  'retail': 'Retail',
-  'kantoran': 'Kantoran',
-  'kitchen': 'Kitchen',
-  'umum': 'Umum',
-};
-
 export default function CategoryFilter({ activeCategory = 'all', books }: CategoryFilterProps) {
+  const { t, language } = useLanguage();
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    'all': t.categories.all,
+    'kehidupan': t.categories.kehidupan,
+    'cerita': t.categories.cerita,
+    'renungan': t.categories.renungan,
+    'proses': t.categories.proses,
+    'kopi': t.categories.kopi,
+    'pekerja': t.categories.pekerja,
+    'filosofi': t.categories.filosofi,
+    'refleksi': t.categories.refleksi,
+    'catatan-malam': t.categories.catatanMalam,
+    'barista': 'Barista',
+    'cafe': 'Cafe',
+    'retail': 'Retail',
+    'kantoran': language === 'en' ? 'Office' : 'Kantoran',
+    'kitchen': 'Kitchen',
+    'umum': language === 'en' ? 'General' : 'Umum',
+  };
+
   // Hitung count per kategori
   const counts = books.reduce((acc, book) => {
     const cat = book.category?.toLowerCase() || 'umum';

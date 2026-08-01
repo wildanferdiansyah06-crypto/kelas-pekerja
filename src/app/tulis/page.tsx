@@ -3,17 +3,13 @@
 
 
 import Link from "next/link";
-
 import { ArrowLeft, Send, Coffee, CheckCircle, Loader2, FileUp, X, Star, Quote, Sparkles, Eye, Heart, TrendingUp, Shield } from "lucide-react";
-
 import { useState, useRef, useEffect } from "react";
-
 import { useTheme } from "@/src/components/ThemeProvider";
-
-
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 export default function TulisPage() {
-
+  const { t, language } = useLanguage();
   const { theme } = useTheme();
 
   const isDark = theme === "dark";
@@ -579,58 +575,26 @@ export default function TulisPage() {
           
 
           {/* Back */}
-
           <Link href="/" className={`inline-flex items-center gap-2 text-sm ${themeColors.textSubtle} hover:${themeColors.text} transition-all mb-6 group`}>
-
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-
-            Kembali
-
+            {language === 'en' ? 'Back' : 'Kembali'}
           </Link>
 
-
-
           {/* HERO - Emotional Trigger */}
-
           <div className="text-center mb-10">
-
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${themeColors.highlight} text-xs tracking-wider uppercase mb-5`}>
-
               <Sparkles size={14} className={themeColors.accent} />
-
-              <span className={themeColors.accent}>Platform Review Kerja No.1 Indonesia</span>
-
+              <span className={themeColors.accent}>{language === 'en' ? 'Worker Room' : 'Ruang Bagi Pekerja'}</span>
             </div>
 
-            
-
-            <h1 className="font-serif text-3xl md:text-5xl mb-4 leading-tight">
-
-              Pengalaman Kerja Lo Bisa <span className={`${themeColors.accent} relative`}>
-
-                Nyelamatin
-
-                <svg className={`absolute -bottom-2 left-0 w-full h-3 ${themeColors.accent}`} viewBox="0 0 100 12" preserveAspectRatio="none">
-
-                  <path d="M0,8 Q50,0 100,8" stroke="currentColor" strokeWidth="3" fill="none" opacity="0.3"/>
-
-                </svg>
-
-              </span> Orang Lain
-
+            <h1 className="typography-h1 mb-4">
+              {t.writePage.title}
             </h1>
 
-            
-
-            <p className={`${themeColors.textMuted} text-lg max-w-xl mx-auto leading-relaxed mb-6`}>
-
-              Ribuan orang tiap hari <span className={themeColors.text}>bingung mau kerja di mana.</span> 
-
-              Dengan cerita lo, mereka bisa 
-
-              <span className={`${themeColors.text} font-medium`}> gak salah pilih tempat kerja.</span>
-
+            <p className={`${themeColors.textMuted} font-body text-base md:text-lg max-w-xl mx-auto leading-relaxed`}>
+              {t.writePage.subtitle}
             </p>
+          </div>
 
 
 
@@ -1247,13 +1211,8 @@ Tulis sejujur-jujurnya. Orang lain butuh kejujuran ini."
       <span>Kelas Pekerja {new Date().getFullYear()}</span>
 
     </div>
-
   </div>
-
 </div>
-
-</div>
-
 </main>
 
 <style jsx global>{`

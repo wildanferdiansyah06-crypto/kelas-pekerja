@@ -8,17 +8,42 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+import { Book } from "@/src/types";
+
 /**
- * Format date to Indonesian locale
+ * Format date to specified locale (default id)
  */
-export function formatDate(date: string | Date): string {
+export function formatDate(date: string | Date, lang: 'id' | 'en' = 'id'): string {
   const d = new Date(date);
-  return d.toLocaleDateString("id-ID", {
+  return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 }
+
+/**
+ * Get localized book details according to current language
+ */
+export function getLocalizedBook(book: Book, lang: 'id' | 'en'): Book {
+  if (lang === 'en') {
+    const rawReadTime = book.readTimeEn || book.readTime || '';
+    const localizedReadTime = rawReadTime ? rawReadTime.replace(/menit/g, 'min read') : '5 min read';
+
+    return {
+      ...book,
+      title: book.titleEn || book.title,
+      subtitle: book.subtitleEn || book.subtitle,
+      excerpt: book.excerptEn || book.excerpt,
+      preview: book.previewEn || book.preview,
+      readTime: localizedReadTime,
+      tags: book.tagsEn || book.tags,
+      chapters: book.chaptersEn || book.chapters,
+    };
+  }
+  return book;
+}
+
 
 /**
  * Format number to Indonesian locale

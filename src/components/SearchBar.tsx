@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 interface SearchBarProps {
   initialSearch?: string;
 }
 
 export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
+  const { t } = useLanguage();
   const [search, setSearch] = useState(initialSearch);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,7 +39,7 @@ export default function SearchBar({ initialSearch = '' }: SearchBarProps) {
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Cari buku..."
+        placeholder={t.booksPage.searchPlaceholder}
         className="w-full px-4 py-2.5 rounded-full font-sans text-sm
                  focus:outline-none focus:ring-2 transition-all duration-200"
         style={{

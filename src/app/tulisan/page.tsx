@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { PenLine, Clock, ArrowRight, Sparkles, TrendingUp, ChevronRight, Heart, BookOpen } from "lucide-react";
 import { useState, useMemo, useCallback, memo } from "react";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 // Memoized animation variants to prevent recreation
 const fadeUp = {
@@ -17,15 +18,18 @@ const stagger = {
   show: { transition: { staggerChildren: 0.06 } },
 };
 
-const CATEGORIES = ["Semua", "Ruang Bagi", "Barista & FnB", "Retail", "Office & Korporat", "Gig Economy", "Startup", "Kreatif"];
+const CATEGORIES_ID = ["Semua", "Ruang Bagi", "Barista & FnB", "Retail", "Office & Korporat", "Gig Economy", "Startup", "Kreatif"];
+const CATEGORIES_EN = ["All", "Shared Space", "Barista & FnB", "Retail", "Office & Corporate", "Gig Economy", "Startup", "Creative"];
 
 // Memoized post card component
 const PostCard = memo(({
   post,
   index,
+  language,
 }: {
   post: any;
   index: number;
+  language: string;
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -45,7 +49,7 @@ const PostCard = memo(({
               background: 'rgba(212, 165, 116, 0.05)',
             }}
           >
-            {post.category}
+            {language === 'en' && post.categoryEn ? post.categoryEn : post.category}
           </span>
           <span className="flex items-center gap-1.5 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
             <Heart size={12} style={{ color: 'var(--kp-accent)' }} />
@@ -54,20 +58,20 @@ const PostCard = memo(({
         </div>
 
         <h3 className="font-display text-xl mb-3 group-hover:text-glow transition-all duration-300 leading-tight" style={{ color: 'var(--kp-text-primary)' }}>
-          {post.title}
+          {language === 'en' && post.titleEn ? post.titleEn : post.title}
         </h3>
 
         <p className="font-body text-sm leading-relaxed mb-5 line-clamp-3" style={{ color: 'var(--kp-text-muted)' }}>
-          {post.excerpt}
+          {language === 'en' && post.excerptEn ? post.excerptEn : post.excerpt}
         </p>
 
         <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: 'var(--kp-border-medium)' }}>
           <div className="flex items-center gap-2 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
             <Clock size={12} style={{ color: 'var(--kp-accent)' }} />
-            {post.readTime}
+            {language === 'en' && post.readTimeEn ? post.readTimeEn : post.readTime}
           </div>
           <div className="flex items-center gap-1 text-xs font-ui font-medium group-hover:text-[var(--kp-accent)] transition-colors" style={{ color: 'var(--kp-text-muted)' }}>
-            <span>Baca</span>
+            <span>{language === 'en' ? 'Read' : 'Baca'}</span>
             <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
@@ -79,7 +83,7 @@ const PostCard = memo(({
 PostCard.displayName = "PostCard";
 
 // Memoized trending post component
-const TrendingPostCard = memo(({ post }: { post: any }) => (
+const TrendingPostCard = memo(({ post, language }: { post: any; language: string }) => (
   <Link
     href={`/tulisan/${post.slug}`}
     className="flex-shrink-0 w-72 p-5 rounded-xl glass-card group"
@@ -89,7 +93,7 @@ const TrendingPostCard = memo(({ post }: { post: any }) => (
         className="text-[10px] tracking-[0.2em] uppercase font-ui font-semibold"
         style={{ color: 'var(--kp-accent)' }}
       >
-        {post.category}
+        {language === 'en' && post.categoryEn ? post.categoryEn : post.category}
       </span>
       <span className="flex items-center gap-1 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
         <Heart size={12} style={{ color: 'var(--kp-accent)' }} />
@@ -97,11 +101,11 @@ const TrendingPostCard = memo(({ post }: { post: any }) => (
       </span>
     </div>
     <h3 className="font-display text-lg group-hover:text-glow transition-all duration-300 line-clamp-2 mb-3" style={{ color: 'var(--kp-text-primary)' }}>
-      {post.title}
+      {language === 'en' && post.titleEn ? post.titleEn : post.title}
     </h3>
     <div className="flex items-center gap-2 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
       <Clock size={12} />
-      {post.readTime}
+      {language === 'en' && post.readTimeEn ? post.readTimeEn : post.readTime}
       <ChevronRight size={12} className="ml-auto group-hover:translate-x-1 transition-transform" style={{ color: 'var(--kp-accent)' }} />
     </div>
   </Link>
@@ -110,6 +114,7 @@ const TrendingPostCard = memo(({ post }: { post: any }) => (
 TrendingPostCard.displayName = "TrendingPostCard";
 
 export default function TulisanPage() {
+  const { language, t } = useLanguage();
   const posts = useMemo(() => (postsData as any).posts || [], []);
   const [activeCategory, setActiveCategory] = useState("Semua");
 
@@ -121,9 +126,9 @@ export default function TulisanPage() {
       .filter((p: any) => !p.isFeatured)
       .sort((a: any, b: any) => (b.likes || 0) - (a.likes || 0))
       .slice(0, 4);
-    const show = activeCategory === "Semua" || activeCategory === "Ruang Bagi";
+    const show = activeCategory === "Semua" || activeCategory === "Ruang Bagi" || activeCategory === "All" || activeCategory === "Shared Space";
 
-    const filtered = activeCategory === "Semua"
+    const filtered = (activeCategory === "Semua" || activeCategory === "All")
       ? regular
       : regular.filter((post: any) => post.category === activeCategory);
 
@@ -155,20 +160,22 @@ export default function TulisanPage() {
             <motion.div variants={fadeUp} className="flex items-center justify-center gap-3 mb-6">
               <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--kp-accent)] opacity-50" />
               <span className="text-[10px] tracking-[0.4em] uppercase font-ui font-medium" style={{ color: 'var(--kp-accent)' }}>
-                Arsip Pikiran
+                {language === 'en' ? 'Archive of Thoughts' : 'Arsip Pikiran'}
               </span>
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--kp-accent)] opacity-50" />
             </motion.div>
 
             <motion.h1 variants={fadeUp} className="typography-h1 mb-6">
               <span className="block text-xl sm:text-2xl mb-3 italic font-light" style={{ color: 'var(--kp-accent)' }}>
-                ruang bagi
+                {language === 'en' ? 'shared space' : 'ruang bagi'}
               </span>
-              <span style={{ color: 'var(--kp-text-primary)' }}>Tulisan</span>
+              <span style={{ color: 'var(--kp-text-primary)' }}>{language === 'en' ? 'Essays' : 'Tulisan'}</span>
             </motion.h1>
 
             <motion.p variants={fadeUp} className="font-body text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-8" style={{ color: 'var(--kp-text-secondary)' }}>
-              Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.
+              {language === 'en'
+                ? 'Amidst the unstoppable rush of time, there are moments when words become the only refuge.'
+                : 'Di antara deru waktu yang tak pernah berhenti, ada saat-saat ketika kata-kata menjadi satu-satunya tempat perlindungan.'}
             </motion.p>
 
             <motion.div variants={fadeUp}>
@@ -190,7 +197,7 @@ export default function TulisanPage() {
                 }}
               >
                 <PenLine size={18} />
-                Tulis Ceritamu
+                {t.nav.write}
               </Link>
             </motion.div>
           </div>
@@ -234,33 +241,37 @@ export default function TulisanPage() {
               </span>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => handleCategoryClick(cat)}
-                  className="px-4 py-2 text-xs tracking-wider rounded-full border font-ui transition-all duration-300"
-                  style={{
-                    backgroundColor: activeCategory === cat ? 'var(--kp-accent)' : 'transparent',
-                    color: activeCategory === cat ? '#0a0908' : 'var(--kp-text-muted)',
-                    borderColor: activeCategory === cat ? 'var(--kp-accent)' : 'rgba(212, 165, 116, 0.15)',
-                    fontWeight: activeCategory === cat ? 600 : 400,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.4)';
-                      e.currentTarget.style.color = 'var(--kp-text-primary)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeCategory !== cat) {
-                      e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.15)';
-                      e.currentTarget.style.color = 'var(--kp-text-muted)';
-                    }
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
+              {(language === 'en' ? CATEGORIES_EN : CATEGORIES_ID).map((cat, idx) => {
+                const idCat = CATEGORIES_ID[idx];
+                const isSelected = activeCategory === cat || activeCategory === idCat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryClick(idCat)}
+                    className="px-4 py-2 text-xs tracking-wider rounded-full border font-ui transition-all duration-300"
+                    style={{
+                      backgroundColor: isSelected ? 'var(--kp-accent)' : 'transparent',
+                      color: isSelected ? '#0a0908' : 'var(--kp-text-muted)',
+                      borderColor: isSelected ? 'var(--kp-accent)' : 'rgba(212, 165, 116, 0.15)',
+                      fontWeight: isSelected ? 600 : 400,
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.4)';
+                        e.currentTarget.style.color = 'var(--kp-text-primary)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) {
+                        e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.15)';
+                        e.currentTarget.style.color = 'var(--kp-text-muted)';
+                      }
+                    }}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -338,7 +349,7 @@ export default function TulisanPage() {
             className="grid tablet:grid-cols-2 laptop:grid-cols-3 gap-6 mb-16"
           >
             {filteredPosts.slice(0, 12).map((post: any, index: number) => (
-              <PostCard key={post.slug} post={post} index={index} />
+              <PostCard key={post.slug} post={post} index={index} language={language} />
             ))}
           </motion.div>
 
@@ -431,15 +442,17 @@ export default function TulisanPage() {
                 {/* Right Side - Stats */}
                 <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2 }} className="laptop:col-span-1">
                   <div className="glass-card rounded-2xl p-8 h-full flex flex-col">
-                    <h4 className="font-display text-xl text-center mb-6" style={{ color: 'var(--kp-text-primary)' }}>Statistik Cerita</h4>
+                    <h4 className="font-display text-xl text-center mb-6" style={{ color: 'var(--kp-text-primary)' }}>
+                      {language === 'en' ? 'Story Statistics' : 'Statistik Cerita'}
+                    </h4>
 
                     {/* Main Stats */}
                     <div className="grid grid-cols-2 gap-6 mb-8">
                       {[
-                        { value: posts.length, label: 'Total Tulisan' },
-                        { value: featuredPost ? 1 : 0, label: 'Cerita Unggulan' },
-                        { value: trendingPosts.length, label: 'Sedang Trending' },
-                        { value: CATEGORIES.length, label: 'Kategori' },
+                        { value: posts.length, label: language === 'en' ? 'Total Essays' : 'Total Tulisan' },
+                        { value: featuredPost ? 1 : 0, label: language === 'en' ? 'Featured Story' : 'Cerita Unggulan' },
+                        { value: trendingPosts.length, label: language === 'en' ? 'Trending' : 'Sedang Trending' },
+                        { value: CATEGORIES_ID.length, label: language === 'en' ? 'Categories' : 'Kategori' },
                       ].map((stat) => (
                         <div key={stat.label} className="text-center">
                           <div className="text-3xl font-display font-bold text-glow mb-1" style={{ color: 'var(--kp-accent)' }}>{stat.value}</div>
@@ -451,7 +464,9 @@ export default function TulisanPage() {
                     {/* Quote Section */}
                     <div className="mt-auto pt-6 border-t" style={{ borderColor: 'rgba(212, 165, 116, 0.1)' }}>
                       <p className="text-sm font-display italic text-center leading-relaxed mb-4" style={{ color: 'var(--kp-text-muted)' }}>
-                        &ldquo;Setiap kata yang ditulis adalah kontribusi bagi mereka yang masih mencari jalan.&rdquo;
+                        {language === 'en'
+                          ? '“Every word written is a contribution to those still searching for a way.”'
+                          : '“Setiap kata yang ditulis adalah kontribusi bagi mereka yang masih mencari jalan.”'}
                       </p>
                       <div className="flex justify-center">
                         <Link

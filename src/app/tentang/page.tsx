@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail, MapPin, Coffee, Book, ExternalLink, Github, Instagram, MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function TentangPage() {
+  const { language } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
 
   const books = [
     {
@@ -79,6 +80,8 @@ export default function TentangPage() {
       description: "Chat langsung"
     },
   ];
+
+  if (!mounted) return null;
 
   return (
     <div style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-text-primary)' }}>
@@ -171,7 +174,7 @@ export default function TentangPage() {
                   style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
                 >
                   <Sparkles size={12} />
-                  Tentang Penulis
+                  {language === 'en' ? 'About Author' : 'Tentang Penulis'}
                 </div>
 
                 <h1
@@ -185,14 +188,16 @@ export default function TentangPage() {
                   className="font-display text-xl sm:text-2xl italic mb-6 animate-fade-in-up delay-100"
                   style={{ color: 'var(--kp-text-muted)' }}
                 >
-                  Bukan Penulis, Bukan Motivator
+                  {language === 'en' ? 'Not a Writer, Not a Motivator' : 'Bukan Penulis, Bukan Motivator'}
                 </p>
 
                 <p
                   className="font-body text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto md:mx-0 animate-fade-in-up delay-200"
                   style={{ color: 'var(--kp-text-secondary)' }}
                 >
-                  Seseorang yang mencoba memahami hidupnya melalui kata-kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis — bukan untuk menjadi terkenal, tetapi untuk tetap waras.
+                  {language === 'en'
+                    ? 'Just someone trying to understand life through words. Formerly a barista, formerly a mural artist, now writing—not to be famous, but to stay sane.'
+                    : 'Seseorang yang mencoba memahami hidupnya melalui kata-kata. Pernah menjadi barista, pernah menjadi muralis, sekarang menulis — bukan untuk menjadi terkenal, tetapi untuk tetap waras.'}
                 </p>
 
                 {/* Location & Email pills */}
@@ -234,20 +239,25 @@ export default function TentangPage() {
                     <Book size={18} style={{ color: 'var(--kp-accent)' }} />
                   </div>
                   <h2 className="font-display text-2xl" style={{ color: 'var(--kp-text-primary)' }}>
-                    Penulis
+                    {language === 'en' ? 'The Writer' : 'Penulis'}
                   </h2>
                 </div>
 
                 <p className="font-body text-base leading-relaxed mb-8" style={{ color: 'var(--kp-text-secondary)' }}>
-                  Menulis sebagai cara untuk memahami hidup dan menjaga kewarasan. Setiap kata adalah upaya untuk tetap hadir di dunia yang terus berubah.
+                  {language === 'en'
+                    ? 'Writing as a way to understand life and preserve sanity. Every word is an attempt to remain present in an ever-shifting world.'
+                    : 'Menulis sebagai cara untuk memahami hidup dan menjaga kewarasan. Setiap kata adalah upaya untuk tetap hadir di dunia yang terus berubah.'}
                 </p>
 
                 <div className="mb-6">
                   <h3 className="font-ui text-xs font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--kp-accent)' }}>
-                    Genre Karya
+                    {language === 'en' ? 'Genres & Themes' : 'Genre Karya'}
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {['Fiksi', 'Puisi', 'Filsafat', 'Refleksi', 'Akademis'].map((genre) => (
+                    {(language === 'en'
+                      ? ['Fiction', 'Poetry', 'Philosophy', 'Reflection', 'Academic']
+                      : ['Fiksi', 'Puisi', 'Filsafat', 'Refleksi', 'Akademis']
+                    ).map((genre) => (
                       <span
                         key={genre}
                         className="font-ui px-3 py-1.5 rounded-full text-xs border"
@@ -265,7 +275,7 @@ export default function TentangPage() {
 
                 <div>
                   <h3 className="font-ui text-xs font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--kp-accent)' }}>
-                    Tools Menulis
+                    {language === 'en' ? 'Writing Tools' : 'Tools Menulis'}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {['Notion', 'Obsidian', 'Typora', 'VS Code'].map((tool) => (
@@ -295,22 +305,32 @@ export default function TentangPage() {
                     <Coffee size={18} style={{ color: 'var(--kp-accent)' }} />
                   </div>
                   <h2 className="font-display text-2xl" style={{ color: 'var(--kp-text-primary)' }}>
-                    Proses Menulis
+                    {language === 'en' ? 'Writing Process' : 'Proses Menulis'}
                   </h2>
                 </div>
 
                 <p className="font-body text-base leading-relaxed mb-8 flex-1" style={{ color: 'var(--kp-text-secondary)' }}>
-                  Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.
+                  {language === 'en'
+                    ? 'Writing while awaiting dusk and sipping coffee until dawn breaks. Every sentence is born from night quietness and warm coffee aroma.'
+                    : 'Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.'}
                 </p>
 
                 {/* Visual process steps */}
                 <div className="space-y-4">
-                  {[
-                    { time: 'Sore', desc: 'Mengumpulkan serpihan pikiran' },
-                    { time: 'Malam', desc: 'Menuang ke dalam kata-kata' },
-                    { time: 'Dini Hari', desc: 'Menyempurnakan dalam sunyi' },
-                    { time: 'Fajar', desc: 'Merelakan untuk dibaca' },
-                  ].map((step, i) => (
+                  {(language === 'en'
+                    ? [
+                        { time: 'Evening', desc: 'Gathering fragmented thoughts' },
+                        { time: 'Night', desc: 'Pouring into quiet sentences' },
+                        { time: 'Midnight', desc: 'Refining in deep silence' },
+                        { time: 'Dawn', desc: 'Releasing to be read' },
+                      ]
+                    : [
+                        { time: 'Sore', desc: 'Mengumpulkan serpihan pikiran' },
+                        { time: 'Malam', desc: 'Menuang ke dalam kata-kata' },
+                        { time: 'Dini Hari', desc: 'Menyempurnakan dalam sunyi' },
+                        { time: 'Fajar', desc: 'Merelakan untuk dibaca' },
+                      ]
+                  ).map((step, i) => (
                     <div key={i} className="flex items-center gap-4">
                       <div className="relative">
                         <div
@@ -346,13 +366,15 @@ export default function TentangPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <div className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--kp-text-muted)' }}>
-                Koleksi Karya
+                {language === 'en' ? 'Works Archive' : 'Koleksi Karya'}
               </div>
               <h2 className="typography-h2 mb-4" style={{ color: 'var(--kp-text-primary)' }}>
-                Karya
+                {language === 'en' ? 'Books & Writings' : 'Karya'}
               </h2>
               <p className="font-body text-lg max-w-2xl mx-auto opacity-80" style={{ color: 'var(--kp-text-secondary)' }}>
-                Enam buku yang lahir dari proses mencari makna dalam setiap halaman
+                {language === 'en'
+                  ? 'Six books born from the search for meaning on every page'
+                  : 'Enam buku yang lahir dari proses mencari makna dalam setiap halaman'}
               </p>
             </div>
 

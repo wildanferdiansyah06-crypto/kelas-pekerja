@@ -42,7 +42,7 @@ export async function getBooks(filters?: {
   try {
     sanityBooks = await client.fetch<any[]>(query, params);
   } catch (error) {
-    console.error('Error fetching books from Sanity:', error);
+    console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     
     // Fallback to local data
     let localBooks = booksData.books || [];
@@ -148,7 +148,7 @@ export async function getBook(slug: string) {
   try {
     sanityBook = await client.fetch<any>(query, { slug });
   } catch (error) {
-    console.error('Error fetching book from Sanity:', error);
+    console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     const localBooks = booksData.books || [];
     const found = localBooks.find((b: any) => b.slug === slug);
     if (found) return { book: found as unknown as Book };
@@ -239,7 +239,7 @@ export async function getRandomQuote() {
   try {
     quotes = await client.fetch<Quote[]>(query);
   } catch (error) {
-    console.error('Error fetching quotes from Sanity:', error);
+    console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     quotes = (quotesData.quotes as unknown as Quote[]) || [];
   }
   
@@ -280,9 +280,9 @@ export async function getQuotes(filters?: {
 
   let quotes: Quote[] = [];
   try {
-    quotes = await client.fetch<Quote[]>(query, params);
+    quotes = await client.fetch<Quote[]>(query);
   } catch (error) {
-    console.error('Error fetching quotes from Sanity:', error);
+    console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     quotes = (quotesData.quotes as unknown as Quote[]) || [];
     
     if (filters?.category) {
@@ -312,7 +312,7 @@ export async function getConfig(): Promise<SiteConfig> {
     const config = await client.fetch<SiteConfig>(query);
     return config;
   } catch (error) {
-    console.error('Error fetching config from Sanity:', error);
+    console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     // Return fallback config if Sanity fails
     return {
       title: "Kelas Pekerja",

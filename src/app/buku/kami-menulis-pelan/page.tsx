@@ -3,15 +3,16 @@
 
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-
 import { useTheme } from "@/src/components/ThemeProvider";
+import { useReader } from "@/src/contexts/ReaderContext";
+import ReaderControls from "@/src/components/ReaderControls";
 
-
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function KamiMenulisPelanPage() {
-
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const { theme: globalTheme } = useTheme();
-
   const [mounted, setMounted] = useState(false);
 
   const [subtitleText, setSubtitleText] = useState("");
@@ -262,7 +263,7 @@ export default function KamiMenulisPelanPage() {
 
 
 
-  const title = "Kami Menulis Pelan";
+  const title = language === 'en' ? "WE WRITE SLOWLY" : "Kami Menulis Pelan";
 
   const letters = title.split("");
 
@@ -335,8 +336,8 @@ export default function KamiMenulisPelanPage() {
 
 
   return (
-
-    <div ref={mainRef} className={`${theme.bg} ${theme.text} relative overflow-hidden transition-colors duration-500 w-full`}>
+    <div ref={mainRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} relative overflow-hidden transition-colors duration-500 w-full min-h-screen`}>
+      <ReaderControls />
 
       
 

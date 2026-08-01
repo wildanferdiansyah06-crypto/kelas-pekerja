@@ -3,60 +3,70 @@
     {
       "id": 1,
       "text": "Hari ini kopi lebih pahit dari biasanya. Mungkin bukan kopinya.",
+      "textEn": "Today the coffee tastes bitterer than usual. Perhaps it isn't the coffee.",
       "category": "kopi",
       "mood": "melancholic"
     },
     {
       "id": 2,
       "text": "Ada yang bilang diam itu emas. Aku bilang diam itu napas.",
+      "textEn": "Some say silence is golden. I say silence is breath.",
       "category": "refleksi",
       "mood": "peaceful"
     },
     {
       "id": 3,
       "text": "Menulis bukan untuk diingat. Menulis untuk tidak melupakan.",
+      "textEn": "Writing is not to be remembered. Writing is to never forget.",
       "category": "menulis",
       "mood": "hopeful"
     },
     {
       "id": 4,
       "text": "Kopi mengajarkan satu hal: pahit pun bisa dinikmati jika kita pelan.",
+      "textEn": "Coffee teaches one thing: even bitterness can be savored if we take it slow.",
       "category": "kopi",
       "mood": "calm"
     },
     {
       "id": 5,
       "text": "Hidup sering terasa biasa saja. Tapi mungkin memang di situlah maknanya.",
+      "textEn": "Life often feels ordinary. But perhaps that is precisely where its meaning lies.",
       "category": "refleksi",
       "mood": "contemplative"
     },
     {
       "id": 6,
       "text": "Beberapa tulisan tidak dibuat untuk dunia. Hanya untuk menyelamatkan diri sendiri.",
+      "textEn": "Some writings are not created for the world. Only to save oneself.",
       "category": "menulis",
       "mood": "deep"
     },
     {
       "id": 7,
       "text": "Ada percakapan yang tidak pernah terjadi, tapi tetap kita ingat.",
+      "textEn": "There are conversations that never happened, yet we still remember them.",
       "category": "kehidupan",
       "mood": "melancholic"
     },
     {
       "id": 8,
       "text": "Kopi dingin mengajarkan kesabaran pada mereka yang terlalu terburu-buru.",
+      "textEn": "Cold coffee teaches patience to those who are in too much of a rush.",
       "category": "kopi",
       "mood": "calm"
     },
     {
       "id": 9,
       "text": "Tidak semua perjalanan harus cepat. Beberapa hanya perlu jujur.",
+      "textEn": "Not all journeys need to be fast. Some just need to be honest.",
       "category": "kehidupan",
       "mood": "hopeful"
     },
     {
       "id": 10,
       "text": "Kadang kita tidak mencari jawaban. Kita hanya ingin didengar.",
+      "textEn": "Sometimes we are not looking for answers. We just want to be heard.",
       "category": "refleksi",
       "mood": "quiet"
     }

@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Book as BookIcon, Sparkles } from "lucide-react";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 import CategoryFilter from "@/src/components/CategoryFilter";
 import SearchBar from "@/src/components/SearchBar";
@@ -34,6 +35,7 @@ function makeSlug(title: string): string {
 }
 
 function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
+  const { t, language } = useLanguage();
   return (
     <div className="text-center py-32 animate-fade-in-up">
       <div
@@ -42,12 +44,12 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
         <BookIcon size={32} style={{ color: 'var(--kp-accent)', opacity: 0.5 }} />
       </div>
       <p className="font-display text-2xl mb-4" style={{ color: 'var(--kp-text-primary)', opacity: 0.6 }}>
-        {hasFilters ? "Tidak ada buku yang cocok" : "Rak masih terlalu ringan"}
+        {hasFilters ? t.booksPage.noBooksFound : (language === 'en' ? "Shelf is empty" : "Rak masih terlalu ringan")}
       </p>
       <p className="font-body text-base max-w-md mx-auto mb-8" style={{ color: 'var(--kp-text-muted)', opacity: 0.4 }}>
         {hasFilters
-          ? "Coba ubah filter kategori atau kata kunci pencarian"
-          : "Belum banyak cerita di sini. Jadi yang pertama berbagi pengalaman lo."}
+          ? (language === 'en' ? "Try changing category filter or search keywords" : "Coba ubah filter kategori atau kata kunci pencarian")
+          : (language === 'en' ? "Not many stories here yet. Be the first to share your experience." : "Belum banyak cerita di sini. Jadi yang pertama berbagi pengalaman lo.")}
       </p>
       {!hasFilters && (
         <Link
@@ -68,7 +70,7 @@ function EmptyState({ hasFilters = false }: { hasFilters?: boolean }) {
             e.currentTarget.style.boxShadow = 'none';
           }}
         >
-          <span>Tulis Pengalaman Lo</span>
+          <span>{t.nav.write}</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -141,6 +143,7 @@ function GridWithData({
 }
 
 function PageContent() {
+  const { t, language } = useLanguage();
   const searchParams = useSearchParams();
 
   const [booksWithSlugs, setBooksWithSlugs] = useState<(Book & { slug: string })[]>([]);
@@ -202,22 +205,21 @@ function PageContent() {
             style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
           >
             <Sparkles size={12} className="animate-pulse" />
-            Perpustakaan Mini
+            {language === 'en' ? 'Mini Library' : 'Perpustakaan Mini'}
           </div>
 
           <h1
             className="typography-h1 mb-6 animate-slide-in-up delay-100"
             style={{ color: 'var(--kp-text-primary)' }}
           >
-            Rak Buku
+            {t.booksPage.title}
           </h1>
 
           <p
             className="font-body text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 animate-fade-in-up delay-200 text-balance"
             style={{ color: 'var(--kp-text-secondary)' }}
           >
-            &ldquo;Kumpulan pengalaman kerja nyata dari barista, retail staff,
-            dan pekerja kantoran yang gak diajarin di sekolah.&rdquo;
+            {t.booksPage.subtitle}
           </p>
 
           {/* Stats */}
@@ -227,17 +229,17 @@ function PageContent() {
           >
             <span className="flex items-center gap-2">
               <span className="font-semibold text-glow" style={{ color: 'var(--kp-accent)' }}>{total}</span>
-              <span style={{ color: 'var(--kp-text-muted)' }}>cerita</span>
+              <span style={{ color: 'var(--kp-text-muted)' }}>{language === 'en' ? 'stories' : 'cerita'}</span>
             </span>
             <span className="w-[1px] h-4" style={{ backgroundColor: 'rgba(212, 165, 116, 0.2)' }} />
             <span className="flex items-center gap-2">
               <span className="font-semibold text-glow" style={{ color: 'var(--kp-accent)' }}>{uniqueCategories.length}</span>
-              <span style={{ color: 'var(--kp-text-muted)' }}>kategori</span>
+              <span style={{ color: 'var(--kp-text-muted)' }}>{language === 'en' ? 'categories' : 'kategori'}</span>
             </span>
             <span className="w-[1px] h-4" style={{ backgroundColor: 'rgba(212, 165, 116, 0.2)' }} />
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--kp-accent)', boxShadow: '0 0 6px rgba(212, 165, 116, 0.5)' }} />
-              <span style={{ color: 'var(--kp-text-muted)' }}>diupdate mingguan</span>
+              <span style={{ color: 'var(--kp-text-muted)' }}>{language === 'en' ? 'updated weekly' : 'diupdate mingguan'}</span>
             </span>
           </div>
         </div>

@@ -2,14 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
-import { Moon, Sun, Coffee, BookOpen, ChevronUp, Quote, Settings2, X, Type, Palette, Eye, EyeOff } from 'lucide-react';
+import { Coffee, BookOpen, ChevronUp, Quote } from 'lucide-react';
+import { useReader } from '@/src/contexts/ReaderContext';
+import { useLanguage } from '@/src/contexts/LanguageContext';
+import ReaderControls from '@/src/components/ReaderControls';
 
 export default function SeniMenyeduhiKehidupanPage() {
-  const [darkMode, setDarkMode] = useState(true);
-  const [showTexture, setShowTexture] = useState(true);
-  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
-  const [showControls, setShowControls] = useState(false);
+  const { language } = useLanguage();
+  const { theme: readerTheme, fontSize, themeStyles, fontFamilyClass } = useReader();
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
+  const [showTexture] = useState(true);
   const [activeSection, setActiveSection] = useState('');
+  const [progress] = useState(0);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
@@ -20,36 +24,6 @@ export default function SeniMenyeduhiKehidupanPage() {
     damping: 30,
     restDelta: 0.001
   });
-
-  // Sync dengan tema global
-  useEffect(() => {
-    const checkGlobalTheme = () => {
-      const html = document.documentElement;
-      if (html.classList.contains('dark')) setDarkMode(true);
-      else if (html.classList.contains('light')) setDarkMode(false);
-    };
-    
-    checkGlobalTheme();
-    
-    const observer = new MutationObserver(checkGlobalTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    
-    return () => observer.disconnect();
-  }, []);
-
-  // Toggle tema & sync ke global
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  };
 
   // Track active section untuk TOC
   useEffect(() => {
@@ -101,16 +75,16 @@ export default function SeniMenyeduhiKehidupanPage() {
     progress: 'bg-amber-700'
   };
 
-  const fontSizeClasses = fontSize === 'large' ? {
-    body: 'text-lg md:text-xl leading-relaxed',
-    heading: 'text-3xl md:text-5xl',
-    subheading: 'text-xl md:text-2xl',
-    small: 'text-sm'
+  const fontSizeClasses = (fontSize === 'l' || fontSize === 'xl') ? {
+    body: 'text-xl md:text-2xl lg:text-[1.4rem] leading-[1.85] lg:leading-[2.0]',
+    heading: 'text-4xl md:text-6xl lg:text-7xl',
+    subheading: 'text-2xl md:text-3xl lg:text-4xl',
+    small: 'text-base'
   } : {
-    body: 'text-base md:text-lg leading-[1.8]',
-    heading: 'text-2xl md:text-4xl',
-    subheading: 'text-lg md:text-xl',
-    small: 'text-xs'
+    body: 'text-lg md:text-xl lg:text-[1.25rem] leading-[1.8] lg:leading-[1.95]',
+    heading: 'text-3xl md:text-5xl lg:text-6xl',
+    subheading: 'text-xl md:text-2xl lg:text-3xl',
+    small: 'text-sm'
   };
 
   const fadeInUp = {
@@ -147,7 +121,8 @@ export default function SeniMenyeduhiKehidupanPage() {
   ];
 
   return (
-    <div ref={containerRef} className={`${theme.bg} ${theme.text} transition-colors duration-700 overflow-x-hidden selection:bg-amber-900/30 selection:text-amber-100 w-full`}>
+    <div ref={containerRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 overflow-x-hidden w-full min-h-screen`}>
+      <ReaderControls chapters={chapters} activeChapter={activeSection} progress={progress} />
       
       {/* Background - Coffee Aesthetic */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -235,8 +210,8 @@ export default function SeniMenyeduhiKehidupanPage() {
         />
       </div>
 
-      {/* Main Content - PERLEBAR max-w-2xl -> max-w-4xl */}
-      <main className={`relative z-20 max-w-4xl mx-auto px-6 md:px-12 pt-16 pb-20`}>
+      {/* Main Content - Expanded for Laptop & Desktop Readability */}
+      <main className="relative z-20 max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 pt-16 pb-24 antialiased">
         
         {/* Hero */}
         <motion.section 
@@ -262,16 +237,20 @@ export default function SeniMenyeduhiKehidupanPage() {
             variants={fadeInUp}
             className={`font-serif ${fontSizeClasses.heading} font-light tracking-tight ${theme.textHeading} leading-[1.1] mb-6`}
           >
-            SENI MENYEDUH
+            {language === 'en' ? 'THE ART OF BREWING' : 'SENI MENYEDUH'}
             <br />
-            <span className={`italic ${theme.accent}`}>KEHIDUPAN</span>
+            <span className={`italic ${theme.accent}`}>
+              {language === 'en' ? 'LIFE' : 'KEHIDUPAN'}
+            </span>
           </motion.h1>
           
           <motion.p 
             variants={fadeInUp}
-            className={`text-lg md:text-xl ${theme.textMuted} font-light tracking-wide max-w-lg mx-auto leading-relaxed mb-8`}
+            className={`text-lg md:text-xl lg:text-2xl ${theme.textMuted} font-light tracking-wide max-w-2xl mx-auto leading-relaxed mb-8`}
           >
-            Refleksi tentang Rasa, Waktu, dan Kesabaran dalam Secangkir Kopi
+            {language === 'en'
+              ? 'Reflections on Taste, Time, and Patience in a Cup of Coffee'
+              : 'Refleksi tentang Rasa, Waktu, dan Kesabaran dalam Secangkir Kopi'}
           </motion.p>
 
           <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4 mb-8">
@@ -281,7 +260,9 @@ export default function SeniMenyeduhiKehidupanPage() {
           </motion.div>
 
           <motion.div variants={fadeInUp} className="space-y-2">
-            <p className={`text-sm uppercase tracking-[0.3em] ${theme.textMuted}`}>Ditulis oleh</p>
+            <p className={`text-sm uppercase tracking-[0.3em] ${theme.textMuted}`}>
+              {language === 'en' ? 'Written by' : 'Ditulis oleh'}
+            </p>
             <p className={`font-serif text-3xl ${theme.textHeading} italic`}>Wildan Ferdiansyah</p>
           </motion.div>
 
@@ -351,14 +332,23 @@ export default function SeniMenyeduhiKehidupanPage() {
               variants={fadeInUp}
               className={`${fontSizeClasses.body} ${theme.text} font-light first-letter:text-6xl first-letter:font-serif first-letter:${theme.accent} first-letter:float-left first-letter:mr-3 first-letter:mt-[-8px]`}
             >
-              Kopi mengajarkan kesabaran — bukan hanya dalam menunggu tetesan yang jatuh perlahan, tetapi juga dalam memahami bahwa setiap hal memiliki waktunya sendiri. Tidak semua rasa muncul sekaligus; ada yang perlu waktu untuk larut, ada pula yang harus menunggu panas merata agar maknanya sempurna.
+              {language === 'en'
+                ? "Coffee teaches patience — not only in waiting for slow drops to fall, but also in understanding that everything has its own season. Not all flavors emerge at once; some require time to dissolve, while others must wait for uniform heat so their meaning becomes complete."
+                : "Kopi mengajarkan kesabaran — bukan hanya dalam menunggu tetesan yang jatuh perlahan, tetapi juga dalam memahami bahwa setiap hal memiliki waktunya sendiri. Tidak semua rasa muncul sekaligus; ada yang perlu waktu untuk larut, ada pula yang harus menunggu panas merata agar maknanya sempurna."}
             </motion.p>
             
-            {[
-              "Dalam proses menyeduh, kita belajar bahwa tergesa hanya membuat pahit yang berlebihan. Sementara menunda terlalu lama justru membuat aroma kehilangan esensinya. Hidup pun serupa: ada ritme yang tak terlihat, dan tugas kita hanyalah menyelaraskan diri dengannya.",
-              "Kesabaran bukan berarti diam tanpa arah, melainkan kesediaan untuk berjalan dengan tenang, meski hasil belum tampak di depan mata. Seperti air yang perlahan menembus biji kopi, kita belajar bahwa keindahan membutuhkan waktu dan ketulusan.",
-              "Dalam setiap tetes kopi, tersimpan perjalanan tentang menerima waktu, tentang kepercayaan kepada proses. Dan pada akhirnya, kita menyadari bahwa yang kita nikmati bukan hanya rasa, melainkan perjalanan itu sendiri."
-            ].map((text, i) => (
+            {(language === 'en'
+              ? [
+                  "In the process of brewing, we learn that rushing only yields excess bitterness. Meanwhile, delaying too long causes aroma to lose its essence. Life is similar: there is an unseen rhythm, and our task is simply to align ourselves with it.",
+                  "Patience does not mean standing still without direction, but rather the willingness to walk calmly, even if results are not yet visible before our eyes. Like water slowly penetrating coffee grounds, we learn that beauty requires time and sincerity.",
+                  "In every drop of coffee lies a journey of accepting time and trusting the process. Ultimately, we realize that what we savor is not just the flavor, but the journey itself."
+                ]
+              : [
+                  "Dalam proses menyeduh, kita belajar bahwa tergesa hanya membuat pahit yang berlebihan. Sementara menunda terlalu lama justru membuat aroma kehilangan esensinya. Hidup pun serupa: ada ritme yang tak terlihat, dan tugas kita hanyalah menyelaraskan diri dengannya.",
+                  "Kesabaran bukan berarti diam tanpa arah, melainkan kesediaan untuk berjalan dengan tenang, meski hasil belum tampak di depan mata. Seperti air yang perlahan menembus biji kopi, kita belajar bahwa keindahan membutuhkan waktu dan ketulusan.",
+                  "Dalam setiap tetes kopi, tersimpan perjalanan tentang menerima waktu, tentang kepercayaan kepada proses. Dan pada akhirnya, kita menyadari bahwa yang kita nikmati bukan hanya rasa, melainkan perjalanan itu sendiri."
+                ]
+            ).map((text, i) => (
               <motion.p key={i} variants={fadeInUp} className={`${fontSizeClasses.body} ${theme.text} font-light`}>
                 {text}
               </motion.p>
@@ -366,7 +356,9 @@ export default function SeniMenyeduhiKehidupanPage() {
           </motion.div>
 
           <motion.div variants={fadeInUp} className="mt-12 text-right">
-            <p className={`${theme.textMuted} italic font-serif text-lg`}>Dengan hangat dan sepenuh jiwa,</p>
+            <p className={`${theme.textMuted} italic font-serif text-lg`}>
+              {language === 'en' ? 'Warmly and with full heart,' : 'Dengan hangat dan sepenuh jiwa,'}
+            </p>
             <p className={`${theme.textHeading} font-serif text-2xl mt-2`}>Wildan Ferdiansyah</p>
           </motion.div>
         </motion.section>
@@ -891,103 +883,6 @@ export default function SeniMenyeduhiKehidupanPage() {
         </motion.footer>
 
       </main>
-
-      {/* Floating Controls - Bottom Left (Google-style) */}
-      <AnimatePresence>
-        {showControls && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-            className={`fixed bottom-20 left-6 z-40 ${darkMode ? 'bg-stone-900/95' : 'bg-white/95'} backdrop-blur-xl border ${theme.border} rounded-2xl shadow-2xl p-4 min-w-[220px]`}
-          >
-            <div className="space-y-4">
-              {/* Tema */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Palette size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Tema</span>
-                </div>
-                <button
-                  onClick={toggleDarkMode}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs transition-all ${darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-100 text-amber-700'}`}
-                >
-                  {darkMode ? <Moon size={12} /> : <Sun size={12} />}
-                  <span>{darkMode ? 'Gelap' : 'Terang'}</span>
-                </button>
-              </div>
-
-              {/* Ukuran Font */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Type size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Ukuran Teks</span>
-                </div>
-                <div className="flex gap-1">
-                  <button
-                    onClick={() => setFontSize('normal')}
-                    className={`px-2.5 py-1 rounded text-xs transition-all ${fontSize === 'normal' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}
-                  >
-                    A
-                  </button>
-                  <button
-                    onClick={() => setFontSize('large')}
-                    className={`px-2.5 py-1 rounded text-xs transition-all ${fontSize === 'large' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}
-                  >
-                    A+
-                  </button>
-                </div>
-              </div>
-
-              {/* Texture Toggle */}
-              <div className="flex items-center justify-between pt-3 border-t border-stone-700/20">
-                <div className="flex items-center gap-2">
-                  <Coffee size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Latar Kopi</span>
-                </div>
-                <button
-                  onClick={() => setShowTexture(!showTexture)}
-                  className={`p-1.5 rounded-lg transition-all ${showTexture ? (darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-200 text-amber-700') : theme.textMuted}`}
-                >
-                  {showTexture ? <Eye size={12} /> : <EyeOff size={12} />}
-                </button>
-              </div>
-
-              {/* TOC Quick Links */}
-              <div className="pt-3 border-t border-stone-700/20">
-                <p className={`${theme.textMuted} text-xs mb-2`}>Loncat ke Bab</p>
-                <div className="grid grid-cols-3 gap-1">
-                  {[1, 5, 10].map((num) => (
-                    <a
-                      key={num}
-                      href={`#bab-${num}`}
-                      onClick={() => setShowControls(false)}
-                      className={`text-center py-1.5 px-2 rounded text-xs ${theme.hover} transition-colors ${theme.textMuted}`}
-                    >
-                      Bab {num}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Toggle Button - Bottom Left */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShowControls(!showControls)}
-        className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 ${darkMode ? 'bg-stone-900/90 text-stone-200 hover:bg-stone-800' : 'bg-white/90 text-stone-700 hover:bg-stone-50'} backdrop-blur-xl border ${theme.border} rounded-full shadow-lg transition-all duration-300`}
-      >
-        <Settings2 size={16} strokeWidth={1.5} />
-        <span className="text-xs font-medium">Pengaturan</span>
-        {showControls && <X size={14} className="ml-1 opacity-60" />}
-      </motion.button>
 
       {/* Scroll to Top */}
       <AnimatePresence>

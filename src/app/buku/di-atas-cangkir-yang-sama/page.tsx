@@ -4,9 +4,15 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
+import { useReader } from "@/src/contexts/ReaderContext";
+import ReaderControls from "@/src/components/ReaderControls";
 import Link from 'next/link';
 
+import { useLanguage } from '@/src/contexts/LanguageContext';
+
 export default function CoffeeBookPage() {
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
@@ -136,7 +142,8 @@ export default function CoffeeBookPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-500 w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 w-full min-h-screen`}>
+      <ReaderControls progress={readingProgress} />
       
       {/* Reading Progress Bar - Top */}
       <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
@@ -381,9 +388,11 @@ export default function CoffeeBookPage() {
                     className={`flex items-center gap-2 px-6 py-3 rounded-full ${theme.accentBg} ${theme.accent} font-semibold border ${theme.accentBorder} hover:shadow-lg transition-all`}
                   >
                     <BookOpen size={20} />
-                    Mulai Membaca
+                    {language === 'en' ? 'Start Reading' : 'Mulai Membaca'}
                   </button>
-                  <span className={`text-sm ${theme.textMuted}`}>atau scroll ke bawah</span>
+                  <span className={`text-sm ${theme.textMuted}`}>
+                    {language === 'en' ? 'or scroll down' : 'atau scroll ke bawah'}
+                  </span>
                 </motion.div>
               </div>
 

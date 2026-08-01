@@ -4,8 +4,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Mountain, ChevronRight, X, Compass, Check, Wind, Heart, Quote } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
+import { useReader } from '@/src/contexts/ReaderContext';
+import ReaderControls from '@/src/components/ReaderControls';
+
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function YangTertinggalDiLembahPage() {
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
@@ -147,7 +153,8 @@ export default function YangTertinggalDiLembahPage() {
   };
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+      <ReaderControls progress={readingProgress} />
       
       {/* Reading Progress Bar - lebih subtle dan elegant */}
       <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2622]' : 'bg-[#d4cfc4]'}`}>
@@ -314,7 +321,7 @@ export default function YangTertinggalDiLembahPage() {
         >
           <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-60`} />
           
-          <div className="max-w-3xl mx-auto w-full pt-20 sm:pt-24 pb-24 relative z-10 text-center">
+          <div className="max-w-4xl lg:max-w-5xl mx-auto w-full pt-20 sm:pt-24 pb-24 relative z-10 text-center">
             <motion.div 
               initial={prefersReducedMotion ? { scale: 1 } : { scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -326,20 +333,24 @@ export default function YangTertinggalDiLembahPage() {
               </div>
               
               <h1 className={`text-5xl sm:text-6xl lg:text-7xl font-bold ${theme.textHeading} mb-8 tracking-tight leading-[1.1] font-serif`}>
-                YANG TERTINGGAL<br />
-                <span className={`${theme.accent} italic font-light`}>DI LEMBAH</span>
+                {language === 'en' ? 'WHAT WAS LEFT' : 'YANG TERTINGGAL'}<br />
+                <span className={`${theme.accent} italic font-light`}>
+                  {language === 'en' ? 'IN THE VALLEY' : 'DI LEMBAH'}
+                </span>
               </h1>
               
-              <p className={`text-xl sm:text-2xl ${theme.textSubheading} italic mb-10 font-serif font-light tracking-wide max-w-2xl mx-auto leading-relaxed`}>
-                Sebuah Tafsiran tentang Janji, Kehilangan, dan Arti Sebuah Perjalanan
+              <p className={`text-xl sm:text-2xl lg:text-3xl ${theme.textSubheading} italic mb-10 font-serif font-light tracking-wide max-w-3xl mx-auto leading-relaxed`}>
+                {language === 'en'
+                  ? 'An Interpretation of Promises, Loss, and the Meaning of a Journey'
+                  : 'Sebuah Tafsiran tentang Janji, Kehilangan, dan Arti Sebuah Perjalanan'}
               </p>
 
               <div className={`w-32 h-[1px] mx-auto ${darkMode ? 'bg-[#c9a86c]/50' : 'bg-[#7d5a3c]/50'} mb-10`} />
               
-              <p className={`text-lg ${theme.textMuted} max-w-2xl mx-auto leading-[1.8] font-serif`}>
-                "Kita selalu diajarkan untuk mendaki. Tapi ada kebohongan yang lebih sunyi: 
-                bahwa perjalanan yang sesungguhnya tidak terjadi saat kita berdiri di atas, 
-                bersorak, tetapi saat kita merangkak di dasar lembah."
+              <p className={`text-lg md:text-xl lg:text-2xl ${theme.textMuted} max-w-3xl mx-auto leading-[1.85] font-serif`}>
+                {language === 'en'
+                  ? '“We are always taught to climb. But there is a quieter truth: the real journey does not happen when standing on top, cheering, but when crawling at the bottom of the valley.”'
+                  : '“Kita selalu diajarkan untuk mendaki. Tapi ada kebohongan yang lebih sunyi: bahwa perjalanan yang sesungguhnya tidak terjadi saat kita berdiri di atas, bersorak, tetapi saat kita merangkak di dasar lembah.”'}
               </p>
             </motion.div>
 
@@ -353,7 +364,7 @@ export default function YangTertinggalDiLembahPage() {
                 className={`inline-flex items-center gap-3 px-8 py-4 rounded-full ${theme.accentBg} ${theme.accent} font-serif border ${theme.accentBorder} hover:shadow-lg transition-all duration-500 tracking-wide text-sm uppercase`}
               >
                 <BookOpen size={18} strokeWidth={1.5} />
-                Mulai Membaca
+                {language === 'en' ? 'Start Reading' : 'Mulai Membaca'}
               </button>
             </motion.div>
           </div>

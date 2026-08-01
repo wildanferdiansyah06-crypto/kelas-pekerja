@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Eye, ArrowUpRight, Clock, ArrowRight } from "lucide-react";
 import { Book } from "@/src/types";
 import BookmarkButton from "./BookmarkButton";
+import { useLanguage } from "@/src/contexts/LanguageContext";
+import { getLocalizedBook } from "@/src/lib/utils";
 
 interface BookCardProps {
   book: Book;
@@ -14,8 +16,11 @@ interface BookCardProps {
   onClick?: () => void;
 }
 
-export default function BookCard({ book, index = 0, href, onClick }: BookCardProps) {
+export default function BookCard({ book: rawBook, index = 0, href, onClick }: BookCardProps) {
+  const { language, t } = useLanguage();
+  const book = getLocalizedBook(rawBook, language);
   const [isHovered, setIsHovered] = useState(false);
+
 
   const linkHref = href ?? `/buku/${book.slug ?? ""}`;
 
@@ -83,17 +88,17 @@ export default function BookCard({ book, index = 0, href, onClick }: BookCardPro
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4 text-white/80 text-[9px] sm:text-xs mb-1 sm:mb-2 md:mb-3">
             <span className="flex items-center gap-1 sm:gap-1.5">
               <Clock size={10} className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
-              {book.readTime || '5 menit'}
+              {book.readTime || (language === 'en' ? '5 min read' : '5 menit')}
             </span>
 
             <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-white/50" />
 
-            <span>{book.chapters?.length || book.pages || 'N/A'} bab</span>
+            <span>{book.chapters?.length || book.pages || 'N/A'} {language === 'en' ? 'chapters' : 'bab'}</span>
           </div>
 
           <div className="flex items-center justify-between">
             <p className="text-white/90 text-[10px] sm:text-xs md:text-sm font-medium tracking-wide flex items-center gap-1 sm:gap-2">
-              Baca selengkapnya
+              {t.booksPage.readBook}
               <ArrowUpRight
                 size={12}
                 className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-500 ${
@@ -123,7 +128,7 @@ export default function BookCard({ book, index = 0, href, onClick }: BookCardPro
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 text-[9px] sm:text-xs opacity-40" style={{ color: 'var(--kp-text-muted)' }}>
               <span className="flex items-center gap-1 sm:gap-1.5">
                 <Eye size={10} className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
-                {book.stats.views.toLocaleString("id-ID")} dibaca
+                {book.stats.views.toLocaleString(language === 'en' ? "en-US" : "id-ID")} {t.booksPage.views}
               </span>
             </div>
           ) : (
@@ -131,7 +136,7 @@ export default function BookCard({ book, index = 0, href, onClick }: BookCardPro
           )}
 
           <div className="flex items-center gap-1 text-[9px] sm:text-xs font-medium opacity-60" style={{ color: 'var(--kp-text-muted)' }}>
-            Lihat detail
+            {t.booksPage.preview}
             <ArrowRight size={12} className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
           </div>
         </div>

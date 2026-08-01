@@ -3,8 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
 import { useTheme } from "@/src/components/ThemeProvider";
+import { useReader } from '@/src/contexts/ReaderContext';
+import ReaderControls from '@/src/components/ReaderControls';
+
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function CahayaItuPage() {
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const { theme: globalTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   
@@ -130,7 +136,8 @@ export default function CahayaItuPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${theme.bg} ${theme.text} transition-colors duration-1000 selection:${theme.accent} selection:bg-current w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+      <ReaderControls progress={readingProgress} />
       
       {/* Simplified Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -272,20 +279,25 @@ export default function CahayaItuPage() {
                 <Flame size={24} className={theme.accent} strokeWidth={1} />
               </div>
               
-              <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold ${theme.textHeading} mb-8 tracking-tight leading-[1.1] font-serif`}>
-                CAHAYA<br />
-                <span className={`${theme.ember} italic font-light`}>ITU</span>
+              <h1 className={`font-serif text-5xl md:text-7xl font-light tracking-tight ${theme.textHeading} leading-[1.05] mb-8`}>
+                {language === 'en' ? 'THAT' : 'CAHAYA'}<br />
+                <span className={`${theme.ember} italic font-light`}>
+                  {language === 'en' ? 'LIGHT' : 'ITU'}
+                </span>
               </h1>
               
-              <p className={`text-xl md:text-2xl ${theme.textSubheading} italic mb-10 font-serif font-light tracking-wide max-w-2xl mx-auto leading-relaxed`}>
-                Sebuah Pengakuan tentang yang Terbakar hingga Padam
+              <p className={`text-xl md:text-2xl lg:text-3xl ${theme.textSubheading} italic mb-10 font-serif font-light tracking-wide max-w-3xl mx-auto leading-relaxed`}>
+                {language === 'en'
+                  ? 'A Confession of What Burned Until It Went Out'
+                  : 'Sebuah Pengakuan tentang yang Terbakar hingga Padam'}
               </p>
 
               <div className={`w-32 h-[1px] mx-auto ${darkMode ? 'bg-[#c9a66b]/50' : 'bg-[#8b4513]/50'} mb-10`} />
               
-              <p className={`text-lg ${theme.textMuted} max-w-2xl mx-auto leading-[1.8] font-serif`}>
-                "Badan bau keringat. Dia pulang jam dua. Bukan karena lembur. 
-                Tapi karena di rumahnya, tidak ada yang menunggu."
+              <p className={`text-lg md:text-xl lg:text-2xl ${theme.textMuted} max-w-3xl mx-auto leading-[1.85] font-serif`}>
+                {language === 'en'
+                  ? '“Sweat-soaked body. He came home at two in the morning. Not because of overtime. But because at home, no one was waiting.”'
+                  : '“Badan bau keringat. Dia pulang jam dua. Bukan karena lembur. Tapi karena di rumahnya, tidak ada yang menunggu.”'}
               </p>
             </div>
 
@@ -295,7 +307,7 @@ export default function CahayaItuPage() {
                 className={`inline-flex items-center gap-3 px-8 py-4 rounded-full ${theme.accentBg} ${theme.accent} font-serif border ${theme.accentBorder} hover:shadow-lg transition-all duration-500 tracking-wide text-sm uppercase`}
               >
                 <BookOpen size={16} strokeWidth={1.5} />
-                Mulai Membaca
+                {language === 'en' ? 'Start Reading' : 'Mulai Membaca'}
               </button>
             </div>
           </div>
@@ -307,9 +319,9 @@ export default function CahayaItuPage() {
           </div>
         </section>
 
-        {/* Content Container */}
-        <div className="px-6 lg:px-12">
-          <div className="max-w-2xl mx-auto py-20">
+        {/* Content Container - Expanded for Laptop & Desktop Readability */}
+        <div className="px-6 lg:px-16">
+          <div className="max-w-4xl lg:max-w-5xl mx-auto py-20 antialiased">
             
             {/* PEMBUKA */}
             <section 

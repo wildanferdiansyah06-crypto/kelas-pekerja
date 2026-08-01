@@ -4,8 +4,14 @@ import { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { useReader } from '@/src/contexts/ReaderContext';
+import ReaderControls from '@/src/components/ReaderControls';
+
+import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function DiBalikBarPage() {
+  const { language } = useLanguage();
+  const { themeStyles, fontFamilyClass } = useReader();
   const [darkMode, setDarkMode] = useState(true);
   const [showTexture, setShowTexture] = useState(true);
   const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
@@ -146,7 +152,8 @@ export default function DiBalikBarPage() {
   ];
 
   return (
-    <div className={`${theme.bg} transition-colors duration-700 ease-out selection:bg-amber-900/30 selection:text-amber-100 w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+      <ReaderControls />
       
       {/* Aesthetic Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -188,8 +195,8 @@ export default function DiBalikBarPage() {
         style={{ scaleX }}
       />
 
-      {/* Main Content */}
-      <main className={`relative max-w-3xl mx-auto px-6 md:px-12 ${fontSize === 'large' ? 'py-20 md:py-28' : 'py-16 md:py-24'}`}>
+      {/* Main Content - Expanded for Laptop & Desktop Readability */}
+      <main className="relative max-w-4xl lg:max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased">
 
         {/* Story Identity Badge */}
         <motion.div 
@@ -200,9 +207,13 @@ export default function DiBalikBarPage() {
         >
           <span className={`${theme.accent} ${fontSizeClasses.small} font-medium`}>Barista / Bartender</span>
           <span className={`w-1 h-1 rounded-full ${theme.textMuted}`} />
-          <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>6 bulan pengalaman</span>
+          <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>
+            {language === 'en' ? '6 months experience' : '6 bulan pengalaman'}
+          </span>
           <span className={`w-1 h-1 rounded-full ${theme.textMuted}`} />
-          <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>8 menit baca</span>
+          <span className={`${theme.textMuted} ${fontSizeClasses.small}`}>
+            {language === 'en' ? '8 min read' : '8 menit baca'}
+          </span>
         </motion.div>
 
         {/* Header */}
@@ -210,11 +221,16 @@ export default function DiBalikBarPage() {
           <motion.div variants={fadeInUp} className={`${theme.border} border-b pb-8 mb-12`}>
             <div className="flex items-center gap-3 mb-4">
               <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }} className={`w-2 h-2 rounded-full ${darkMode ? 'bg-amber-700' : 'bg-amber-600'}`} />
-              <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.2em] uppercase`}>Cerita Pendek</span>
+              <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.2em] uppercase`}>
+                {language === 'en' ? 'Short Story Collection' : 'Cerita Pendek'}
+              </span>
             </div>
             
             <h1 className={`font-serif ${fontSizeClasses.heading} tracking-tight ${theme.textHeading} mb-6 leading-tight`}>
-              Di Balik <span className={`italic ${theme.accent} font-light`}>Bar</span>
+              {language === 'en' ? 'Behind The ' : 'Di Balik '}
+              <span className={`italic ${theme.accent} font-light`}>
+                {language === 'en' ? 'Bar' : 'Bar'}
+              </span>
             </h1>
             
             {/* BRUTAL OPENING */}

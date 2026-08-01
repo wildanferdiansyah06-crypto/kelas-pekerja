@@ -4,20 +4,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ArrowRight, Github, Instagram, MessageCircle, Sparkles } from "lucide-react";
 
-const footerLinks = {
-  bacaan: [
-    { label: "Semua Buku", href: "/buku" },
-    { label: "Kategori Refleksi", href: "/buku?category=refleksi" },
-    { label: "Kategori Kehidupan", href: "/buku?category=kehidupan" },
-    { label: "Kategori Filosofi", href: "/buku?category=filosofi" },
-  ],
-  eksplorasi: [
-    { label: "Quote Acak", href: "/quotes" },
-    { label: "Koleksi Tersimpan", href: "/bookmark" },
-    { label: "Tentang Kami", href: "/tentang" },
-  ],
-};
-
 const socialLinks = [
   {
     label: "WhatsApp",
@@ -36,10 +22,28 @@ const socialLinks = [
   },
 ];
 
+import { useLanguage } from "@/src/contexts/LanguageContext";
+
 export default function Footer() {
+  const { t, language } = useLanguage();
   const [email, setEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  const footerLinks = {
+    bacaan: [
+      { label: language === 'en' ? "All Books" : "Semua Buku", href: "/buku" },
+      { label: language === 'en' ? "Reflection Category" : "Kategori Refleksi", href: "/buku?category=refleksi" },
+      { label: language === 'en' ? "Life Category" : "Kategori Kehidupan", href: "/buku?category=kehidupan" },
+      { label: language === 'en' ? "Philosophy Category" : "Kategori Filosofi", href: "/buku?category=filosofi" },
+    ],
+    eksplorasi: [
+      { label: language === 'en' ? "Random Quotes" : "Quote Acak", href: "/quotes" },
+      { label: language === 'en' ? "Saved Bookmarks" : "Koleksi Tersimpan", href: "/bookmark" },
+      { label: language === 'en' ? "About Us" : "Tentang Kami", href: "/tentang" },
+    ],
+  };
+
   const [networkStatus, setNetworkStatus] = useState<{
     text: string;
     dotColor: string;
@@ -66,27 +70,22 @@ export default function Footer() {
 
       if (!navigator.onLine) {
         setNetworkStatus({
-          text: "Koneksi terputus",
+          text: language === 'en' ? "Offline" : "Koneksi terputus",
           dotColor: "bg-red-500",
         });
       } else if (effectiveType === 'slow-2g' || effectiveType === '2g' || downlink < 0.5) {
         setNetworkStatus({
-          text: "Koneksi lambat",
+          text: language === 'en' ? "Slow connection" : "Koneksi lambat",
           dotColor: "bg-amber-600",
         });
       } else if (effectiveType === '3g' || (downlink >= 0.5 && downlink < 2)) {
         setNetworkStatus({
-          text: "Koneksi sedang",
+          text: language === 'en' ? "Moderate connection" : "Koneksi sedang",
           dotColor: "bg-[var(--kp-accent)]",
-        });
-      } else if (effectiveType === '4g' || downlink >= 2) {
-        setNetworkStatus({
-          text: "Koneksi stabil",
-          dotColor: "bg-[var(--kp-accent)] glow-amber",
         });
       } else {
         setNetworkStatus({
-          text: "Koneksi stabil",
+          text: language === 'en' ? "Connection stable" : "Koneksi stabil",
           dotColor: "bg-[var(--kp-accent)] glow-amber",
         });
       }
@@ -177,7 +176,7 @@ export default function Footer() {
             </Link>
 
             <p className="font-body text-base lg:text-lg leading-relaxed max-w-md opacity-80 mb-8 text-balance" style={{ color: 'var(--kp-text-secondary)' }}>
-              Merekam jejak keheningan di akhir hari. Secangkir demi secangkir, kata demi kata.
+              {t.footer.description}
             </p>
 
             <div className="flex items-center gap-4">
@@ -303,7 +302,9 @@ export default function Footer() {
           
           <div className="relative z-10 glass-card px-8 py-4 rounded-full flex flex-col items-center max-w-2xl text-center">
             <p className="font-display italic text-lg md:text-xl text-glow" style={{ color: 'var(--kp-text-primary)' }}>
-              "Malam adalah tempat penyimpanan hal-hal yang tak berani kita katakan di siang hari."
+              {language === 'en' 
+                ? '"Night is a storage place for things we dare not speak in daylight."' 
+                : '"Malam adalah tempat penyimpanan hal-hal yang tak berani kita katakan di siang hari."'}
             </p>
           </div>
         </div>
@@ -317,7 +318,7 @@ export default function Footer() {
             <span className="font-medium tracking-wide" style={{ color: 'var(--kp-accent)' }}>
               Kelas Pekerja
             </span>
-            . Semua hak cipta dilindungi.
+            . {t.footer.rights}
           </p>
 
           <div className="flex items-center gap-3 font-ui text-xs glass px-4 py-2 rounded-full border border-[rgba(212,165,116,0.1)]">
@@ -326,9 +327,7 @@ export default function Footer() {
           </div>
           
           <p className="font-ui text-xs flex items-center gap-1.5 opacity-70" style={{ color: 'var(--kp-text-muted)' }}>
-            Diseduh dengan
-            <span className="text-red-400 animate-pulse">♥</span>
-            di keheningan malam
+            {t.footer.builtWith}
           </p>
         </div>
       </div>

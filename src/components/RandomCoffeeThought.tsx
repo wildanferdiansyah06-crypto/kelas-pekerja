@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
 interface Quote {
   id: number;
   text: string;
+  textEn?: string;
   category: string;
   mood: string;
 }
 
 export default function RandomCoffeeThought() {
+  const { language, t } = useLanguage();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
 
@@ -40,19 +43,25 @@ export default function RandomCoffeeThought() {
     setCurrentQuote(random);
   };
 
+  const displayedText = currentQuote
+    ? (language === 'en' && currentQuote.textEn ? currentQuote.textEn : currentQuote.text)
+    : '';
+
   return (
     <section className="py-32 px-6 text-center relative z-10">
       <div className="max-w-xl mx-auto">
         <p className="font-sans text-xs tracking-widest uppercase mb-4" style={{ opacity: 0.4, color: 'var(--kp-text-muted)' }}>
-          Butuh teman ngopi?
+          {language === 'en' ? 'Need a coffee companion?' : 'Butuh teman ngopi?'}
         </p>
 
         <h3 className="font-serif text-3xl md:text-4xl mb-6" style={{ opacity: 0.9, color: 'var(--kp-text-primary)' }}>
-          Random Coffee Thought
+          {t.hero.coffeeThoughtTitle}
         </h3>
 
         <p className="font-serif text-sm mb-10" style={{ opacity: 0.6, color: 'var(--kp-text-secondary)' }}>
-          Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.
+          {language === 'en'
+            ? 'Click the button below to get a random thought to accompany your cup of coffee.'
+            : 'Klik tombol di bawah untuk mendapatkan pemikiran random yang cocok menemani secangkir kopi.'}
         </p>
 
         <div className="relative rounded-2xl overflow-hidden p-8 mb-10" style={{ background: 'linear-gradient(to bottom right, var(--kp-accent-light), var(--kp-bg-surface))', border: '1px solid var(--kp-border)' }}>
@@ -63,7 +72,7 @@ export default function RandomCoffeeThought() {
 
           {currentQuote && (
             <p className="relative z-10 font-serif text-xl italic leading-relaxed animate-fade-in" style={{ color: 'var(--kp-text-primary)' }}>
-              {currentQuote.text}
+              {displayedText}
             </p>
           )}
 
@@ -79,7 +88,7 @@ export default function RandomCoffeeThought() {
                 color: 'var(--kp-text-on-dark)',
               }}
             >
-              Acak Quote ↺
+              {t.hero.newQuote} ↺
             </button>
           </div>
         </div>

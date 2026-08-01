@@ -4,24 +4,25 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, PenLine, Coffee, Eye, Sparkles } from "lucide-react";
+import { useLanguage } from "@/src/contexts/LanguageContext";
 
-function getRelativeTime(dateString: string): string {
+function getRelativeTime(dateString: string, lang: 'id' | 'en' = 'id'): string {
   try {
-    if (!dateString) return "Tanggal tidak diketahui";
+    if (!dateString) return lang === 'en' ? "Unknown date" : "Tanggal tidak diketahui";
     
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "Tanggal tidak valid";
+    if (isNaN(date.getTime())) return lang === 'en' ? "Invalid date" : "Tanggal tidak valid";
     
     const now = new Date();
     const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
     
-    if (diffInDays === 0) return "Hari ini";
-    if (diffInDays === 1) return "Kemarin";
-    if (diffInDays < 7) return `${diffInDays} hari lalu`;
-    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} minggu lalu`;
-    return `${Math.floor(diffInDays / 30)} bulan lalu`;
+    if (diffInDays === 0) return lang === 'en' ? "Today" : "Hari ini";
+    if (diffInDays === 1) return lang === 'en' ? "Yesterday" : "Kemarin";
+    if (diffInDays < 7) return lang === 'en' ? `${diffInDays} days ago` : `${diffInDays} hari lalu`;
+    if (diffInDays < 30) return lang === 'en' ? `${Math.floor(diffInDays / 7)} weeks ago` : `${Math.floor(diffInDays / 7)} minggu lalu`;
+    return lang === 'en' ? `${Math.floor(diffInDays / 30)} months ago` : `${Math.floor(diffInDays / 30)} bulan lalu`;
   } catch {
-    return "Tanggal tidak diketahui";
+    return lang === 'en' ? "Unknown date" : "Tanggal tidak diketahui";
   }
 }
 
@@ -36,6 +37,8 @@ export default function HomePageClient({
   latestBooks = [],
   mostRelatable = []
 }: HomePageClientProps) {
+  const { language, t } = useLanguage();
+
   if (!featuredBooks.length && !latestBooks.length) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -100,20 +103,20 @@ export default function HomePageClient({
                 }}
               >
                 <Sparkles size={14} className="animate-pulse" />
-                <span>Literasi untuk Pekerja</span>
+                <span>{language === 'en' ? 'Literacy for Workers' : 'Literasi untuk Pekerja'}</span>
               </div>
 
               {/* Cinematic Heading */}
               <h1 className="typography-h1 mb-6 animate-slide-in-up delay-100" style={{ color: 'var(--kp-text-primary)' }}>
-                <span className="block animate-text-reveal">Membaca.</span>
-                <span className="block animate-text-reveal" style={{ animationDelay: '0.4s' }}>Merenung.</span>
-                <span className="block italic text-glow animate-text-reveal" style={{ color: 'var(--kp-accent)', animationDelay: '0.8s' }}>Bertumbuh.</span>
+                <span className="block animate-text-reveal">{language === 'en' ? 'Read.' : 'Membaca.'}</span>
+                <span className="block animate-text-reveal" style={{ animationDelay: '0.4s' }}>{language === 'en' ? 'Reflect.' : 'Merenung.'}</span>
+                <span className="block italic text-glow animate-text-reveal" style={{ color: 'var(--kp-accent)', animationDelay: '0.8s' }}>{language === 'en' ? 'Grow.' : 'Bertumbuh.'}</span>
               </h1>
 
               {/* Subtext */}
               <p className="font-serif text-lg sm:text-xl lg:text-2xl mb-10 leading-relaxed max-w-lg mx-auto md:mx-0 animate-fade-in-up delay-300 text-balance opacity-80" 
                  style={{ color: 'var(--kp-text-secondary)' }}>
-                Kumpulan bacaan sunyi untuk jiwa yang lelah, ditemani secangkir kopi di akhir hari.
+                {t.hero.subtitle}
               </p>
 
               {/* Action Buttons */}
@@ -135,7 +138,7 @@ export default function HomePageClient({
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  Mulai Membaca
+                  {t.booksPage.startReading}
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
@@ -147,7 +150,7 @@ export default function HomePageClient({
                     color: 'var(--kp-text-primary)' 
                   }}
                 >
-                  Kisah Kami
+                  {t.nav.about}
                 </Link>
               </div>
             </div>
@@ -160,9 +163,9 @@ export default function HomePageClient({
                   <div className="w-16 h-16 rounded-full border border-[rgba(212,165,116,0.3)] flex items-center justify-center mb-6 glow-amber group-hover:scale-110 transition-transform duration-300">
                     <PenLine size={24} style={{ color: 'var(--kp-accent)' }} />
                   </div>
-                  <h3 className="font-display text-2xl italic mb-4" style={{ color: 'var(--kp-text-primary)' }}>Arsip Sunyi</h3>
+                  <h3 className="font-display text-2xl italic mb-4" style={{ color: 'var(--kp-text-primary)' }}>{language === 'en' ? 'Silent Archive' : 'Arsip Sunyi'}</h3>
                   <div className="w-12 h-px bg-gradient-to-r from-transparent via-[var(--kp-accent)] to-transparent mb-4 opacity-50" />
-                  <p className="font-body text-sm" style={{ color: 'var(--kp-text-muted)' }}>Merekam jejak langkah para pekerja di keheningan malam.</p>
+                  <p className="font-body text-sm" style={{ color: 'var(--kp-text-muted)' }}>{t.footer.description}</p>
                 </div>
                 {/* Simulated pages edge effect */}
                 <div className="absolute top-0 right-0 bottom-0 w-2 bg-gradient-to-l from-[rgba(255,255,255,0.1)] to-transparent" />

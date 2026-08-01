@@ -7,29 +7,24 @@ import { usePathname } from "next/navigation";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { useNavbar } from "@/src/contexts/NavbarContext";
 import { useSession, signOut } from "next-auth/react";
-
-const navigation = [
-{ label: "Beranda", href: "/" },
-{ label: "Buku", href: "/buku" },
-{ label: "Tulisan", href: "/tulisan" },
-{ label: "Bookmark", href: "/bookmark" },
-{ label: "Tentang", href: "/tentang" },
-];
+import { useLanguage } from "@/src/contexts/LanguageContext";
+import LanguageSwitcher from "@/src/components/LanguageSwitcher";
 
 // Clock component
 function ClockWidget() {
+  const { language } = useLanguage();
   const [time, setTime] = useState('');
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setTime(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
+      setTime(now.toLocaleTimeString(language === 'en' ? 'en-US' : 'id-ID', { hour: '2-digit', minute: '2-digit' }));
     };
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [language]);
 
   return (
     <div
@@ -49,8 +44,18 @@ export default function Navbar() {
 const pathname = usePathname();
 const { isVisible: contextVisible } = useNavbar();
 const { data: session } = useSession();
+const { t } = useLanguage();
+
+const navigation = [
+  { label: t.nav.home, href: "/" },
+  { label: t.nav.books, href: "/buku" },
+  { label: t.nav.essays, href: "/tulisan" },
+  { label: t.nav.saved, href: "/bookmark" },
+  { label: t.nav.about, href: "/tentang" },
+];
 
 const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 const [mounted, setMounted] = useState(false);
 const [scrollVisible, setScrollVisible] = useState(true);
 const [hasScrolled, setHasScrolled] = useState(false);
@@ -225,6 +230,7 @@ return (
 
       {/* Right Controls */}
       <div className="flex items-center gap-3 shrink-0">
+        <LanguageSwitcher className="hidden tablet:inline-flex" />
 
         {/* User Profile Display - Desktop */}
         {session?.user ? (
@@ -403,6 +409,12 @@ return (
           <span>Masuk</span>
         </Link>
       )}
+
+      {/* Mobile Language Switcher */}
+      <div className="flex items-center justify-between pt-2 border-t border-white/10 mt-1 px-2">
+        <span className="text-xs text-kp-text-muted font-ui">Bahasa / Language</span>
+        <LanguageSwitcher />
+      </div>
 
     </div>
   </div>
