@@ -25,11 +25,11 @@ const CATEGORIES_EN = ["All", "Shared Space", "Barista & FnB", "Retail", "Office
 const PostCard = memo(({
   post,
   index,
-  language,
+  language = 'id',
 }: {
   post: any;
   index: number;
-  language: string;
+  language?: string;
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -83,7 +83,7 @@ const PostCard = memo(({
 PostCard.displayName = "PostCard";
 
 // Memoized trending post component
-const TrendingPostCard = memo(({ post, language }: { post: any; language: string }) => (
+const TrendingPostCard = memo(({ post, language = 'id' }: { post: any; language?: string }) => (
   <Link
     href={`/tulisan/${post.slug}`}
     className="flex-shrink-0 w-72 p-5 rounded-xl glass-card group"
@@ -222,7 +222,7 @@ export default function TulisanPage() {
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
               {trendingPosts.map((post: any) => (
-                <TrendingPostCard key={post.slug} post={post} />
+                <TrendingPostCard key={post.slug} post={post} language={language} />
               ))}
             </div>
           </div>
