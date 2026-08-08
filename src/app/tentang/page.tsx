@@ -84,7 +84,15 @@ export default function TentangPage() {
   if (!mounted) return null;
 
   return (
-    <div style={{ backgroundColor: 'var(--kp-bg-base)', color: 'var(--kp-text-primary)' }}>
+    <div
+      className="antialiased"
+      style={{
+        backgroundColor: 'var(--kp-bg-base)',
+        color: 'var(--kp-text-primary)',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
+      }}
+    >
 
       {/* Background Ambient */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -170,10 +178,10 @@ export default function TentangPage() {
               {/* Right — Bio */}
               <div className="md:col-span-3 text-center md:text-left">
                 <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-ui font-medium tracking-wider uppercase mb-6 glass"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border font-ui text-sm font-medium tracking-wider uppercase mb-6 glass"
                   style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
                 >
-                  <Sparkles size={12} />
+                  <Sparkles size={13} />
                   {language === 'en' ? 'About Author' : 'Tentang Penulis'}
                 </div>
 
@@ -185,14 +193,14 @@ export default function TentangPage() {
                 </h1>
 
                 <p
-                  className="font-display text-xl sm:text-2xl italic mb-6 animate-fade-in-up delay-100"
+                  className="font-display text-2xl sm:text-3xl italic mb-6 animate-fade-in-up delay-100 leading-relaxed"
                   style={{ color: 'var(--kp-text-muted)' }}
                 >
                   {language === 'en' ? 'Not a Writer, Not a Motivator' : 'Bukan Penulis, Bukan Motivator'}
                 </p>
 
                 <p
-                  className="font-body text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto md:mx-0 animate-fade-in-up delay-200"
+                  className="font-body text-lg sm:text-xl leading-[1.85] mb-8 max-w-lg mx-auto md:mx-0 animate-fade-in-up delay-200"
                   style={{ color: 'var(--kp-text-secondary)' }}
                 >
                   {language === 'en'
@@ -238,19 +246,19 @@ export default function TentangPage() {
                   >
                     <Book size={18} style={{ color: 'var(--kp-accent)' }} />
                   </div>
-                  <h2 className="font-display text-2xl" style={{ color: 'var(--kp-text-primary)' }}>
+                  <h2 className="font-display text-2xl sm:text-3xl" style={{ color: 'var(--kp-text-primary)' }}>
                     {language === 'en' ? 'The Writer' : 'Penulis'}
                   </h2>
                 </div>
 
-                <p className="font-body text-base leading-relaxed mb-8" style={{ color: 'var(--kp-text-secondary)' }}>
+                <p className="font-body text-lg leading-[1.85] mb-8" style={{ color: 'var(--kp-text-secondary)' }}>
                   {language === 'en'
                     ? 'Writing as a way to understand life and preserve sanity. Every word is an attempt to remain present in an ever-shifting world.'
                     : 'Menulis sebagai cara untuk memahami hidup dan menjaga kewarasan. Setiap kata adalah upaya untuk tetap hadir di dunia yang terus berubah.'}
                 </p>
 
                 <div className="mb-6">
-                  <h3 className="font-ui text-xs font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--kp-accent)' }}>
+                  <h3 className="font-ui text-sm font-semibold tracking-[0.15em] uppercase mb-4" style={{ color: 'var(--kp-accent)' }}>
                     {language === 'en' ? 'Genres & Themes' : 'Genre Karya'}
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -260,7 +268,7 @@ export default function TentangPage() {
                     ).map((genre) => (
                       <span
                         key={genre}
-                        className="font-ui px-3 py-1.5 rounded-full text-xs border"
+                        className="font-ui px-3.5 py-1.5 rounded-full text-sm border"
                         style={{
                           color: 'var(--kp-accent)',
                           borderColor: 'rgba(212, 165, 116, 0.2)',
@@ -274,14 +282,14 @@ export default function TentangPage() {
                 </div>
 
                 <div>
-                  <h3 className="font-ui text-xs font-semibold tracking-[0.2em] uppercase mb-3" style={{ color: 'var(--kp-accent)' }}>
+                  <h3 className="font-ui text-sm font-semibold tracking-[0.15em] uppercase mb-4" style={{ color: 'var(--kp-accent)' }}>
                     {language === 'en' ? 'Writing Tools' : 'Tools Menulis'}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {['Notion', 'Obsidian', 'Typora', 'VS Code'].map((tool) => (
                       <span
                         key={tool}
-                        className="font-ui px-3 py-1.5 rounded-full text-xs border"
+                        className="font-ui px-3.5 py-1.5 rounded-full text-sm border"
                         style={{
                           color: 'var(--kp-text-muted)',
                           borderColor: 'var(--kp-border-medium)',
@@ -304,12 +312,12 @@ export default function TentangPage() {
                   >
                     <Coffee size={18} style={{ color: 'var(--kp-accent)' }} />
                   </div>
-                  <h2 className="font-display text-2xl" style={{ color: 'var(--kp-text-primary)' }}>
+                  <h2 className="font-display text-2xl sm:text-3xl" style={{ color: 'var(--kp-text-primary)' }}>
                     {language === 'en' ? 'Writing Process' : 'Proses Menulis'}
                   </h2>
                 </div>
 
-                <p className="font-body text-base leading-relaxed mb-8 flex-1" style={{ color: 'var(--kp-text-secondary)' }}>
+                <p className="font-body text-lg leading-[1.85] mb-8 flex-1" style={{ color: 'var(--kp-text-secondary)' }}>
                   {language === 'en'
                     ? 'Writing while awaiting dusk and sipping coffee until dawn breaks. Every sentence is born from night quietness and warm coffee aroma.'
                     : 'Menulis sambil menunggu senja dan minum kopi sampai fajar terbit. Setiap kata lahir dari keheningan malam dan aroma kopi yang menemani.'}
@@ -342,10 +350,10 @@ export default function TentangPage() {
                         )}
                       </div>
                       <div>
-                        <span className="font-ui text-xs font-semibold tracking-wider uppercase" style={{ color: 'var(--kp-accent)' }}>
+                        <span className="font-ui text-sm font-semibold tracking-wider uppercase" style={{ color: 'var(--kp-accent)' }}>
                           {step.time}
                         </span>
-                        <p className="font-body text-sm" style={{ color: 'var(--kp-text-muted)' }}>
+                        <p className="font-body text-base mt-0.5" style={{ color: 'var(--kp-text-muted)' }}>
                           {step.desc}
                         </p>
                       </div>
@@ -365,13 +373,13 @@ export default function TentangPage() {
 
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <div className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--kp-text-muted)' }}>
+              <div className="font-ui text-sm font-medium tracking-[0.25em] uppercase mb-4" style={{ color: 'var(--kp-text-muted)' }}>
                 {language === 'en' ? 'Works Archive' : 'Koleksi Karya'}
               </div>
               <h2 className="typography-h2 mb-4" style={{ color: 'var(--kp-text-primary)' }}>
                 {language === 'en' ? 'Books & Writings' : 'Karya'}
               </h2>
-              <p className="font-body text-lg max-w-2xl mx-auto opacity-80" style={{ color: 'var(--kp-text-secondary)' }}>
+              <p className="font-body text-lg sm:text-xl max-w-2xl mx-auto opacity-80 leading-relaxed" style={{ color: 'var(--kp-text-secondary)' }}>
                 {language === 'en'
                   ? 'Six books born from the search for meaning on every page'
                   : 'Enam buku yang lahir dari proses mencari makna dalam setiap halaman'}
@@ -391,7 +399,7 @@ export default function TentangPage() {
                   <div className="relative z-10">
                     <div className="flex justify-between items-start mb-5">
                       <span
-                        className="font-ui text-[10px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full border"
+                        className="font-ui text-xs font-bold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full border"
                         style={{
                           color: 'var(--kp-accent)',
                           borderColor: 'rgba(212, 165, 116, 0.2)',
@@ -400,23 +408,23 @@ export default function TentangPage() {
                       >
                         {book.genre}
                       </span>
-                      <span className="font-ui text-xs font-mono" style={{ color: 'var(--kp-text-subtle)' }}>
+                      <span className="font-ui text-sm" style={{ color: 'var(--kp-text-subtle)' }}>
                         {book.year}
                       </span>
                     </div>
 
                     <h3
-                      className="font-display text-2xl mb-3 group-hover:text-glow transition-all duration-300"
+                      className="font-display text-2xl sm:text-3xl mb-3 group-hover:text-glow transition-all duration-300 leading-snug"
                       style={{ color: 'var(--kp-text-primary)' }}
                     >
                       {book.title}
                     </h3>
 
-                    <p className="font-body text-sm leading-relaxed line-clamp-2 mb-6" style={{ color: 'var(--kp-text-muted)' }}>
+                    <p className="font-body text-base leading-relaxed line-clamp-2 mb-6" style={{ color: 'var(--kp-text-muted)' }}>
                       {book.subtitle}
                     </p>
 
-                    <div className="flex items-center gap-2 font-ui text-xs font-medium" style={{ color: 'var(--kp-accent)' }}>
+                    <div className="flex items-center gap-2 font-ui text-sm font-medium" style={{ color: 'var(--kp-accent)' }}>
                       <span className="group-hover:text-glow transition-all">Baca</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -443,13 +451,13 @@ export default function TentangPage() {
             </div>
 
             <blockquote
-              className="font-display text-2xl sm:text-3xl md:text-4xl italic leading-relaxed mb-8 text-glow"
+              className="font-display text-3xl sm:text-4xl md:text-5xl italic leading-relaxed mb-10 text-glow"
               style={{ color: 'var(--kp-text-primary)' }}
             >
               &ldquo;Aku menulis untuk hadir, bukan untuk memukau.&rdquo;
             </blockquote>
 
-            <p className="font-body text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-balance" style={{ color: 'var(--kp-text-muted)' }}>
+            <p className="font-body text-lg sm:text-xl leading-[1.85] max-w-2xl mx-auto text-balance" style={{ color: 'var(--kp-text-muted)' }}>
               Ini bukan tentang menjadi terkenal atau diakui. Ini tentang menjaga kewarasan diri di tengah dunia yang terus bergerak. Setiap kata adalah jangkar yang menahan agar tidak hanyut dalam arus waktu.
             </p>
           </div>
@@ -461,7 +469,7 @@ export default function TentangPage() {
         <section className="px-6 lg:px-12 py-20 sm:py-28">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <div className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4" style={{ color: 'var(--kp-text-muted)' }}>
+              <div className="font-ui text-sm font-medium tracking-[0.25em] uppercase mb-4" style={{ color: 'var(--kp-text-muted)' }}>
                 Jalin Koneksi
               </div>
               <h2 className="typography-h2 mb-4" style={{ color: 'var(--kp-text-primary)' }}>
@@ -510,10 +518,10 @@ export default function TentangPage() {
                   >
                     {contact.icon}
                   </div>
-                  <h3 className="font-ui text-lg font-semibold mb-2" style={{ color: 'var(--kp-text-primary)' }}>
+                  <h3 className="font-ui text-xl font-semibold mb-2" style={{ color: 'var(--kp-text-primary)' }}>
                     {contact.title}
                   </h3>
-                  <p className="font-ui text-sm break-all transition-colors duration-300 group-hover:text-[var(--kp-text-primary)]" style={{ color: 'var(--kp-text-muted)' }}>
+                  <p className="font-ui text-base break-all transition-colors duration-300 group-hover:text-[var(--kp-text-primary)]" style={{ color: 'var(--kp-text-muted)' }}>
                     {contact.desc}
                   </p>
                 </a>
