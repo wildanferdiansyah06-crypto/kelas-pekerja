@@ -3,7 +3,6 @@
 
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useTheme } from "@/src/components/ThemeProvider";
 import { useReader } from "@/src/contexts/ReaderContext";
 import ReaderControls from "@/src/components/ReaderControls";
 
@@ -11,8 +10,7 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function KamiMenulisPelanPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const { theme: globalTheme } = useTheme();
+  const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
   const [mounted, setMounted] = useState(false);
 
   const [subtitleText, setSubtitleText] = useState("");
@@ -207,13 +205,10 @@ export default function KamiMenulisPelanPage() {
 
 
 
-  const darkMode = globalTheme === 'dark';
-
-
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 
   const theme = {
-
-    bg: darkMode ? "bg-[#0c0b0a]" : "bg-[#fafaf9]",
+    bg: themeStyles.bg,
 
     bgGradient: darkMode 
 
@@ -221,9 +216,9 @@ export default function KamiMenulisPelanPage() {
 
       : "bg-gradient-to-b from-[#fafaf9] via-[#f5f5f4] to-[#fafaf9]",
 
-    text: darkMode ? "text-[#e7e5e4]" : "text-[#1c1917]",
+    text: themeStyles.text,
 
-    textMuted: darkMode ? "text-[#a8a29e]" : "text-[#78716c]",
+    textMuted: themeStyles.textMuted,
 
     textSecondary: darkMode ? "text-[#d6d3d1]" : "text-[#57534e]",
 
@@ -336,7 +331,7 @@ export default function KamiMenulisPelanPage() {
 
 
   return (
-    <div ref={mainRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} relative overflow-hidden transition-colors duration-500 w-full min-h-screen`}>
+    <div ref={mainRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page relative overflow-hidden transition-colors duration-500 w-full min-h-screen`}>
       <ReaderControls />
 
       
@@ -671,7 +666,7 @@ export default function KamiMenulisPelanPage() {
 
       {/* Main Content */}
 
-      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 ${theme.text}`}>
+      <div className={`relative z-10 max-w-3xl mx-auto px-6 pb-32 reader-content ${theme.text}`}>
 
         
 

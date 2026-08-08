@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
-import { useTheme } from "@/src/components/ThemeProvider";
 import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
 
@@ -10,8 +9,7 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function CahayaItuPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const { theme: globalTheme } = useTheme();
+  const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -78,49 +76,29 @@ export default function CahayaItuPage() {
 
   if (!mounted) return null;
 
-  const darkMode = globalTheme === 'dark';
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 
-  // TEMA: "Ashes & Embers" 
-  const theme = darkMode ? {
-    bg: 'bg-[#0f0d0c]',
-    text: 'text-[#e5e0db]',
-    textMuted: 'text-[#8b7d6b]',
-    textHeading: 'text-[#f0ebe5]',
-    textSubheading: 'text-[#a89f91]',
-    border: 'border-[#2a2520]',
-    accent: 'text-[#c9a66b]',
-    accentBg: 'bg-[#1a1612]',
-    accentBorder: 'border-[#3d3428]',
-    sidebar: 'bg-[#0a0807]',
-    card: 'bg-[#1a1612]/80',
-    float: 'bg-[#1c1814]/95',
-    gradientFrom: 'from-[#2a2420]/30',
-    gradientTo: 'to-[#0f0d0c]/10',
-    quoteBorder: 'border-[#c9a66b]/40',
-    quoteBg: 'bg-[#1a1612]/60',
-    highlight: 'bg-[#2a2420]/50',
-    romanColor: 'text-[#5c4d3c]',
-    ember: 'text-[#8b4513]',
-  } : {
-    bg: 'bg-[#f5f0e8]',
-    text: 'text-[#2c241b]',
-    textMuted: 'text-[#6b5d4d]',
-    textHeading: 'text-[#1a1612]',
-    textSubheading: 'text-[#4a3f32]',
-    border: 'border-[#d4cfc4]',
-    accent: 'text-[#8b4513]',
-    accentBg: 'bg-[#ebe5d8]',
-    accentBorder: 'border-[#c4b8a3]',
-    sidebar: 'bg-[#ebe5d8]',
-    card: 'bg-[#ebe5d8]/80',
-    float: 'bg-[#f5f0e8]/95',
-    gradientFrom: 'from-[#d9d0c1]/40',
-    gradientTo: 'to-[#f5f0e8]/20',
-    quoteBorder: 'border-[#8b4513]/40',
-    quoteBg: 'bg-[#ebe5d8]/60',
-    highlight: 'bg-[#d9d0c1]/60',
-    romanColor: 'text-[#a89b8c]',
-    ember: 'text-[#a0522d]',
+  // Computed theme: uses ReaderContext themeStyles as base
+  const theme = {
+    bg: themeStyles.bg,
+    text: themeStyles.text,
+    textMuted: themeStyles.textMuted,
+    textHeading: themeStyles.textHeading,
+    textSubheading: themeStyles.textMuted,
+    border: themeStyles.border,
+    accent: themeStyles.accent,
+    accentBg: themeStyles.card,
+    accentBorder: themeStyles.border,
+    sidebar: themeStyles.sidebar,
+    card: themeStyles.card,
+    highlight: themeStyles.card,
+    float: darkMode ? 'bg-[#1c1814]/95' : 'bg-[#f5f0e8]/95',
+    gradientFrom: darkMode ? 'from-[#2a2420]/30' : 'from-[#d9d0c1]/40',
+    gradientTo: darkMode ? 'to-[#0f0d0c]/10' : 'to-[#f5f0e8]/20',
+    quoteBorder: themeStyles.border,
+    quoteBg: themeStyles.card,
+    romanColor: themeStyles.textMuted,
+    ember: themeStyles.accent,
   };
 
   const chapters = [
@@ -136,7 +114,7 @@ export default function CahayaItuPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page transition-colors duration-500 min-h-screen w-full`}>
       <ReaderControls progress={readingProgress} />
       
       {/* Simplified Background */}
@@ -144,13 +122,7 @@ export default function CahayaItuPage() {
         <div className={`absolute inset-0 bg-gradient-to-b ${theme.gradientFrom} ${theme.gradientTo} opacity-30`} />
       </div>
 
-      {/* Reading Progress Bar */}
-      <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2520]' : 'bg-[#d4cfc4]'}`}>
-        <div 
-          className={`h-full ${darkMode ? 'bg-[#c9a66b]' : 'bg-[#8b4513]'} transition-all duration-300`}
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
+      {/* Reading Progress Bar handled by ReaderControls */}
 
       {/* Floating Navigation */}
       {showFloatingMenu && (
@@ -263,7 +235,7 @@ export default function CahayaItuPage() {
       )}
 
       {/* Main Content */}
-      <main className="pt-0 pb-24 font-serif antialiased relative z-10">
+      <main className="pt-0 pb-24 font-serif antialiased relative z-10 reader-content">
         
         {/* HERO SECTION */}
         <section

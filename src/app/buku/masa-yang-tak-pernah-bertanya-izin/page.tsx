@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, AnimatePresence, useSpring } from 'framer-motion';
-import { Moon, Sun, Coffee, BookOpen, ChevronUp, Quote, Settings2, X, Type, Palette } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { motion, useScroll } from 'framer-motion';
+import { Coffee, BookOpen, ChevronUp, Quote } from 'lucide-react';
 import { useReader } from "@/src/contexts/ReaderContext";
 import ReaderControls from "@/src/components/ReaderControls";
 
@@ -10,51 +10,13 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function MasaYangTakPernahBertanyaIzinPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const [darkMode, setDarkMode] = useState(true);
-  const [showTexture, setShowTexture] = useState(true);
-  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
-  const [showControls, setShowControls] = useState(false);
+  const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
+  const [showTexture] = useState(true);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
-  // Smooth progress untuk reading indicator
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Sync dengan tema global
-  useEffect(() => {
-    const checkGlobalTheme = () => {
-      const html = document.documentElement;
-      if (html.classList.contains('dark')) setDarkMode(true);
-      else if (html.classList.contains('light')) setDarkMode(false);
-    };
-    
-    checkGlobalTheme();
-    
-    const observer = new MutationObserver(checkGlobalTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    
-    return () => observer.disconnect();
-  }, []);
-
-  // Toggle tema & sync ke global
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  };
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -71,99 +33,25 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
   return (
     <div 
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-500 w-full ${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass}`}
+      className={`min-h-screen transition-colors duration-500 w-full reader-page ${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass}`}
     >
       <ReaderControls />
       {backgroundPattern}
       
-      {/* Reading Progress Indicator */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 z-50"
-        style={{ scaleX: smoothProgress }}
-      />
-
-      {/* Floating Controls */}
-      <AnimatePresence>
-        {showControls && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className={`fixed right-4 top-1/2 -translate-y-1/2 p-4 rounded-2xl shadow-2xl z-40 ${
-              darkMode ? 'bg-gray-900/95 border border-gray-800' : 'bg-white/95 border border-gray-200'
-            }`}
-          >
-            <div className="flex flex-col gap-4">
-              <button
-                onClick={() => setShowControls(false)}
-                className={`p-2 rounded-lg transition-colors ${
-                  darkMode ? 'hover:bg-gray-800 text-gray-400' : 'hover:bg-gray-100 text-gray-600'
-                }`}
-              >
-                <X size={20} />
-              </button>
-              
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-lg transition-colors ${
-                  darkMode 
-                    ? 'bg-amber-500/20 text-amber-400' 
-                    : 'bg-amber-500 text-white'
-                }`}
-              >
-                {darkMode ? <Moon size={20} /> : <Sun size={20} />}
-              </button>
-              
-              <button
-                onClick={() => setShowTexture(!showTexture)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showTexture
-                    ? 'bg-blue-500/20 text-blue-400'
-                    : darkMode ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                <Palette size={20} />
-              </button>
-              
-              <button
-                onClick={() => setFontSize(fontSize === 'normal' ? 'large' : 'normal')}
-                className={`p-2 rounded-lg transition-colors ${
-                  fontSize === 'large'
-                    ? 'bg-purple-500/20 text-purple-400'
-                    : darkMode ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                <Type size={20} />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Settings Toggle */}
-      <button
-        onClick={() => setShowControls(!showControls)}
-        className={`fixed right-4 top-1/2 -translate-y-1/2 p-3 rounded-full shadow-lg z-30 transition-all ${
-          darkMode ? 'bg-gray-900/90 hover:bg-gray-800 text-gray-400' : 'bg-white/90 hover:bg-gray-100 text-gray-600'
-        }`}
-      >
-        <Settings2 size={24} />
-      </button>
+      {/* Reading Progress Bar handled by ReaderControls */}
 
       {/* Scroll to Top */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: scrollYProgress.get() > 0.1 ? 1 : 0 }}
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 p-3 rounded-full shadow-lg z-30 transition-all ${
-          darkMode ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'
-        }`}
+        className={`fixed bottom-24 right-8 p-3 rounded-full shadow-lg z-30 transition-all bg-amber-500 hover:bg-amber-600 text-white`}
       >
         <ChevronUp size={24} />
       </motion.button>
 
       {/* Main Content - Expanded for Laptop & Desktop Readability */}
-      <main className="max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased">
+      <main className="max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased reader-content">
         
         {/* Hero Section */}
         <motion.div
@@ -212,7 +100,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             className="prose prose-lg max-w-none"
           >
             <div className={`py-8 px-6 rounded-2xl ${darkMode ? 'bg-gray-900/50' : 'bg-amber-50'}`}>
-              <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              <h2 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
                 Catatan untuk Pembaca
               </h2>
               <p className="mb-4 leading-relaxed">
@@ -231,7 +119,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h2 className={`text-4xl font-bold mb-8 ${themeStyles.accent}`}>
               BAGIAN PERTAMA: HARI-HARI YANG SAMA
             </h2>
           </motion.div>
@@ -244,7 +132,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               1. Alarm yang Sama
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -278,7 +166,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               2. Jalan yang Sama
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -312,7 +200,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               3. Ruang yang Sama
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -343,7 +231,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               4. Malam yang Sama
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -389,7 +277,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               5. Yang Berubah Tanpa Izin
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -420,7 +308,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               6. Yang Hilang di Antara Hari
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -457,7 +345,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               7. Yang Tersisa di Balik Pintu
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -494,7 +382,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               8. Yang Tertinggal di Laci
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -524,7 +412,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h2 className={`text-4xl font-bold mb-8 ${themeStyles.accent}`}>
               BAGIAN KETIGA: SUARA-SUARA DARI MASA LALU
             </h2>
           </motion.div>
@@ -537,7 +425,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               9. Lagu yang Salah Waktu
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -568,7 +456,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               10. Foto yang Tidak Kamu Ambil
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -596,7 +484,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               11. Tempat yang Tidak Pernah Kamu Kunjungi Lagi
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -630,7 +518,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               12. Nama yang Tidak Pernah Kamu Ucapkan Lagi
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -663,7 +551,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h2 className={`text-4xl font-bold mb-8 ${themeStyles.accent}`}>
               BAGIAN KEEMPAT: SAAT KAMU MENYADARI
             </h2>
           </motion.div>
@@ -676,7 +564,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               13. Cermin yang Berbeda
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -710,7 +598,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               14. Pertanyaan yang Tidak Pernah Terjawab
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -744,7 +632,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               15. Yang Kamu Rindukan Sebenarnya
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -774,7 +662,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h2 className={`text-4xl font-bold mb-8 ${themeStyles.accent}`}>
               BAGIAN KELIMA: YANG TETAP ADA
             </h2>
           </motion.div>
@@ -787,7 +675,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               16. Yang Tidak Pernah Pergi
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -815,7 +703,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               17. Yang Kamu Bawa
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -840,7 +728,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="prose prose-lg max-w-none"
           >
-            <h3 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h3 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
               18. Yang Akan Datang
             </h3>
             <p className="mb-4 leading-relaxed">
@@ -870,7 +758,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={`text-4xl font-bold mb-8 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <h2 className={`text-4xl font-bold mb-8 ${themeStyles.accent}`}>
               EPILOG: PAGI INI
             </h2>
           </motion.div>
@@ -923,7 +811,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             transition={{ duration: 0.6 }}
             className="text-center py-12"
           >
-            <p className={`text-2xl font-bold ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+            <p className={`text-2xl font-bold ${themeStyles.accent}`}>
               Akhir
             </p>
           </motion.div>
@@ -937,7 +825,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
             className="prose prose-lg max-w-none"
           >
             <div className={`py-8 px-6 rounded-2xl ${darkMode ? 'bg-gray-900/50' : 'bg-amber-50'}`}>
-              <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`}>
+              <h2 className={`text-2xl font-bold mb-4 ${themeStyles.accent}`}>
                 Catatan Penulis
               </h2>
               <p className="mb-4 leading-relaxed">
@@ -964,7 +852,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
                 : 'bg-amber-50 border-amber-500 text-gray-700'
             }`}
           >
-            <Quote className={`mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={32} />
+            <Quote className={`mb-4 ${themeStyles.accent}`} size={32} />
             <p className="text-xl italic mb-4">
               "Hari ini akan menjadi kenangan. Entah kenangan yang indah, atau kenangan yang biasa saja. Tapi itu akan menjadi kenangan. Dan suatu hari nanti, kamu akan rindu padanya. Jadi rasakanlah. Sekarang. Sebelum ia pergi."
             </p>
@@ -980,7 +868,7 @@ export default function MasaYangTakPernahBertanyaIzinPage() {
               darkMode ? 'bg-gray-900/50' : 'bg-amber-100/50'
             }`}
           >
-            <BookOpen className={`mx-auto mb-4 ${darkMode ? 'text-amber-400' : 'text-amber-600'}`} size={48} />
+            <BookOpen className={`mx-auto mb-4 ${themeStyles.accent}`} size={48} />
             <p className="text-xl italic mb-4">
               "Masa mungkin tidak pernah bertanya izin, tapi kita selalu punya pilihan untuk membuat setiap detik berarti."
             </p>

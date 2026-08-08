@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
-import { useTheme } from "@/src/components/ThemeProvider";
 import { useReader } from "@/src/contexts/ReaderContext";
 import ReaderControls from "@/src/components/ReaderControls";
 import Link from 'next/link';
@@ -12,8 +11,7 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function CoffeeBookPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const { theme: globalTheme } = useTheme();
+  const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -73,38 +71,24 @@ export default function CoffeeBookPage() {
 
   if (!mounted) return null;
 
-  const darkMode = globalTheme === 'dark';
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 
-  const theme = darkMode ? {
-    bg: 'bg-[#0a0a0a]',
-    text: 'text-neutral-300',
-    textMuted: 'text-neutral-500',
-    textHeading: 'text-neutral-100',
-    textSubheading: 'text-neutral-400',
-    border: 'border-neutral-800',
-    accent: 'text-amber-500',
-    accentBg: 'bg-amber-950/30',
-    accentBorder: 'border-amber-800/50',
-    sidebar: 'bg-[#0f0f0f]',
-    code: 'bg-neutral-900',
-    highlight: 'bg-amber-950/20',
-    card: 'bg-neutral-900/40',
-    float: 'bg-neutral-900/90'
-  } : {
-    bg: 'bg-[#fafaf9]',
-    text: 'text-stone-700',
-    textMuted: 'text-stone-500',
-    textHeading: 'text-stone-900',
-    textSubheading: 'text-stone-600',
-    border: 'border-stone-200',
-    accent: 'text-amber-700',
-    accentBg: 'bg-amber-100/60',
-    accentBorder: 'border-amber-300',
-    sidebar: 'bg-white',
-    code: 'bg-stone-100',
-    highlight: 'bg-amber-50/80',
-    card: 'bg-white',
-    float: 'bg-white/90'
+  // Computed theme: uses ReaderContext themeStyles as base
+  const theme = {
+    bg: themeStyles.bg,
+    text: themeStyles.text,
+    textMuted: themeStyles.textMuted,
+    textHeading: themeStyles.textHeading,
+    textSubheading: themeStyles.textMuted,
+    border: themeStyles.border,
+    accent: themeStyles.accent,
+    accentBg: themeStyles.card,
+    accentBorder: themeStyles.border,
+    sidebar: themeStyles.sidebar,
+    highlight: themeStyles.card,
+    card: themeStyles.card,
+    code: darkMode ? 'bg-neutral-900' : 'bg-stone-100',
+    float: darkMode ? 'bg-neutral-900/90' : 'bg-white/90',
   };
 
   const chapters = [
@@ -142,16 +126,10 @@ export default function CoffeeBookPage() {
   const isChapterCompleted = (num: number) => completedChapters.includes(num);
 
   return (
-    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 w-full min-h-screen`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page transition-colors duration-500 w-full min-h-screen`}>
       <ReaderControls progress={readingProgress} />
       
-      {/* Reading Progress Bar - Top */}
-      <div className={`fixed top-0 left-0 right-0 h-1 z-40 ${darkMode ? 'bg-neutral-800' : 'bg-stone-200'}`}>
-        <motion.div 
-          className={`h-full ${theme.accent.replace('text-', 'bg-')}`}
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
+      {/* Reading Progress Bar handled by ReaderControls */}
 
       {/* Floating Bottom Left Navigation */}
       <AnimatePresence>
@@ -299,7 +277,7 @@ export default function CoffeeBookPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="pt-0 pb-20">
+      <main className="pt-0 pb-20 reader-content">
         {/* Hero Section dengan Human Touch */}
         <motion.section 
           initial="hidden"

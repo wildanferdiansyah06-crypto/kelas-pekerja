@@ -41,38 +41,22 @@ export default function SeniMenyeduhiKehidupanPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const theme = darkMode ? {
-    bg: 'bg-[#0c0a09]',
-    bgGradient: 'from-stone-950 via-[#1c1917] to-stone-950',
-    text: 'text-stone-300',
-    textMuted: 'text-stone-500',
-    textHeading: 'text-amber-50',
-    accent: 'text-amber-500',
-    accentBg: 'bg-amber-500/10',
-    accentBorder: 'border-amber-500/30',
-    secondary: 'text-orange-400',
-    border: 'border-stone-800',
-    card: 'bg-stone-900/40',
-    hover: 'hover:bg-stone-800/40',
+  const theme = {
+    bg: themeStyles.bg,
+    bgGradient: darkMode ? 'from-stone-950 via-[#1c1917] to-stone-950' : 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
+    text: themeStyles.text,
+    textMuted: themeStyles.textMuted,
+    textHeading: themeStyles.textHeading,
+    accent: themeStyles.accent,
+    accentBg: darkMode ? 'bg-amber-500/10' : 'bg-[#e5e2dd]/50',
+    accentBorder: darkMode ? 'border-amber-500/30' : 'border-[#d4d0c8]',
+    secondary: darkMode ? 'text-orange-400' : 'text-[#6b5d4f]',
+    border: themeStyles.border,
+    card: themeStyles.card,
+    hover: darkMode ? 'hover:bg-stone-800/40' : 'hover:bg-stone-100/80',
     quoteBorder: 'border-l-amber-500',
-    tocActive: 'bg-amber-500/10 text-amber-500',
-    progress: 'bg-amber-600'
-  } : {
-    bg: 'bg-[#faf9f7]',
-    bgGradient: 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
-    text: 'text-[#4a4a4a]',
-    textMuted: 'text-[#6a6a6a]',
-    textHeading: 'text-[#2d2d2d]',
-    accent: 'text-[#8b7355]',
-    accentBg: 'bg-[#e5e2dd]/50',
-    accentBorder: 'border-[#d4d0c8]',
-    secondary: 'text-[#6b5d4f]',
-    border: 'border-[#e5e2dd]',
-    card: 'bg-white/60',
-    hover: 'hover:bg-stone-100/80',
-    quoteBorder: 'border-l-amber-600',
-    tocActive: 'bg-amber-100 text-amber-700',
-    progress: 'bg-amber-700'
+    tocActive: darkMode ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-100 text-amber-700',
+    progress: darkMode ? 'bg-amber-600' : 'bg-amber-700'
   };
 
   const fontSizeClasses = (fontSize === 'l' || fontSize === 'xl') ? {
@@ -121,7 +105,7 @@ export default function SeniMenyeduhiKehidupanPage() {
   ];
 
   return (
-    <div ref={containerRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 overflow-x-hidden w-full min-h-screen`}>
+    <div ref={containerRef} className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page transition-colors duration-500 overflow-x-hidden w-full min-h-screen`}>
       <ReaderControls chapters={chapters} activeChapter={activeSection} progress={progress} />
       
       {/* Background - Coffee Aesthetic */}
@@ -211,7 +195,7 @@ export default function SeniMenyeduhiKehidupanPage() {
       </div>
 
       {/* Main Content - Expanded for Laptop & Desktop Readability */}
-      <main className="relative z-20 max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 pt-16 pb-24 antialiased">
+      <main className="relative z-20 max-w-5xl lg:max-w-6xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 pt-16 pb-24 antialiased reader-content">
         
         {/* Hero */}
         <motion.section 

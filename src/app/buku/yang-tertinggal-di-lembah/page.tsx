@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Mountain, ChevronRight, X, Compass, Check, Wind, Heart, Quote } from 'lucide-react';
-import { useTheme } from "@/src/components/ThemeProvider";
 import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
 
@@ -11,8 +10,7 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function YangTertinggalDiLembahPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const { theme: globalTheme } = useTheme();
+  const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
   const [mounted, setMounted] = useState(false);
   
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -66,64 +64,28 @@ export default function YangTertinggalDiLembahPage() {
 
   if (!mounted) return null;
 
-  const darkMode = globalTheme === 'dark';
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 
-  // TEMA BARU: "Midnight Ink & Aged Parchment"
-  // Lebih dalam, earthy, timeless, seperti buku filosofi mahal
-  const theme = darkMode ? {
-    // Dark mode: Midnight Ink - seperti membaca di ruang perpustakaan gelap dengan lampu warm
-    bg: 'bg-[#12100e]', // Warm black, seperti kayu mahoni tua
-    text: 'text-[#e8e4df]', // Warm white, seperti kertas tua under low light
-    textMuted: 'text-[#8b7e6f]', // Muted bronze/taupe
-    textHeading: 'text-[#f5f1ea]', // Cream white untuk heading
-    textSubheading: 'text-[#a89b8c]', // Soft tan
-    
-    border: 'border-[#2a2622]', // Very dark brown border
-    accent: 'text-[#c9a86c]', // Muted gold/amber seperti tinta emas tua
-    accentBg: 'bg-[#1a1714]', // Slightly lighter warm black
-    accentBorder: 'border-[#3d352b]', // Bronze border
-    
-    sidebar: 'bg-[#0d0b09]', // Almost black warm
-    code: 'bg-[#1c1915]',
-    highlight: 'bg-[#2a2420]/50', // Warm brown translucent
-    card: 'bg-[#1a1714]/80', // Warm dark with transparency
-    
-    float: 'bg-[#1c1915]/95', // Floating elements
-    gradientFrom: 'from-[#2a2420]/30', // Warm brown gradient
-    gradientTo: 'to-[#12100e]/10',
-    
-    // Special accents untuk quotes dan highlights
-    quoteBorder: 'border-[#c9a86c]/40',
-    quoteBg: 'bg-[#1a1714]/60',
-    
-    // Roman numerals and decorative
-    romanColor: 'text-[#5c4d3c]', // Deep umber
-  } : {
-    // Light mode: Aged Parchment - seperti buku tua bersejarah
-    bg: 'bg-[#f5f1e8]', // True aged paper cream
-    text: 'text-[#2c241b]', // Soft black dengan warm undertone
-    textMuted: 'text-[#6b5d4d]', // Medium brown
-    textHeading: 'text-[#1a1612]', // Deep charcoal brown
-    textSubheading: 'text-[#4a3f32]', // Dark taupe
-    
-    border: 'border-[#d4cfc4]', // Soft gray-brown
-    accent: 'text-[#7d5a3c]', // Deep rust/umber
-    accentBg: 'bg-[#e8e2d5]', // Darker cream
-    accentBorder: 'border-[#c4b8a3]', // Tan border
-    
-    sidebar: 'bg-[#ebe5d8]', // Slightly darker cream
-    code: 'bg-[#e0d9cc]',
-    highlight: 'bg-[#d9d0c1]/60', // Warm gray translucent
-    card: 'bg-[#ebe5d8]/80',
-    
-    float: 'bg-[#f5f1e8]/95',
-    gradientFrom: 'from-[#d9d0c1]/40',
-    gradientTo: 'to-[#f5f1e8]/20',
-    
-    quoteBorder: 'border-[#7d5a3c]/40',
-    quoteBg: 'bg-[#e8e2d5]/60',
-    
-    romanColor: 'text-[#a89b8c]', // Light taupe
+  // Computed theme: uses ReaderContext themeStyles as base + extras derived from readerTheme
+  const theme = {
+    bg: themeStyles.bg,
+    text: themeStyles.text,
+    textMuted: themeStyles.textMuted,
+    textHeading: themeStyles.textHeading,
+    textSubheading: themeStyles.textMuted,
+    border: themeStyles.border,
+    accent: themeStyles.accent,
+    accentBg: themeStyles.card,
+    accentBorder: themeStyles.border,
+    sidebar: themeStyles.sidebar,
+    highlight: themeStyles.card,
+    card: themeStyles.card,
+    float: darkMode ? 'bg-[#1c1915]/95' : 'bg-[#f5f1e8]/95',
+    gradientFrom: darkMode ? 'from-[#2a2420]/30' : 'from-[#d9d0c1]/40',
+    gradientTo: darkMode ? 'to-[#12100e]/10' : 'to-[#f5f1e8]/20',
+    quoteBorder: themeStyles.border,
+    quoteBg: themeStyles.card,
+    romanColor: themeStyles.textMuted,
   };
 
   const chapters = [
@@ -153,17 +115,10 @@ export default function YangTertinggalDiLembahPage() {
   };
 
   return (
-    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page transition-colors duration-500 min-h-screen w-full`}>
       <ReaderControls progress={readingProgress} />
       
-      {/* Reading Progress Bar - lebih subtle dan elegant */}
-      <div className={`fixed top-0 left-0 right-0 h-[2px] z-50 ${darkMode ? 'bg-[#2a2622]' : 'bg-[#d4cfc4]'}`}>
-        <motion.div 
-          className={`h-full ${darkMode ? 'bg-[#c9a86c]' : 'bg-[#7d5a3c]'}`}
-          style={{ width: `${readingProgress}%` }}
-          transition={{ type: "spring", stiffness: 100, damping: 30 }}
-        />
-      </div>
+      {/* Reading Progress Bar handled by ReaderControls */}
 
       {/* Floating Navigation - lebih minimalis dan "deep" */}
       <AnimatePresence>
@@ -308,7 +263,7 @@ export default function YangTertinggalDiLembahPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="pt-0 pb-32 font-serif antialiased">
+      <main className="pt-0 pb-32 font-serif antialiased reader-content">
         
         {/* Hero Section - lebih dramatic dan "deep" */}
         <motion.section

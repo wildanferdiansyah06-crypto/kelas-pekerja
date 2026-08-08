@@ -450,3 +450,72 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================
+   READER MODE — CSS Variable-driven Styling
+   Applied globally when CSS vars are set by
+   ReaderContext's applyReaderCSSVars()
+============================================ */
+
+/* Page-level: background & text color from reader vars */
+.reader-page {
+  background-color: var(--reader-bg) !important;
+  color: var(--reader-text) !important;
+  transition: background-color 0.4s ease, color 0.3s ease;
+}
+
+/* Content area: all readable text elements inherit reader settings */
+.reader-content p,
+.reader-content li,
+.reader-content blockquote,
+.reader-content span:not([class*="text-["]):not([class*="opacity"]),
+.reader-content div > p {
+  font-size: var(--reader-font-size) !important;
+  line-height: var(--reader-line-height) !important;
+  font-family: var(--reader-font-family) !important;
+  color: var(--reader-text) !important;
+}
+
+/* Headings: use heading color but inherit font family */
+.reader-content h1,
+.reader-content h2,
+.reader-content h3,
+.reader-content h4,
+.reader-content h5,
+.reader-content h6 {
+  color: var(--reader-heading) !important;
+  font-family: var(--reader-font-family) !important;
+  transition: color 0.3s ease;
+}
+
+/* Muted / secondary text */
+.reader-content .text-muted,
+.reader-content [class*="textMuted"],
+.reader-content small {
+  color: var(--reader-muted) !important;
+}
+
+/* Accent text */
+.reader-content .text-accent,
+.reader-content [class*="accent"] {
+  color: var(--reader-accent) !important;
+}
+
+/* Cards / containers inside reader content */
+.reader-content .reader-card {
+  background-color: var(--reader-card) !important;
+  border-color: var(--reader-border-color) !important;
+  transition: background-color 0.4s ease, border-color 0.3s ease;
+}
+
+/* Blockquotes with reader accent border */
+.reader-content blockquote {
+  border-left-color: var(--reader-accent) !important;
+  color: var(--reader-muted) !important;
+}
+
+/* Strong / bold text inherits heading color */
+.reader-content strong,
+.reader-content b {
+  color: var(--reader-heading) !important;
+}

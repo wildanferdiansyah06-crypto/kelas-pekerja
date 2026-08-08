@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Coffee, Clock, Eye, EyeOff, Settings2, X, Type, Palette, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Coffee, Clock, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
@@ -11,77 +11,35 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 
 export default function DiBalikBarPage() {
   const { language } = useLanguage();
-  const { themeStyles, fontFamilyClass } = useReader();
-  const [darkMode, setDarkMode] = useState(true);
-  const [showTexture, setShowTexture] = useState(true);
-  const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
-  const [showControls, setShowControls] = useState(false);
+  const { theme: readerTheme, fontSize, themeStyles, fontFamilyClass } = useReader();
+  const [showTexture] = useState(true);
   const [highlightedSection, setHighlightedSection] = useState<number | null>(null);
-  const { scrollYProgress } = useScroll();
   
-  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  
-  useEffect(() => {
-    const checkGlobalTheme = () => {
-      const html = document.documentElement;
-      if (html.classList.contains('dark')) setDarkMode(true);
-      else if (html.classList.contains('light')) setDarkMode(false);
-    };
-    checkGlobalTheme();
-    const observer = new MutationObserver(checkGlobalTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
+  const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
+  const isLargeFont = fontSize === 'l' || fontSize === 'xl';
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
+  // Computed theme: uses ReaderContext themeStyles as base
+  const theme = {
+    bg: themeStyles.bg,
+    bgGradient: darkMode ? 'from-stone-950 via-[#1c1917] to-stone-950' : 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
+    text: themeStyles.text,
+    textMuted: themeStyles.textMuted,
+    textHeading: themeStyles.textHeading,
+    textSecondary: themeStyles.textMuted,
+    border: themeStyles.border,
+    borderLight: themeStyles.border,
+    divider: darkMode ? 'bg-stone-800' : 'bg-[#e5e2dd]',
+    accent: themeStyles.accent,
+    accentBg: themeStyles.card,
+    accentBorder: themeStyles.border,
+    card: themeStyles.card,
+    hover: darkMode ? 'hover:bg-stone-800/40' : 'hover:bg-[#f5f3f0]/80',
+    coffee: darkMode ? 'text-amber-700/20' : 'text-[#8b7355]/10',
+    highlight: themeStyles.card,
   };
 
-  const theme = darkMode ? {
-    bg: 'bg-[#0c0a09]',
-    bgGradient: 'from-stone-950 via-[#1c1917] to-stone-950',
-    text: 'text-stone-400',
-    textMuted: 'text-stone-600',
-    textHeading: 'text-stone-200',
-    textSecondary: 'text-stone-500',
-    border: 'border-stone-800',
-    borderLight: 'border-stone-700',
-    divider: 'bg-stone-800',
-    accent: 'text-amber-600',
-    accentBg: 'bg-amber-950/20',
-    accentBorder: 'border-amber-900/30',
-    card: 'bg-stone-900/30',
-    hover: 'hover:bg-stone-800/40',
-    coffee: 'text-amber-700/20',
-    highlight: 'bg-amber-950/30 border-amber-800/40'
-  } : {
-    bg: 'bg-[#faf9f7]',
-    bgGradient: 'from-[#faf9f7] via-[#f5f3f0] to-[#faf9f7]',
-    text: 'text-[#4a4a4a]',
-    textMuted: 'text-[#6a6a6a]',
-    textHeading: 'text-[#2d2d2d]',
-    textSecondary: 'text-[#6a6a6a]',
-    border: 'border-[#e5e2dd]',
-    borderLight: 'border-[#d4d0c8]',
-    divider: 'bg-[#e5e2dd]',
-    accent: 'text-[#8b7355]',
-    accentBg: 'bg-[#e5e2dd]/50',
-    accentBorder: 'border-[#d4d0c8]',
-    card: 'bg-white/60',
-    hover: 'hover:bg-[#f5f3f0]/80',
-    coffee: 'text-[#8b7355]/10',
-    highlight: 'bg-[#e5e2dd]/80 border-[#d4d0c8]/60'
-  };
-
-  const fontSizeClasses = fontSize === 'large' ? {
+  // Font size classes based on ReaderContext fontSize
+  const fontSizeClasses = (fontSize === 'l' || fontSize === 'xl') ? {
     body: 'text-lg md:text-xl leading-relaxed',
     heading: 'text-3xl md:text-5xl',
     subheading: 'text-xl md:text-2xl',
@@ -152,7 +110,7 @@ export default function DiBalikBarPage() {
   ];
 
   return (
-    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} transition-colors duration-500 min-h-screen w-full`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page transition-colors duration-500 min-h-screen w-full`}>
       <ReaderControls />
       
       {/* Aesthetic Background */}
@@ -189,14 +147,10 @@ export default function DiBalikBarPage() {
         ))}
       </div>
 
-      {/* Progress Bar */}
-      <motion.div 
-        className={`fixed top-0 left-0 right-0 h-[2px] ${darkMode ? 'bg-gradient-to-r from-amber-800 to-amber-600' : 'bg-gradient-to-r from-amber-700 to-amber-500'} origin-left z-50`}
-        style={{ scaleX }}
-      />
+      {/* Progress Bar handled by ReaderControls */}
 
       {/* Main Content - Expanded for Laptop & Desktop Readability */}
-      <main className="relative max-w-4xl lg:max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased">
+      <main className="relative max-w-4xl lg:max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased reader-content">
 
         {/* Story Identity Badge */}
         <motion.div 
@@ -217,7 +171,7 @@ export default function DiBalikBarPage() {
         </motion.div>
 
         {/* Header */}
-        <motion.header variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-20 md:mb-28' : 'mb-16 md:mb-24'}`}>
+        <motion.header variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-20 md:mb-28' : 'mb-16 md:mb-24'}`}>
           <motion.div variants={fadeInUp} className={`${theme.border} border-b pb-8 mb-12`}>
             <div className="flex items-center gap-3 mb-4">
               <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }} className={`w-2 h-2 rounded-full ${darkMode ? 'bg-amber-700' : 'bg-amber-600'}`} />
@@ -238,7 +192,7 @@ export default function DiBalikBarPage() {
               variants={fadeInUp}
               className={`${theme.accentBg} ${theme.accentBorder} border-l-4 p-6 rounded-r-lg mb-6`}
             >
-              <p className={`${theme.textHeading} ${fontSize === 'large' ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} leading-relaxed font-light`}>
+              <p className={`${theme.textHeading} ${isLargeFont ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} leading-relaxed font-light`}>
                 "Orang cuma lihat kita bikin minuman yang cantik. 
                 <span className={`${theme.accent} font-medium block mt-2`}>Tapi gak ada yang tahu capeknya di balik bar.</span>"
               </p>
@@ -253,9 +207,9 @@ export default function DiBalikBarPage() {
         </motion.header>
 
         {/* Section: 11 P.M. */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className="flex items-center gap-3 mb-10">
-            <Clock size={fontSize === 'large' ? 20 : 16} className={theme.accent} strokeWidth={1.5} />
+            <Clock size={isLargeFont ? 20 : 16} className={theme.accent} strokeWidth={1.5} />
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}>11 P.M.</span>
           </motion.div>
 
@@ -301,7 +255,7 @@ export default function DiBalikBarPage() {
           >
             <Quote size={32} className={`${theme.accent} opacity-30 absolute top-6 right-6`} />
             <div className="relative z-10 space-y-4">
-              <p className={`${theme.textHeading} ${fontSize === 'large' ? 'text-xl' : 'text-lg'} font-medium`}>Di depanku, segelas kopi tubruk.</p>
+              <p className={`${theme.textHeading} ${isLargeFont ? 'text-xl' : 'text-lg'} font-medium`}>Di depanku, segelas kopi tubruk.</p>
               <p className={`${theme.textHeading} ${fontSizeClasses.subheading} font-serif italic`}>Bukan untuk pelanggan. Bukan untuk review. Untukku.</p>
               <div className={`h-px ${theme.divider} my-6`} />
               <p className={`${theme.textMuted} ${fontSizeClasses.body} leading-relaxed`}>
@@ -315,7 +269,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* Section: Barista Rendahan */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Barista Rendahan</span>
           </motion.div>
@@ -360,7 +314,7 @@ export default function DiBalikBarPage() {
             <div className="relative z-10 text-center">
               <Sparkles size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
               <p className={`${theme.accent} ${fontSizeClasses.small} uppercase tracking-[0.2em] mb-4`}>Yang Tidak Terlihat</p>
-              <p className={`${theme.textHeading} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}>
+              <p className={`${theme.textHeading} ${isLargeFont ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}>
                 "Capeknya bukan di tangan. <span className={theme.accent}>Capeknya di kepala,</span> di senyum yang dipaksakan, di 'baik-baik saja' yang terucap otomatis."
               </p>
             </div>
@@ -368,7 +322,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* Section: Terlihat, Sebentar */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Terlihat, Sebentar</span>
           </motion.div>
@@ -408,7 +362,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* Section: Suara dari Ruang Tamu - KOREKSI: LAGI CALL SAMA PACAR */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Suara dari Ruang Tamu</span>
           </motion.div>
@@ -451,7 +405,7 @@ export default function DiBalikBarPage() {
               </div>
               
               {/* HIGHLIGHT MOMENT - QUOTE BRUTAL */}
-              <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
+              <blockquote className={`${darkMode ? 'text-red-400/90' : 'text-red-700/90'} ${isLargeFont ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic border-l-4 ${darkMode ? 'border-red-900/40' : 'border-red-300'} pl-6 py-4 my-6 leading-relaxed`}>
                 "<span className="font-bold">Biasanya barista di Bali itu gigolo.</span> Jangan lanjutin sama anak itu, ya."
               </blockquote>
               
@@ -490,7 +444,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* New Section: Tengah Malam */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Tengah Malam</span>
           </motion.div>
@@ -525,7 +479,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* Section: Masih Berdiri - Climax */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-24 md:mb-32' : 'mb-20 md:mb-28'}`}>
           <motion.div variants={fadeInUp} className={`flex items-center gap-4 mb-10 pb-4 border-b ${theme.border}`}>
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.15em] uppercase`}># Masih Berdiri</span>
           </motion.div>
@@ -551,7 +505,7 @@ export default function DiBalikBarPage() {
               <div className={`py-8 border-y-2 ${theme.accentBorder} my-8`}>
                 <motion.p 
                   variants={scaleIn}
-                  className={`${theme.textHeading} ${fontSize === 'large' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}
+                  className={`${theme.textHeading} ${isLargeFont ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-serif italic leading-relaxed`}
                 >
                   "Aku berdiri karena tubuhku masih sanggup melakukannya. <span className={theme.accent}>Karena besok ada tagihan.</span> Karena aku belum menemukan alasan untuk berhenti — atau untuk melanjutkan."
                 </motion.p>
@@ -568,7 +522,7 @@ export default function DiBalikBarPage() {
         </motion.section>
 
         {/* Epilog - Enhanced */}
-        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${fontSize === 'large' ? 'mb-20 md:mb-24' : 'mb-16 md:mb-20'} border-t-2 ${theme.border} pt-16`}>
+        <motion.section variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportConfig} className={`${isLargeFont ? 'mb-20 md:mb-24' : 'mb-16 md:mb-20'} border-t-2 ${theme.border} pt-16`}>
           <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4 mb-12">
             <span className={`w-12 h-px ${darkMode ? 'bg-stone-800' : 'bg-stone-200'}`} />
             <span className={`${theme.textMuted} ${fontSizeClasses.small} tracking-[0.2em] uppercase`}>Epilog</span>
@@ -731,55 +685,7 @@ export default function DiBalikBarPage() {
           <p className={`${theme.textMuted} text-[10px] mt-2 tracking-wider opacity-60`}>Wildan Ferdiansyah • 2025</p>
           <p className={`${theme.accent} text-xs mt-4 italic`}>Dari balik bar, untuk yang di balik meja lainnya.</p>
         </motion.footer>
-
       </main>
-
-      {/* Floating Controls */}
-      <AnimatePresence>
-        {showControls && (
-          <motion.div initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.9 }} transition={{ duration: 0.2 }} className={`fixed bottom-20 left-6 z-40 ${darkMode ? 'bg-stone-900/95' : 'bg-white/95'} backdrop-blur-xl border ${theme.border} rounded-2xl shadow-2xl p-4 min-w-[200px]`}>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Palette size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Tema</span>
-                </div>
-                <button onClick={toggleDarkMode} className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs transition-all ${darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-100 text-amber-700'}`}>
-                  {darkMode ? <Moon size={12} /> : <Sun size={12} />}
-                  <span>{darkMode ? 'Gelap' : 'Terang'}</span>
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Type size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Ukuran</span>
-                </div>
-                <div className="flex gap-1">
-                  <button onClick={() => setFontSize('normal')} className={`px-2 py-1 rounded text-xs transition-all ${fontSize === 'normal' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}>A</button>
-                  <button onClick={() => setFontSize('large')} className={`px-2 py-1 rounded text-xs transition-all ${fontSize === 'large' ? (darkMode ? 'bg-stone-700 text-white' : 'bg-stone-200 text-stone-800') : theme.textMuted}`}>A+</button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between pt-2 border-t border-stone-700/20">
-                <div className="flex items-center gap-2">
-                  <Coffee size={14} className={theme.textMuted} />
-                  <span className={`${theme.textMuted} text-xs`}>Latar</span>
-                </div>
-                <button onClick={() => setShowTexture(!showTexture)} className={`p-1.5 rounded-lg transition-all ${showTexture ? (darkMode ? 'bg-stone-800 text-amber-500' : 'bg-stone-200 text-amber-700') : theme.textMuted}`}>
-                  {showTexture ? <Eye size={12} /> : <EyeOff size={12} />}
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Toggle Button */}
-      <motion.button initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setShowControls(!showControls)} className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-3 ${darkMode ? 'bg-stone-900/90 text-stone-200 hover:bg-stone-800' : 'bg-white/90 text-stone-700 hover:bg-stone-50'} backdrop-blur-xl border ${theme.border} rounded-full shadow-lg transition-all duration-300`}>
-        <Settings2 size={16} strokeWidth={1.5} />
-        <span className="text-xs font-medium">Pengaturan</span>
-        {showControls && <X size={14} className="ml-1 opacity-60" />}
-      </motion.button>
-
     </div>
   );
 }

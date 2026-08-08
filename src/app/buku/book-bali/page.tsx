@@ -30,7 +30,7 @@ export default function BookBaliPage() {
   };
 
   return (
-    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} min-h-screen relative transition-colors duration-500`}>
+    <div className={`${themeStyles.bg} ${themeStyles.text} ${fontFamilyClass} reader-page min-h-screen relative transition-colors duration-500`}>
       <ReaderControls />
 
       {/* Sidebar Table of Contents */}
@@ -95,7 +95,7 @@ export default function BookBaliPage() {
       </AnimatePresence>
 
       {/* Main Container - Laptop & Desktop Readable */}
-      <main className="max-w-4xl lg:max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased">
+      <main className="max-w-4xl lg:max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-16 lg:py-24 antialiased reader-content">
         
         {/* Header Hero */}
         <section className="mb-20 text-center relative">
