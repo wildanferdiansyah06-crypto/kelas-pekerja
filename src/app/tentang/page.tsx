@@ -17,53 +17,67 @@ export default function TentangPage() {
 
   const books = [
     {
-      title: "Cahaya Itu",
-      subtitle: "Sebuah Pengakuan tentang yang Terbakar hingga Padam",
-      year: "2026",
-      genre: "Filsafat",
-      link: "/buku/cahaya-itu"
-    },
-    {
-      title: "Kami Menulis Pelan",
-      subtitle: "Tentang Menjadi Terlalu Baik",
-      year: "2026",
-      genre: "Fiksi",
-      link: "/buku/kami-menulis-pelan"
-    },
-    {
-      title: "Soal Kopi",
-      subtitle: "Akademis Tentang Kehidupan Barista",
-      year: "2026",
-      genre: "Akademis",
-      link: "/buku/soal-kopi"
-    },
-    {
-      title: "Malam Pertama",
-      subtitle: "Tentang Ketakutan dan Harapan",
-      year: "2026",
-      genre: "Puisi",
-      link: "/buku/malam-pertama"
-    },
-    {
-      title: "Ruang Kosong",
-      subtitle: "Mencari Makna di Antara Baris Kode",
-      year: "2026",
-      genre: "Refleksi",
-      link: "/buku/ruang-kosong"
-    },
-    {
-      title: "Dua Puluh Lima",
-      subtitle: "Tentang Usia dan Pertanyaan",
-      year: "2026",
-      genre: "Fiksi",
-      link: "/buku/dua-puluh-lima"
-    },
-    {
       title: "Sunyi yang Kutinggali",
       subtitle: "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai",
       year: "2026",
       genre: "Refleksi",
       link: "/buku/sunyi-yang-kutinggali"
+    },
+    {
+      title: "Book Bali",
+      subtitle: "Catatan, Cerita, dan Suasana dari Pulau Dewata",
+      year: "2026",
+      genre: "Cerita",
+      link: "/buku/book-bali"
+    },
+    {
+      title: "Masa yang Tak Pernah Bertanya Izin",
+      subtitle: "Tentang Waktu yang Berlalu Tanpa Permisi",
+      year: "2026",
+      genre: "Refleksi",
+      link: "/buku/masa-yang-tak-pernah-bertanya-izin"
+    },
+    {
+      title: "Cahaya Itu",
+      subtitle: "Sebuah Pengakuan tentang yang Terbakar hingga Padam",
+      year: "2026",
+      genre: "Refleksi",
+      link: "/buku/cahaya-itu"
+    },
+    {
+      title: "Yang Tertinggal di Lembah",
+      subtitle: "Sebuah Tafsiran tentang Janji, Kehilangan, dan Perjalanan",
+      year: "2026",
+      genre: "Filosofi",
+      link: "/buku/yang-tertinggal-di-lembah"
+    },
+    {
+      title: "Kami Menulis Pelan",
+      subtitle: "Kumpulan tulisan yang lahir dari kesabaran",
+      year: "2026",
+      genre: "Proses",
+      link: "/buku/kami-menulis-pelan"
+    },
+    {
+      title: "Di Atas Cangkir Yang Sama",
+      subtitle: "Panduan akademis dan konsistensi",
+      year: "2026",
+      genre: "Renungan",
+      link: "/buku/di-atas-cangkir-yang-sama"
+    },
+    {
+      title: "Di Balik Bar",
+      subtitle: "Cerita-cerita dari balik meja bar",
+      year: "2026",
+      genre: "Cerita",
+      link: "/buku/di-balik-bar"
+    },
+    {
+      title: "Seni Menyeduh Kehidupan",
+      subtitle: "Menyikapi hidup dengan cara yang lebih gentle",
+      year: "2026",
+      genre: "Kehidupan",
+      link: "/buku/seni-menyeduh-kehidupan"
     }
   ];
 

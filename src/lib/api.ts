@@ -61,6 +61,13 @@ export async function getBooks(filters?: {
         (b.tags && b.tags.some((t: string) => t.toLowerCase().includes(s)))
       );
     }
+    // Ensure local books are always sorted by publishedAt desc (newest first)
+    localBooks.sort((a: any, b: any) => {
+      const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return dateB - dateA;
+    });
+
     if (filters?.limit) {
       localBooks = localBooks.slice(0, filters.limit);
     }
