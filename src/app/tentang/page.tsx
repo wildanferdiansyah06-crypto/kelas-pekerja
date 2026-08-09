@@ -24,13 +24,6 @@ export default function TentangPage() {
       link: "/buku/sunyi-yang-kutinggali"
     },
     {
-      title: "Book Bali",
-      subtitle: "Catatan, Cerita, dan Suasana dari Pulau Dewata",
-      year: "2026",
-      genre: "Cerita",
-      link: "/buku/book-bali"
-    },
-    {
       title: "Masa yang Tak Pernah Bertanya Izin",
       subtitle: "Tentang Waktu yang Berlalu Tanpa Permisi",
       year: "2026",

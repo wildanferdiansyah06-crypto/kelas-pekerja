@@ -24,29 +24,6 @@
       "tags": ["renungan", "refleksi", "sunyi", "cinta", "kehilangan", "prosa"]
     },
     {
-      "id": "8",
-      "slug": "book-bali",
-      "title": "Book Bali",
-      "titleEn": "Book Bali",
-      "subtitle": "Catatan, Cerita, dan Suasana dari Pulau Dewata",
-      "subtitleEn": "Notes, Stories, and Atmosphere from the Island of the Gods",
-      "excerpt": "Naskah dan skrip cerita tentang perjalanan, keheningan, dan aroma kopi di antara pesisir dan bukit Ubud.",
-      "excerptEn": "A story manuscript exploring journeys, quietness, and coffee amidst the shores and hills of Ubud.",
-      "preview": "Ruang naskah cerita Book Bali. Tempat untuk menuangkan bait-bait pikiran, dialog, dan catatan perjalanan.",
-      "previewEn": "A dedicated space for the Book Bali story manuscript.",
-      "category": "cerita",
-      "readTime": "30 menit",
-      "readTimeEn": "30 min read",
-      "cover": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800&auto=format&fit=crop",
-      "publishedAt": "2026-08-01",
-      "featured": true,
-      "stats": {
-        "views": 10,
-        "downloads": 2
-      },
-      "tags": ["bali", "cerita", "naskah", "perjalanan", "ubud", "kopi"]
-    },
-    {
       "id": "7",
       "slug": "masa-yang-tak-pernah-bertanya-izin",
       "title": "Masa yang Tak Pernah Bertanya Izin",
