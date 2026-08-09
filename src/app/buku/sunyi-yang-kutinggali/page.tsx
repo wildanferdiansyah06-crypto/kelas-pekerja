@@ -300,9 +300,9 @@ export default function SunyiYangKutinggaliPage() {
         >
           {/* Chapter label */}
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>I</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>I</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Kota yang Tak Pernah Tidur</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Kota yang Tak Pernah Tidur</span>
           </div>
 
           <div className={`space-y-8 text-lg sm:text-xl leading-[1.9] ${theme.text}`}>
@@ -345,9 +345,9 @@ export default function SunyiYangKutinggaliPage() {
           className={`relative max-w-3xl mx-auto px-6 sm:px-10 py-20 sm:py-28 border-b ${theme.border}`}
         >
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>II</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>II</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Kau Datang</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Kau Datang</span>
           </div>
 
           <div className={`space-y-8 text-lg sm:text-xl leading-[1.9] ${theme.text}`}>
@@ -400,9 +400,9 @@ export default function SunyiYangKutinggaliPage() {
           className={`relative max-w-3xl mx-auto px-6 sm:px-10 py-20 sm:py-28 border-b ${theme.border}`}
         >
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>III</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>III</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Cinta yang Pelan</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Cinta yang Pelan</span>
           </div>
 
           {/* Full-width atmospheric quote */}
@@ -433,9 +433,9 @@ export default function SunyiYangKutinggaliPage() {
           className={`relative max-w-3xl mx-auto px-6 sm:px-10 py-20 sm:py-28 border-b ${theme.border}`}
         >
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>IV</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>IV</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Hari di Tebing</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Hari di Tebing</span>
           </div>
 
           <div className={`space-y-8 text-lg sm:text-xl leading-[1.9] ${theme.text}`}>
@@ -482,9 +482,9 @@ export default function SunyiYangKutinggaliPage() {
           className={`relative max-w-3xl mx-auto px-6 sm:px-10 py-20 sm:py-28 border-b ${theme.border}`}
         >
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>V</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>V</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Perpisahan</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Perpisahan</span>
           </div>
 
           <div className={`space-y-8 text-lg sm:text-xl leading-[1.9] ${theme.text}`}>
@@ -528,9 +528,9 @@ export default function SunyiYangKutinggaliPage() {
           className={`relative max-w-3xl mx-auto px-6 sm:px-10 py-20 sm:py-28`}
         >
           <div className={`flex items-center gap-4 mb-12`}>
-            <span className={`font-serif text-sm tracking-[0.3em] uppercase ${theme.accent} opacity-70`}>VI</span>
+            <span className={`font-serif text-base tracking-[0.2em] uppercase antialiased ${theme.accent} opacity-70`}>VI</span>
             <div className={`flex-1 h-[1px] ${darkMode ? 'bg-[#c9a86c]/20' : 'bg-[#7d5a3c]/20'}`} />
-            <span className={`font-serif text-sm italic ${theme.textMuted}`}>Dua Jenis Sunyi</span>
+            <span className={`font-serif text-base sm:text-lg italic antialiased ${theme.textMuted}`}>Dua Jenis Sunyi</span>
           </div>
 
           <div className={`space-y-8 text-lg sm:text-xl leading-[1.9] ${theme.text}`}>
@@ -569,7 +569,7 @@ export default function SunyiYangKutinggaliPage() {
               <span className="text-xl">✦</span>
               <div className={`w-12 h-[1px] ${darkMode ? 'bg-[#c9a86c]' : 'bg-[#7d5a3c]'}`} />
             </div>
-            <p className={`font-serif text-sm italic ${theme.textMuted} opacity-60 tracking-wider`}>
+            <p className={`font-serif text-base italic antialiased ${theme.textMuted} opacity-60 tracking-wider`}>
               — Selesai —
             </p>
           </div>
