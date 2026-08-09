@@ -57,6 +57,13 @@ export default function TentangPage() {
       year: "2026",
       genre: "Fiksi",
       link: "/buku/dua-puluh-lima"
+    },
+    {
+      title: "Sunyi yang Kutinggali",
+      subtitle: "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai",
+      year: "2026",
+      genre: "Refleksi",
+      link: "/buku/sunyi-yang-kutinggali"
     }
   ];
 

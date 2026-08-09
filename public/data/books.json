@@ -183,6 +183,29 @@
         "downloads": 2
       },
       "tags": ["bali", "cerita", "naskah", "perjalanan", "ubud", "kopi"]
+    },
+    {
+      "id": "8",
+      "slug": "sunyi-yang-kutinggali",
+      "title": "Sunyi yang Kutinggali",
+      "titleEn": "The Silence I Inhabit",
+      "subtitle": "Bukan cerita yang berjalan menurut waktu, melainkan gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai.",
+      "subtitleEn": "Not a story that follows time, but a portrait of a heart that, for a moment, stopped being loud.",
+      "excerpt": "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai — dan bagaimana sunyi bisa menjadi rumah.",
+      "excerptEn": "A portrait of a heart that stopped being loud, and how silence became home.",
+      "preview": "Sebuah prosa reflektif tentang pertemuan yang mengubah cara seseorang memandang keheningan. Tentang cinta yang pelan, perpisahan yang tak dramatis, dan sunyi yang akhirnya bukan lagi penjara.",
+      "previewEn": "A reflective prose about an encounter that changed how one sees silence. Slow love, undramatic farewells, and a silence that is no longer a prison.",
+      "category": "renungan",
+      "readTime": "18 menit",
+      "readTimeEn": "18 min read",
+      "cover": "https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-08-09",
+      "featured": true,
+      "stats": {
+        "views": 0,
+        "downloads": 0
+      },
+      "tags": ["renungan", "refleksi", "sunyi", "cinta", "kehilangan", "prosa"]
     }
   ]
 }
