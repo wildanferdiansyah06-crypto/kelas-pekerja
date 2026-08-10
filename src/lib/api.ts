@@ -44,8 +44,8 @@ export async function getBooks(filters?: {
   } catch (error) {
     console.warn('Sanity unavailable, using local fallback:', (error as Error)?.message || error);
     
-    // Fallback to local data (filtering out hidden books)
-    let localBooks = (booksData.books || []).filter((b: any) => !b.hidden);
+    // Fallback to local data
+    let localBooks = booksData.books || [];
     
     if (filters?.category && filters.category !== "all") {
       localBooks = localBooks.filter((b: any) => b.category === filters.category);

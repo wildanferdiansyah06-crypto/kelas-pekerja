@@ -17,6 +17,13 @@ export default function TentangPage() {
 
   const books = [
     {
+      title: "Sunyi yang Kutinggali",
+      subtitle: "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai",
+      year: "2026",
+      genre: "Refleksi",
+      link: "/buku/sunyi-yang-kutinggali"
+    },
+    {
       title: "Masa yang Tak Pernah Bertanya Izin",
       subtitle: "Tentang Waktu yang Berlalu Tanpa Permisi",
       year: "2026",
