@@ -302,10 +302,8 @@ export default function BookPreviewModal({ book: rawBook, index = 0, isOpen, onC
                 <span className="truncate">{book.readTime || "5 min read"}</span>
               </span>
               {book.stats?.views !== undefined && (
-                <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
-                  <Eye size={12} className="sm:size-4" />
-                  <span className="truncate">{formatViews(book.stats.views)} {t.booksPage.views}</span>
-                </span>
+                /* views hidden — quiet interface */
+                <></>
               )}
               <span className="flex items-center gap-1 sm:gap-1.5 bg-stone-100 dark:bg-stone-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm">
                 <BookOpen size={12} className="sm:size-4" />

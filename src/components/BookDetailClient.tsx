@@ -111,17 +111,8 @@ export default function BookDetailClient({ book }: BookDetailClientProps) {
                 {localizedBook.excerpt}
               </p>
 
-              {localizedBook.stats && (
-                <div className="flex items-center gap-6 text-xs font-ui py-4" style={{ opacity: 0.4, borderTop: '1px solid var(--kp-border)', borderBottom: '1px solid var(--kp-border)' }}>
-                  <span>
-                    {localizedBook.stats.views.toLocaleString(language === 'en' ? 'en-US' : 'id-ID')} {readsText}
-                  </span>
 
-                  <span>
-                    {localizedBook.stats.downloads} {downloadsText}
-                  </span>
-                </div>
-              )}
+
 
               {localizedBook.preview && (
                 <div className="p-6 rounded-lg" style={{ backgroundColor: 'var(--kp-bg-surface)', borderLeft: '2px solid var(--kp-accent)' }}>

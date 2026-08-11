@@ -519,3 +519,34 @@
 .reader-content b {
   color: var(--reader-heading) !important;
 }
+/* ─── Focus Reading Mode ─────────────────────────────────────────────────── */
+/* When reader-focus-mode is active on <body>, nav and footer smoothly hide   */
+
+body.reader-focus-mode #site-navbar {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+body.reader-focus-mode #site-footer {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+/* Restore navbar on hover near top */
+body.reader-focus-mode #site-navbar:hover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Smooth transition back when focus mode is disabled */
+#site-navbar {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#site-footer {
+  transition: opacity 0.5s ease;
+}

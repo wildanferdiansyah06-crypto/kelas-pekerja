@@ -13,6 +13,8 @@ interface ReaderContextType {
   setFontSize: (size: ReaderFontSize) => void;
   fontFamily: ReaderFontFamily;
   setFontFamily: (font: ReaderFontFamily) => void;
+  focusMode: boolean;
+  setFocusMode: (active: boolean) => void;
   themeStyles: {
     bg: string;
     text: string;
@@ -115,6 +117,7 @@ export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [theme, setThemeState] = useState<ReaderTheme>('sepia');
   const [fontSize, setFontSizeState] = useState<ReaderFontSize>('m');
   const [fontFamily, setFontFamilyState] = useState<ReaderFontFamily>('serif');
+  const [focusMode, setFocusModeState] = useState(false);
 
   // Load saved preferences on mount
   useEffect(() => {
@@ -167,6 +170,14 @@ export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     savePrefs({ fontFamily: newFont });
   };
 
+  const setFocusMode = (active: boolean) => {
+    setFocusModeState(active);
+    // Apply/remove class on body so Navbar and Footer can react via CSS
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('reader-focus-mode', active);
+    }
+  };
+
   return (
     <ReaderContext.Provider
       value={{
@@ -176,6 +187,8 @@ export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setFontSize,
         fontFamily,
         setFontFamily,
+        focusMode,
+        setFocusMode,
         themeStyles: THEME_DATA[theme],
         fontSizeClass: FONT_SIZE_CLASSES[fontSize],
         fontFamilyClass: FONT_FAMILY_CLASSES[fontFamily],

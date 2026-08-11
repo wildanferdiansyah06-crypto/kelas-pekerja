@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Settings2, X, Sun, Moon, Coffee, BookOpen, Type, Sliders } from 'lucide-react';
+import { Settings2, X, Sun, Moon, Coffee, BookOpen, Type, Sliders, Minimize2, Maximize2 } from 'lucide-react';
 import { useReader, ReaderTheme, ReaderFontSize } from '@/src/contexts/ReaderContext';
 import { useLanguage } from '@/src/contexts/LanguageContext';
 
@@ -19,7 +19,7 @@ export default function ReaderControls({
   progress = 0,
 }: ReaderControlsProps) {
   const { language } = useLanguage();
-  const { theme, setTheme, fontSize, setFontSize, fontFamily, setFontFamily } = useReader();
+  const { theme, setTheme, fontSize, setFontSize, fontFamily, setFontFamily, focusMode, setFocusMode } = useReader();
   const [isOpen, setIsOpen] = useState(false);
   const [showToc, setShowToc] = useState(false);
 
@@ -66,6 +66,24 @@ export default function ReaderControls({
             <BookOpen size={18} />
           </button>
         )}
+
+        {/* Focus Mode toggle */}
+        <button
+          onClick={() => setFocusMode(!focusMode)}
+          className="p-3.5 rounded-full shadow-xl backdrop-blur-md border transition-all duration-300 hover:scale-105"
+          style={{
+            backgroundColor: focusMode
+              ? 'rgba(212, 165, 116, 0.2)'
+              : theme === 'dark' || theme === 'espresso'
+              ? 'rgba(30, 27, 24, 0.9)'
+              : 'rgba(255, 252, 247, 0.95)',
+            borderColor: focusMode ? 'rgba(212, 165, 116, 0.6)' : 'rgba(212, 165, 116, 0.3)',
+            color: 'var(--kp-accent)',
+          }}
+          title={language === 'en' ? (focusMode ? 'Exit Focus Mode' : 'Focus Mode') : (focusMode ? 'Keluar Fokus' : 'Mode Fokus')}
+        >
+          {focusMode ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
+        </button>
 
         <button
           onClick={() => setIsOpen(!isOpen)}

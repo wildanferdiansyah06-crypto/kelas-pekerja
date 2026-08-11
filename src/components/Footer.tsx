@@ -148,6 +148,7 @@ export default function Footer() {
 
   return (
     <footer
+      id="site-footer"
       className="relative overflow-hidden border-t"
       style={{
         backgroundColor: 'var(--kp-bg-invert)',

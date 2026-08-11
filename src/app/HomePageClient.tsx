@@ -32,12 +32,175 @@ interface HomePageClientProps {
   mostRelatable: any[];
 }
 
+// ─── Time-based mood engine ───────────────────────────────────────────────────
+type TimeSlot = 'subuh' | 'pagi' | 'siang' | 'sore' | 'malam' | 'dini';
+
+interface TimeContext {
+  slot: TimeSlot;
+  greeting: { id: string; en: string };
+  heroLines: { line1: { id: string; en: string }; line2: { id: string; en: string }; line3: { id: string; en: string } };
+  subtitle: { id: string; en: string };
+  badge: { id: string; en: string };
+  featuredLabel: { id: string; en: string };
+  featuredDesc: { id: string; en: string };
+  latestLabel: { id: string; en: string };
+  latestDesc: { id: string; en: string };
+  relatableLabel: { id: string; en: string };
+  relatableDesc: { id: string; en: string };
+  ctaTitle: { id: string; en: string };
+  ctaDesc: { id: string; en: string };
+  moodCategories: string[]; // book categories to prioritize
+}
+
+function getTimeContext(hour: number): TimeContext {
+  if (hour >= 4 && hour < 8) {
+    return {
+      slot: 'subuh',
+      greeting: { id: 'Selamat subuh', en: 'Early morning' },
+      heroLines: {
+        line1: { id: 'Masih gelap.', en: 'Still dark.' },
+        line2: { id: 'Kamu sudah bergerak.', en: 'You\'re already moving.' },
+        line3: { id: 'Dan itu cukup.', en: 'That\'s enough.' },
+      },
+      subtitle: { id: 'Untuk yang berangkat sebelum matahari sempat menyapa — kamu tidak sendirian.', en: 'For those who leave before the sun has a chance to greet you — you\'re not alone.' },
+      badge: { id: 'Subuh bersama kelas pekerja', en: 'Dawn with the working class' },
+      featuredLabel: { id: 'Untuk perjalanan berangkat', en: 'For the morning commute' },
+      featuredDesc: { id: 'Kata-kata yang menemani langkah pertama hari ini.', en: 'Words to accompany your first steps of the day.' },
+      latestLabel: { id: 'Baru terseduh', en: 'Freshly brewed' },
+      latestDesc: { id: 'Paling pas dibaca di kereta, bus, atau sambil menunggu kendaraan.', en: 'Best read on the train, bus, or while waiting for your ride.' },
+      relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+      relatableDesc: { id: 'Tulisan yang menyentuh bagian dalam — bahkan di pagi yang masih gelap.', en: 'Writing that touches something deep, even in the darkness of early morning.' },
+      ctaTitle: { id: 'Ada cerita dari pagi-pagi kamu?', en: 'Got a story from your early morning?' },
+      ctaDesc: { id: 'Tulis apa yang kamu rasakan sebelum dunia terbangun. Kami mendengarkan.', en: 'Write what you feel before the world wakes up. We\'re listening.' },
+      moodCategories: ['kehidupan', 'proses', 'refleksi'],
+    };
+  }
+  if (hour >= 8 && hour < 12) {
+    return {
+      slot: 'pagi',
+      greeting: { id: 'Selamat pagi', en: 'Good morning' },
+      heroLines: {
+        line1: { id: 'Rutinitas dimulai.', en: 'The routine begins.' },
+        line2: { id: 'Di sela-selanya,', en: 'In between,' },
+        line3: { id: 'ada makna tersembunyi.', en: 'meaning hides.' },
+      },
+      subtitle: { id: 'Bacaan ringan untuk pagi yang padat — karena makna tidak selalu butuh banyak waktu.', en: 'Light reading for a busy morning — because meaning doesn\'t always need much time.' },
+      badge: { id: 'Pagi yang bermakna', en: 'A meaningful morning' },
+      featuredLabel: { id: 'Pilihan untuk pagi ini', en: 'This morning\'s picks' },
+      featuredDesc: { id: 'Karya yang bisa selesai sebelum meeting pertama.', en: 'Work that can be finished before your first meeting.' },
+      latestLabel: { id: 'Terbaru dari arsip', en: 'Latest from the archive' },
+      latestDesc: { id: 'Tulisan segar dari sesama pekerja — untuk dibaca kapanpun kamu punya jeda.', en: 'Fresh writing from fellow workers — for whenever you find a break.' },
+      relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+      relatableDesc: { id: 'Cerita yang mungkin sudah pernah kamu alami, tapi belum pernah kamu ceritakan.', en: 'Stories you may have lived through but never told.' },
+      ctaTitle: { id: 'Ceritakan pagimu', en: 'Tell us about your morning' },
+      ctaDesc: { id: 'Ada momen di pagi ini yang layak diabadikan? Tuliskan di sini.', en: 'Is there a moment from this morning worth preserving? Write it here.' },
+      moodCategories: ['proses', 'kehidupan', 'cerita'],
+    };
+  }
+  if (hour >= 12 && hour < 15) {
+    return {
+      slot: 'siang',
+      greeting: { id: 'Selamat siang', en: 'Good afternoon' },
+      heroLines: {
+        line1: { id: 'Setengah hari terlewat.', en: 'Half a day gone.' },
+        line2: { id: 'Sejenak berhenti,', en: 'Pause for a moment,' },
+        line3: { id: 'lalu lanjutkan.', en: 'then carry on.' },
+      },
+      subtitle: { id: 'Di tengah hiruk-pikuk siang — sebait cerita bisa jadi jeda yang paling kamu butuhkan.', en: 'In the middle of the midday bustle — a few sentences might be exactly the break you need.' },
+      badge: { id: 'Jeda siang literasi', en: 'Midday reading break' },
+      featuredLabel: { id: 'Untuk istirahat siangmu', en: 'For your lunch break' },
+      featuredDesc: { id: 'Bacaan yang menemani makan siang atau jeda sejenak dari rutinitas.', en: 'Reading to accompany lunch or a brief escape from the routine.' },
+      latestLabel: { id: 'Tulisan terbaru', en: 'Latest writings' },
+      latestDesc: { id: 'Cerita dari mereka yang juga sedang menyeduh kopi siang ini.', en: 'Stories from those who are also brewing afternoon coffee right now.' },
+      relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+      relatableDesc: { id: 'Bukan karena ramai. Tapi karena menyentuh bagian dalam yang sama.', en: 'Not because of the noise. But because it touches the same place inside.' },
+      ctaTitle: { id: 'Istirahat siang dengan menulis', en: 'Spend lunch break writing' },
+      ctaDesc: { id: 'Kadang cerita terbaik lahir di sela-sela istirahat yang sebentar.', en: 'Sometimes the best stories are born in brief moments of rest.' },
+      moodCategories: ['cerita', 'kehidupan', 'renungan'],
+    };
+  }
+  if (hour >= 15 && hour < 19) {
+    return {
+      slot: 'sore',
+      greeting: { id: 'Selamat sore', en: 'Good evening' },
+      heroLines: {
+        line1: { id: 'Perjalanan pulang', en: 'The way home' },
+        line2: { id: 'selalu lebih panjang', en: 'always feels longer' },
+        line3: { id: 'dari yang kita kira.', en: 'than we think.' },
+      },
+      subtitle: { id: 'Untuk yang sedang dalam perjalanan pulang — sambil membawa lebih banyak dari sekadar tas.', en: 'For those on the way home — carrying more than just a bag.' },
+      badge: { id: 'Sore di perjalanan', en: 'Evening commute' },
+      featuredLabel: { id: 'Menemani perjalananmu', en: 'Accompanying your journey' },
+      featuredDesc: { id: 'Tulisan yang enak dibaca sambil melaju — di bus, kereta, atau sekadar menunggu.', en: 'Writing that reads well on the move — on a bus, train, or just waiting.' },
+      latestLabel: { id: 'Sore ini di arsip', en: 'This evening in the archive' },
+      latestDesc: { id: 'Cerita-cerita baru yang mungkin mencerminkan perjalanan sore ini.', en: 'New stories that might mirror this evening\'s journey.' },
+      relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+      relatableDesc: { id: 'Kata-kata yang pernah membuat orang berhenti sejenak di perjalanan pulang.', en: 'Words that have made people pause on their way home.' },
+      ctaTitle: { id: 'Apa yang kamu bawa pulang hari ini?', en: 'What are you bringing home today?' },
+      ctaDesc: { id: 'Bukan hanya barang bawaan. Tapi cerita, rasa lelah, atau momen kecil yang terlupakan.', en: 'Not just belongings. But stories, exhaustion, or small forgotten moments.' },
+      moodCategories: ['refleksi', 'cerita', 'filosofi'],
+    };
+  }
+  if (hour >= 19 && hour < 23) {
+    return {
+      slot: 'malam',
+      greeting: { id: 'Selamat malam', en: 'Good night' },
+      heroLines: {
+        line1: { id: 'Hari ini sudah selesai.', en: 'Today is done.' },
+        line2: { id: 'Tapi masih ada', en: 'But there\'s still' },
+        line3: { id: 'yang belum terucap.', en: 'what\'s left unspoken.' },
+      },
+      subtitle: { id: 'Di bawah lampu yang mulai redup — ada cerita yang menunggu untuk didengar.', en: 'Under the dimming lights — there are stories waiting to be heard.' },
+      badge: { id: 'Arsip sunyi malam', en: 'Night\'s quiet archive' },
+      featuredLabel: { id: 'Untuk malam ini', en: 'For tonight' },
+      featuredDesc: { id: 'Tulisan terpilih yang paling pas dibaca saat dunia mulai sunyi.', en: 'Selected writing best read when the world begins to quiet down.' },
+      latestLabel: { id: 'Baru ditulis', en: 'Freshly written' },
+      latestDesc: { id: 'Cerita yang lahir dari malam-malam seperti malam ini.', en: 'Stories born from nights just like this one.' },
+      relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+      relatableDesc: { id: 'Kata-kata yang membuat banyak orang terdiam sejenak di tengah malam.', en: 'Words that made many people pause in the middle of the night.' },
+      ctaTitle: { id: 'Rasa lelah yang tidak sempat diceritakan', en: 'Exhaustion that never found words' },
+      ctaDesc: { id: 'Sebelum tidur, tuliskan satu hal yang ingin kamu ceritakan. Kami membaca.', en: 'Before you sleep, write one thing you\'ve been wanting to say. We\'ll read it.' },
+      moodCategories: ['renungan', 'refleksi', 'filosofi'],
+    };
+  }
+  // dini hari: 23:00 – 04:00
+  return {
+    slot: 'dini',
+    greeting: { id: 'Masih terjaga', en: 'Still awake' },
+    heroLines: {
+      line1: { id: 'Dini hari membawa', en: 'The small hours carry' },
+      line2: { id: 'kejujuran', en: 'an honesty' },
+      line3: { id: 'yang siang tak berani.', en: 'daylight doesn\'t dare.' },
+    },
+    subtitle: { id: 'Untuk yang masih terjaga — karena dini hari punya kejujuran yang siang tak berani.', en: 'For those still awake — because the small hours hold a truth that daylight doesn\'t dare.' },
+    badge: { id: 'Dini hari di arsip sunyi', en: 'Small hours in the quiet archive' },
+    featuredLabel: { id: 'Untuk yang masih terjaga', en: 'For the still-awake' },
+    featuredDesc: { id: 'Tulisan yang hanya bisa benar-benar dipahami di jam seperti ini.', en: 'Writing that can only truly be understood at an hour like this.' },
+    latestLabel: { id: 'Suara dari keheningan', en: 'Voices from the silence' },
+    latestDesc: { id: 'Cerita-cerita yang paling sunyi — untuk malam yang paling panjang.', en: 'The quietest stories — for the longest nights.' },
+    relatableLabel: { id: 'Paling banyak dirasa', en: 'Most deeply felt' },
+    relatableDesc: { id: 'Kata-kata yang tetap terasa bahkan saat semua orang lain sudah tidur.', en: 'Words that still resonate even when everyone else is asleep.' },
+    ctaTitle: { id: 'Ada yang ingin kamu tulis malam ini?', en: 'Something you want to write tonight?' },
+    ctaDesc: { id: 'Dini hari adalah waktu paling jujur untuk menulis. Kami ada di sini.', en: 'The small hours are the most honest time to write. We\'re here.' },
+    moodCategories: ['filosofi', 'renungan', 'refleksi'],
+  };
+}
+
 export default function HomePageClient({
   featuredBooks = [],
   latestBooks = [],
   mostRelatable = []
 }: HomePageClientProps) {
   const { language, t } = useLanguage();
+
+  // Compute time context once on mount — stable per visit
+  const timeCtx = React.useMemo(() => {
+    const hour = new Date().getHours();
+    return getTimeContext(hour);
+  }, []);
+
+  const id = language === 'id';
+
 
   if (!featuredBooks.length && !latestBooks.length) {
     return (
@@ -58,7 +221,7 @@ export default function HomePageClient({
       </div>
     );
   }
-  
+
   return (
     <div className="relative">
       
@@ -103,20 +266,20 @@ export default function HomePageClient({
                 }}
               >
                 <Sparkles size={14} className="animate-pulse" />
-                <span>{language === 'en' ? 'Literacy for Workers' : 'Literasi untuk Pekerja'}</span>
+                <span>{id ? timeCtx.badge.id : timeCtx.badge.en}</span>
               </div>
 
               {/* Cinematic Heading */}
               <h1 className="typography-h1 mb-6 animate-slide-in-up delay-100" style={{ color: 'var(--kp-text-primary)' }}>
-                <span className="block animate-text-reveal">{language === 'en' ? 'Read.' : 'Membaca.'}</span>
-                <span className="block animate-text-reveal" style={{ animationDelay: '0.4s' }}>{language === 'en' ? 'Reflect.' : 'Merenung.'}</span>
-                <span className="block italic text-glow animate-text-reveal" style={{ color: 'var(--kp-accent)', animationDelay: '0.8s' }}>{language === 'en' ? 'Grow.' : 'Bertumbuh.'}</span>
+                <span className="block animate-text-reveal">{id ? timeCtx.heroLines.line1.id : timeCtx.heroLines.line1.en}</span>
+                <span className="block animate-text-reveal" style={{ animationDelay: '0.4s' }}>{id ? timeCtx.heroLines.line2.id : timeCtx.heroLines.line2.en}</span>
+                <span className="block italic text-glow animate-text-reveal" style={{ color: 'var(--kp-accent)', animationDelay: '0.8s' }}>{id ? timeCtx.heroLines.line3.id : timeCtx.heroLines.line3.en}</span>
               </h1>
 
               {/* Subtext */}
               <p className="font-serif text-lg sm:text-xl lg:text-2xl mb-10 leading-relaxed max-w-lg mx-auto md:mx-0 animate-fade-in-up delay-300 text-balance opacity-80" 
                  style={{ color: 'var(--kp-text-secondary)' }}>
-                {t.hero.subtitle}
+                {id ? timeCtx.subtitle.id : timeCtx.subtitle.en}
               </p>
 
               {/* Action Buttons */}
@@ -226,16 +389,16 @@ export default function HomePageClient({
                 className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4"
                 style={{ color: 'var(--kp-text-muted)' }}
               >
-                Pilihan Editor
+                {id ? timeCtx.featuredLabel.id : timeCtx.featuredLabel.en}
               </div>
               <h3
                 className="typography-h2 mb-4"
                 style={{ color: 'var(--kp-text-primary)' }}
               >
-                Buku Unggulan
+                {id ? 'Buku Unggulan' : 'Featured Books'}
               </h3>
               <p className="font-body text-lg opacity-80" style={{ color: 'var(--kp-text-secondary)' }}>
-                Dua karya yang menembus keheningan, membantu pembaca menemukan makna dalam sunyi.
+                {id ? timeCtx.featuredDesc.id : timeCtx.featuredDesc.en}
               </p>
             </div>
 
@@ -318,16 +481,16 @@ export default function HomePageClient({
                 className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4"
                 style={{ color: 'var(--kp-text-muted)' }}
               >
-                Tulisan Terbaru
+                {id ? timeCtx.latestLabel.id : timeCtx.latestLabel.en}
               </div>
               <h3
                 className="typography-h2 mb-4"
                 style={{ color: 'var(--kp-text-primary)' }}
               >
-                Jejak-jejak yang baru tertinggal.
+                {id ? 'Jejak-jejak yang baru tertinggal.' : 'Traces freshly left behind.'}
               </h3>
               <p className="font-body text-lg opacity-80" style={{ color: 'var(--kp-text-secondary)' }}>
-                Setiap minggu, sebuah cerita baru. Baca dengan perlahan.
+                {id ? timeCtx.latestDesc.id : timeCtx.latestDesc.en}
               </p>
             </div>
             
@@ -422,16 +585,16 @@ export default function HomePageClient({
               className="font-ui text-xs font-medium tracking-[0.3em] uppercase mb-4 glow-amber inline-block px-4 py-1.5 rounded-full border glass"
               style={{ color: 'var(--kp-accent)', borderColor: 'rgba(212, 165, 116, 0.2)' }}
             >
-              Paling Banyak Dirasa
+              {id ? timeCtx.relatableLabel.id : timeCtx.relatableLabel.en}
             </div>
             <h3
               className="typography-h2 mb-4"
               style={{ color: 'var(--kp-text-primary)' }}
             >
-              Kata-kata yang membuat banyak orang terdiam sejenak.
+              {id ? 'Kata-kata yang membuat banyak orang terdiam sejenak.' : 'Words that made many people pause.'}
             </h3>
             <p className="font-body text-lg opacity-80" style={{ color: 'var(--kp-text-secondary)' }}>
-              Bukan karena ramai. Tapi karena menyentuh bagian dalam yang sama.
+              {id ? timeCtx.relatableDesc.id : timeCtx.relatableDesc.en}
             </p>
           </div>
 
@@ -480,10 +643,6 @@ export default function HomePageClient({
                     <div className={`flex items-center justify-between border-t pt-6 ${index === 0 ? 'mt-8' : 'mt-4'}`} style={{ borderColor: 'var(--kp-border-medium)' }}>
                       <div className="flex items-center gap-4 text-xs font-ui" style={{ color: 'var(--kp-text-muted)' }}>
                         <span className="flex items-center gap-1.5 glass px-2.5 py-1 rounded-full">
-                          <Eye size={14} style={{ color: 'var(--kp-accent)' }} />
-                          {book?.stats?.views?.toLocaleString() || '0'}
-                        </span>
-                        <span className="flex items-center gap-1.5 glass px-2.5 py-1 rounded-full">
                           <Coffee size={14} style={{ color: 'var(--kp-accent)' }} />
                           {book?.readTime || '5 m'}
                         </span>
@@ -530,14 +689,14 @@ export default function HomePageClient({
             className="typography-h2 mb-6"
             style={{ color: 'var(--kp-text-primary)' }}
           >
-            Punya cerita yang ingin dibagikan?
+            {id ? timeCtx.ctaTitle.id : timeCtx.ctaTitle.en}
           </h2>
           
           <p
             className="font-body text-lg sm:text-xl mb-10 text-balance opacity-80 max-w-xl mx-auto"
             style={{ color: 'var(--kp-text-secondary)' }}
           >
-            Setiap kisah berharga, sekecil apapun itu. Tulis cerita pertamamu dan jadilah bagian dari arsip sunyi kelas pekerja.
+            {id ? timeCtx.ctaDesc.id : timeCtx.ctaDesc.en}
           </p>
           
           <Link

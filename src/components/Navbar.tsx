@@ -130,6 +130,7 @@ if (!mounted) return null;
 return (
 <>
 <nav
+  id="site-navbar"
   className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-out ${finalVisibility ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
   style={{
     paddingTop: hasScrolled ? '0' : '8px',
