@@ -23,8 +23,6 @@ export default function BookDetailClient({ book }: BookDetailClientProps) {
 
   const backText = language === 'en' ? 'Back to Bookshelf' : 'Kembali ke Rak';
   const pagesText = language === 'en' ? 'pages' : 'halaman';
-  const readsText = language === 'en' ? 'reads' : 'kali dibaca';
-  const downloadsText = language === 'en' ? 'downloads' : 'kali diunduh';
   const downloadBtnText = language === 'en' ? 'Download Book' : 'Unduh Buku';
   const readOnlineBtnText = language === 'en' ? 'Read Online' : 'Baca Online';
 

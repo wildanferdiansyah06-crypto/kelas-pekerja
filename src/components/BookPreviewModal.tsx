@@ -77,11 +77,6 @@ export default function BookPreviewModal({ book: rawBook, index = 0, isOpen, onC
       : (book.preview || book.excerpt)
     : "Belum ada preview untuk buku ini.";
 
-  const formatViews = (views?: number) => {
-    if (!views) return "0";
-    if (views >= 1000) return `${(views / 1000).toFixed(1)}k`;
-    return views.toString();
-  };
 
   return (
     <div

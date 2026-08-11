@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, PenLine, Coffee, Eye, Sparkles } from "lucide-react";
+import { ArrowRight, PenLine, Coffee, Sparkles } from "lucide-react";
 import { useLanguage } from "@/src/contexts/LanguageContext";
 
 function getRelativeTime(dateString: string, lang: 'id' | 'en' = 'id'): string {
