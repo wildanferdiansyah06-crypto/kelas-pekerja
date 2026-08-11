@@ -264,7 +264,7 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl ${theme.textSubheading} italic mb-12 font-serif font-light tracking-wide max-w-2xl mx-auto leading-relaxed`}>
                 {id
                   ? 'Bukan cerita yang berjalan menurut waktu, melainkan gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai.'
-                  : 'It is not a story that runs by the clock, but a portrait of a heart that, for a moment, ceased its noise.'}
+                  : 'Not a story that follows the clock, but an impression of a heart that, for a fleeting moment, forgot how to be loud.'}
               </p>
 
               <button
@@ -307,12 +307,12 @@ export default function SunyiYangKutinggaliPage() {
             <p>
               {id
                 ? 'Sunyi, aku ingin bercerita tentang kita berdua. Tapi bagaimana aku bisa menyusunmu dalam urutan waktu, sedangkan kau sendiri tak pernah tunduk pada jam atau kalender?'
-                : 'In this silence, I want to tell the story of us both. But how can I arrange you in chronological order, when you yourself never bowed to clocks or calendars?'}
+                : 'Silence, I want to speak of the two of us. Yet how could I bind you to an order of hours, when you have never bowed to clocks or calendars?'}
             </p>
             <p>
               {id
                 ? 'Maka biarkan aku menggambarkanmu saja, bukan menceritakanmu—sebab kau bukan peristiwa yang terjadi lalu selesai, kau adalah keadaan yang masih menghuni dadaku sampai sekarang.'
-                : 'So let me merely describe you, rather than narrate you—for you are not an event that happened and ended; you are a state of being that still resides within my chest to this day.'}
+                : 'So let me merely trace your shape instead of narrating you—for you are not a thing that happened and passed, but a stillness that still makes a home in my chest.'}
             </p>
 
             <div className={accentLine}>
@@ -320,24 +320,24 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl italic font-light ${theme.textMuted} leading-relaxed`}>
                 {id
                   ? 'Ada sebuah dunia yang berjalan begitu cepat sehingga manusia lupa cara mendengar dirinya sendiri.'
-                  : 'There is a world that moves so fast that people forget how to listen to themselves.'}
+                  : 'There is a world rushing by so fast that people forget the sound of their own breath.'}
               </p>
             </div>
 
             <p>
               {id
                 ? 'Aku salah satu penghuninya. Bertahun-tahun aku hidup sebagai tawanan di dalam kepalaku sendiri—sebuah kota yang tak pernah tidur, dipenuhi suara-suara yang saling menyalip: pertanyaan yang tak pernah menunggu dijawab, penyesalan yang datang lebih cepat daripada kesalahan itu sendiri, ketakutan yang mengenakan seribu wajah agar tak dikenali sebagai ketakutan.'
-                : 'I am one of its inhabitants. For years I lived as a captive inside my own head—a city that never sleeps, filled with overlapping voices: questions that never wait for answers, regrets that arrive faster than the mistakes themselves, fears wearing a thousand faces so as not to be recognized as fear.'}
+                : 'I was one of them. For years, I lived as a captive inside my own skull—a city that never slept, crowded with voices jostling for space: questions that never waited for answers, regrets that arrived before the mistakes were even made, fears wearing a thousand disguises just to avoid being named.'}
             </p>
             <p>
               {id
                 ? 'Aku belajar tersenyum pada dunia supaya dunia tak bertanya lebih jauh. Senyum itu topeng yang paling ringan, dan karena itu paling mudah dipakai setiap hari.'
-                : 'I learned to smile at the world so the world wouldn\'t ask further. A smile is the lightest of masks, and therefore the easiest to wear every day.'}
+                : 'I learned to smile at the world so it wouldn\'t look too closely. A smile is the lightest armor, and the easiest to wear each day.'}
             </p>
             <p>
               {id
                 ? 'Manusia-manusia yang datang dan pergi di hadapanku mengira aku baik-baik saja, sebab aku pandai kelihatan baik-baik saja. Mereka tak tahu, di balik setiap tawa yang kuberikan, ada ruangan sunyi yang kukunci rapat-rapat, tempat aku duduk sendirian bersama gema pertanyaan yang tak pernah selesai kutanyakan pada siapa pun: untuk apa semua ini, dan mengapa aku harus terus berjalan sementara tak tahu ke mana arah yang benar.'
-                : "The people who came and went before me thought I was fine, because I was good at appearing fine. They didn't know that behind every laugh I offered, there was a quiet room I kept tightly locked, a place where I sat alone with the echo of questions I never finished asking anyone: what is all this for, and why must I keep walking when I don't know which way is right."}
+                : "The people passing through my days thought I was whole, because I had mastered the art of seeming whole. They never saw the locked room behind every polite laugh, where I sat alone with the echo of unresolved things: what is any of this for, and why must I keep walking when every direction feels untrue?"}
             </p>
           </div>
         </motion.section>
@@ -360,17 +360,17 @@ export default function SunyiYangKutinggaliPage() {
             <p>
               {id
                 ? 'Lalu kau datang—tanpa pengumuman, tanpa alasan, seperti hujan yang tak pernah meminta izin pada bumi yang akan menerimanya.'
-                : "Then you came—without announcement, without reason, like rain that never asks permission from the earth that will receive it."}
+                : "Then you arrived—unannounced, without motive, like rain that never asks the earth's permission before falling."}
             </p>
             <p>
               {id
                 ? 'Aku tak bisa menyebutkan tanggalnya. Waktu itu sendiri seperti berhenti berlagak penting begitu kau berjalan masuk.'
-                : "I cannot name the date. Time itself seemed to stop pretending to be important the moment you walked in."}
+                : "I couldn't tell you the date. Time itself simply lost its urgency the moment you stepped inside."}
             </p>
             <p>
               {id
                 ? 'Kau memilih tempat paling redup, seolah cahaya adalah sesuatu yang tak lagi kau butuhkan untuk dikenali. Kau tak membawa kegelisahan yang biasa dibawa orang-orang—tak ada yang perlu kau buktikan, tak ada yang perlu kau tunjukkan. Kau hanya ada, sepenuhnya, dan keberadaanmu saja membuat ruangan di sekitarmu ikut belajar caranya diam.'
-                : "You chose the dimmest spot, as if light were something you no longer needed to be recognized. You didn't carry the restlessness people usually carry—there was nothing you needed to prove, nothing you needed to show. You simply existed, entirely, and your mere presence made the room around you learn how to be quiet."}
+                : "You chose the dimmest corner, as if light were no longer something you needed in order to be recognized. You carried none of the restlessness that burdens the rest of us—nothing to prove, nothing to stage. You simply were. Present, whole. And your quietude alone taught the room around you how to be still."}
             </p>
 
             <div className={accentLine}>
@@ -378,39 +378,39 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl italic font-light ${theme.textMuted} leading-relaxed`}>
                 {id
                   ? 'Aku memperhatikanmu dari balik uap yang naik dari cangkir-cangkir yang kuseduh sepanjang hari.'
-                  : "I watched you from behind the steam rising from the cups I brewed all day."}
+                  : "I watched you through the steam drifting off the cups I poured day in and day out. That steam always vanished as quickly as it rose—like most things in my life. But you were different. The longer I looked, the more real you became, refusing to dissolve."}
               </p>
             </div>
 
             <p>
               {id
                 ? 'Ada sesuatu di wajahmu yang tak bisa kunamai. Bukan kecantikan yang biasa dipuja orang. Lebih seperti ketenangan yang berhasil pulang ke rumahnya sendiri, sementara aku masih tersesat mencari jalan pulang ke dalam diriku.'
-                : "There was something in your face I couldn't name. Not the kind of beauty people usually worship. More like a calmness that had finally found its way home, while I was still lost, looking for the way back into myself."}
+                : "There was something in your face beyond ordinary praise. Not the beauty that demands admiration, but something closer to peace that had finally found its way home, while I was still wandering, looking for the door back into myself."}
             </p>
             <p>
               {id
                 ? 'Aku tak ingat lagi kapan tepatnya tangan kita bersentuhan untuk pertama kali—yang kuingat hanya bahwa kepalaku, untuk sesaat, berhenti berbicara. Bukan diam yang kupaksakan seperti biasa kulakukan tiap malam sebelum tidur, melainkan diam yang datang sendiri, seolah seluruh kebisingan di dalam diriku akhirnya menemukan alasan untuk berhenti berteriak.'
-                : "I no longer remember exactly when our hands touched for the first time—all I remember is that my head, for a moment, stopped talking. Not the forced silence I usually imposed on myself every night before sleep, but a silence that arrived on its own, as if all the noise inside me had finally found a reason to stop screaming."}
+                : "I can no longer recall the exact moment our hands brushed for the first time. All I remember is that, for once, the noise in my head fell quiet. Not the forced silence I used to drag over myself before sleep, but a quiet that settled effortlessly, as though all the screaming inside me had finally found a reason to rest."}
             </p>
             <p>
               {id
                 ? 'Kau menatapku dengan mata yang seperti sudah lama mengenal seluruh pertanyaanku, bahkan sebelum aku sempat mengucapkannya.'
-                : "You looked at me with eyes that seemed to have long known all my questions, even before I had the chance to voice them."}
+                : "You looked at me with eyes that seemed to have known all my questions long before I ever tried to shape them into words."}
             </p>
             <p>
               {id
                 ? 'Sejak saat itu kita mulai berbagi waktu, meski aku tak bisa lagi mengurutkan bagaimana caranya. Yang kuingat hanyalah percakapan-percakapan panjang di meja-meja yang kosong, tempat aku menumpahkan seluruh ketakutanku tentang hidup yang terasa berulang tanpa arti, tentang Tuhan yang kadang terasa jauh, tentang eksistensi yang kadang terasa seperti hukuman tanpa sebab.'
-                : "Since then we began sharing time, though I can no longer sort out how. All I remember are long conversations at empty tables, where I poured out all my fears about a life that felt pointlessly repetitive, about a God who sometimes felt distant, about an existence that sometimes felt like an unprovoked punishment."}
+                : "From then on, we began to share our hours, though the chronology escapes me. What remains are long conversations over empty tables, where I emptied out my dread—of days that repeated without purpose, of a God who felt unreachable, of an existence that felt like an unassigned punishment."}
             </p>
             <p>
               {id
                 ? <>Kau tak pernah membantahku. Kau juga tak pernah membenarkanku begitu saja. Kau hanya mendengarkan sampai aku selesai—dan entah kenapa, di dekatmu, satu pertanyaan mulai tumbuh sendiri dalam kepalaku: <em>kalau hari ini satu-satunya hari yang kupunya, apakah aku akan tetap menjalani semuanya persis seperti tadi pagi?</em></>
-                : <>You never argued with me. You never blindly validated me either. You simply listened until I was finished—and somehow, near you, a single question began to grow on its own inside my head: <em>if today were the only day I had, would I still live through it all exactly as I did this morning?</em></>}
+                : <>You never argued. You never offered cheap comfort either. You only listened until I was hollowed out—and somehow, near you, a single question began to take root in my own mind, never spoken aloud, perhaps not even yours to begin with: <em>if today were the only day I were ever given, would I still live it all exactly as I did this morning?</em></>}
             </p>
             <p>
               {id
                 ? 'Aku tak pernah menjawabnya. Tapi pertanyaan itu tinggal, mengendap, diam-diam mengubah cara aku memandang setiap hal kecil yang dulu kulewati tanpa kusadari.'
-                : "I never answered it. But the question stayed, settled, quietly altering the way I looked at every little thing I used to pass by without noticing."}
+                : "I never answered. But the question lingered, settling like silt, quietly shifting the way I looked at all the little things I used to walk past blindly."}
             </p>
           </div>
         </motion.section>
@@ -469,12 +469,12 @@ export default function SunyiYangKutinggaliPage() {
             <p>
               {id
                 ? 'Ada satu hari—aku menyebutnya hari karena tak ada kata lain, meski aku tak lagi ingat itu hari apa dalam seminggu—kau membawaku pergi jauh dari segala yang biasa kukenal. Kita mendaki sesuatu yang lebih menyerupai bagian dari diri kita sendiri daripada sekadar tebing berbatu: jalan yang licin, jalan yang tak pernah kutempuh, jalan yang mengharuskan aku memercayai langkahku sendiri untuk pertama kalinya dalam waktu yang sangat lama.'
-                : "There was a day—I call it a day because there is no other word, though I no longer remember what day of the week it was—when you took me far away from everything I knew. We climbed something that resembled a part of ourselves more than just a rocky cliff: a slippery path, a path I had never taken, a path that required me to trust my own steps for the first time in a very long time."}
+                : "There came a day—I call it a day for lack of a better word, having lost track of which day of the week it was—when you led me away from everything familiar. We climbed something that felt less like a rocky cliff and more like an untamed part of ourselves: a slippery trail, a path untraveled, demanding that I trust my own footing for the first time in as long as I could remember."}
             </p>
             <p>
               {id
                 ? 'Kau berjalan di depan, tak sekali pun ragu, seolah kau tahu bahwa tersesat hanyalah nama lain untuk belum sampai.'
-                : "You walked ahead, not doubting for a second, as if you knew that being lost was just another name for not having arrived yet."}
+                : "You walked ahead without a trace of hesitation, as if you knew that being lost was simply another word for not yet having arrived."}
             </p>
 
             <div className={accentLine}>
@@ -482,34 +482,34 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl italic font-light ${theme.textMuted} leading-relaxed`}>
                 {id
                   ? 'Di ujung jalan itu, dunia membuka diri jadi laut.'
-                  : "At the end of that path, the world opened itself into the sea."}
+                  : "At the edge of that path, the world gave way to the ocean."}
               </p>
             </div>
 
             <p>
               {id
                 ? 'Bukan laut yang pernah kulihat di kartu pos atau di layar ponsel, tapi laut yang seperti sudah menunggu di sana sejak sebelum ada nama untuk kata "menunggu".'
-                : 'Not the sea I had seen on postcards or phone screens, but a sea that seemed to have been waiting there since before there was a name for the word "waiting".'}
+                : 'Not the sea of postcards or glowing screens, but a tide that seemed to have been waiting there since before the word "waiting" was ever invented.'}
             </p>
             <p>
               {id
                 ? 'Kita duduk berdampingan di atas kayu yang dingin, tak bicara, membiarkan ombak mengambil alih semua kalimat yang biasanya perlu kuucapkan supaya dunia tahu aku ada.'
-                : "We sat side by side on a piece of cold wood, not speaking, letting the waves take over all the sentences I usually needed to say just so the world knew I existed."}
+                : "We sat side by side on a drift of cold wood, speechless, letting the swell of the waves take the place of every sentence I used to think I needed just so the world knew I existed."}
             </p>
             <p>
               {id
                 ? 'Dan di sanalah, entah pada hitungan ombak yang keberapa, kepalaku—kota yang tak pernah tidur itu—akhirnya padam satu per satu lampunya. Bukan karena kupaksa lewat cara-cara yang biasa kupelajari dari buku-buku dan video-video yang menjanjikan ketenangan dalam lima langkah mudah. Ia padam dengan sendirinya, seperti kota mana pun yang akhirnya lelah menyalakan diri sepanjang malam.'
-                : "And it was there, on I don't know which count of the waves, that my head—that city that never sleeps—finally turned off its lights one by one. Not because I forced it through the methods I usually learned from books and videos promising peace in five easy steps. It went out on its own, like any city that finally tires of keeping itself lit all night."}
+                : "And there, lost somewhere in the rhythm of the tide, the lights in my head—that city that never slept—finally went dark, one by one. Not forced by the sterile methods I had learned from books promising peace in five easy steps. It went out gently, the way any city turns off its lights when it is simply tired of burning through the night."}
             </p>
             <p>
               {id
                 ? 'Aku tak lagi bertanya mengapa aku ada. Aku hanya ada, sesederhana ombak yang datang lalu pergi tanpa perlu penjelasan.'
-                : "I no longer asked why I existed. I just was, as simple as a wave that comes and goes without the need for an explanation."}
+                : "I stopped asking why I existed. I stopped demanding validation for being alive, even from myself. I was simply there, as unburdened as a wave breaking and receding without an explanation."}
             </p>
             <p>
               {id
                 ? 'Dan dalam kesederhanaan itu, dalam kekosongan yang untuk sekali saja tidak menuntut apa-apa dariku, aku menemukan sesuatu yang mungkin bisa disebut Tuhan—bukan Tuhan yang tinggal di kitab-kitab atau di ujung doa yang dihafal, melainkan Tuhan yang tinggal di dalam sunyi yang, untuk sekali saja, membiarkan aku menjadi tak berarti tanpa merasa hancur karenanya.'
-                : "And in that simplicity, in that emptiness that for once demanded nothing of me, I found something that might be called God—not the God who lives in holy books or at the end of memorized prayers, but a God who resides in the silence that, for once, allowed me to be insignificant without feeling shattered by it."}
+                : "And in that simplicity, in a stillness that asked for nothing, I met something that might be called God—not the God confined to scripture or the tail ends of rehearsed prayers, but a presence dwelling in a quiet that, for once, allowed me to be small without feeling broken."}
             </p>
           </div>
         </motion.section>
@@ -532,17 +532,22 @@ export default function SunyiYangKutinggaliPage() {
             <p>
               {id
                 ? 'Tapi begitulah hukum yang tak pernah tertulis di mana pun, dan karena itu paling sering dilupakan orang: setiap kedamaian datang membawa jam pasirnya sendiri, dan pasir itu tak pernah berhenti jatuh hanya karena kita memohon.'
-                : "But such is the unwritten law, and therefore most often forgotten by people: every peace comes carrying its own hourglass, and the sand never stops falling just because we beg it to."}
+                : "Yet there is an unwritten law, and therefore the easiest to forget: every peace carries its own hourglass, and the sand does not halt simply because we plead."}
             </p>
             <p>
               {id
                 ? 'Kau harus kembali—ke sebuah dunia yang sudah menantimu jauh sebelum aku belajar mengenal namamu, ke kehidupan yang tak pernah punya ruang untuk menyimpan namaku di dalamnya.'
-                : "You had to return—to a world that had been waiting for you long before I learned your name, to a life that never had the space to keep my name in it."}
+                : "You had to return—to a world that had been waiting for you long before I learned your name, to a life that had no room to shelter mine."}
+            </p>
+            <p>
+              {id
+                ? 'Aku sudah tahu itu sejak awal, mungkin sejak saat pertama kau memilih sudut paling redup itu, meski aku memilih untuk tak memercayainya sampai waktunya tiba.'
+                : "I knew this from the beginning, perhaps from the very moment you chose the dimmest corner, even if I chose not to believe it until the hour was already upon us."}
             </p>
             <p>
               {id
                 ? 'Perpisahan kita tak punya drama yang biasa dimiliki perpisahan-perpisahan dalam cerita. Tak ada tangis yang pecah, tak ada kalimat yang diteriakkan ke udara supaya semesta ikut mendengar dan bersedih bersama kita. Yang ada hanya keheningan yang lebih berat dari biasanya, seperti udara sebelum hujan yang tahu dirinya akan turun tapi memilih menunggu waktu yang tepat.'
-                : "Our parting had none of the drama usually found in storybook farewells. There were no shattered tears, no sentences screamed into the air so the universe would listen and grieve with us. There was only a silence heavier than usual, like the air before the rain, knowing it will fall but choosing to wait for the exact right time."}
+                : "There was no cinematic grief in our parting. No shattered sobs, no words thrown at the sky to force the universe to mourn with us. Only a silence heavier than before, like the air before a rain that knows it must fall, waiting for the right moment."}
             </p>
 
             <div className={accentLine}>
@@ -550,24 +555,24 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl italic font-light ${theme.textMuted} leading-relaxed`}>
                 {id
                   ? 'Kau memelukku sebelum pergi—atau mungkin aku yang memelukmu, aku sudah tak bisa lagi membedakan siapa yang lebih dulu membutuhkan pelukan itu.'
-                  : "You hugged me before you left—or perhaps I hugged you, I could no longer tell who needed the embrace first."}
+                  : "You held me before leaving—or perhaps I held you; the lines blurred on who needed the comfort first."}
               </p>
             </div>
 
             <p>
               {id
                 ? 'Dalam pelukan itu aku menitipkan satu doa yang tak pernah kuucapkan lantang: bahwa apa pun yang tumbuh di antara kita tak akan benar-benar mati, hanya berpindah bentuk jadi sesuatu yang lebih senyap, seperti abu yang tetap menyimpan bentuk kayu meski apinya sudah lama padam.'
-                : "Within that embrace I slipped in a prayer I never spoke aloud: that whatever had grown between us would never truly die, but only shift into a quieter form, like ash that retains the shape of the wood even though the fire has long gone out."}
+                : "In that embrace, I entrusted a silent prayer: that whatever had grown between us would never truly die, but only shift into a quieter form, like ash that keeps the shape of the wood long after the flame has gone."}
             </p>
             <p>
               {id
                 ? 'Kau berjalan pergi tanpa menoleh, dan bayang-bayang menelanmu perlahan seperti malam menelan senja—bukan sekaligus, tapi sedikit demi sedikit, sampai tak ada lagi batas yang bisa kutunjuk sebagai saat persisnya kau benar-benar hilang.'
-                : "You walked away without looking back, and the shadows swallowed you slowly the way the night swallows the dusk—not all at once, but little by little, until there was no longer a boundary I could point to as the exact moment you were truly gone."}
+                : "You walked away without turning back, and the shadows took you slowly, the way night swallows dusk—not all at once, but grain by grain, until there was no line left to mark the exact second you vanished."}
             </p>
             <p>
               {id
                 ? 'Aku pulang sendirian malam itu, membawa satu jenis sunyi yang belum pernah kukenal sebelumnya.'
-                : "I walked home alone that night, carrying a kind of silence I had never known before."}
+                : "I walked home alone that night, carrying a kind of quiet I had never known."}
             </p>
           </div>
         </motion.section>
@@ -590,31 +595,36 @@ export default function SunyiYangKutinggaliPage() {
             <p>
               {id
                 ? 'Sebab ada dua jenis sunyi, kutemukan kemudian. Ada sunyi yang lahir dari kehilangan, yang menganga dan meminta untuk diisi—dan ada sunyi yang lahir dari kepenuhan, yang tak lagi butuh apa-apa untuk merasa lengkap.'
-                : "Because there are two kinds of silence, I discovered later. There is a silence born of loss, gaping and begging to be filled—and there is a silence born of fullness, which no longer needs anything to feel complete."}
+                : "For there are two kinds of silence, as I later found. There is the silence born of lack, hollow and begging to be filled—and the silence born of wholeness, needing nothing more to be complete."}
             </p>
 
             <div className={`rounded-2xl p-10 sm:p-14 my-12 border ${theme.border} ${theme.card} text-center`}>
               <p className={`text-2xl sm:text-3xl font-serif italic font-light leading-relaxed ${theme.textHeading}`}>
                 {id
                   ? '&ldquo;Yang kau tinggalkan untukku, ternyata, adalah yang kedua.&rdquo;'
-                  : '"What you left for me, it turned out, was the latter."'}
+                  : '"What you left behind, it turned out, was the second."'}
               </p>
             </div>
 
             <p>
               {id
                 ? 'Dunia masih berjalan secepat biasanya esok paginya. Manusia-manusia masih datang membawa keluhan yang sama tentang atasan dan kekasih yang tak kunjung membalas pesan. Aku masih memakai senyum yang sama seperti seragam yang sama.'
-                : "The world still moved as fast as usual the next morning. People still came carrying the same complaints about bosses and lovers who wouldn't reply to their messages. I still wore the same smile like the same uniform."}
+                : "The morning after, the world rushed on as usual. People still brought the same tired grievances about distant lovers and demanding bosses. I still wore the same smile like an ordinary uniform."}
             </p>
             <p>
               {id
                 ? 'Tapi di dalam diriku, kota yang dulu tak pernah tidur itu kini punya satu ruangan yang selalu tenang, apa pun yang terjadi di ruangan-ruangan lainnya—dan di ruangan itulah kau tinggal, atau mungkin bukan kau, melainkan segala yang kau ajarkan tentang caranya diam tanpa merasa kosong.'
-                : "But inside me, the city that once never slept now has one room that is always calm, no matter what happens in the other rooms—and in that room you reside, or perhaps not you, but everything you taught me about how to be silent without feeling empty."}
+                : "Yet within me, that sleepless city now held one room that remained untouched, undisturbed by the noise outside—and it is there that you stay; or perhaps not you, but everything you taught me about being quiet without feeling empty."}
             </p>
             <p>
               {id
                 ? 'Sudut paling redup di kedai itu masih kosong sampai sekarang. Aku tak lagi menunggunya terisi oleh siapa pun. Aku membiarkannya kosong, sebab beberapa ruang memang diciptakan untuk tetap menjadi milik seseorang yang sudah pergi, dan itu bukan kesedihan—itu semacam penghormatan.'
-                : "The dimmest corner in the shop remains empty to this day. I no longer wait for it to be filled by anyone. I let it be empty, because some spaces are indeed created to remain belonging to someone who has left, and that is not sadness—it is a kind of reverence."}
+                : "The dimmest corner of the shop remains empty to this day. I no longer wait for anyone to take it. I leave it be, because some spaces are meant to stay claimed by someone who has gone. And that is not sorrow—it is a kind of reverence."}
+            </p>
+            <p>
+              {id
+                ? 'Aku tak tahu lagi harus menamai apa yang tersisa dariku. Ini bukan bahagia; bahagia itu terlalu bising untuk apa yang kurasakan. Bukan pula sedih; sedih masih mengharapkan sesuatu kembali.'
+                : "I no longer know what name to give to what remains of me. It is not happiness; happiness is too loud for what I feel. Nor is it grief; grief still yearns for something back."}
             </p>
 
             <div className={accentLine}>
@@ -622,7 +632,7 @@ export default function SunyiYangKutinggaliPage() {
               <p className={`text-xl sm:text-2xl italic font-light ${theme.textMuted} leading-relaxed`}>
                 {id
                   ? 'Hanya sunyi. Sunyi yang, kali ini, bukan lagi penjara—melainkan rumah yang akhirnya kutinggali sepenuh hati, entah sampai kapan.'
-                  : "Only silence. A silence that, this time, is no longer a prison—but a home I finally inhabit with all my heart, I don't know until when."}
+                  : "Only silence. A silence that, this time, is no longer a cage—but a home I have finally learned to inhabit, for however long it lasts."}
               </p>
             </div>
           </div>
