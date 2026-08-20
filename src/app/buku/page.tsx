@@ -24,6 +24,8 @@ const bookSlugMap: Record<string, string> = {
   "Kami Menulis Pelan": "kami-menulis-pelan",
   "Yang Tertinggal di Lembah": "yang-tertinggal-di-lembah",
   "Sunyi yang Kutinggali": "sunyi-yang-kutinggali",
+  "Masa yang Tak Pernah Bertanya Izin": "masa-yang-tak-pernah-bertanya-izin",
+  "Arsip Sunyi": "arsip-sunyi",
 };
 
 

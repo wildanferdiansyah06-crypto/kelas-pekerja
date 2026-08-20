@@ -1,6 +1,29 @@
 {
   "books": [
     {
+      "id": "10",
+      "slug": "arsip-sunyi",
+      "title": "Arsip Sunyi",
+      "titleEn": "The Silent Archive",
+      "subtitle": "Sayap yang Telah Gugur di Ambang Kesunyian",
+      "subtitleEn": "Fallen wings at the edge of silence",
+      "excerpt": "Barangkali begitulah caranya sebagian cerita memang harus berakhir: bukan dengan luka yang menganga, melainkan dengan kesunyian yang punya keindahannya sendiri.",
+      "excerptEn": "Perhaps that is how some stories are meant to end: not with a gaping wound, but with a silence that has a beauty of its own.",
+      "preview": "Sebuah catatan malam tentang perpisahan yang tenang, tentang dua musafir yang berpapasan sebentar di dermaga senja sebelum kembali pada haluannya masing-masing.",
+      "previewEn": "A midnight note on a quiet farewell, about two travelers crossing paths at a twilight pier before returning to their own courses.",
+      "category": "renungan",
+      "readTime": "15 menit",
+      "readTimeEn": "15 min read",
+      "cover": "https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-08-20",
+      "featured": true,
+      "stats": {
+        "views": 0,
+        "downloads": 0
+      },
+      "tags": ["renungan", "perpisahan", "sunyi", "harapan", "malam"]
+    },
+    {
       "id": "9",
       "slug": "sunyi-yang-kutinggali",
       "title": "Sunyi yang Kutinggali",
