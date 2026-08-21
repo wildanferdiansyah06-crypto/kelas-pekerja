@@ -7,6 +7,74 @@ import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
 import { useLanguage } from '@/src/contexts/LanguageContext';
 
+// ---------------------------------------------------------------------------
+// Sub-components — defined OUTSIDE the page component to satisfy React rules
+// ---------------------------------------------------------------------------
+
+function Dots({ accentHex }: { accentHex: string }) {
+  return (
+    <div className="flex items-center justify-center gap-3 my-14 select-none" aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="inline-block w-1 h-1 rounded-full"
+          style={{ backgroundColor: accentHex, opacity: 0.5 }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function PullQuote({
+  children,
+  muted,
+  accentHex,
+}: {
+  children: React.ReactNode;
+  muted: string;
+  accentHex: string;
+}) {
+  return (
+    <blockquote
+      className={`my-12 pl-6 border-l-2 ${muted}`}
+      style={{ borderColor: `${accentHex}50` }}
+    >
+      <p className={`font-serif italic font-light leading-relaxed text-xl sm:text-2xl ${muted}`}>
+        {children}
+      </p>
+    </blockquote>
+  );
+}
+
+function RunningHead({
+  roman,
+  subtitle,
+  accent,
+  muted,
+  accentHex,
+}: {
+  roman: string;
+  subtitle: string;
+  accent: string;
+  muted: string;
+  accentHex: string;
+}) {
+  return (
+    <div className="flex items-baseline gap-4 mb-12 sm:mb-16">
+      <span className={`font-serif text-xs tracking-[0.4em] uppercase font-semibold ${accent} flex-shrink-0`}>
+        {roman}
+      </span>
+      <span
+        className="flex-1 h-px"
+        style={{ background: `linear-gradient(to right, ${accentHex}30, transparent)` }}
+      />
+      <span className={`font-serif text-sm italic ${muted} flex-shrink-0`}>{subtitle}</span>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
 export default function ArsipSunyiPage() {
   const { language } = useLanguage();
   const { theme: readerTheme, themeStyles, fontFamilyClass } = useReader();
@@ -85,44 +153,6 @@ export default function ArsipSunyiPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } },
   };
 
-  // Dot separator — faithful to the original text
-  const Dots = () => (
-    <div className="flex items-center justify-center gap-3 my-14 select-none" aria-hidden>
-      {[0,1,2].map(i => (
-        <span
-          key={i}
-          className="inline-block w-1 h-1 rounded-full"
-          style={{ backgroundColor: t.accentHex, opacity: 0.5 }}
-        />
-      ))}
-    </div>
-  );
-
-  // Pull-quote — inline, no heavy box
-  const PullQuote = ({ children }: { children: React.ReactNode }) => (
-    <blockquote
-      className={`my-12 pl-6 border-l-2 ${t.muted}`}
-      style={{ borderColor: `${t.accentHex}50` }}
-    >
-      <p className={`font-serif italic font-light leading-relaxed text-xl sm:text-2xl ${t.muted}`}>
-        {children}
-      </p>
-    </blockquote>
-  );
-
-  // Chapter running head
-  const RunningHead = ({ roman, subtitle }: { roman: string; subtitle: string }) => (
-    <div className="flex items-baseline gap-4 mb-12 sm:mb-16">
-      <span className={`font-serif text-xs tracking-[0.4em] uppercase font-semibold ${t.accent} flex-shrink-0`}>
-        {roman}
-      </span>
-      <span
-        className="flex-1 h-px"
-        style={{ background: `linear-gradient(to right, ${t.accentHex}30, transparent)` }}
-      />
-      <span className={`font-serif text-sm italic ${t.muted} flex-shrink-0`}>{subtitle}</span>
-    </div>
-  );
 
   // TOC section
   const sidebarContent = (
@@ -354,7 +384,7 @@ export default function ArsipSunyiPage() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={sectionFade}
               className={`py-20 sm:py-28 border-b ${t.border}`}
             >
-              <RunningHead roman="I" subtitle={id ? 'Malam yang Berbeda' : 'A Different Night'} />
+              <RunningHead roman="I" subtitle={id ? 'Malam yang Berbeda' : 'A Different Night'} accent={t.accent} muted={t.muted} accentHex={t.accentHex} />
               <div className={prose}>
                 <p>
                   {id
@@ -362,9 +392,9 @@ export default function ArsipSunyiPage() {
                     : "This night descends differently from all the nights before. There is an unusual weight to it, as if the sky itself is holding its breath, waiting for something to be spoken before it allows the dawn to arrive. I sit before the glowing screen, among lines of a manuscript I haven't managed to finish, and for the first time in a long time, I no longer know what words to write."}
                 </p>
 
-                <Dots />
+                <Dots accentHex={t.accentHex} />
 
-                <PullQuote>
+                <PullQuote muted={t.muted} accentHex={t.accentHex}>
                   {id
                     ? 'Kopi di gelasku telah lama kehilangan hangatnya. Lucu sekali—betapa banyak hal dalam hidup yang akhirnya mendingin semata-mata karena kita terlalu lama menatapnya, alih-alih meminumnya selagi masih ada waktu.'
                     : "The coffee in my glass has long lost its warmth. How funny—how many things in life turn cold simply because we stare at them too long, instead of drinking them while there is still time."}
@@ -389,7 +419,7 @@ export default function ArsipSunyiPage() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={sectionFade}
               className={`py-20 sm:py-28 border-b ${t.border}`}
             >
-              <RunningHead roman="II" subtitle={id ? 'Dua Burung, Satu Senja' : 'Two Birds, One Dusk'} />
+              <RunningHead roman="II" subtitle={id ? 'Dua Burung, Satu Senja' : 'Two Birds, One Dusk'} accent={t.accent} muted={t.muted} accentHex={t.accentHex} />
               <div className={prose}>
                 <p>
                   {id
@@ -407,7 +437,7 @@ export default function ArsipSunyiPage() {
                     : "Now I understand. It wasn't the smile that was mistaken. The mistake was mine, daring too much to hang a long dream on something destined only to pass by."}
                 </p>
 
-                <Dots />
+                <Dots accentHex={t.accentHex} />
 
                 <p>
                   {id
@@ -415,7 +445,7 @@ export default function ArsipSunyiPage() {
                     : "For we, I know now, are but two travelers who happened to cross paths on a twilight pier—admiring each other's light for a moment, before our ships continued on different courses. You gazed toward the distant horizon, toward the vast world that had long been calling your name. I remained standing here, on the same ground since I was born, embracing your shadow slowly fading into distance and sea mist."}
                 </p>
 
-                <PullQuote>
+                <PullQuote muted={t.muted} accentHex={t.accentHex}>
                   {id
                     ? 'Cinta jarang keliru menaruh dua jenis burung dalam satu senja. Yang sering keliru hanyalah harapan kita sendiri, yang keras kepala mengira keduanya bisa memiliki langit yang sama.'
                     : 'Love rarely errs in placing two kinds of birds in the same dusk. What often errs is our own hope, stubbornly assuming both could share the same sky.'}
@@ -435,7 +465,7 @@ export default function ArsipSunyiPage() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={sectionFade}
               className={`py-20 sm:py-28 border-b ${t.border}`}
             >
-              <RunningHead roman="III" subtitle={id ? 'Melawan Takdir' : 'Fighting Destiny'} />
+              <RunningHead roman="III" subtitle={id ? 'Melawan Takdir' : 'Fighting Destiny'} accent={t.accent} muted={t.muted} accentHex={t.accentHex} />
               <div className={prose}>
                 <p>
                   {id
@@ -443,7 +473,7 @@ export default function ArsipSunyiPage() {
                     : "And so, I once decided to fight my own destiny. I gathered the rest of my breath and courage. I stretched what remained of my wings, preparing to cross the stormy seas toward you—only to find, before those wings could flap even once, that you had closed your window, slowly but surely."}
                 </p>
 
-                <PullQuote>
+                <PullQuote muted={t.muted} accentHex={t.accentHex}>
                   {id
                     ? '"Kita tidak sedang memandang langit yang sama," katamu, dengan suara yang tetap lembut, tanpa amarah, tanpa keinginan untuk melukai.'
                     : '"We are not looking at the same sky," you said, with a voice that remained gentle, without anger, without the desire to hurt.'}
@@ -460,7 +490,7 @@ export default function ArsipSunyiPage() {
                     : "I thought I would be more prepared for a rejection that came with loud noises—with slammed doors, with words I could retort or regret together. But a rejection this gentle leaves nothing to fight against. There is no war I can declare over. No enemy I can accuse of downing an overconfident traveler attempting to cross the sea. I only sink, quietly, into one realization: that nothing can be fought for in the name of someone who has already set their own wind's direction."}
                 </p>
 
-                <Dots />
+                <Dots accentHex={t.accentHex} />
 
                 <p>
                   {id
@@ -481,7 +511,7 @@ export default function ArsipSunyiPage() {
               initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }} variants={sectionFade}
               className="py-20 sm:py-28"
             >
-              <RunningHead roman="IV" subtitle={id ? 'Arsip Sunyi' : 'The Silent Archive'} />
+              <RunningHead roman="IV" subtitle={id ? 'Arsip Sunyi' : 'The Silent Archive'} accent={t.accent} muted={t.muted} accentHex={t.accentHex} />
               <div className={prose}>
                 <p>
                   {id
@@ -504,9 +534,9 @@ export default function ArsipSunyiPage() {
                     : "Let God keep the rest of our story, just as He keeps all stories forced to end before they truly begin."}
                 </p>
 
-                <Dots />
+                <Dots accentHex={t.accentHex} />
 
-                <PullQuote>
+                <PullQuote muted={t.muted} accentHex={t.accentHex}>
                   {id
                     ? 'Di duniaku malam ini, kisah itu telah usai, bahkan sebelum bab pertamanya sempat kutulis sampai titik. Dan barangkali begitulah caranya sebagian cerita memang harus berakhir: bukan dengan luka yang menganga, melainkan dengan kesunyian yang, pada akhirnya, punya keindahannya sendiri.'
                     : 'In my world tonight, the story has ended, even before I could write its first chapter to the period. And perhaps that is how some stories are meant to end: not with a gaping wound, but with a silence that, in the end, has a beauty of its own.'}
