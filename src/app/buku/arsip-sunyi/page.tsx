@@ -227,8 +227,8 @@ export default function ArsipSunyiPage() {
     </div>
   );
 
-  // Prose block styles
-  const prose = `space-y-7 text-base sm:text-lg lg:text-xl leading-[1.95] ${t.text} font-light`;
+  // Prose block styles — wide enough to breathe, never wider than optimal reading width
+  const prose = `space-y-7 text-base sm:text-lg lg:text-xl xl:text-2xl leading-[1.9] ${t.text} font-light max-w-4xl`;
 
   return (
     <div className={`${t.bg} ${t.text} ${fontFamilyClass} reader-page transition-colors duration-500 min-h-screen w-full`}>
@@ -284,20 +284,20 @@ export default function ArsipSunyiPage() {
         <motion.section
           id="pengantar" data-chapter={0}
           initial="hidden" animate="visible" variants={fadeIn}
-          className={`relative w-full min-h-[90vh] flex items-center border-b ${t.border} overflow-hidden`}
+          className={`relative w-full min-h-screen flex items-center border-b ${t.border} overflow-hidden`}
         >
           {/* Subtle ambient glow — minimal */}
           <div
             className="absolute top-0 left-0 w-full h-full pointer-events-none"
             style={{ background: darkMode
-              ? 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,108,0.04) 0%, transparent 100%)'
-              : 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(125,90,60,0.04) 0%, transparent 100%)'
+              ? 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,108,0.06) 0%, transparent 100%)'
+              : 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(125,90,60,0.05) 0%, transparent 100%)'
             }}
           />
 
-          {/* Full-width layout with generous side padding */}
-          <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-28 pb-24 relative z-10">
-            <div className="max-w-screen-xl mx-auto">
+          {/* Full-bleed hero — matches di-atas-cangkir padding system */}
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32 pt-28 pb-24 relative z-10">
+            <div className="max-w-7xl mx-auto">
               {/* Label */}
               <motion.p
                 initial={prefersReducedMotion ? {} : { opacity: 0, y: 12 }}
@@ -374,9 +374,8 @@ export default function ArsipSunyiPage() {
           </motion.div>
         </motion.section>
 
-        {/* ─── Content wrapper: full-width with large padding, NOT max-w-* ─── */}
-        <div className="w-full px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32">
-          <div className="max-w-screen-lg mx-auto">
+        {/* ─── Content wrapper: full-bleed, generous padding, no double centering ─── */}
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
 
             {/* ─── BAGIAN I ─── */}
             <motion.section
@@ -559,7 +558,6 @@ export default function ArsipSunyiPage() {
               </motion.div>
             </motion.section>
 
-          </div>
         </div>
       </main>
     </div>
