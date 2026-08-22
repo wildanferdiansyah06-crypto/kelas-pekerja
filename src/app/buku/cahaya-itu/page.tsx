@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import MusicPlayer from '@/src/components/MusicPlayer';
 import { BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
 import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
@@ -625,7 +626,11 @@ export default function CahayaItuPage() {
                   </div>
                 </div>
 
-                {/* Author Note */}
+                
+              {/* Music Player */}
+              <MusicPlayer audioSrc="/audio/placeholder.mp3" />
+
+              {/* Author Note */}
                 <div className={`mt-16 pt-8 border-t ${theme.border} text-center`}>
                   <Feather size={24} className={`${theme.accent} mx-auto mb-4 opacity-50`} />
                   <p className={`${theme.textMuted} text-sm italic leading-[1.8]`}>

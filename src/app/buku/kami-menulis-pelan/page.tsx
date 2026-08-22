@@ -3,6 +3,7 @@
 
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import MusicPlayer from '@/src/components/MusicPlayer';
 import { useReader } from "@/src/contexts/ReaderContext";
 import ReaderControls from "@/src/components/ReaderControls";
 
@@ -1616,7 +1617,10 @@ export default function KamiMenulisPelanPage() {
 
           </div>
 
-        </section>
+        
+              {/* Music Player */}
+              <MusicPlayer audioSrc="/audio/placeholder.mp3" />
+            </section>
 
 
 

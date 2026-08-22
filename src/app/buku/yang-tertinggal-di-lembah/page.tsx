@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import MusicPlayer from '@/src/components/MusicPlayer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Mountain, ChevronRight, X, Compass, Check, Wind, Heart, Quote } from 'lucide-react';
 import { useReader } from '@/src/contexts/ReaderContext';
