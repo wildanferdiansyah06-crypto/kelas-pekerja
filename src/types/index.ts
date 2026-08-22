@@ -45,6 +45,7 @@ export interface Book {
   tagsEn?: string[]
   chapters?: Chapter[]
   chaptersEn?: Chapter[]
+  audioSrc?: string
 }
 
 export interface Chapter {

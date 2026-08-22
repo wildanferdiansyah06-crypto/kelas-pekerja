@@ -6,6 +6,7 @@ import { BookOpen, X, ChevronRight, Check, Feather } from 'lucide-react';
 import { useReader } from '@/src/contexts/ReaderContext';
 import ReaderControls from '@/src/components/ReaderControls';
 import { useLanguage } from '@/src/contexts/LanguageContext';
+import MusicPlayer from '@/src/components/MusicPlayer';
 
 // ---------------------------------------------------------------------------
 // Sub-components — defined OUTSIDE the page component to satisfy React rules
@@ -556,6 +557,9 @@ export default function ArsipSunyiPage() {
                   {id ? '— Selesai —' : '— End —'}
                 </span>
               </motion.div>
+
+              {/* Music Player */}
+              <MusicPlayer audioSrc="/audio/lagu-arsip-sunyi.mp3" />
             </motion.section>
 
         </div>
