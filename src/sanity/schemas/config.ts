@@ -181,6 +181,15 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'backgroundMusic',
+      title: 'Background Music',
+      type: 'file',
+      options: {
+        accept: 'audio/*',
+      },
+      description: 'Upload file audio (mp3, dll) untuk musik latar website.',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'object',

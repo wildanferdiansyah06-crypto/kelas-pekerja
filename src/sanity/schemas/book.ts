@@ -83,6 +83,15 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'backgroundMusic',
+      title: 'Background Music',
+      type: 'file',
+      options: {
+        accept: 'audio/*',
+      },
+      description: 'Upload file audio (mp3, dll) khusus untuk buku ini. Akan menimpa background music global jika ada.',
+    }),
+    defineField({
       name: 'downloadUrl',
       title: 'URL Download',
       type: 'url',
