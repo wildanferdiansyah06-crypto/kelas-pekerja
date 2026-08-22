@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import MusicPlayer from '@/src/components/MusicPlayer';
 import { motion } from 'framer-motion';
 import { Coffee, Clock, ArrowRight, Quote, PenLine, Sparkles } from 'lucide-react';
 import Link from 'next/link';

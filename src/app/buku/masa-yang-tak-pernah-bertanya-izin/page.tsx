@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import MusicPlayer from '@/src/components/MusicPlayer';
 import { motion, useScroll } from 'framer-motion';
 import { Coffee, BookOpen, ChevronUp, Quote } from 'lucide-react';
 import { useReader } from "@/src/contexts/ReaderContext";
