@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, Home, BookOpen, FileText, Bookmark, Info } from "lucide-react";
 import { useNavbar } from "@/src/contexts/NavbarContext";
 import { useSession, signOut } from "next-auth/react";
 import { useLanguage } from "@/src/contexts/LanguageContext";
@@ -47,11 +47,11 @@ const { data: session } = useSession();
 const { t } = useLanguage();
 
 const navigation = [
-  { label: t.nav.home, href: "/" },
-  { label: t.nav.books, href: "/buku" },
-  { label: t.nav.essays, href: "/tulisan" },
-  { label: t.nav.saved, href: "/bookmark" },
-  { label: t.nav.about, href: "/tentang" },
+  { label: t.nav.home, href: "/", icon: Home },
+  { label: t.nav.books, href: "/buku", icon: BookOpen },
+  { label: t.nav.essays, href: "/tulisan", icon: FileText },
+  { label: t.nav.saved, href: "/bookmark", icon: Bookmark },
+  { label: t.nav.about, href: "/tentang", icon: Info },
 ];
 
 const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -208,21 +208,39 @@ return (
         ))}
       </div>
 
-      {/* Mobile Navigation - Horizontal Scroll */}
-      <div className="tablet:hidden flex items-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide flex-1 mx-3 sm:mx-4">
-        {navigation.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="font-ui text-xs sm:text-sm font-normal whitespace-nowrap transition-colors duration-200 px-2 py-1"
-            style={{
-              color: pathname === item.href ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
-            }}
-          >
-            {item.label}
-          </Link>
-        ))}
+      {/* Mobile Navigation - Icon Only */}
+      <div className="tablet:hidden flex items-center gap-1 flex-1 mx-2 justify-center">
+        {navigation.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={item.label}
+              title={item.label}
+              className="relative flex flex-col items-center justify-center p-2.5 rounded-xl transition-all duration-200 group"
+              style={{
+                color: isActive ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
+                background: isActive ? 'rgba(212, 165, 116, 0.1)' : 'transparent',
+              }}
+            >
+              <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
+              {/* Active dot indicator */}
+              <span
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full transition-all duration-200"
+                style={{
+                  width: isActive ? '4px' : '0px',
+                  height: isActive ? '4px' : '0px',
+                  background: 'var(--kp-accent)',
+                  boxShadow: isActive ? '0 0 6px var(--kp-accent)' : 'none',
+                }}
+              />
+            </Link>
+          );
+        })}
       </div>
+
 
       {/* Clock Widget - Desktop */}
       <div className="hidden tablet:block">

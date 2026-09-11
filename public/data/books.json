@@ -1,6 +1,37 @@
 {
   "books": [
     {
+      "id": "11",
+      "slug": "sayap-sayap-patah-di-gedung-kaca",
+      "title": "Sayap-Sayap Patah di Gedung Kaca",
+      "titleEn": "Broken Wings in the Glass Tower",
+      "subtitle": "Sebuah elegi tentang harga diri, penindasan birokrasi, dan keberanian kelas pekerja untuk merebut kembali kemerdekaannya dari meja jagal korporat.",
+      "subtitleEn": "An elegy on dignity, bureaucratic oppression, and the courage of the working class to reclaim their freedom from the corporate slaughterhouse.",
+      "excerpt": "Di dunia kelas pekerja yang keras ini, nasibmu tidak dipahat oleh dedikasi atau seberapa tajam akalmu bekerja, melainkan oleh suasana hati sang penguasa yang bahkan tak mampu mengingat wajah siapa yang baru saja ia rekrut.",
+      "excerptEn": "In this harsh working-class world, your fate is not carved by dedication or sharp wit, but by the mood of the ruler who cannot even remember the face of their newest recruit.",
+      "preview": "Mereka bilang pekerjaan adalah ibadah, namun di lorong-lorong gedung kaca ini, ia tak lebih dari meja jagal tempat harga diri disembelih.",
+      "previewEn": "They say work is worship, but in the corridors of these glass towers, it is nothing more than a slaughterhouse where dignity is butchered.",
+      "category": "renungan",
+      "readTime": "10 menit",
+      "readTimeEn": "10 min read",
+      "cover": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
+      "publishedAt": "2026-09-11",
+      "featured": true,
+      "stats": {
+        "views": 0,
+        "downloads": 0
+      },
+      "tags": [
+        "kelas pekerja",
+        "realita korporat",
+        "perlawanan",
+        "birokrasi",
+        "keresahan karyawan",
+        "filosofi kerja",
+        "toxic workplace"
+      ]
+    },
+    {
       "id": "10",
       "slug": "arsip-sunyi",
       "title": "Arsip Sunyi",
@@ -21,7 +52,13 @@
         "views": 0,
         "downloads": 0
       },
-      "tags": ["renungan", "perpisahan", "sunyi", "harapan", "malam"],
+      "tags": [
+        "renungan",
+        "perpisahan",
+        "sunyi",
+        "harapan",
+        "malam"
+      ],
       "audioSrc": "/audio/lagu-arsip-sunyi.mp3"
     },
     {
@@ -31,7 +68,7 @@
       "titleEn": "The Silence I Inhabit",
       "subtitle": "Bukan cerita yang berjalan menurut waktu, melainkan gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai.",
       "subtitleEn": "Not a story that follows time, but a portrait of a heart that, for a moment, stopped being loud.",
-      "excerpt": "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai — dan bagaimana sunyi bisa menjadi rumah.",
+      "excerpt": "Gambaran tentang keadaan hati yang, untuk sesaat, berhenti menjadi ramai \u2014 dan bagaimana sunyi bisa menjadi rumah.",
       "excerptEn": "A portrait of a heart that stopped being loud, and how silence became home.",
       "preview": "Sebuah prosa reflektif tentang pertemuan yang mengubah cara seseorang memandang keheningan. Tentang cinta yang pelan, perpisahan yang tak dramatis, dan sunyi yang akhirnya bukan lagi penjara.",
       "previewEn": "A reflective prose about an encounter that changed how one sees silence. Slow love, undramatic farewells, and a silence that is no longer a prison.",
@@ -45,7 +82,14 @@
         "views": 0,
         "downloads": 0
       },
-      "tags": ["renungan", "refleksi", "sunyi", "cinta", "kehilangan", "prosa"]
+      "tags": [
+        "renungan",
+        "refleksi",
+        "sunyi",
+        "cinta",
+        "kehilangan",
+        "prosa"
+      ]
     },
     {
       "id": "7",
@@ -68,7 +112,14 @@
         "views": 410,
         "downloads": 30
       },
-      "tags": ["waktu", "kenangan", "perubahan", "penerimaan", "kehidupan", "refleksi"]
+      "tags": [
+        "waktu",
+        "kenangan",
+        "perubahan",
+        "penerimaan",
+        "kehidupan",
+        "refleksi"
+      ]
     },
     {
       "id": "6",
@@ -91,7 +142,14 @@
         "views": 320,
         "downloads": 24
       },
-      "tags": ["refleksi", "kelelahan", "pengorbanan", "kehancuran", "cahaya", "pelita"]
+      "tags": [
+        "refleksi",
+        "kelelahan",
+        "pengorbanan",
+        "kehancuran",
+        "cahaya",
+        "pelita"
+      ]
     },
     {
       "id": "5",
@@ -114,7 +172,14 @@
         "views": 150,
         "downloads": 12
       },
-      "tags": ["filosofi", "janji", "lembah", "kehilangan", "perjalanan", "teman"]
+      "tags": [
+        "filosofi",
+        "janji",
+        "lembah",
+        "kehilangan",
+        "perjalanan",
+        "teman"
+      ]
     },
     {
       "id": "4",
@@ -137,7 +202,12 @@
         "views": 756,
         "downloads": 43
       },
-      "tags": ["proses", "kesabaran", "menulis", "perlahan"]
+      "tags": [
+        "proses",
+        "kesabaran",
+        "menulis",
+        "perlahan"
+      ]
     },
     {
       "id": "3",
@@ -160,7 +230,12 @@
         "views": 2103,
         "downloads": 145
       },
-      "tags": ["renungan", "rutinitas", "konsistensi", "kehadiran"]
+      "tags": [
+        "renungan",
+        "rutinitas",
+        "konsistensi",
+        "kehadiran"
+      ]
     },
     {
       "id": "2",
@@ -183,7 +258,13 @@
         "views": 892,
         "downloads": 56
       },
-      "tags": ["cerita", "barista", "kopi", "pelanggan", "kehidupan"]
+      "tags": [
+        "cerita",
+        "barista",
+        "kopi",
+        "pelanggan",
+        "kehidupan"
+      ]
     },
     {
       "id": "1",
@@ -206,7 +287,12 @@
         "views": 1240,
         "downloads": 89
       },
-      "tags": ["kehidupan", "kopi", "mindfulness", "gentle"]
+      "tags": [
+        "kehidupan",
+        "kopi",
+        "mindfulness",
+        "gentle"
+      ]
     }
   ]
 }

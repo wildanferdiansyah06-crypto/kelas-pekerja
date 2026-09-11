@@ -14,7 +14,7 @@ export async function getBooks(filters?: {
   search?: string;
   limit?: number;
 }) {
-  let query = `*[_type == "book"]`;
+  let query = `*[_type == "book" && !(_id in path("drafts.**"))]`;
   const params: Record<string, any> = {};
 
   if (filters?.category && filters.category !== "all") {
@@ -78,16 +78,8 @@ export async function getBooks(filters?: {
     };
   }
 
-  // Handle null response
-  if (!sanityBooks) {
-    return {
-      books: [],
-      total: 0,
-    };
-  }
-
   // Transform Sanity data to match Book type
-  const books: Book[] = sanityBooks.map((book) => {
+  const sanityBooksTransformed: Book[] = (sanityBooks || []).map((book) => {
     let coverUrl = '';
     try {
       if (book.cover) {
@@ -124,8 +116,8 @@ export async function getBooks(filters?: {
     }
 
     return {
-      id: book._id,
-      slug: book.slug?.current || '',
+      id: book._id || book.id,
+      slug: book.slug?.current || book.slug || '',
       title: book.title,
       subtitle: book.subtitle || '',
       excerpt: book.excerpt || '',
@@ -142,14 +134,43 @@ export async function getBooks(filters?: {
     };
   });
 
+  // Merge with local books that don't exist in Sanity based on Title
+  const localBooks = booksData.books || [];
+  const sanityTitles = new Set(sanityBooksTransformed.map((b) => b.title?.trim().toLowerCase() || ''));
+  let extraLocalBooks = localBooks.filter((b: any) => !sanityTitles.has(b.title?.trim().toLowerCase() || ''));
+
+  if (filters?.category && filters.category !== "all") {
+    extraLocalBooks = extraLocalBooks.filter((b: any) => b.category === filters.category);
+  }
+  if (filters?.featured) {
+    extraLocalBooks = extraLocalBooks.filter((b: any) => b.featured);
+  }
+  if (filters?.search) {
+    const s = filters.search.toLowerCase();
+    extraLocalBooks = extraLocalBooks.filter((b: any) => 
+      b.title?.toLowerCase().includes(s) || 
+      (b.excerpt && b.excerpt.toLowerCase().includes(s)) ||
+      (b.tags && b.tags.some((t: string) => t.toLowerCase().includes(s)))
+    );
+  }
+  
+  const allBooks = [...sanityBooksTransformed, ...(extraLocalBooks as unknown as Book[])];
+  allBooks.sort((a, b) => {
+    const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return dateB - dateA;
+  });
+
+  const finalBooks = filters?.limit ? allBooks.slice(0, filters.limit) : allBooks;
+
   return {
-    books,
-    total: books.length,
+    books: finalBooks,
+    total: allBooks.length,
   };
 }
 
 export async function getBook(slug: string) {
-  const query = `*[_type == "book" && slug.current == $slug][0]`;
+  const query = `*[_type == "book" && slug.current == $slug && !(_id in path("drafts.**"))][0]`;
   let sanityBook;
   
   try {
@@ -163,6 +184,9 @@ export async function getBook(slug: string) {
   }
 
   if (!sanityBook) {
+    const localBooks = booksData.books || [];
+    const found = localBooks.find((b: any) => b.slug === slug);
+    if (found) return { book: found as unknown as Book };
     throw new Error("Book not found");
   }
 
