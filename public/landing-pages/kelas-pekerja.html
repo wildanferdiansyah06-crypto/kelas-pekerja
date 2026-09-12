@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kage — Where stillness reveals the unseen</title>
-<meta name="description" content="A five-chapter night walk through a Kyoto mountain temple. Charred cypress, lantern light and a vermilion moon, rendered live in WebGL.">
+<title>Kelas Pekerja — Tulisan sunyi dari mereka yang tetap bekerja</title>
+<meta name="description" content="A night walk through kelas pekerja — arsip cerita, refleksi, dan tulisan pendek dari mereka yang tetap bekerja.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305070a'/%3E%3Ccircle cx='16' cy='17' r='8' fill='%23e0231c'/%3E%3Crect x='4' y='8' width='24' height='2.6' fill='%23dfe7e0'/%3E%3Crect x='7' y='13' width='18' height='2' fill='%23dfe7e0'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="secret-pathways-assets/fonts.css">
 <style>
@@ -916,7 +916,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
       <path d="M5 13h34M9 18.4h26M22 8.5v27" stroke="#dfe7e0" stroke-width="1.5"/>
       <path d="M14 35.5h16" stroke="#dfe7e0" stroke-width="1.2" stroke-opacity=".6"/>
     </svg>
-    <span class="brand-tx"><b>KAGE</b><i>HIDDEN REALMS OF KYOTO</i></span>
+    <span class="brand-tx"><b>KELAS PEKERJA</b><i>TULISAN SUNYI DARI MEREKA YANG TETAP BEKERJA</i></span>
   </a>
   <nav class="nav-links" id="navlinks">
     <a class="nav-link" href="#gate" data-cursor><span>Temples</span><span class="alt">伽藍</span></a>
@@ -938,7 +938,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
       <span class="mask-line"><span>reveals the</span></span>
       <span class="mask-line"><span>unseen.</span></span>
     </h1>
-    <p class="hero-sub body" data-rv="up">Enter Kyoto through its quiet thresholds, where ritual,
+    <p class="hero-sub body" data-rv="up">Enter kelas pekerja through its quiet thresholds, where ritual,
       craft, and memory shape the path.</p>
   </div>
 
@@ -966,7 +966,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <span class="peek-cap"><b class="jp">山門</b><i>Sanmon — before the bell</i></span>
   </a>
 
-  <div class="word-fb" aria-hidden="true">KAGE</div>
+  <div class="word-fb" aria-hidden="true">KELAS PEKERJA</div>
 
   <div class="hero-side" data-rv="up">
     <span class="v jp">影の道</span>
@@ -993,7 +993,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
   <div class="gate-grid">
     <h2 class="display h-sec" data-rv="up">Charred cypress, worn stone, one gate left open.</h2>
     <div class="gate-copy">
-      <p class="lead" data-rv="up">Kage begins where the city stops: a mountain gate of cedar burned black,
+      <p class="lead" data-rv="up">Kelas Pekerja adalah arsip cerita, refleksi, dan tulisan pendek — ditulis oleh dan untuk mereka yang menghabiskan sebagian besar hidupnya bekerja.
         standing in its own weather. The soot is not decoration. It is how a board is taught to survive a
         hundred rainy seasons, and the first thing this place asks you to understand.</p>
       <p class="body" data-rv="up">Climb the worn steps and the worship hall lifts out of the mist, its paper
@@ -1007,10 +1007,10 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     </div>
   </div>
   <div class="gate-stats" data-rv="up">
-    <div><b>05</b><span>Chapters</span></div>
-    <div><b>92</b><span>Minutes</span></div>
-    <div><b>1611</b><span>Hall raised</span></div>
-    <div><b>∞</b><span>Stillness</span></div>
+    <div><b id="kp-bab-count">05</b><span>Bab Tulisan</span></div>
+    <div><b>8</b><span>Jam Kerja</span></div>
+    <div><b>1886</b><span>Sejarah</span></div>
+    <div><b>∞</b><span>Solidaritas</span></div>
   </div>
 </section>
 
@@ -1080,7 +1080,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <span class="k"><b>03</b> — Sacred Craft</span><span class="rule"></span><span class="k jp">手業</span>
   </div>
   <div class="cur-head">
-    <h2 class="display h-sec" data-rv="up">Five chapters. Ninety minutes. One quiet mind.</h2>
+    <h2 class="display h-sec" data-rv="up" id="kp-chapter-heading"><span id="kp-chapter-word">Ten</span> chapters. Ninety minutes. One quiet mind.</h2>
     <p class="body-lg" data-rv="up">Each chapter is a walk, not a lecture. You arrive at the gate, climb the
       steps, sit with the lantern, and leave with one thing worth keeping.</p>
   </div>
@@ -1165,8 +1165,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
         <circle cx="22" cy="25" r="8.6" fill="#e0231c" fill-opacity=".9"/>
         <path d="M5 13h34M9 18.4h26M22 8.5v27" stroke="#dfe7e0" stroke-width="1.5"/>
       </svg>
-      <p>A five-chapter night walk through a Kyoto mountain temple. Three illustrated garden field notes
-        sit inside a live Three.js sanctuary.</p>
+      <p id="kp-footer-desc">A <span id="kp-footer-word">ten</span>-chapter night walk through kelas pekerja.</p>
     </div>
     <div><h4>Chapters</h4><ul>
       <li><a href="#gate" data-cursor>The Sanmon</a></li>
@@ -1187,9 +1186,9 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     </ul></div>
   </div>
   <div class="foot-base">
-    <span>© 2026 Kage — Kage no Michi</span>
+    <span>© 2026 Kelas Pekerja</span>
     <span class="jp">静けさは一つの技である</span>
-    <span>WebGL · Onest · Kyoto</span>
+    <span>Cerita · Refleksi · Indonesia</span>
   </div>
 </footer>
 
@@ -1205,7 +1204,7 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 <script src="secret-pathways-assets/three.min.js"></script>
 <script>
 /* =====================================================================
-   KAGE — a live Kyoto mountain temple, after dark.
+   KELAS PEKERJA — arsip cerita, refleksi, dan tulisan pendek.
    Everything on this page is generated at runtime: no photographs,
    no video, no external assets beyond three.js and two subset fonts.
    ===================================================================== */
@@ -3026,7 +3025,7 @@ function buildWordmark() {
   const m = cvs(4, 4).getContext('2d');
   m.font = '600 ' + SZ + 'px Wordmark, sans-serif';
   m.textBaseline = 'alphabetic'; m.textAlign = 'left';
-  const word = 'KAGE', gl = [];
+  const word = 'KELAS PEKERJA', gl = [];
   let pen = 0, ascMax = 0, descMax = 0, xMin = 1e9, xMax = -1e9;
   for (const ch of word) {
     const t = m.measureText(ch);
@@ -4815,6 +4814,35 @@ function start() {
 
 if (document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(boot, 0);
 else addEventListener('DOMContentLoaded', boot);
+})();
+</script>
+<script>
+/* ── Kelas Pekerja: receive dynamic stats from parent window ── */
+(function() {
+  var WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+               'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+
+  function numToWord(n) {
+    return n < WORDS.length ? WORDS[n] : String(n);
+  }
+
+  window.addEventListener('message', function(e) {
+    if (!e.data || e.data.type !== 'KP_STATS') return;
+    var count = e.data.totalBooks;
+    if (!count || count <= 0) return;
+
+    /* update stat badge */
+    var badge = document.getElementById('kp-bab-count');
+    if (badge) badge.textContent = count;
+
+    /* update "Ten chapters. Ninety minutes. One quiet mind." heading */
+    var word = document.getElementById('kp-chapter-word');
+    if (word) word.textContent = numToWord(count).charAt(0).toUpperCase() + numToWord(count).slice(1);
+
+    /* update footer "A ten-chapter night walk..." */
+    var footerWord = document.getElementById('kp-footer-word');
+    if (footerWord) footerWord.textContent = numToWord(count);
+  });
 })();
 </script>
 </body>

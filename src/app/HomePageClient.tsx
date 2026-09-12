@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, PenLine } from "lucide-react";
 import { useLanguage } from "@/src/contexts/LanguageContext";
 
-/* ─── Kage iframe helpers ────────────────────────────────────────────
-   KageLandingPage internally renders an <iframe src="/landing-pages/kage.html">
+/* ─── Kelas Pekerja iframe helpers ────────────────────────────────────────────
+   KelasPekerjaHero internally renders an <iframe src="/landing-pages/kelas-pekerja.html">
    sandboxed. Since importing @designcodeio/threeui causes webpack to fail
    (the package uses Vite-specific ?raw imports incompatible with Next.js webpack),
    we replicate what LandingPageFrame does: serve the same HTML via a plain iframe.
@@ -38,34 +38,19 @@ interface HomePageClientProps {
   allBooks?: any[];
 }
 
-function getSimpleGreeting(hour: number, lang: 'id' | 'en'): string {
-  if (lang === 'en') {
-    if (hour >= 4 && hour < 12) return 'Good morning';
-    if (hour >= 12 && hour < 17) return 'Good afternoon';
-    if (hour >= 17 && hour < 21) return 'Good evening';
-    return 'Late night?';
-  }
-  if (hour >= 4 && hour < 12) return 'Selamat pagi';
-  if (hour >= 12 && hour < 17) return 'Selamat siang';
-  if (hour >= 17 && hour < 21) return 'Selamat sore';
-  return 'Masih terjaga?';
-}
+/* ─── KelasPekerjaHero ─────────────────────────────────────────────────────────
+  Hosts the complete authored Kelas Pekerja document in a same-origin iframe.
+  ──────────────────────────────────────────────────────────────────────── */
+function KelasPekerjaHero({ totalBooks = 0 }: { totalBooks?: number }) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-/* ─── KageHero ─────────────────────────────────────────────────────────
-   Renders /landing-pages/kage.html in a sandboxed iframe (same as what
-   LandingPageFrame does internally) and overlays our own reading copy.
-   ──────────────────────────────────────────────────────────────────────── */
-function KageHero({
-  greeting,
-  totalBooks,
-  id,
-  t,
-}: {
-  greeting: string;
-  totalBooks: number;
-  id: boolean;
-  t: any;
-}) {
+  const handleLoad = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage(
+      { type: "KP_STATS", totalBooks },
+      window.location.origin
+    );
+  }, [totalBooks]);
+
   return (
     <section
       style={{
@@ -76,261 +61,20 @@ function KageHero({
         overflow: "hidden",
       }}
     >
-      {/* ── Background Image ── */}
-      <div
-        aria-hidden="true"
+      <iframe
+        ref={iframeRef}
+        title="Kelas Pekerja experience"
+        src="/landing-pages/kelas-pekerja.html"
+        allow="autoplay; fullscreen; gamepad"
+        sandbox="allow-forms allow-modals allow-downloads allow-popups allow-scripts allow-same-origin"
+        onLoad={handleLoad}
         style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 0,
-          background: "#05070a",
-        }}
-      >
-        <Image
-          src="/images/hero-bg.jpg"
-          alt="Late night commute"
-          fill
-          priority
-          style={{
-            objectFit: "cover",
-            opacity: 0.6,
-            filter: "contrast(1.1) brightness(0.7)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse at 73% 17%, rgba(224,35,28,0.2) 0%, rgba(120,12,12,0.1) 40%, transparent 62%), " +
-              "radial-gradient(120% 80% at 50% 0%, rgba(120,150,158,0.05), transparent 60%)",
-          }}
-        />
-      </div>
-
-      {/* ── Bottom-to-top fade so content flows into next section ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 10,
-          pointerEvents: "none",
-          background:
-            "linear-gradient(to bottom, rgba(5,7,10,0.55) 0%, rgba(5,7,10,0.12) 46%, rgba(5,7,10,0.80) 88%, rgba(5,7,10,1) 100%)",
+          display: "block",
+          width: "100%",
+          height: "100%",
+          border: 0,
         }}
       />
-      {/* Left vignette to hold reading copy legible */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 10,
-          pointerEvents: "none",
-          background:
-            "linear-gradient(to right, rgba(5,7,10,0.82) 0%, rgba(5,7,10,0.50) 36%, rgba(5,7,10,0) 58%)",
-        }}
-        className="hidden md:block"
-      />
-
-      {/* ── Our copy layer ── */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 20,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          pointerEvents: "none",
-        }}
-      >
-        {/* Greeting badge (top-left) */}
-        <div
-          style={{ padding: "0 3rem", paddingTop: "calc(84px + 2rem)" }}
-          className="px-6 lg:px-12"
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              pointerEvents: "auto",
-            }}
-          >
-            <span
-              style={{
-                display: "block",
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#e0231c",
-                boxShadow: "0 0 10px #e0231c",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "var(--font-ui, system-ui)",
-                fontSize: 10,
-                letterSpacing: "0.24em",
-                textTransform: "uppercase",
-                color: "#aab4ad",
-              }}
-            >
-              {greeting}
-            </span>
-          </div>
-        </div>
-
-        {/* Main copy (bottom-left) */}
-        <div
-          className="px-6 lg:px-12"
-          style={{
-            paddingBottom: "clamp(2rem, 5vh, 3.5rem)",
-            maxWidth: 640,
-            pointerEvents: "auto",
-          }}
-        >
-          <h1
-            className="font-serif"
-            style={{
-              fontSize: "clamp(32px, 4.8vw, 66px)",
-              lineHeight: 1.06,
-              letterSpacing: "-0.02em",
-              color: "#fff",
-              textShadow: "0 2px 34px rgba(3,6,8,0.72)",
-              marginBottom: "1.5rem",
-            }}
-          >
-            {id
-              ? "Tulisan sunyi dari mereka yang tetap bekerja."
-              : "Silent writings from those who keep working."}
-          </h1>
-
-          <p
-            className="font-body"
-            style={{
-              fontSize: "clamp(14px, 1.1vw, 17px)",
-              lineHeight: 1.72,
-              color: "#aab4ad",
-              textShadow: "0 1px 20px rgba(3,6,8,0.88)",
-              maxWidth: "46ch",
-              marginBottom: "2.5rem",
-            }}
-          >
-            {id
-              ? "Kelas Pekerja adalah arsip cerita, refleksi, dan tulisan pendek — ditulis oleh dan untuk mereka yang menghabiskan sebagian besar hidupnya bekerja."
-              : "Kelas Pekerja is an archive of stories, reflections, and short writings — written by and for those who spend most of their lives working."}
-          </p>
-
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              marginBottom: "2.5rem",
-            }}
-          >
-            <Link
-              href="/buku"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "0.75rem 1.75rem",
-                borderRadius: 9999,
-                fontFamily: "var(--font-ui, system-ui)",
-                fontSize: 11,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                fontWeight: 500,
-                background: "linear-gradient(135deg, #e0231c, #a71813)",
-                color: "#fff",
-                boxShadow: "0 4px 16px rgba(224,35,28,0.28)",
-                transition: "transform 0.3s, box-shadow 0.3s",
-              }}
-            >
-              {t.booksPage.startReading}
-              <ArrowRight size={13} />
-            </Link>
-
-            <Link
-              href="/tentang"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "0.75rem 1.75rem",
-                borderRadius: 9999,
-                fontFamily: "var(--font-ui, system-ui)",
-                fontSize: 11,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                fontWeight: 500,
-                border: "1px solid rgba(223,231,224,0.18)",
-                color: "#aab4ad",
-                transition: "border-color 0.3s, color 0.3s",
-              }}
-            >
-              {t.nav.about}
-            </Link>
-          </div>
-
-          {/* Stat strip */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1.5rem",
-              paddingTop: "1.25rem",
-              borderTop: "1px solid rgba(223,231,224,0.08)",
-            }}
-          >
-            <div>
-              <span
-                className="font-serif"
-                style={{
-                  display: "block",
-                  fontSize: "clamp(22px, 2.2vw, 32px)",
-                  fontWeight: 300,
-                  letterSpacing: "-0.02em",
-                  color: "#dfe7e0",
-                }}
-              >
-                {totalBooks || "—"}
-              </span>
-              <span
-                style={{
-                  display: "block",
-                  fontFamily: "var(--font-ui, system-ui)",
-                  fontSize: 10,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "#78837c",
-                }}
-              >
-                {id ? "tulisan tersimpan" : "writings archived"}
-              </span>
-            </div>
-            <div
-              style={{ width: 1, height: 40, background: "rgba(223,231,224,0.08)" }}
-            />
-            <p
-              className="font-body"
-              style={{
-                fontSize: 13,
-                lineHeight: 1.5,
-                color: "#78837c",
-                maxWidth: "32ch",
-              }}
-            >
-              {id
-                ? "Refleksi, cerita, filosofi dari perspektif kelas pekerja."
-                : "Reflections, stories, philosophy from the working class perspective."}
-            </p>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
@@ -342,17 +86,8 @@ export default function HomePageClient({
   mostRelatable = [],
   allBooks = [],
 }: HomePageClientProps) {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const id = language === "id";
-
-  const greeting = React.useMemo(
-    () => getSimpleGreeting(new Date().getHours(), language),
-    [language]
-  );
-
-  const totalBooks =
-    allBooks.length ||
-    featuredBooks.length + latestBooks.length + mostRelatable.length;
 
   if (!featuredBooks.length && !latestBooks.length) {
     return (
@@ -410,7 +145,7 @@ export default function HomePageClient({
     <div style={{ background: ink, color: bone, minHeight: "100vh" }}>
 
       {/* ══ HERO ══ */}
-      <KageHero greeting={greeting} totalBooks={totalBooks} id={id} t={t} />
+      <KelasPekerjaHero totalBooks={allBooks.length} />
 
       {/* ══ FEATURED ══ */}
       {featuredBooks.length > 0 && (
@@ -881,73 +616,69 @@ export default function HomePageClient({
           aria-hidden="true"
           style={{
             position: "absolute",
-            bottom: 0,
+            top: "50%",
             left: "50%",
-            transform: "translateX(-50%)",
-            width: 420,
-            height: 260,
+            transform: "translate(-50%, -50%)",
+            width: "60vw",
+            height: "60vw",
+            background: "radial-gradient(circle, rgba(224,35,28,0.03) 0%, transparent 60%)",
             pointerEvents: "none",
-            background:
-              "radial-gradient(ellipse at center bottom, rgba(224,35,28,0.12) 0%, transparent 70%)",
           }}
         />
-
-        <div style={{ maxWidth: 520, position: "relative", zIndex: 1 }}>
-          <PenLine
-            size={28}
-            style={{ margin: "0 auto 2rem", color: "rgba(223,231,224,0.2)" }}
-          />
-
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 640 }}>
           <h2
             className="font-serif"
             style={{
-              fontSize: "clamp(30px, 4.5vw, 56px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(32px, 4vw, 48px)",
               color: "#fff",
-              marginBottom: "1.25rem",
+              lineHeight: 1.1,
+              letterSpacing: "-0.01em",
+              marginBottom: "1.5rem",
             }}
           >
-            {id ? "Punya cerita?" : "Got a story?"}
+            {id ? "Jadilah bagian dari tulisan kelas pekerja" : "Be part of the working class writings"}
           </h2>
-
           <p
             className="font-body"
             style={{
               fontSize: 16,
-              lineHeight: 1.7,
               color: boneDim,
-              maxWidth: "40ch",
-              margin: "0 auto 3rem",
+              lineHeight: 1.6,
+              marginBottom: "3rem",
             }}
           >
             {id
-              ? "Kalau kamu punya tulisan soal kerja, hidup, atau apa pun yang jarang dibicarakan — tulis di sini. Nggak perlu bagus, yang penting jujur."
-              : "If you have something to write about work, life, or anything rarely talked about — write it here. It doesn't have to be good, just honest."}
+              ? "Punya cerita, refleksi, atau keluh kesah dari balik meja kerjamu? Bagikan, dan biarkan dunia membacanya."
+              : "Have a story, reflection, or grievance from behind your desk? Share it, and let the world read it."}
           </p>
-
           <Link
             href="/tulis"
-            className="group"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.75rem",
-              padding: "1rem 2rem",
+              gap: 12,
+              padding: "1rem 2.5rem",
               borderRadius: 9999,
               fontFamily: "var(--font-ui, system-ui)",
-              fontSize: 11,
+              fontSize: 12,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               fontWeight: 500,
-              border: "1px solid rgba(223,231,224,0.18)",
-              color: bone,
-              transition: "border-color 0.4s, color 0.4s",
+              background: "#fff",
+              color: ink,
+              transition: "transform 0.3s, box-shadow 0.3s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 8px 30px rgba(255,255,255,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            <PenLine size={13} style={{ opacity: 0.7 }} />
-            {id ? "Tulis Sesuatu" : "Write Something"}
-            <ArrowRight size={13} style={{ opacity: 0.5 }} />
+            <PenLine size={15} />
+            {id ? "Tulis Ceritamu" : "Write Your Story"}
           </Link>
         </div>
       </section>
