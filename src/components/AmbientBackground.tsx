@@ -273,7 +273,7 @@ export default function AmbientBackground() {
       /* paper planes */
       const rndP = mulberry32(42);
       const paperTex = makePaperTexture(rndP);
-      const papers: THREE.Mesh[] = [];
+      const papers: any[] = [];
       const PAPER_COUNT = REDUCE ? 8 : 18;
 
       for (let i = 0; i < PAPER_COUNT; i++) {
@@ -405,7 +405,7 @@ export default function AmbientBackground() {
           p.position.x = d.baseX + Math.cos(t * d.driftX + d.driftPhase) * 0.22;
         }
 
-        for (const spr of bokehGroup.children as THREE.Sprite[]) {
+        for (const spr of bokehGroup.children as any[]) {
           const d = spr.userData;
           spr.position.y = d.baseY + Math.sin(t * d.speed + d.phase) * 0.55;
           spr.position.x = d.baseX + Math.cos(t * d.speed * 0.6 + d.phase) * 0.38;
