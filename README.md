@@ -64,7 +64,7 @@ graph TD
 | **Frontend Framework** | Next.js 15 (React 18) | App Router, Server Components, Route Handlers |
 | **Content Engine** | Sanity CMS (v3) | Content Lake, GROQ query engine, visual editor |
 | **Database & Auth** | Supabase & NextAuth.js | PostgreSQL relational data, Row Level Security, Google OAuth |
-| **Styling & UI** | Tailwind CSS & Framer Motion | Design system tokens, micro-interactions, responsive layouts |
+| **Styling & Animation**| Vanilla CSS & Three.js | Arsip Sunyi monochromatic design system, custom CSS blobs, WebGL 3D scenes |
 | **Quality Assurance** | Jest & Playwright | Unit testing, integration specs, E2E browser automation |
 | **Type Safety** | TypeScript 5 | Strict interface declarations across CMS schemas and components |
 
@@ -79,10 +79,10 @@ kelas-pekerja/
 ├── public/                # Static assets & dynamic fallback datasets
 ├── src/
 │   ├── app/               # Next.js App Router (pages, layouts, API routes)
-│   ├── components/        # Component library (UI, layout, navigation)
+│   ├── components/        # Component library (BookCover, AmbientBackground, Navbar)
 │   ├── contexts/          # React Context API state providers
-│   ├── hooks/             # Custom utility React hooks
-│   ├── lib/               # Data fetching abstractions (Sanity GROQ, Supabase client)
+│   ├── hooks/             # Custom utility React hooks (useScrollReveal, usePreloader, dll)
+│   ├── lib/               # Data constants, Sanity GROQ, Supabase client
 │   ├── sanity/            # Sanity Studio configuration & schema definitions
 │   └── types/             # Domain TypeScript interface specifications
 ├── supabase-quotes-table.sql  # Supabase database schema initialization script
