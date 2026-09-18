@@ -114,7 +114,7 @@ function applyReaderCSSVars(theme: ReaderTheme, fontSize: ReaderFontSize, fontFa
 }
 
 export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<ReaderTheme>('sepia');
+  const [theme, setThemeState] = useState<ReaderTheme>('dark');
   const [fontSize, setFontSizeState] = useState<ReaderFontSize>('m');
   const [fontFamily, setFontFamilyState] = useState<ReaderFontFamily>('serif');
   const [focusMode, setFocusModeState] = useState(false);
@@ -125,7 +125,7 @@ export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const saved = localStorage.getItem(PREFS_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        const t: ReaderTheme = parsed.theme || 'sepia';
+        const t: ReaderTheme = parsed.theme || 'dark';
         const fs: ReaderFontSize = parsed.fontSize || 'm';
         const ff: ReaderFontFamily = parsed.fontFamily || 'serif';
         setThemeState(t);
@@ -133,11 +133,11 @@ export const ReaderProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setFontFamilyState(ff);
         applyReaderCSSVars(t, fs, ff);
       } else {
-        applyReaderCSSVars('sepia', 'm', 'serif');
+        applyReaderCSSVars('dark', 'm', 'serif');
       }
     } catch (e) {
       console.error('Failed to load reader preferences:', e);
-      applyReaderCSSVars('sepia', 'm', 'serif');
+      applyReaderCSSVars('dark', 'm', 'serif');
     }
   }, []);
 
