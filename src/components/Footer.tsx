@@ -1,335 +1,69 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { ArrowRight, Github, Instagram, MessageCircle, Sparkles } from "lucide-react";
-
-const socialLinks = [
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/6289636357091", 
-    icon: <MessageCircle size={18} />,
-  },
-  {
-    label: "Instagram",
-    href: "https://instagram.com/_iamwildan_", 
-    icon: <Instagram size={18} />,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/wildanferdiansyah06-crypto", 
-    icon: <Github size={18} />,
-  },
-];
-
-import { useLanguage } from "@/src/contexts/LanguageContext";
 
 export default function Footer() {
-  const { t, language } = useLanguage();
-  const [email, setEmail] = useState("");
-  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [newsletterMessage, setNewsletterMessage] = useState("");
-
-  const footerLinks = {
-    bacaan: [
-      { label: language === 'en' ? "All Books" : "Semua Buku", href: "/buku" },
-      { label: language === 'en' ? "Reflection Category" : "Kategori Refleksi", href: "/buku?category=refleksi" },
-      { label: language === 'en' ? "Life Category" : "Kategori Kehidupan", href: "/buku?category=kehidupan" },
-      { label: language === 'en' ? "Philosophy Category" : "Kategori Filosofi", href: "/buku?category=filosofi" },
-    ],
-    eksplorasi: [
-      { label: language === 'en' ? "Random Quotes" : "Quote Acak", href: "/quotes" },
-      { label: language === 'en' ? "Saved Bookmarks" : "Koleksi Tersimpan", href: "/bookmark" },
-      { label: language === 'en' ? "About Us" : "Tentang Kami", href: "/tentang" },
-    ],
-  };
-
-  const [networkStatus, setNetworkStatus] = useState<{
-    text: string;
-    dotColor: string;
-  }>({
-    text: "Memeriksa koneksi...",
-    dotColor: "bg-[var(--kp-text-muted)]",
-  });
-
-  // Network detection
-  useEffect(() => {
-    const updateNetworkStatus = () => {
-      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-
-      if (!connection) {
-        setNetworkStatus({
-          text: "Terhubung",
-          dotColor: "bg-[var(--kp-accent)]",
-        });
-        return;
-      }
-
-      const effectiveType = connection.effectiveType;
-      const downlink = connection.downlink;
-
-      if (!navigator.onLine) {
-        setNetworkStatus({
-          text: language === 'en' ? "Offline" : "Koneksi terputus",
-          dotColor: "bg-red-500",
-        });
-      } else if (effectiveType === 'slow-2g' || effectiveType === '2g' || downlink < 0.5) {
-        setNetworkStatus({
-          text: language === 'en' ? "Slow connection" : "Koneksi lambat",
-          dotColor: "bg-amber-600",
-        });
-      } else if (effectiveType === '3g' || (downlink >= 0.5 && downlink < 2)) {
-        setNetworkStatus({
-          text: language === 'en' ? "Moderate connection" : "Koneksi sedang",
-          dotColor: "bg-[var(--kp-accent)]",
-        });
-      } else {
-        setNetworkStatus({
-          text: language === 'en' ? "Connection stable" : "Koneksi stabil",
-          dotColor: "bg-[var(--kp-accent)] glow-amber",
-        });
-      }
-    };
-
-    updateNetworkStatus();
-
-    window.addEventListener('online', updateNetworkStatus);
-    window.addEventListener('offline', updateNetworkStatus);
-
-    const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-    if (connection) {
-      connection.addEventListener('change', updateNetworkStatus);
-    }
-
-    return () => {
-      window.removeEventListener('online', updateNetworkStatus);
-      window.removeEventListener('offline', updateNetworkStatus);
-      if (connection) {
-        connection.removeEventListener('change', updateNetworkStatus);
-      }
-    };
-  }, []);
-
-  const handleNewsletterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email || !email.includes("@")) {
-      setNewsletterStatus("error");
-      setNewsletterMessage("Email tidak valid");
-      return;
-    }
-
-    setNewsletterStatus("loading");
-
-    try {
-      const response = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setNewsletterStatus("success");
-        setNewsletterMessage(data.message || "Terima kasih!");
-        setEmail("");
-      } else {
-        setNewsletterStatus("error");
-        setNewsletterMessage(data.error || "Gagal mengirim");
-      }
-    } catch {
-      setNewsletterStatus("error");
-      setNewsletterMessage("Terjadi kesalahan");
-    }
-  };
-
   return (
-    <footer
-      id="site-footer"
-      className="relative overflow-hidden border-t"
-      style={{
-        backgroundColor: 'var(--kp-bg-invert)',
-        borderColor: 'var(--kp-border)',
-      }}
-    >
-      {/* Decorative Top Glow */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(212,165,116,0.3)] to-transparent" />
-      
-      {/* Background Star Constellation Element */}
-      <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,rgba(212,165,116,0.05),transparent_50%)] pointer-events-none" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
-
-        {/* ══════════════════════════════════
-            TOP SECTION
-        ══════════════════════════════════ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pt-20 pb-16">
-
-          {/* — Brand & Bio — */}
-          <div className="lg:col-span-5 flex flex-col items-center md:items-start text-center md:text-left">
-            <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <span className="text-3xl font-display font-light tracking-wider transition-all duration-300 group-hover:text-glow" style={{ color: 'var(--kp-accent)' }}>
-                Kelas Pekerja
+    <footer className="foot" id="kontak">
+      <div className="sec-inner">
+        <div className="foot-top">
+          <div className="foot-brand">
+            <Link href="/" className="brand" data-cursor>
+              <svg viewBox="0 0 44 44" fill="none" aria-hidden="true">
+                <path d="M13 19h18l-2.6 12.4a2 2 0 0 1-2 1.6H17.6a2 2 0 0 1-2-1.6L13 19Z" stroke="#ece3d3" strokeWidth="1.5" />
+                <path d="M31 21c4 0 5.6 2 5.6 4.6S35 30 31 29.6" stroke="#c9903f" strokeWidth="1.5" />
+                <path d="M18 15c-1.6-1.6-1.6-3 0-4.6M23 15c-1.6-1.6-1.6-3 0-4.6" stroke="#d1602f" strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+              <span className="brand-tx">
+                <b>KELAS PEKERJA</b>
+                <i>ARSIP SUNYI YANG TETAP BEKERJA</i>
               </span>
             </Link>
-
-            <p className="font-body text-base lg:text-lg leading-relaxed max-w-md opacity-80 mb-8 text-balance" style={{ color: 'var(--kp-text-secondary)' }}>
-              {t.footer.description}
-            </p>
-
-            <div className="flex items-center gap-4">
-              {socialLinks.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 group"
-                  style={{
-                    borderColor: 'rgba(212, 165, 116, 0.2)',
-                    background: 'rgba(212, 165, 116, 0.05)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.5)';
-                    e.currentTarget.style.background = 'rgba(212, 165, 116, 0.1)';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 0 15px rgba(212, 165, 116, 0.2)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(212, 165, 116, 0.2)';
-                    e.currentTarget.style.background = 'rgba(212, 165, 116, 0.05)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  <div className="transition-colors duration-300 group-hover:text-[var(--kp-text-primary)]" style={{ color: 'var(--kp-text-muted)' }}>
-                    {s.icon}
-                  </div>
-                </a>
-              ))}
+            <p>Catatan harian, cerita pendek, dan perenungan tentang dunia kerja dan kehidupan yang diseduh perlahan.</p>
+            <div className="foot-social">
+              <a href="https://wa.me/6289636357091" target="_blank" rel="noopener noreferrer" data-cursor aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 20l1.4-4.1A8 8 0 1 1 9 18.4L4 20Z" stroke="currentColor" strokeWidth="1.3" />
+                  <path d="M8.5 9.5c0 4 3 6.7 6.7 6.7.6 0 1-.5.9-1l-.2-1.1a.9.9 0 0 0-.7-.7l-1.6-.3a.9.9 0 0 0-.8.3l-.5.5a5.6 5.6 0 0 1-2.6-2.6l.5-.5a.9.9 0 0 0 .3-.8l-.3-1.6a.9.9 0 0 0-.7-.7L8.5 7.6c-.5 0-1 .4-1 .9" fill="currentColor" />
+                </svg>
+              </a>
+              <a href="https://instagram.com/_iamwildan_" target="_blank" rel="noopener noreferrer" data-cursor aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="4" width="16" height="16" rx="5" stroke="currentColor" strokeWidth="1.3" />
+                  <circle cx="12" cy="12" r="3.6" stroke="currentColor" strokeWidth="1.3" />
+                  <circle cx="16.6" cy="7.4" r="1" fill="currentColor" />
+                </svg>
+              </a>
+              <a href="https://github.com/wildanferdiansyah06-crypto" target="_blank" rel="noopener noreferrer" data-cursor aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3.5a8.5 8.5 0 0 0-2.7 16.6c.4.1.6-.2.6-.4v-1.6c-2.4.5-2.9-1.1-2.9-1.1-.4-1-1-1.2-1-1.2-.8-.6.1-.6.1-.6.9.1 1.4.9 1.4.9.8 1.4 2.1 1 2.6.7.1-.6.3-1 .6-1.2-1.9-.2-3.9-1-3.9-4.3 0-1 .3-1.7.9-2.3-.1-.2-.4-1.1.1-2.3 0 0 .7-.2 2.4.9a8 8 0 0 1 4.4 0c1.7-1.1 2.4-.9 2.4-.9.5 1.2.2 2.1.1 2.3.6.6.9 1.4.9 2.3 0 3.3-2 4-3.9 4.3.3.3.6.8.6 1.7v2.5c0 .2.2.5.6.4A8.5 8.5 0 0 0 12 3.5Z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+                </svg>
+              </a>
             </div>
           </div>
-
-          {/* — Links: Bacaan — */}
-          <div className="lg:col-span-2 lg:col-start-7 flex flex-col items-center md:items-start">
-            <h4 className="font-ui text-xs font-semibold uppercase tracking-[0.2em] mb-6 glow-amber inline-block" style={{ color: 'var(--kp-accent)' }}>
-              Katalog
-            </h4>
-            <ul className="space-y-4 text-center md:text-left">
-              {footerLinks.bacaan.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-ui text-sm transition-all duration-300 hover:text-[var(--kp-text-primary)] inline-block hover:translate-x-1"
-                    style={{ color: 'var(--kp-text-muted)' }}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+          <div className="foot-col">
+            <b>Katalog</b>
+            <ul>
+              <li><Link href="/buku">Semua Buku</Link></li>
+              <li><Link href="/buku?category=refleksi">Refleksi</Link></li>
+              <li><Link href="/buku?category=kehidupan">Kehidupan</Link></li>
+              <li><Link href="/buku?category=filosofi">Filosofi</Link></li>
             </ul>
           </div>
-
-          {/* — Links: Eksplorasi — */}
-          <div className="lg:col-span-3 lg:col-start-10 flex flex-col items-center md:items-start">
-            <h4 className="font-ui text-xs font-semibold uppercase tracking-[0.2em] mb-6 glow-amber inline-block" style={{ color: 'var(--kp-accent)' }}>
-              Lebih Jauh
-            </h4>
-            <ul className="space-y-4 text-center md:text-left mb-10">
-              {footerLinks.eksplorasi.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-ui text-sm transition-all duration-300 hover:text-[var(--kp-text-primary)] inline-block hover:translate-x-1"
-                    style={{ color: 'var(--kp-text-muted)' }}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+          <div className="foot-col">
+            <b>Lebih Jauh</b>
+            <ul>
+              <li><Link href="/quotes">Quote Acak</Link></li>
+              <li><Link href="/bookmark">Koleksi Tersimpan</Link></li>
+              <li><Link href="/tentang">Tentang Kami</Link></li>
+              <li><Link href="/tulis">Tulis Sesuatu</Link></li>
             </ul>
-
-            {/* Newsletter mini */}
-            <div className="w-full max-w-xs">
-              <p className="font-ui text-xs font-medium tracking-wide mb-3 flex items-center gap-2" style={{ color: 'var(--kp-text-muted)' }}>
-                <Sparkles size={12} style={{ color: 'var(--kp-accent)' }} />
-                Catatan mingguan
-              </p>
-              <form onSubmit={handleNewsletterSubmit} className="relative group">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alamat email..."
-                  className="w-full pl-4 pr-12 py-3 rounded-xl font-ui text-sm glass outline-none transition-all duration-300 focus:border-[rgba(212,165,116,0.5)] focus:bg-[rgba(212,165,116,0.05)] placeholder-[var(--kp-border-strong)]"
-                  style={{ color: 'var(--kp-text-primary)' }}
-                />
-                <button
-                  type="submit"
-                  disabled={newsletterStatus === "loading"}
-                  className="absolute right-1 top-1 bottom-1 aspect-square rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-[rgba(212,165,116,0.1)] disabled:opacity-50"
-                  style={{ color: 'var(--kp-accent)' }}
-                >
-                  {newsletterStatus === "loading" ? (
-                    <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--kp-accent) transparent var(--kp-accent) var(--kp-accent)' }} />
-                  ) : (
-                    <ArrowRight size={16} />
-                  )}
-                </button>
-              </form>
-              {newsletterMessage && (
-                <p className={`font-ui text-xs mt-3 text-center md:text-left transition-opacity duration-300 ${
-                    newsletterStatus === "success" ? "text-emerald-400" : "text-red-400"
-                  }`}
-                >
-                  {newsletterMessage}
-                </p>
-              )}
-            </div>
           </div>
         </div>
-
-        {/* ══════════════════════════════════
-            MIDDLE SECTION — Quote Divider
-        ══════════════════════════════════ */}
-        <div className="relative py-12 flex flex-col items-center">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[rgba(212,165,116,0.2)] to-transparent" />
-          </div>
-          
-          <div className="relative z-10 glass-card px-8 py-4 rounded-full flex flex-col items-center max-w-2xl text-center">
-            <p className="font-display italic text-lg md:text-xl text-glow" style={{ color: 'var(--kp-text-primary)' }}>
-              {language === 'en' 
-                ? '"Night is a storage place for things we dare not speak in daylight."' 
-                : '"Malam adalah tempat penyimpanan hal-hal yang tak berani kita katakan di siang hari."'}
-            </p>
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════
-            BOTTOM BAR
-        ══════════════════════════════════ */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 py-8 border-t border-dashed" style={{ borderColor: 'rgba(212,165,116,0.1)' }}>
-          <p className="font-ui text-xs opacity-70" style={{ color: 'var(--kp-text-muted)' }}>
-            © {new Date().getFullYear()}{" "}
-            <span className="font-medium tracking-wide" style={{ color: 'var(--kp-accent)' }}>
-              Kelas Pekerja
-            </span>
-            . {t.footer.rights}
-          </p>
-
-          <div className="flex items-center gap-3 font-ui text-xs glass px-4 py-2 rounded-full border border-[rgba(212,165,116,0.1)]">
-            <span className={`w-2 h-2 rounded-full ${networkStatus.dotColor} ${networkStatus.text === 'Koneksi stabil' ? 'animate-pulse' : ''}`} />
-            <span style={{ color: 'var(--kp-text-muted)' }}>{networkStatus.text}</span>
-          </div>
-          
-          <p className="font-ui text-xs flex items-center gap-1.5 opacity-70" style={{ color: 'var(--kp-text-muted)' }}>
-            {t.footer.builtWith}
-          </p>
+        <p className="foot-quote">&ldquo;Malam adalah tempat penyimpanan hal-hal yang tak berani kita katakan di siang hari.&rdquo;</p>
+        <div className="foot-bottom">
+          <span>Dibuat dengan cinta &amp; kopi di Indonesia.</span>
+          <span>&copy; {new Date().getFullYear()} Kelas Pekerja. Hak Cipta Dilindungi.</span>
         </div>
       </div>
     </footer>

@@ -19,13 +19,13 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen" style={{ backgroundColor: 'var(--kp-bg-base)' }}>
+    <div className="page flex flex-col min-h-screen">
 
       {/* Navbar */}
       <Navbar />
 
       {/* Main Content */}
-      <main className="flex-1 pt-16">
+      <main className="flex-1">
         {children}
       </main>
 

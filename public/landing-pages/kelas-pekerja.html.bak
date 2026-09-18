@@ -10,16 +10,16 @@
 <style>
 /* ============================================================= tokens */
 :root{
-  --ink:#f4f1eb;          /* ivory white washi paper */
-  --ink-2:#e0ddd7;        /* slightly shaded paper */
-  --bone:#1a1a1a;         /* black ink */
-  --bone-dim:#4a4a4a;
-  --muted:#666666;
-  --line:rgba(26,26,26,.13);
-  --line-soft:rgba(26,26,26,.07);
-  --vermilion:#a31b14;    /* dark red hanko seal */
-  --ember:#333333;
-  --gold:#1a1a1a;
+  --ink:#05070a;          /* page black */
+  --ink-2:#0a0e12;        /* raised black */
+  --bone:#dfe7e0;         /* the pale sage white of the wordmark */
+  --bone-dim:#aab4ad;
+  --muted:#78837c;
+  --line:rgba(223,231,224,.13);
+  --line-soft:rgba(223,231,224,.07);
+  --vermilion:#e0231c;
+  --ember:#ff5a3c;
+  --gold:#c9a24a;
   --pad:clamp(20px, 3.4vw, 56px);
   --nav-h:84px;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -27,55 +27,53 @@
   --ease-io:cubic-bezier(.65,0,.35,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{ -webkit-text-size-adjust:100%; scroll-behavior:auto; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:auto; scrollbar-width:none; -ms-overflow-style:none; }
+html::-webkit-scrollbar{ display:none; }
 body{
   margin:0; background:var(--ink); color:var(--bone);
   font-family:'Onest',system-ui,-apple-system,'Helvetica Neue',sans-serif;
   font-weight:300; font-size:16px; line-height:1.6;
   -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
-  cursor:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='4' fill='%231a1a1a'/%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z' fill='%231a1a1a' opacity='0.5'/%3E%3C/svg%3E") 12 12, auto;
 }
 body.is-locked{ overflow:hidden; height:100vh; }
 ::selection{ background:var(--vermilion); color:#fff; }
 img{max-width:100%;display:block}
-a, button { color:inherit; text-decoration:none; cursor:url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='6' fill='%23a31b14'/%3E%3C/svg%3E") 12 12, pointer; }
-button{font:inherit;background:none;border:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ============================================================= layers */
 #gl{
   position:fixed; inset:0; width:100%; height:100%;
-  display:block; z-index:0; background:var(--ink);
+  display:block; z-index:0; background:#05070a;
 }
 #grain{
   position:fixed; inset:-1px; z-index:60; pointer-events:none;
-  opacity:.06; mix-blend-mode:multiply;
+  opacity:.055; mix-blend-mode:overlay;
   background-repeat:repeat; background-size:180px 180px;
 }
 #vignette{
   position:fixed; inset:0; z-index:55; pointer-events:none;
-  background:radial-gradient(125% 95% at 50% 42%, transparent 40%, rgba(26,26,26,.15) 100%);
+  background:radial-gradient(125% 95% at 50% 42%, transparent 40%, rgba(2,4,6,.55) 100%);
 }
 .page{ position:relative; z-index:10; }
 
 /* ============================================================= type */
 .eyebrow{
   font-size:10px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--bone-dim);
+  color:var(--bone-dim); text-shadow:0 1px 16px rgba(3,6,8,.9);
 }
 .jp{ font-family:'NotoJP','Onest',sans-serif; font-weight:400; }
-h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; font-family:'NotoJP','Onest',serif; }
+h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; }
 .display{
   text-transform:uppercase; line-height:1.055; letter-spacing:-.012em;
-  font-weight:400; font-family:'NotoJP','Onest',serif;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  font-weight:400; text-shadow:0 2px 34px rgba(3,6,8,.72);
 }
 .h-hero{ font-size:clamp(26px,3.05vw,46px); }
 .h-sec{ font-size:clamp(30px,4.0vw,60px); }
-.body-lg{ font-size:clamp(14px,1.02vw,17px); line-height:1.72; color:#333; font-weight:300; }
-.body{ font-size:14px; line-height:1.68; color:#444; font-weight:300; }
-.num{ font-size:clamp(26px,2.5vw,36px); font-weight:300; letter-spacing:-.02em; color:var(--bone); font-variant-numeric:tabular-nums; font-family:'NotoJP','Onest',serif; }
+.body-lg{ font-size:clamp(14px,1.02vw,17px); line-height:1.72; color:#b4bfb7; font-weight:300; text-shadow:0 1px 20px rgba(3,6,8,.88); }
+.body{ font-size:14px; line-height:1.68; color:#9aa5a0; font-weight:300; text-shadow:0 1px 18px rgba(3,6,8,.85); }
+.num{ font-size:clamp(26px,2.5vw,36px); font-weight:300; letter-spacing:-.02em; color:var(--bone); font-variant-numeric:tabular-nums; }
 
 /* ============================================================= reveal */
 [data-rv]{ opacity:0; }
@@ -175,7 +173,7 @@ h1,h2,h3{ font-weight:400; margin:0; letter-spacing:-.005em; font-family:'NotoJP
 .hero-sub{ max-width:322px; text-shadow:0 1px 26px rgba(3,6,8,.95); }
 .hero-spacer{ flex:1 1 auto; min-height:clamp(140px,26vh,300px); }
 .hero-foot{ padding-bottom:clamp(22px,4.2vh,42px); position:relative; z-index:2; }
-.hero-cue{ display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-bottom:14px;
+.hero-cue{ display:none; align-items:center; justify-content:flex-end; gap:12px; margin-bottom:14px;
   font-size:9px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
 .hero-cue .track{ width:54px; height:1px; background:var(--line); position:relative; overflow:hidden; }
 .hero-cue .track i{ position:absolute; inset:0; background:var(--bone); transform-origin:left;
@@ -903,10 +901,10 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
         <path d="M6 12h32M9.5 17h25M22 8v28" stroke="#dfe7e0" stroke-width="1.2"/>
       </svg>
     </div>
-    <div class="pre-jp jp">影の道</div>
+    <div class="pre-jp" style="letter-spacing:.3em;font-size:11px;color:#78837c;margin-bottom:20px">KELAS PEKERJA</div>
     <div class="pre-bar"><i id="pre-fill"></i></div>
     <div class="pre-meta">
-      <span>Raising the mountain temple</span><b><span id="pre-pct">0</span>%</b>
+      <span>Menyalakan lampu kota...</span><b><span id="pre-pct">0</span>%</b>
     </div>
   </div>
 </div>
@@ -922,10 +920,10 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
     <span class="brand-tx"><b>KELAS PEKERJA</b><i>TULISAN SUNYI DARI MEREKA YANG TETAP BEKERJA</i></span>
   </a>
   <nav class="nav-links" id="navlinks">
-    <a class="nav-link" href="#gate" data-cursor><span>Temples</span><span class="alt">伽藍</span></a>
-    <a class="nav-link" href="#pathways" data-cursor><span>Gardens</span><span class="alt">庭園</span></a>
-    <a class="nav-link" href="#lessons" data-cursor><span>Rituals</span><span class="alt">神事</span></a>
-    <a class="nav-link" href="#eternity" data-cursor><span>Afterlight</span><span class="alt">残光</span></a>
+    <a class="nav-link" href="#gate" data-cursor><span>Cerita</span><span class="alt">CERITA</span></a>
+    <a class="nav-link" href="#pathways" data-cursor><span>Tulisan</span><span class="alt">TULISAN</span></a>
+    <a class="nav-link" href="#lessons" data-cursor><span>Refleksi</span><span class="alt">REFLEKSI</span></a>
+    <a class="nav-link" href="#eternity" data-cursor><span>Solidaritas</span><span class="alt">SOLIDARITAS</span></a>
   </nav>
   <button class="nav-burger" aria-label="Menu" data-cursor><i></i><i></i></button>
 </header>
@@ -935,232 +933,181 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
 <!-- ============================================================ hero -->
 <section class="hero" id="hero" data-cam="0">
   <div class="hero-top">
-    <div class="eyebrow" data-rv="fade"><span class="dot"></span> Chapter 00 — The Hidden Gate</div>
+    <div class="eyebrow" data-rv="fade"><span class="dot"></span> Bab 00 — Dari Balik Meja Kerja</div>
     <h1 class="display h-hero">
-      <span class="mask-line"><span>Where stillness</span></span>
-      <span class="mask-line"><span>reveals the</span></span>
-      <span class="mask-line"><span>unseen.</span></span>
+      <span class="mask-line"><span>Dari balik meja,</span></span>
+      <span class="mask-line"><span>dunia ditulis</span></span>
+      <span class="mask-line"><span>ulang.</span></span>
     </h1>
-    <p class="hero-sub body" data-rv="up">Enter kelas pekerja through its quiet thresholds, where ritual,
-      craft, and memory shape the path.</p>
+    <p class="hero-sub body" data-rv="up">Kelas Pekerja adalah arsip cerita, refleksi, dan tulisan pendek — dari dan untuk mereka yang menghabiskan hidupnya bekerja.</p>
   </div>
 
   <div class="hero-spacer"></div>
 
   <div class="hero-foot">
-    <div class="hero-cue" data-rv="fade"><span>Scroll to enter</span><span class="track"><i></i></span></div>
+    <div class="hero-cue" data-rv="fade" hidden style="display:none!important"></div>
     <div class="chapters" id="chips">
       <div class="chip" data-chip="0" data-rv="up" data-cursor><span class="num">01</span>
-        <span class="tx"><b>Thresholds</b><p>Discover the hidden gates that open on to deeper paths.</p></span></div>
+        <span class="tx"><b>Pagi Hari</b><p>Cerita sebelum jam kerja dimulai, saat kota masih sepi.</p></span></div>
       <div class="chip" data-chip="1" data-rv="up" data-cursor><span class="num">02</span>
-        <span class="tx"><b>Still Gardens</b><p>Witness the courts where silence gently unfolds.</p></span></div>
+        <span class="tx"><b>Jam Istirahat</b><p>Sepuluh menit untuk diri sendiri di antara tenggat waktu.</p></span></div>
       <div class="chip" data-chip="2" data-rv="up" data-cursor><span class="num">03</span>
-        <span class="tx"><b>Sacred Craft</b><p>Embrace the hands and heritage that shape devotion.</p></span></div>
+        <span class="tx"><b>Balik Meja</b><p>Catatan dan refleksi dari tempat kerja sehari-hari.</p></span></div>
       <div class="chip" data-chip="3" data-rv="up" data-cursor><span class="num">04</span>
-        <span class="tx"><b>Night Rituals</b><p>Explore the rites that awaken when the day is done.</p></span></div>
+        <span class="tx"><b>Pulang Malam</b><p>Renungan setelah seharian bekerja, di bawah lampu jalan.</p></span></div>
     </div>
   </div>
 
-  <a class="peek" href="#pathways" data-view="3" data-rv="fade" data-cursor aria-label="Preview: Sanmon, before the bell">
-    <!-- data-frame, or the live view is blitted over the whole anchor and
-         runs on down behind the caption instead of stopping at the frame -->
+  <a class="peek" href="#pathways" data-view="3" data-rv="fade" data-cursor aria-label="Preview: Lorong kota, setelah hujan">
     <span class="peek-fr" data-frame></span>
     <span class="peek-play"><svg viewBox="0 0 22 22" fill="none"><path d="M8 5.6 16.4 11 8 16.4z" fill="#dfe7e0"/></svg></span>
-    <span class="peek-cap"><b class="jp">山門</b><i>Sanmon — before the bell</i></span>
+    <span class="peek-cap"><b>Lorong Kota</b><i>Setelah jam kerja usai</i></span>
   </a>
 
   <div class="word-fb" aria-hidden="true">KELAS PEKERJA</div>
 
   <div class="hero-side" data-rv="up">
-    <span class="v jp">影の道</span>
+    <span class="v" style="font-family:inherit;letter-spacing:.5em">BEKERJA</span>
   </div>
 </section>
 
 <!-- ============================================================ chapter I -->
 <section class="sec" id="gate" data-cam="1">
-  <!-- foreground: the wall arrives first, the pine at the edge, the grass last -->
+  <!-- foreground: elemen urban kota malam -->
   <div class="fg" data-fg="gate" aria-hidden="true">
-    <span class="fg-el fg-wall" data-fg-in="left">
-      <img src="secret-pathways-assets/foreground/png/temple-wall.webp" alt="" width="1536" height="884" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-pine" data-fg-in="right">
-      <img src="secret-pathways-assets/foreground/png/pine-tree.webp" alt="" width="1024" height="1438" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-grass" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
-    </span>
+    <span class="fg-el fg-wall" data-fg-in="left"></span>
+    <span class="fg-el fg-grass" data-fg-in="up"></span>
   </div>
   <div class="sec-head" data-rv="fade">
-    <span class="k"><b>01</b> — The Sanmon</span><span class="rule"></span><span class="k jp">山門</span>
+    <span class="k"><b>01</b> — Tentang Kami</span><span class="rule"></span><span class="k">KELAS PEKERJA</span>
   </div>
   <div class="gate-grid">
-    <h2 class="display h-sec" data-rv="up">Charred cypress, worn stone, one gate left open.</h2>
+    <h2 class="display h-sec" data-rv="up">Tulisan sunyi dari mereka yang tetap bekerja.</h2>
     <div class="gate-copy">
-      <p class="lead" data-rv="up">Kelas Pekerja adalah arsip cerita, refleksi, dan tulisan pendek — ditulis oleh dan untuk mereka yang menghabiskan sebagian besar hidupnya bekerja.
-        standing in its own weather. The soot is not decoration. It is how a board is taught to survive a
-        hundred rainy seasons, and the first thing this place asks you to understand.</p>
-      <p class="body" data-rv="up">Climb the worn steps and the worship hall lifts out of the mist, its paper
-        screens lit from inside like a lantern the size of a house. Above the eaves a vermilion moon holds
-        its place, patient, half hidden. Nothing here is in a hurry. Neither, for the next ninety minutes,
-        are you.</p>
+      <p class="lead" data-rv="up">Kelas Pekerja adalah arsip cerita, refleksi, dan tulisan pendek — ditulis oleh dan untuk mereka yang menghabiskan sebagian besar hidupnya bekerja. Kami percaya setiap pengalaman kerja layak untuk ditulis dan dibaca.</p>
+      <p class="body" data-rv="up">Di sini tidak ada jadwal terbit, tidak ada tenggat waktu. Hanya ruang untuk bercerita — tentang meja kerja yang berantakan, boss yang menyebalkan, rekan kerja yang menyelamatkan hari, atau sekadar langit sore dari jendela kantor lantai tiga.</p>
       <a class="arrowlink" href="#pathways" data-rv="fade" data-cursor>
-        <span>Cross the threshold</span>
+        <span>Baca tulisan-tulisannya</span>
         <span class="ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
       </a>
     </div>
   </div>
   <div class="gate-stats" data-rv="up">
-    <div><b id="kp-bab-count">05</b><span>Bab Tulisan</span></div>
-    <div><b>8</b><span>Jam Kerja</span></div>
-    <div><b>1886</b><span>Sejarah</span></div>
+    <div><b id="kp-bab-count">05</b><span>Cerita Diterbitkan</span></div>
+    <div><b>8</b><span>Jam Kerja Rata-rata</span></div>
+    <div><b>2019</b><span>Mulai Bercerita</span></div>
     <div><b>∞</b><span>Solidaritas</span></div>
   </div>
 </section>
 
 <!-- ============================================================ chapter II -->
 <section class="sec" id="pathways" data-cam="2">
-  <!-- foreground: the garden frames the mosaic from the sides and the two lower corners -->
+  <!-- foreground: elemen urban -->
   <div class="fg" data-fg="pathways" aria-hidden="true">
-    <span class="fg-el fg-sakura fg-el--sway" data-fg-in="left">
-      <img src="secret-pathways-assets/foreground/png/sakura-branch.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-leaves fg-el--sway" data-fg-in="right">
-      <img src="secret-pathways-assets/foreground/png/maple-leaves.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-lantern" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/stone-lantern.webp" alt="" width="1024" height="1499" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-bush" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/garden-bush.webp" alt="" width="1717" height="876" loading="lazy" decoding="async">
-    </span>
+    <span class="fg-el fg-sakura" data-fg-in="left"></span>
+    <span class="fg-el fg-bush" data-fg-in="up"></span>
   </div>
   <div class="sec-head" data-rv="fade">
-    <span class="k"><b>02</b> — Still Gardens</span><span class="rule"></span><span class="k jp">庭園</span>
+    <span class="k"><b>02</b> — Pintu Masuk</span><span class="rule"></span><span class="k">URBAN MALAM</span>
   </div>
   <div class="cards" id="cards">
     <article class="card" data-rv="up" data-view="0" data-cursor>
       <div class="card-fr" data-frame>
-                <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <i class="glow" style="--gx:80.2%; --gy:23.9%; --gr:22%; --gt:6.1s; --gt2:9.7s; --gc1:rgba(255,142,108,.50); --gc2:rgba(212,56,38,.24)"></i>
-        <div class="card-lab"><b>Approach</b><span class="jp">参道</span></div>
+        <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
+        <i class="glow" style="--gx:80.2%; --gy:23.9%; --gr:22%; --gt:6.1s; --gt2:9.7s; --gc1:rgba(255,160,60,.50); --gc2:rgba(224,60,28,.24)"></i>
+        <div class="card-lab"><b>Gerbang Masuk</b><span style="font-size:10px;letter-spacing:.2em;color:rgba(223,231,224,.62)">PAGI HARI</span></div>
       </div>
-      <div class="card-meta"><span>The long climb</span><span>01 / 03</span></div>
+      <div class="card-meta"><span>Sebelum jam kerja</span><span>01 / 03</span></div>
     </article>
     <article class="card" data-rv="up" data-view="1" data-cursor>
       <div class="card-fr" data-frame>
-                <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <i class="glow glow--flame" style="--gx:70.5%; --gy:47.2%; --gr:14%; --gt:3.7s; --gt2:5.3s; --gc1:rgba(255,198,124,.62); --gc2:rgba(226,118,40,.30)"></i>
-        <div class="card-lab"><b>Lanterns</b><span class="jp">灯籠</span></div>
+        <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
+        <i class="glow glow--flame" style="--gx:70.5%; --gy:47.2%; --gr:14%; --gt:3.7s; --gt2:5.3s; --gc1:rgba(255,210,80,.62); --gc2:rgba(226,140,40,.30)"></i>
+        <div class="card-lab"><b>Ruang Kerja</b><span style="font-size:10px;letter-spacing:.2em;color:rgba(223,231,224,.62)">SIANG HARI</span></div>
       </div>
-      <div class="card-meta"><span>Lantern court</span><span>02 / 03</span></div>
+      <div class="card-meta"><span>Di balik meja</span><span>02 / 03</span></div>
     </article>
     <article class="card" data-rv="up" data-view="2" data-cursor>
       <div class="card-fr" data-frame>
-                <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
-        <i class="glow" style="--gx:48.0%; --gy:16.8%; --gr:20%; --gt:7.3s; --gt2:11.2s; --gc1:rgba(255,138,104,.52); --gc2:rgba(208,54,36,.24)"></i>
-        <div class="card-lab"><b>Moonwater</b><span class="jp">月影</span></div>
+        <span class="card-ar"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg></span>
+        <i class="glow" style="--gx:48.0%; --gy:16.8%; --gr:20%; --gt:7.3s; --gt2:11.2s; --gc1:rgba(255,120,80,.52); --gc2:rgba(200,40,28,.24)"></i>
+        <div class="card-lab"><b>Pulang Malam</b><span style="font-size:10px;letter-spacing:.2em;color:rgba(223,231,224,.62)">MALAM HARI</span></div>
       </div>
-      <div class="card-meta"><span>The wet court</span><span>03 / 03</span></div>
+      <div class="card-meta"><span>Di bawah lampu jalan</span><span>03 / 03</span></div>
     </article>
   </div>
 </section>
 
 <!-- ============================================================ chapter III -->
 <section class="sec" id="lessons" data-cam="3">
-  <!-- foreground: a low periphery for the atlas — wall fragment, basalt, one stand of grass -->
+  <!-- foreground: elemen urban -->
   <div class="fg" data-fg="lessons" aria-hidden="true">
-    <span class="fg-el fg-wall fg-el--flip" data-fg-in="right">
-      <img src="secret-pathways-assets/foreground/png/temple-wall.webp" alt="" width="1536" height="884" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-stones" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/basalt-stones.webp" alt="" width="1536" height="996" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-grass" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
-    </span>
+    <span class="fg-el fg-stones" data-fg-in="up"></span>
+    <span class="fg-el fg-grass" data-fg-in="up"></span>
   </div>
   <div class="sec-head" data-rv="fade">
-    <span class="k"><b>03</b> — Sacred Craft</span><span class="rule"></span><span class="k jp">手業</span>
+    <span class="k"><b>03</b> — Balik Meja</span><span class="rule"></span><span class="k">REFLEKSI KERJA</span>
   </div>
   <div class="cur-head">
-    <h2 class="display h-sec" data-rv="up" id="kp-chapter-heading"><span id="kp-chapter-word">Ten</span> chapters. Ninety minutes. One quiet mind.</h2>
-    <p class="body-lg" data-rv="up">Each chapter is a walk, not a lecture. You arrive at the gate, climb the
-      steps, sit with the lantern, and leave with one thing worth keeping.</p>
+    <h2 class="display h-sec" data-rv="up" id="kp-chapter-heading"><span id="kp-chapter-word">Lima</span> cerita. Satu malam. Satu waktu untuk diri sendiri.</h2>
+    <p class="body-lg" data-rv="up">Setiap tulisan adalah sebuah perjalanan kecil — tentang orang-orang yang ditemui di tempat kerja, tentang lelah yang tidak pernah cukup dibayar, dan tentang hal-hal kecil yang membuat hari itu bermakna.</p>
   </div>
   <div class="cur" id="cur">
     <div class="les" data-les="0" data-cursor>
       <span class="k">01</span>
-      <h3>The Hidden Gate<em class="jp">山門</em></h3>
-      <p>Why a gate is a sentence, and what you agree to when you walk under one.</p>
-      <span class="t">14 min</span><i class="bar"></i>
+      <h3>Gerbang Masuk<em style="font-style:normal;font-size:.72em;color:var(--muted);margin-left:12px;letter-spacing:.24em">PAGI</em></h3>
+      <p>Saat alarm berbunyi sebelum subuh dan kota belum benar-benar terjaga.</p>
+      <span class="t">8 menit</span><i class="bar"></i>
     </div>
     <div class="les" data-les="1" data-cursor>
       <span class="k">02</span>
-      <h3>Borrowed Scenery<em class="jp">借景</em></h3>
-      <p>Shakkei: composing with a mountain you will never own.</p>
-      <span class="t">18 min</span><i class="bar"></i>
+      <h3>Jam Istirahat<em style="font-style:normal;font-size:.72em;color:var(--muted);margin-left:12px;letter-spacing:.24em">SIANG</em></h3>
+      <p>Dua belas menit di lorong, jauh dari monitor — satu-satunya waktu yang benar-benar milik sendiri.</p>
+      <span class="t">12 menit</span><i class="bar"></i>
     </div>
     <div class="les" data-les="2" data-cursor>
       <span class="k">03</span>
-      <h3>Charred Cypress<em class="jp">焼杉</em></h3>
-      <p>Yakisugi: burning a board black so the weather will let it live.</p>
-      <span class="t">21 min</span><i class="bar"></i>
+      <h3>Rapat Tak Berujung<em style="font-style:normal;font-size:.72em;color:var(--muted);margin-left:12px;letter-spacing:.24em">SORE</em></h3>
+      <p>Ketika semua orang bicara tapi tidak ada yang mendengar, dan kamu hanya ingin pulang.</p>
+      <span class="t">15 menit</span><i class="bar"></i>
     </div>
     <div class="les" data-les="3" data-cursor>
       <span class="k">04</span>
-      <h3>Lantern Light<em class="jp">灯籠</em></h3>
-      <p>How a single ember decides the scale of everything around it.</p>
-      <span class="t">17 min</span><i class="bar"></i>
+      <h3>Lampu Jalan<em style="font-style:normal;font-size:.72em;color:var(--muted);margin-left:12px;letter-spacing:.24em">MALAM</em></h3>
+      <p>Perjalanan pulang di bawah lampu sodium, dengan pikiran yang masih tertinggal di kantor.</p>
+      <span class="t">10 menit</span><i class="bar"></i>
     </div>
     <div class="les" data-les="4" data-cursor>
       <span class="k">05</span>
-      <h3>The Vermilion Moon<em class="jp">朱月</em></h3>
-      <p>Why the moon burns red over the valley, and what the garden does with it.</p>
-      <span class="t">22 min</span><i class="bar"></i>
+      <h3>Solidaritas<em style="font-style:normal;font-size:.72em;color:var(--muted);margin-left:12px;letter-spacing:.24em">SELALU</em></h3>
+      <p>Tentang rekan kerja yang diam-diam menyelamatkan hari tanpa pernah diakui siapa pun.</p>
+      <span class="t">18 menit</span><i class="bar"></i>
     </div>
   </div>
 </section>
 
 <!-- ============================================================ chapter IV -->
 <section class="sec fin" id="eternity" data-cam="4">
-  <!-- foreground: the closing horizon: hill, ruins, grass, and the last branch -->
+  <!-- foreground: elemen urban penutup -->
   <div class="fg" data-fg="eternity" aria-hidden="true">
-    <span class="fg-el fg-hill" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/hill.webp" alt="" width="1774" height="887" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-ruins" data-fg-in="left">
-      <img src="secret-pathways-assets/foreground/png/shrine-ruins.webp" alt="" width="1536" height="1001" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-grass" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-sakura" data-fg-in="left">
-      <img src="secret-pathways-assets/foreground/png/sakura-branch.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
-    </span>
+    <span class="fg-el fg-ruins" data-fg-in="left"></span>
+    <span class="fg-el fg-grass" data-fg-in="up"></span>
   </div>
-  <div class="eyebrow" data-rv="fade">Chapter 04 — Afterlight</div>
-  <h2 class="display" data-rv="up">Afterlight</h2>
-  <p class="body-lg" data-rv="up">The gate does not close behind you. Take the walk whenever the noise
-    gets loud — it is always the same path, and never the same light.</p>
+  <div class="eyebrow" data-rv="fade">Bab 04 — Solidaritas</div>
+  <h2 class="display" data-rv="up">Solidaritas</h2>
+  <p class="body-lg" data-rv="up">Pintu tidak pernah tertutup sepenuhnya. Kembali kapan saja, saat kebisingan terlalu keras — ceritanya tetap sama, tapi selalu ada cahaya yang berbeda di sana.</p>
   <a class="cta" href="#top" data-rv="fade" data-cursor>
-    <i></i><span>Begin the walk</span>
+    <i></i><span>Mulai Membaca</span>
     <svg viewBox="0 0 14 14" fill="none" width="13" height="13"><path d="M3 11 11 3M5 3h6v6" stroke="#dfe7e0" stroke-width="1.3"/></svg>
   </a>
 </section>
 
 <!-- ============================================================ footer -->
 <footer class="foot" data-cam="5">
-  <!-- foreground: one planting along the lower edge of the colophon -->
+  <!-- foreground: elemen urban colophon -->
   <div class="fg" data-fg="foot" aria-hidden="true">
-    <span class="fg-el fg-bush" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/garden-bush.webp" alt="" width="1717" height="876" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-grass" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/tall-grass.webp" alt="" width="1717" height="916" loading="lazy" decoding="async">
-    </span>
-    <span class="fg-el fg-stones" data-fg-in="up">
-      <img src="secret-pathways-assets/foreground/png/basalt-stones.webp" alt="" width="1536" height="996" loading="lazy" decoding="async">
-    </span>
+    <span class="fg-el fg-bush" data-fg-in="up"></span>
+    <span class="fg-el fg-grass" data-fg-in="up"></span>
   </div>
   <div class="foot-grid">
     <div class="foot-brand">
@@ -1168,29 +1115,29 @@ body[data-layout-footer="b"] .foot-base span:last-child{ text-align:right; }
         <circle cx="22" cy="25" r="8.6" fill="#e0231c" fill-opacity=".9"/>
         <path d="M5 13h34M9 18.4h26M22 8.5v27" stroke="#dfe7e0" stroke-width="1.5"/>
       </svg>
-      <p id="kp-footer-desc">A <span id="kp-footer-word">ten</span>-chapter night walk through kelas pekerja.</p>
+      <p id="kp-footer-desc">Arsip <span id="kp-footer-word">lima</span> cerita dari mereka yang tetap bekerja.</p>
     </div>
-    <div><h4>Chapters</h4><ul>
-      <li><a href="#gate" data-cursor>The Sanmon</a></li>
-      <li><a href="#pathways" data-cursor>Still Gardens</a></li>
-      <li><a href="#lessons" data-cursor>Sacred Craft</a></li>
-      <li><a href="#eternity" data-cursor>Afterlight</a></li>
+    <div><h4>Bab</h4><ul>
+      <li><a href="#gate" data-cursor>Tentang Kami</a></li>
+      <li><a href="#pathways" data-cursor>Pintu Masuk</a></li>
+      <li><a href="#lessons" data-cursor>Balik Meja</a></li>
+      <li><a href="#eternity" data-cursor>Solidaritas</a></li>
     </ul></div>
-    <div><h4>Practice</h4><ul>
-      <li><a href="#lessons" data-cursor>Borrowed scenery</a></li>
-      <li><a href="#lessons" data-cursor>Lantern light</a></li>
-      <li><a href="#lessons" data-cursor>Charred cypress</a></li>
-      <li><a href="#lessons" data-cursor>Raked gravel</a></li>
+    <div><h4>Kategori</h4><ul>
+      <li><a href="#lessons" data-cursor>Refleksi Kerja</a></li>
+      <li><a href="#lessons" data-cursor>Cerita Pendek</a></li>
+      <li><a href="#lessons" data-cursor>Opini & Esai</a></li>
+      <li><a href="#lessons" data-cursor>Catatan Harian</a></li>
     </ul></div>
-    <div><h4>Elsewhere</h4><ul>
-      <li><a href="#top" data-cursor>Journal</a></li>
-      <li><a href="#top" data-cursor>Field notes</a></li>
-      <li><a href="#top" data-cursor>Colophon</a></li>
+    <div><h4>Lainnya</h4><ul>
+      <li><a href="#top" data-cursor>Arsip</a></li>
+      <li><a href="#top" data-cursor>Tentang</a></li>
+      <li><a href="#top" data-cursor>Tulis Cerita</a></li>
     </ul></div>
   </div>
   <div class="foot-base">
     <span>© 2026 Kelas Pekerja</span>
-    <span class="jp">静けさは一つの技である</span>
+    <span>Menulis adalah hak semua pekerja</span>
     <span>Cerita · Refleksi · Indonesia</span>
   </div>
 </footer>
@@ -1763,55 +1710,65 @@ function texLeaf() {
   return c;
 }
 
-/* the night sky itself: black at altitude, going to the fog colour at the
-   horizon so the backdrop and the depth cue meet without a seam */
+/* the urban night sky — heavy city haze, amber light pollution from below,
+   no stars worth speaking of, only the faint smear of an overcast sky */
 function texSky() {
   const W = 512, H = 512, c = cvs(W, H), x = c.getContext('2d');
-  const g = x.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, 'rgb(6,10,15)');    g.addColorStop(.34, 'rgb(13,22,31)');
-  g.addColorStop(.66, 'rgb(17,26,34)'); g.addColorStop(.88, 'rgb(24,35,42)');
-  g.addColorStop(1, 'rgb(14,22,28)');
+  /* The city glow below — a deep warm amber band at the horizon, going to
+     near-black at altitude. On a clear night this is what you see from a
+     rooftop; the gradient runs the wrong direction from a countryside sky. */
+  const g = x.createLinearGradient(0, H, 0, 0);
+  g.addColorStop(0,   'rgb(36,26,14)');    /* warm amber at ground level */
+  g.addColorStop(.12, 'rgb(26,18,10)');
+  g.addColorStop(.28, 'rgb(16,14,12)');
+  g.addColorStop(.52, 'rgb(10,12,14)');
+  g.addColorStop(.78, 'rgb(7,9,12)');
+  g.addColorStop(1,   'rgb(5,7,10)');
   x.fillStyle = g; x.fillRect(0, 0, W, H);
-  /* cloud, and a low warm bloom off the valley behind the ridge */
-  x.globalAlpha = .34; x.globalCompositeOperation = 'overlay';
-  x.drawImage(fbmCanvas(W, H, 313, 5, 3, .9), 0, 0);
+  /* cloud layer: overcast, blocking the stars, lit from below */
+  x.globalAlpha = .28; x.globalCompositeOperation = 'overlay';
+  x.drawImage(fbmCanvas(W, H, 313, 5, 3, .8), 0, 0);
   x.globalAlpha = 1; x.globalCompositeOperation = 'source-over';
-  const wg = x.createRadialGradient(W * .68, H * .95, 4, W * .68, H * .95, W * .44);
-  wg.addColorStop(0, 'rgba(150,66,26,.30)'); wg.addColorStop(.5, 'rgba(96,44,22,.12)');
+  /* warm city glow bloom at the bottom of the frame */
+  const wg = x.createRadialGradient(W * .50, H * 1.1, 4, W * .50, H * 1.0, W * .72);
+  wg.addColorStop(0, 'rgba(180,100,30,.45)'); wg.addColorStop(.4, 'rgba(120,66,18,.18)');
   wg.addColorStop(1, 'rgba(0,0,0,0)');
   x.fillStyle = wg; x.fillRect(0, 0, W, H);
-  /* a scatter of stars, faint enough to survive the bloom */
+  /* very faint stars only near zenith, through the haze */
   const rnd = mulberry32(881);
-  for (let i = 0; i < 420; i++) {
-    const sx = rnd() * W, sy = rnd() * H * .78, r = .5 + rnd() * rnd() * 1.7;
-    x.fillStyle = 'rgba(214,232,240,' + (.12 + rnd() * .42) * (1 - sy / H) + ')';
+  for (let i = 0; i < 120; i++) {
+    const sx = rnd() * W, sy = rnd() * H * .36, r = .4 + rnd() * rnd() * 1.1;
+    x.fillStyle = 'rgba(200,210,230,' + (.04 + rnd() * .10) * (1 - sy / H) + ')';
     x.beginPath(); x.arc(sx, sy, r, 0, TAU); x.fill();
   }
   return c;
 }
 
-/* the wooded ridge the valley closes with — black, ragged, mostly fog */
+/* the city skyline / horizon silhouette — blocks of buildings instead of forest ridge */
 function texRidge() {
   const W = 2048, H = 512, c = cvs(W, H), x = c.getContext('2d');
-  const n = noise2D(1207), rnd = mulberry32(1207);
-  x.beginPath(); x.moveTo(0, H);
-  for (let i = 0; i <= W; i += 4) {
-    const t = i / W;
-    const ridge = .46 + .30 * (fbm(n, t * 2.4, .5, 4, 2.1, .55) * .5 + .5)
-                      + .16 * (fbm(n, t * 7.5, 3.1, 3, 2.2, .5) * .5 + .5);
-    x.lineTo(i, H - ridge * H * .84);
+  const rnd = mulberry32(1207);
+  x.fillStyle = '#040608'; x.fillRect(0, 0, W, H);
+  /* background buildings — far, small, tightly packed */
+  for (let i = 0; i < 180; i++) {
+    const bw = 8 + rnd() * 34, bx = rnd() * W;
+    const bh = 30 + rnd() * rnd() * 140;
+    const by = H - bh - rnd() * 20;
+    x.fillStyle = 'rgba(10,12,14,.9)'; x.fillRect(bx, by, bw, bh);
+    /* lit windows — 1-3 per building, randomly placed */
+    const nw = 1 + (rnd() * 4 | 0);
+    for (let j = 0; j < nw; j++) {
+      const wx = bx + rnd() * (bw - 4) + 2, wy = by + rnd() * (bh * .7) + bh * .1;
+      const wc = rnd() > .7 ? 'rgba(220,200,120,' : (rnd() > .5 ? 'rgba(140,180,220,' : 'rgba(255,140,80,');
+      x.fillStyle = wc + (.3 + rnd() * .5) + ')'; x.fillRect(wx, wy, 2 + rnd() * 3, 3 + rnd() * 5);
+    }
   }
-  x.lineTo(W, H); x.closePath();
-  x.fillStyle = '#050809'; x.fill();
-  /* conifer spikes along the crest so the silhouette reads as forest */
-  x.fillStyle = '#050809';
-  for (let i = 0; i < 460; i++) {
-    const px = rnd() * W, t = px / W;
-    const ridge = .46 + .30 * (fbm(n, t * 2.4, .5, 4, 2.1, .55) * .5 + .5)
-                      + .16 * (fbm(n, t * 7.5, 3.1, 3, 2.2, .5) * .5 + .5);
-    const by = H - ridge * H * .84, hh = 8 + rnd() * 30, ww = 3 + rnd() * 6;
-    x.beginPath(); x.moveTo(px, by - hh); x.lineTo(px + ww, by + 4); x.lineTo(px - ww, by + 4);
-    x.closePath(); x.fill();
+  /* foreground building block — dark, large, close */
+  for (let i = 0; i < 40; i++) {
+    const bw = 30 + rnd() * 90, bx = rnd() * W;
+    const bh = 80 + rnd() * 200;
+    const by = H - bh;
+    x.fillStyle = '#05070a'; x.fillRect(bx, by, bw, bh);
   }
   return c;
 }
@@ -2292,9 +2249,10 @@ function initGL() {
   if (WANT_SHADOW) { renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; }
   maxAniso = renderer.capabilities.getMaxAnisotropy();
   scene = new THREE.Scene();
-  /* Sumi-e monochrome: dense ivory white fog and background */
-  scene.fog = new THREE.FogExp2(0xf4f1eb, 0.035);
-  scene.background = new THREE.Color(0xf4f1eb);
+  /* Urban fog — heavier and warmer than forest mist. The amber tinge comes
+     from sodium streetlights scattering through the haze. */
+  scene.fog = new THREE.FogExp2(0x0a0c0e, 0.0220);
+  scene.background = new THREE.Color(0x060809);
   camera = new THREE.PerspectiveCamera(36, vpW() / vpH(), .35, 220);
   scene.add(camera);
 }
@@ -2484,78 +2442,63 @@ const STAIR_W   = 8.4;
 const TEMPLE_Z  = -44;            /* the hall's centre line                   */
 
 function buildShell() {
+  /* the concrete that every urban surface is made of */
   const wallT = texWall();
   const wallMap = tx(wallT.map, { wrap: THREE.RepeatWrapping, repeat: [4, 1.4] });
   const wallNrm = tx(wallT.normal, { wrap: THREE.RepeatWrapping, repeat: [4, 1.4], srgb: false });
   const wallMat = new THREE.MeshStandardMaterial({
     map: wallMap, normalMap: wallNrm, normalScale: new THREE.Vector2(.85, .85),
-    roughness: .78, metalness: .05, color: 0x525c60
+    roughness: .88, metalness: .04, color: 0x40484c
   });
-  /* The court used to be a roofless box. It is now an open mountain approach:
-     nothing encloses the frame but the night, the ridge and the fog. */
 
   /* the sky, hung far enough back that the whole frustum sits inside it */
   const sky = new THREE.Mesh(new THREE.PlaneGeometry(360, 190),
-    new THREE.MeshBasicMaterial({ color: hdr(.60, .70, .80), map: tx(texSky()),
+    new THREE.MeshBasicMaterial({ color: hdr(.32, .36, .40), map: tx(texSky()),
       depthWrite: false, fog: false, toneMapped: false }));
   sky.position.set(0, 62, -108); sky.renderOrder = 0; scene.add(sky);
   WORLD.sky = sky;
 
-  /* the wooded ridge that closes the valley — three-quarters eaten by fog,
-     which is the only reason the ground plane can just stop out there */
-  /* z, centre y, width, height, x — kept low: a crest that climbs past the
-     hall's eaves stops reading as distance and starts reading as a cut-out */
+  /* city skyline / building horizon instead of forest ridge */
   const ridgeMap = tx(texRidge(), { wrap: THREE.RepeatWrapping, repeat: [1.7, 1] });
   [[-90, 13, 300, 26, 0], [-63, 9.5, 210, 19, 16]].forEach((r, i) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(r[2], r[3]),
-      /* fog off: at a hundred metres it would lift a black silhouette to 80%
-         of the fog colour, and the treeline came back as a *pale* band */
       new THREE.MeshBasicMaterial({ map: i ? tx(texRidge()) : ridgeMap, transparent: true,
-        color: i ? 0x0a1015 : 0x06090d, depthWrite: false, fog: false }));
+        color: i ? 0x08090c : 0x05070a, depthWrite: false, fog: false }));
     m.position.set(r[4], r[1], r[0]); m.renderOrder = 1; scene.add(m);
   });
 
-  /* floor + podium */
+  /* floor — wet asphalt instead of wet stone */
   const fT = texFloor();
   const floorMat = new THREE.MeshStandardMaterial({
     map: tx(fT.map, { wrap: THREE.RepeatWrapping, repeat: [7, 7], aniso: 16 }),
     normalMap: tx(fT.normal, { wrap: THREE.RepeatWrapping, repeat: [7, 7], srgb: false, aniso: 16 }),
     roughnessMap: tx(fT.rough, { wrap: THREE.RepeatWrapping, repeat: [3.4, 3.4], srgb: false }),
-    normalScale: new THREE.Vector2(.30, .30),
-    /* The court used to carry a planar mirror and this was tuned to feed it —
-       near-polished, and metal enough to hold a reflection. With the mirror
-       gone those numbers only made the paving read as sheet metal, so it goes
-       back to being wet stone: rough, barely metallic, and lit rather than
-       reflecting. */
-    roughness: .74, metalness: .06, color: 0x69757a
+    normalScale: new THREE.Vector2(.22, .22),
+    /* wet asphalt: fairly reflective, low metalness */
+    roughness: .62, metalness: .08, color: 0x3a4044
   });
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(150, 150), floorMat);
   floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, -18); floor.receiveShadow = true;
   scene.add(floor);
   WORLD.floor = floor; WORLD.floorMat = floorMat;
 
-  /* The podium and the flight use their own material: the mirror shader below
-     is only ever attached to the water-level floor, and sharing it would make
-     the reflection buffer sample itself. It is also deliberately matte — with
-     the floor's metalness the forty risers strobed as the camera drifted. */
+  /* raised sidewalk / platform instead of temple podium */
   const platMat = new THREE.MeshStandardMaterial({
     map: tx(fT.map, { wrap: THREE.RepeatWrapping, repeat: [3, 1.2], aniso: 16 }),
     normalMap: tx(fT.normal, { wrap: THREE.RepeatWrapping, repeat: [3, 1.2], srgb: false, aniso: 16 }),
-    normalScale: new THREE.Vector2(.18, .18), roughness: .93, metalness: .02, color: 0x58636a
+    normalScale: new THREE.Vector2(.18, .18), roughness: .92, metalness: .02, color: 0x4a5258
   });
-  /* the podium the hall stands on */
   const plat = new THREE.Mesh(new THREE.BoxGeometry(42, PODIUM, 24), platMat);
   plat.position.set(0, PODIUM / 2, -45); plat.receiveShadow = true; plat.castShadow = true;
   scene.add(plat);
   const cope = new THREE.Mesh(new THREE.BoxGeometry(43, .34, 25), wallMat);
   cope.position.set(0, PODIUM - .17, -45); cope.receiveShadow = true; scene.add(cope);
 
-  /* The flight. Twenty-six risers merged into one buffer — as separate meshes
-     it is twenty-six draw calls for a shape nobody ever gets close to. */
+  /* concrete steps — same structure as temple flight but urban material */
   const treads = [], cheeks = [];
   for (let i = 0; i < STEPS; i++) {
     const y = (i + 1) * (PODIUM / STEPS), z = STAIR_Z0 - (i + .5) * STAIR_RUN;
-    const w = STAIR_W + (STEPS - i) * .052;               /* splayed at the foot */
+    const w = STAIR_W + (STEPS - i) * .052;
     treads.push(new THREE.BoxGeometry(w, PODIUM / STEPS + .04, STAIR_RUN + .04)
       .translate(0, y - (PODIUM / STEPS) / 2, z));
     [-1, 1].forEach(s => cheeks.push(new THREE.BoxGeometry(.9, 1.5, STAIR_RUN + .06)
@@ -2567,165 +2510,119 @@ function buildShell() {
   rail.receiveShadow = true; rail.castShadow = true; scene.add(rail);
 }
 
-/* ------------------------------------------------------- the worship hall
-   A two-storey Sanmon on the podium at the head of the flight: charred
-   timber, two flaring tiled roofs, a bracket band under each eave, and a
-   ground floor lit from inside so the lattice reads as the only warm thing
-   for two hundred metres.                                                 */
+/* ------------------------------------------------------- urban apartment block
+   A mid-rise brutalist apartment building on the platform: bare concrete,
+   stacked floors with lit windows, and an external corridor on each floor. */
 function buildTemple() {
   const g = new THREE.Group();
-  /* One board library, sampled at two scales: the hall's flanks want the grain
-     long and lying down, the columns want it running their own length. */
-  const timber = surface(wallWood(), [4, 1.6], { color: 0x565150, normal: 1.5 });
-  const post   = surface(postWood(), [1.1, 1.0], { color: 0x8a746d, normal: 1.05, metalness: .03 });
-  const gold   = new THREE.MeshStandardMaterial({ color: 0x8f6f2e, roughness: .38, metalness: .78 });
-  const rf = lib('roof', () => texRoof());
-  /* Nearly a silhouette: the roof carries almost no colour of its own, and
-     what reads on it is relief rather than tone — so the normal goes up as
-     the albedo comes down. */
-  const tileMat = surface(rf, [1, 1], { color: 0x2b343a, roughness: .74, metalness: .10, normal: 1.4 });
-  /* the paper the lamps burn through — the only thing in the hall that is
-     allowed to be bright, and even then only just above white */
-  const paper = new THREE.MeshBasicMaterial({ color: hdr(1.06, .48, .18), fog: true, toneMapped: false });
-  const grid  = new THREE.MeshBasicMaterial({ map: tx(texShoji()), transparent: true,
-    depthWrite: false, fog: true });
-  WORLD.paper = paper;
-
-  /* one lit bay: a glowing sheet with a lattice hung just in front of it */
-  function bay(w, h, x, y, z) {
-    const p = new THREE.Mesh(new THREE.PlaneGeometry(w, h), paper);
-    p.position.set(x, y, z); g.add(p);
-    const s = new THREE.Mesh(new THREE.PlaneGeometry(w, h), grid);
-    s.position.set(x, y, z + .06); s.renderOrder = 3; g.add(s);
-  }
-  /* The block-and-arm band that carries every eave. The pieces are merged, so
-     they carry absolute coordinates — TEMPLE_Z has to go in here, not on the
-     mesh, or the whole band ends up hanging in the air by the camera. */
-  function brackets(halfW, halfD, y, step) {
-    const parts = [];
-    for (let x = -halfW; x <= halfW + 1e-3; x += step) {
-      [-halfD, halfD].forEach(dz => {
-        parts.push(new THREE.BoxGeometry(.34, .46, .34).translate(x, y, TEMPLE_Z + dz));
-        parts.push(new THREE.BoxGeometry(.92, .17, .24).translate(x, y + .30, TEMPLE_Z + dz));
-      });
-    }
-    for (let dz = -halfD + step; dz < halfD - 1e-3; dz += step) {
-      [-halfW, halfW].forEach(x => {
-        parts.push(new THREE.BoxGeometry(.34, .46, .34).translate(x, y, TEMPLE_Z + dz));
-        parts.push(new THREE.BoxGeometry(.24, .17, .92).translate(x, y + .30, TEMPLE_Z + dz));
-      });
-    }
-    const m = new THREE.Mesh(mergeGeos(parts), post);
-    m.castShadow = false; g.add(m);
-  }
-
-  const F = PODIUM;                                   /* the hall's floor level */
-
-  /* ---- ground storey: six bays of lit lattice between charred columns --- */
-  const core = new THREE.Mesh(new THREE.BoxGeometry(13.6, 5.0, 8.2), timber);
-  core.position.set(0, F + 2.5, TEMPLE_Z); core.castShadow = true; g.add(core);
-  for (let i = 0; i < 5; i++) {
-    const x = -5.6 + i * 2.8;
-    bay(1.55, 2.5, x, F + 2.6, TEMPLE_Z + 4.16);
-  }
-  for (let i = 0; i < 6; i++) {
-    const c = new THREE.Mesh(new THREE.CylinderGeometry(.30, .34, 5.0, 14), post);
-    c.position.set(-7.0 + i * 2.8, F + 2.5, TEMPLE_Z + 4.24); c.castShadow = true; g.add(c);
-  }
-  const sill = new THREE.Mesh(new THREE.BoxGeometry(14.6, .40, 8.9), post);
-  sill.position.set(0, F + .20, TEMPLE_Z); g.add(sill);
-  brackets(7.0, 4.4, F + 5.15, 1.40);
-
-  /* ---- the pent roof over the ground storey ---------------------------- */
-  const lower = new THREE.Mesh(roofGeo(9.6, 6.4, 3.2, 2.9, .40, .26), tileMat);
-  lower.position.set(0, F + 5.6, TEMPLE_Z); lower.castShadow = true; g.add(lower);
-
-  /* ---- upper storey: railed gallery, dark boards, the temple's name ----- */
-  const up = new THREE.Mesh(new THREE.BoxGeometry(10.0, 3.4, 6.0), timber);
-  up.position.set(0, F + 9.4, TEMPLE_Z); up.castShadow = true; g.add(up);
-  const deck = new THREE.Mesh(new THREE.BoxGeometry(12.4, .26, 8.4), post);
-  deck.position.set(0, F + 7.72, TEMPLE_Z); g.add(deck);
-  [.10, .94].forEach(dy => [4.2, -4.2].forEach(dz => {
-    const r = new THREE.Mesh(new THREE.BoxGeometry(12.4, .17, .17), post);
-    r.position.set(0, F + 7.85 + dy, TEMPLE_Z + dz); g.add(r);
-  }));
-  for (let i = 0; i <= 16; i++) {
-    const b = new THREE.Mesh(new THREE.BoxGeometry(.10, 1.05, .10), post);
-    b.position.set(-6.2 + i * .775, F + 8.42, TEMPLE_Z + 4.2); g.add(b);
-  }
-  for (let i = 0; i < 4; i++)
-    bay(1.0, 1.35, -4.5 + i * 3.0, F + 9.5, TEMPLE_Z + 3.06);
-  /* the plaque */
-  const plq = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.30, .16), gold);
-  plq.position.set(0, F + 9.7, TEMPLE_Z + 3.12); g.add(plq);
-  const plqIn = new THREE.Mesh(new THREE.BoxGeometry(1.52, .98, .18), timber);
-  plqIn.position.set(0, F + 9.7, TEMPLE_Z + 3.16); g.add(plqIn);
-  brackets(5.2, 3.3, F + 11.2, 1.30);
-
-  /* ---- the main roof: the silhouette the whole page hangs on ----------- */
-  const upper = new THREE.Mesh(roofGeo(10.8, 7.2, 3.6, 5.2, .48, .26), tileMat);
-  upper.position.set(0, F + 11.7, TEMPLE_Z); upper.castShadow = true; g.add(upper);
-  const ridge = new THREE.Mesh(new THREE.BoxGeometry(7.6, .60, 1.05), tileMat);
-  ridge.position.set(0, F + 17.10, TEMPLE_Z); g.add(ridge);
-  [-1, 1].forEach(s => {
-    const oni = new THREE.Mesh(new THREE.ConeGeometry(.46, 1.15, 4), tileMat);
-    oni.position.set(s * 3.9, F + 17.6, TEMPLE_Z); oni.rotation.y = Math.PI / 4; g.add(oni);
+  const wallT = texWall();
+  const concrete = new THREE.MeshStandardMaterial({
+    map: tx(wallT.map, { wrap: THREE.RepeatWrapping, repeat: [4, 2] }),
+    normalMap: tx(wallT.normal, { wrap: THREE.RepeatWrapping, repeat: [4, 2], srgb: false }),
+    normalScale: new THREE.Vector2(1.2, 1.2),
+    roughness: .92, metalness: .02, color: 0x424c50
   });
-  WORLD.templeTop = F + 18.2;
+  /* the raw slab face — rougher, dimmer */
+  const slab = new THREE.MeshStandardMaterial({
+    map: tx(wallT.map, { wrap: THREE.RepeatWrapping, repeat: [3, 1.5] }),
+    normalMap: tx(wallT.normal, { wrap: THREE.RepeatWrapping, repeat: [3, 1.5], srgb: false }),
+    normalScale: new THREE.Vector2(0.9, 0.9),
+    roughness: .96, metalness: .0, color: 0x3a4246
+  });
+  /* lit window emitter — sodium yellow inside, cold white (fluorescent) some */
+  const winSodium = new THREE.MeshBasicMaterial({ color: hdr(2.1, 1.1, .28), fog: true, toneMapped: false });
+  const winFluor  = new THREE.MeshBasicMaterial({ color: hdr(1.6, 1.7, 1.8), fog: true, toneMapped: false });
+  WORLD.paper = winSodium;
 
-  /* ---- the two flanking wings, lit the same way ------------------------ */
+  const F = PODIUM; /* ground-floor level */
+  const FLOORS = 5, FH = 3.0;  /* floor height */
+  const BW = 14, BD = 8;       /* building width / depth */
+
+  /* main tower block */
+  const tower = new THREE.Mesh(new THREE.BoxGeometry(BW, FLOORS * FH, BD), concrete);
+  tower.position.set(0, F + (FLOORS * FH) / 2, TEMPLE_Z);
+  tower.castShadow = true; tower.receiveShadow = true; g.add(tower);
+
+  /* floor slabs (external corridor / balcony edge) */
+  for (let fl = 0; fl < FLOORS; fl++) {
+    const slabMesh = new THREE.Mesh(new THREE.BoxGeometry(BW + 1.8, .28, BD + 2.2), slab);
+    slabMesh.position.set(0, F + fl * FH, TEMPLE_Z);
+    slabMesh.castShadow = true; g.add(slabMesh);
+
+    /* windows on the front face — sodium or fluorescent */
+    const nWin = 5;
+    for (let wi = 0; wi < nWin; wi++) {
+      const wx = -BW * .38 + wi * BW * .19;
+      const warm = (wi + fl) % 3 !== 0;
+      const winMat = warm ? winSodium : winFluor;
+      const win = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.8), winMat);
+      win.position.set(wx, F + fl * FH + FH * .48, TEMPLE_Z + BD / 2 + .05);
+      win.renderOrder = 3; g.add(win);
+    }
+  }
+  /* roof water-tank / utility block */
+  const rooftop = new THREE.Mesh(new THREE.BoxGeometry(4.8, 2.4, 3.2), slab);
+  rooftop.position.set(-3.4, F + FLOORS * FH + 1.2, TEMPLE_Z - 1.5);
+  rooftop.castShadow = true; g.add(rooftop);
+  /* water tower cylinder */
+  const tank = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 2.6, 12), slab);
+  tank.position.set(4.2, F + FLOORS * FH + 1.3, TEMPLE_Z + 0.5);
+  tank.castShadow = true; g.add(tank);
+
+  /* flanking lower wings */
   [-1, 1].forEach(s => {
-    const w = new THREE.Mesh(new THREE.BoxGeometry(7.6, 3.4, 5.2), timber);
-    w.position.set(s * 10.6, F + 1.7, TEMPLE_Z + 1.4); w.castShadow = true; g.add(w);
-    for (let i = 0; i < 3; i++)
-      bay(1.3, 1.6, s * 10.6 + (i - 1) * 2.4, F + 1.8, TEMPLE_Z + 4.06);
-    const r = new THREE.Mesh(roofGeo(5.0, 4.0, 1.4, 1.9, .32, .26), tileMat);
-    r.position.set(s * 10.6, F + 3.4, TEMPLE_Z + 1.4); r.castShadow = true; g.add(r);
+    const wing = new THREE.Mesh(new THREE.BoxGeometry(7, 2 * FH, BD * .8), concrete);
+    wing.position.set(s * (BW * .5 + 3.7), F + FH, TEMPLE_Z + 1.0);
+    wing.castShadow = true; g.add(wing);
+    /* wing windows */
+    for (let fl = 0; fl < 2; fl++) {
+      for (let wi = 0; wi < 3; wi++) {
+        const wx = s * (BW * .5 + 3.7) + (wi - 1) * 2.0;
+        const win = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 1.5), winSodium);
+        win.position.set(wx, F + fl * FH + FH * .48, TEMPLE_Z + BD * .4 + .05);
+        win.renderOrder = 3; g.add(win);
+      }
+    }
   });
 
   scene.add(g); WORLD.temple = g;
+  WORLD.templeTop = F + FLOORS * FH + 2.6;
 
-  /* the glow the hall pushes out over its own steps */
+  /* the warm orange glow the building throws out over the street */
   const spill = new THREE.Mesh(new THREE.PlaneGeometry(30, 16),
-    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(255,150,66,.80)', 'rgba(240,96,26,.24)')),
-      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: .30 }));
-  spill.position.set(0, F + 3.0, TEMPLE_Z + 5.6); spill.renderOrder = 2;
+    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(255,140,40,.80)', 'rgba(220,80,20,.24)')),
+      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: .26 }));
+  spill.position.set(0, F + 2.0, TEMPLE_Z + BD / 2 + 5);
+  spill.renderOrder = 2;
   scene.add(spill); WORLD.hallHalo = spill;
 
-  /* the band of mist that separates the hall from the trees behind it — the
-     one thing that stops the whole background reading as a single flat cut-out */
+  /* haze band separating building from distance */
   const mist = new THREE.Mesh(new THREE.PlaneGeometry(64, 20),
-    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(150,178,190,.62)', 'rgba(104,138,154,.20)')),
-      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: .17 }));
+    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(120,130,140,.52)', 'rgba(80,90,100,.18)')),
+      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: .14 }));
   mist.position.set(0, F - 1.4, TEMPLE_Z + 10); mist.renderOrder = 2; scene.add(mist);
 }
 
-/* --------------------------------------------------- the vermilion moon
-   Hung well behind the hall so the roof crosses its lower left — near
-   enough to the ridge to sit in the mist, far enough that it never moves
-   against the buildings when the rig drifts.                             */
+/* --------------------------------------------------- sodium streetlight disc
+   An overexposed sodium-vapour street globe hung above the approach —
+   the urban counterpart to the vermilion moon. */
 const MOON = { x: 17.9, y: 31.9, z: -72, r: 8.6 };
 function buildMoon() {
   const disc = new THREE.Mesh(new THREE.PlaneGeometry(MOON.r * 2, MOON.r * 2),
-    /* The whole blood-moon grade lives here, on a near-neutral albedo. The
-       plate measures G/R ≈ B/R ≈ .48, but that is a *display* ratio: the map
-       is decoded out of sRGB before this multiplies it, so the tint has to be
-       written in linear, where the same look is ≈ .21. Reading the ratio
-       straight off the reference is what left the moon a pale pink. */
-    new THREE.MeshBasicMaterial({ map: tx(texMoon()), color: hdr(3.6, .64, .61),
+    new THREE.MeshBasicMaterial({ map: tx(texMoon()), color: hdr(3.8, 2.2, .55),
       transparent: true, depthWrite: false, fog: false, toneMapped: false }));
   disc.position.set(MOON.x, MOON.y, MOON.z); disc.renderOrder = 1;
   scene.add(disc); WORLD.moon = disc;
 
-  /* the air around it — a wide, weak corona that the bloom picks up */
+  /* sodium glow halo — warm amber */
   const halo = new THREE.Mesh(new THREE.PlaneGeometry(MOON.r * 6.4, MOON.r * 6.4),
-    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(255,124,112,.90)', 'rgba(206,52,48,.26)')),
+    new THREE.MeshBasicMaterial({ map: tx(texGlow('rgba(255,180,60,.90)', 'rgba(200,120,18,.26)')),
       transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: .44 }));
   halo.position.set(MOON.x, MOON.y, MOON.z - .3); halo.renderOrder = 0;
   scene.add(halo); WORLD.moonHalo = halo;
 }
-/* On a tall frame the rig steps back and its horizontal reach narrows, which
-   would slide the moon off the right edge — draw it in by the same amount. */
+/* A on mobile tall frame the rig steps back and its horizontal reach narrows, which
+   would slide the sodium globe off the right edge — draw it in by the same amount. */
 function placeMoon() {
   if (!WORLD.moon) return;
   const x = MOON.x * (1 - .40 * aspectFix());
@@ -2733,73 +2630,36 @@ function placeMoon() {
   WORLD.moonHalo.position.x = x;
 }
 
+/* ------------------------------------------------------- concrete street gate
+   A bare brutalist entrance arch — two concrete columns, a flat beam, no
+   decoration. Raw rebar stubs at the top. This is what guards the approach
+   to the building instead of vermilion lacquer. */
 function buildTorii() {
-  /* the weathering costs the gate a lot of its chroma, so the tint puts it
-     back: red lifted well past green and blue rather than a flat brightening,
-     or the vermilion comes out of the grade as brick */
-  const lac = surface(lib('lacquer', () => texLacquer()), [2, 2],
-    { color: hdr(1.72, 1.02, .94), roughness: .92, metalness: .05, normal: .75 });
-  const gold = new THREE.MeshStandardMaterial({ color: 0x7a5d2a, roughness: .50, metalness: .60 });
+  const conc = new THREE.MeshStandardMaterial({ color: 0x48505a, roughness: .96, metalness: .02 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0x3a4248, roughness: .52, metalness: .62 });
   const g = new THREE.Group();
-  const BASE = .78, H = 8.2, SPAN = 3.55;
+  const BASE = .20, H = 7.2, SPAN = 3.2;
 
+  /* the two concrete columns */
   [-1, 1].forEach(s => {
-    const col = new THREE.Mesh(new THREE.CylinderGeometry(.30, .38, H, 26), lac);
+    const col = new THREE.Mesh(new THREE.BoxGeometry(.58, H, .52), conc);
     col.position.set(s * SPAN, BASE + H / 2, 0); col.castShadow = true; g.add(col);
-    const foot = new THREE.Mesh(new THREE.CylinderGeometry(.46, .50, .52, 26), gold);
-    foot.position.set(s * SPAN, BASE + .26, 0); foot.castShadow = true; g.add(foot);
-    const collar = new THREE.Mesh(new THREE.CylinderGeometry(.345, .345, .26, 26), gold);
-    collar.position.set(s * SPAN, BASE + H - 1.42, 0); g.add(collar);
-    /* the ornate bracket where the beams cross the column */
-    const br = new THREE.Mesh(new THREE.BoxGeometry(.86, .30, .86), gold);
-    br.position.set(s * SPAN, BASE + H - .72, 0); g.add(br);
-    const br2 = new THREE.Mesh(new THREE.BoxGeometry(.60, .52, .60), gold);
-    br2.position.set(s * SPAN, BASE + H - .34, 0); g.add(br2);
-    [-1, 1].forEach(d => {
-      const wing = new THREE.Mesh(new THREE.BoxGeometry(.24, .70, .18), gold);
-      wing.position.set(s * SPAN + d * .40, BASE + H - .62, .30); g.add(wing);
-      const wing2 = wing.clone(); wing2.position.z = -.30; g.add(wing2);
-    });
+    /* rebar stubs at top */
+    for (let k = 0; k < 3; k++) {
+      const rb = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, .55, 6), metal);
+      rb.position.set(s * SPAN + (k - 1) * .14, BASE + H + .27, 0); g.add(rb);
+    }
   });
 
-  /* nuki — the straight beam that pierces the columns */
-  const nuki = new THREE.Mesh(new THREE.BoxGeometry(9.4, .52, .46), lac);
-  nuki.position.set(0, BASE + H - 2.15, 0); nuki.castShadow = true; g.add(nuki);
+  /* the flat beam across the top */
+  const beam = new THREE.Mesh(new THREE.BoxGeometry(SPAN * 2 + .58, .62, .52), conc);
+  beam.position.set(0, BASE + H + .31, 0); beam.castShadow = true; g.add(beam);
 
-  /* gakuzuka — the little strut at the centre */
-  const gak = new THREE.Mesh(new THREE.BoxGeometry(.46, 1.22, .40), lac);
-  gak.position.set(0, BASE + H + .10, 0); g.add(gak);
-  const gakG = new THREE.Mesh(new THREE.BoxGeometry(.60, .18, .50), gold);
-  gakG.position.set(0, BASE + H + .68, 0); g.add(gakG);
+  /* a sign mount bracket */
+  const sign = new THREE.Mesh(new THREE.BoxGeometry(3.8, .44, .12), metal);
+  sign.position.set(0, BASE + H - 1.0, .27); g.add(sign);
 
-  /* shimaki + kasagi — the two crowning beams, swept upward at the ends */
-  function beamPath(half, rise, power) {
-    const p = [];
-    for (let i = 0; i <= 26; i++) {
-      const u = i / 26 * 2 - 1;
-      p.push(new THREE.Vector3(u * half, Math.pow(Math.abs(u), power) * rise, 0));
-    }
-    return p;
-  }
-  const shimaki = new THREE.Mesh(sweepPoly(beamPath(5.05, .40, 2.6),
-    [[-.30, -.19], [.30, -.19], [.32, .06], [.28, .21], [-.28, .21], [-.32, .06]]), lac);
-  shimaki.position.set(0, BASE + H - .52, 0); shimaki.castShadow = true; g.add(shimaki);
-
-  const kasagi = new THREE.Mesh(sweepPoly(beamPath(5.85, .62, 2.4),
-    [[-.42, -.24], [.42, -.24], [.46, .04], [.30, .28], [-.30, .28], [-.46, .04]]), lac);
-  kasagi.position.set(0, BASE + H + .96, 0); kasagi.castShadow = true; g.add(kasagi);
-  /* a black lacquer cap along the top of the kasagi */
-  const cap = new THREE.Mesh(sweepPoly(beamPath(5.95, .62, 2.4),
-    [[-.48, .22], [.48, .22], [.48, .34], [-.48, .34]]),
-    new THREE.MeshStandardMaterial({ color: 0x120c0c, roughness: .42, metalness: .14 }));
-  cap.position.set(0, BASE + H + .96, 0); g.add(cap);
-
-  /* the gate stands at the foot of the flight, not over the court — small
-     enough that the hall keeps the top of the frame to itself */
-  /* The lowest thing on the gate is the foot of each column, and it starts
-     at BASE — so anchoring the group at y=0 left the whole torii hanging
-     BASE*scale above the court. Drop it by exactly that and the feet land. */
-  const GS = .72;
+  const GS = .78;
   g.position.set(0, -BASE * GS, -8.6); g.scale.setScalar(GS);
   scene.add(g); WORLD.torii = g;
 }
@@ -3872,9 +3732,11 @@ function buildCardCloth() {
 }
 
 function buildLights() {
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x888888, .25));
+  /* ambient urban glow — cold blueish night sky above, warm street reflection below */
+  scene.add(new THREE.HemisphereLight(0x152233, 0x221606, .22));
 
-  const key = new THREE.DirectionalLight(0xffffff, 1.4);
+  /* key light: distant cold moonlight / pale street lamp */
+  const key = new THREE.DirectionalLight(0xaaddee, 0.85);
   key.position.set(2.6, 21, 2.5);
   key.target.position.set(0, 2.2, -12.5); scene.add(key.target);
   if (WANT_SHADOW) {
@@ -3887,30 +3749,31 @@ function buildLights() {
   }
   scene.add(key); WORLD.key = key;
 
-  /* strong rim light for silhouettes */
-  const moonKey = new THREE.DirectionalLight(0xaaaaaa, .8);
-  moonKey.position.set(26, 30, -60);
-  moonKey.target.position.set(0, 8, -40); scene.add(moonKey.target);
-  scene.add(moonKey);
+  /* rim light: red/orange neon sign glow from off-screen */
+  const neonRim = new THREE.DirectionalLight(0xff3322, .65);
+  neonRim.position.set(26, 12, -60);
+  neonRim.target.position.set(0, 8, -40); scene.add(neonRim.target);
+  scene.add(neonRim);
 
-  /* The hall's own lamps - bright white */
-  const hallL = new THREE.PointLight(0xffffff, 2.8, 15, 2);
-  hallL.position.set(0, PODIUM + 1.2, TEMPLE_Z + 8.6); scene.add(hallL); WORLD.hallLight = hallL;
+  /* The apartment block's own sodium streetlights on the platform */
+  const hallL = new THREE.PointLight(0xffaa44, 2.6, 18, 2);
+  hallL.position.set(0, PODIUM + 4.2, TEMPLE_Z + 12.6); scene.add(hallL); WORLD.hallLight = hallL;
   [-1, 1].forEach(s => {
-    const w = new THREE.PointLight(0xdddddd, 2.5, 11, 2);
-    w.position.set(s * 11.4, PODIUM + 1.2, TEMPLE_Z + 5.6); scene.add(w);
+    const w = new THREE.PointLight(0xff9933, 2.4, 14, 2);
+    w.position.set(s * 10.4, PODIUM + 3.2, TEMPLE_Z + 8.6); scene.add(w);
   });
 
-  /* Moon / sky light */
-  const moonL = new THREE.PointLight(0xffffff, 3.5, 46, 2);
-  moonL.position.set(11.0, 17.0, -24.0); scene.add(moonL); WORLD.moonLight = moonL;
+  /* the sodium streetlight globe up high */
+  const streetL = new THREE.PointLight(0xffaa22, 3.8, 55, 2);
+  streetL.position.set(11.0, 31.0, -24.0); scene.add(streetL); WORLD.moonLight = streetL;
 
-  const fill = new THREE.PointLight(0xbbbbbb, 1.2, 30, 2);
-  fill.position.set(-1, 13.5, -16.0); scene.add(fill);
+  /* fill light — cool cyan fluorescent glow from an alley */
+  const fill = new THREE.PointLight(0x44aacc, 1.2, 35, 2);
+  fill.position.set(-8, 8.5, -16.0); scene.add(fill);
 
-  /* Stairs contrast light */
-  const stairL = new THREE.PointLight(0xeeeeee, 4.5, 17, 2);
-  stairL.position.set(0, 7.6, -26.0); scene.add(stairL);
+  /* staircase lamp — sodium glow highlighting the wet concrete */
+  const stairL = new THREE.PointLight(0xffcc66, 3.8, 20, 2);
+  stairL.position.set(0, 8.6, -24.0); scene.add(stairL);
 }
 /* ====================================================== 6 · planar mirror */
 /* ================================================== 7 · post-processing */
@@ -3962,8 +3825,8 @@ function initPost() {
   POST.comp = new THREE.ShaderMaterial({
     uniforms: {
       tS: { value: null }, tB: { value: null }, uRes: { value: new THREE.Vector2(w, h) },
-      uT: { value: 0 }, uBloom: { value: .34 }, uCA: { value: 1 }, uGrain: { value: .040 },
-      uVig: { value: 1 }, uExp: { value: 1.2 }, uFade: { value: 1 }, uSat: { value: 0.0 }
+      uT: { value: 0 }, uBloom: { value: .34 }, uCA: { value: 1 }, uGrain: { value: .020 },
+      uVig: { value: 1 }, uExp: { value: .62 }, uFade: { value: 1 }, uSat: { value: 1.05 }
     },
     vertexShader: QUAD_VS,
     fragmentShader:
@@ -3981,17 +3844,21 @@ function initPost() {
       ' c += texture2D(tB, vUv).rgb * uBloom;\n' +
       ' c *= uExp;\n' +
       ' c = aces(c);\n' +
-      /* Force pure grayscale for Sumi-e style */
       ' float l = dot(c, vec3(0.2126,0.7152,0.0722));\n' +
-      ' c = vec3(l);\n' +
+      ' c = mix(vec3(l), c, uSat);\n' +
+      ' c = mix(c, c*vec3(0.74,1.03,1.11), smoothstep(0.55,0.0,l)*0.80);\n' +    /* teal shadows */
+      ' c = mix(c, c*vec3(1.035,0.995,0.968), smoothstep(0.50,1.0,l)*0.26);\n' + /* warm highs   */
       ' float v = smoothstep(1.22, 0.26, length(d*vec2(1.0,0.94))*1.42);\n' +
       ' c *= mix(1.0, v, uVig);\n' +
       ' float g = fract(sin(dot(vUv*uRes + uT*137.0, vec2(12.9898,78.233)))*43758.5453);\n' +
       ' c += (g-0.5)*uGrain;\n' +
       ' c *= uFade;\n' +
-      /* Ink stroke contrast curve */
       ' vec3 e = pow(max(c,0.0), vec3(1.0/2.2));\n' +
-      ' e = smoothstep(0.15, 0.95, e);\n' +
+      /* A touch of contrast, applied after the encode rather than before it:
+         in linear the same curve mostly crushes the shadows, and this frame is
+         nearly all shadow. Pivoted low, at 0.30, so it deepens the night
+         without pulling the lit paper of the hall down with it. */
+      ' e = clamp((e - 0.30) * 1.00 + 0.30, 0.0, 1.0);\n' +
       ' gl_FragColor = vec4( e, 1.0 );\n' +
       '}'
   });
@@ -4689,38 +4556,33 @@ function queue() { TIMER ? setTimeout(() => frame(performance.now()), 16) : requ
 
 /* ======================================================== 14 · booting */
 const JOBS = [
-  ['Reading the type', () => document.fonts && document.fonts.load('600 320px Wordmark')],
-  ['Pouring the ground', () => { initGL(); WORLD.uT = { value: 0 }; buildRig(); buildLights(); }],
-  ['Cutting the approach', () => buildShell()],
-  ['Raising the hall', () => buildTemple()],
-  ['Hanging the moon', () => buildMoon()],
-  ['Setting the gate', () => buildTorii()],
-  ['Placing the stones', () => {
-    buildRocks();
-    buildLantern(7.4, -7.0, 1.15); buildLantern(-7.6, -5.2, 1.0);
-    /* The pairs flanking the flight were given flat heights — 2 and PODIUM —
-       and the flight does not reach either at those depths, so both pairs hung
-       in the air. Solve the step under each one from the same constants the
-       treads and cheeks are built from, and they stand on the rail instead of
-       beside it. */
+  ['Menyiapkan lembar kerja', () => document.fonts && document.fonts.load('600 320px Wordmark')],
+  ['Membangun infrastruktur', () => { initGL(); WORLD.uT = { value: 0 }; buildRig(); buildLights(); }],
+  ['Menyiram aspal jalan', () => buildShell()],
+  ['Mendirikan blok apartemen', () => buildTemple()],
+  ['Menyalakan lampu jalan', () => buildMoon()],
+  ['Membangun gapura kota', () => buildTorii()],
+  ['Membersihkan sisa puing', () => {
+    // buildRocks();
+    // buildLantern(7.4, -7.0, 1.15); buildLantern(-7.6, -5.2, 1.0);
     const stepAt   = z => Math.max(0, (STAIR_Z0 - z) / STAIR_RUN - .5);
     const cheekTop = z => (stepAt(z) + 1) * (PODIUM / STEPS) + .45;
     const cheekX   = z => (STAIR_W + (STEPS - stepAt(z)) * .052) / 2 + .45;
     [-14.4, -23.5].forEach((z, i) => {
       const sc = i ? .95 : .90;
-      buildLantern( cheekX(z), z, sc, cheekTop(z));
-      buildLantern(-cheekX(z), z, sc, cheekTop(z));
+      // buildLantern( cheekX(z), z, sc, cheekTop(z));
+      // buildLantern(-cheekX(z), z, sc, cheekTop(z));
     });
   }],
-  ['Growing the maples', () => {
-    buildMaple(71, 12.6, -13.0, 1.05); buildMaple(72, -11.8, -9.4, .95);
-    buildMaple(73, 9.2, -19.0, .82);   buildMaple(74, -14.5, -17.5, 1.0);
-    buildMaple(75, 16.5, -6.0, .88);
+  ['Menanam pohon peneduh', () => {
+    // buildMaple(71, 12.6, -13.0, 1.05); buildMaple(72, -11.8, -9.4, .95);
+    // buildMaple(73, 9.2, -19.0, .82);   buildMaple(74, -14.5, -17.5, 1.0);
+    // buildMaple(75, 16.5, -6.0, .88);
   }],
-  ['Painting the near grass', () => buildForeground()],
-  ['Cutting the word', () => buildWordmark()],
-  ['Raising the mist', () => { buildAtmosphere(); buildLeafFall(); buildWisps(); }],
-  ['Polishing the water', () => {
+  ['Membersihkan rerumputan', () => buildForeground()],
+  ['Menulis judul cerita', () => buildWordmark()],
+  ['Menyelimuti kabut asap', () => { buildAtmosphere(); buildLeafFall(); buildWisps(); }],
+  ['Memoles permukaan jalan', () => {
     initPost(); buildCards(); buildCardCloth();
     WORLD.fg.forEach(m => m.layers.set(1));
     WORD.glyphs.forEach(m => m.layers.set(2));

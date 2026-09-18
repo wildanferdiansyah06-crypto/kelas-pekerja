@@ -9,6 +9,8 @@ import ReadingProgress from "@/src/components/ReadingProgress";
 import LayoutWrapper from "@/src/components/LayoutWrapper";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import SessionProvider from "@/src/components/Providers";
+import AmbientBackground from "@/src/components/AmbientBackground";
+import Script from "next/script";
 
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
@@ -91,15 +93,37 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className="scroll-smooth" suppressHydrationWarning>
-      <body
-        className={`${cormorantGaramond.variable} ${inter.variable} font-display antialiased`}
-        style={{
-          backgroundColor: 'var(--kp-bg-base)',
-          color: 'var(--kp-text-primary)',
-        }}
-      >
-        {/* Grain texture overlay */}
-        <div className="grain-overlay" aria-hidden="true" />
+      <body className={`${cormorantGaramond.variable} ${inter.variable}`}>
+
+        {/* CSS Animated Background — selalu terlihat, tidak bergantung WebGL */}
+        <div id="bg-scene" aria-hidden="true">
+          <div className="bg-blob bg-blob-1" />
+          <div className="bg-blob bg-blob-2" />
+          <div className="bg-blob bg-blob-3" />
+          <div className="bg-blob bg-blob-4" />
+          <div className="bg-blob bg-blob-5" />
+        </div>
+
+        <canvas id="gl" aria-hidden="true"></canvas>
+        <div id="vignette"></div>
+        <div id="grain"></div>
+        <div className="cur-dot" id="cursor"></div>
+
+        {/* Preloader */}
+        <div id="pre">
+          <div className="pre-in">
+            <div className="pre-mark">
+              <svg viewBox="0 0 44 44" fill="none" aria-hidden="true">
+                <path d="M13 19h18l-2.6 12.4a2 2 0 0 1-2 1.6H17.6a2 2 0 0 1-2-1.6L13 19Z" stroke="#ece3d3" strokeWidth="1.4"/>
+                <path d="M31 21c4 0 5.6 2 5.6 4.6S35 30 31 29.6" stroke="#c9903f" strokeWidth="1.4"/>
+                <path d="M18 15c-1.6-1.6-1.6-3 0-4.6M23 15c-1.6-1.6-1.6-3 0-4.6" stroke="#d1602f" strokeWidth="1.2" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <div className="pre-word">KELAS PEKERJA</div>
+            <div className="pre-bar"><i id="pre-fill"></i></div>
+            <div className="pre-meta"><span>Menyalakan lampu malam&hellip;</span><b><span id="pre-pct">0</span>%</b></div>
+          </div>
+        </div>
 
         <SessionProvider>
           <ThemeProvider>
@@ -113,6 +137,10 @@ export default function RootLayout({
           </ThemeProvider>
         </SessionProvider>
         <SpeedInsights />
+        
+        {/* Scripts */}
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js" strategy="beforeInteractive" />
+        <AmbientBackground />
       </body>
     </html>
   );

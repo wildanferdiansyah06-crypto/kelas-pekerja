@@ -1,452 +1,135 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Menu, X, User, LogOut, Home, BookOpen, FileText, Bookmark, Info } from "lucide-react";
-import { useNavbar } from "@/src/contexts/NavbarContext";
-import { useSession, signOut } from "next-auth/react";
-import { useLanguage } from "@/src/contexts/LanguageContext";
-import LanguageSwitcher from "@/src/components/LanguageSwitcher";
-
-// Clock component
-function ClockWidget() {
-  const { language } = useLanguage();
-  const [time, setTime] = useState('');
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString(language === 'en' ? 'en-US' : 'id-ID', { hour: '2-digit', minute: '2-digit' }));
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, [language]);
-
-  return (
-    <div
-      className="px-3 py-1 rounded-full font-mono text-xs tracking-widest"
-      style={{
-        background: 'rgba(212, 165, 116, 0.08)',
-        color: 'var(--kp-accent)',
-        border: '1px solid rgba(212, 165, 116, 0.1)',
-      }}
-    >
-      {time}
-    </div>
-  );
-}
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-const pathname = usePathname();
-const { isVisible: contextVisible } = useNavbar();
-const { data: session } = useSession();
-const { t } = useLanguage();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-const navigation = [
-  { label: t.nav.home, href: "/", icon: Home },
-  { label: t.nav.books, href: "/buku", icon: BookOpen },
-  { label: t.nav.essays, href: "/tulisan", icon: FileText },
-  { label: t.nav.saved, href: "/bookmark", icon: Bookmark },
-  { label: t.nav.about, href: "/tentang", icon: Info },
-];
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let ticking = false;
 
-const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 8);
+      if (y > lastY && y > 160) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+      lastY = y;
+      ticking = false;
+    };
 
-const [mounted, setMounted] = useState(false);
-const [scrollVisible, setScrollVisible] = useState(true);
-const [hasScrolled, setHasScrolled] = useState(false);
-const lastScrollYRef = useRef(0);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    };
 
-useEffect(() => {
-setMounted(true);
-}, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-// Auto-hide navbar on scroll - Performance optimized for mobile
-useEffect(() => {
-  if (!mounted) return;
-
-  let ticking = false;
-  const scrollThreshold = 50;
-  let scrollDirection = 'up';
-  let lastScrollTime = 0;
-  const throttleDelay = 100;
-  
-  const handleScroll = () => {
-    const now = performance.now();
-    if (now - lastScrollTime < throttleDelay) return;
-    
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(() => {
-        try {
-          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-          const lastScrollY = lastScrollYRef.current;
-          
-          setHasScrolled(currentScrollY > 20);
-          
-          if (currentScrollY > lastScrollY) {
-            scrollDirection = 'down';
-          } else if (currentScrollY < lastScrollY) {
-            scrollDirection = 'up';
-          }
-          
-          if (currentScrollY <= 0) {
-            if (!scrollVisible) setScrollVisible(true);
-          } 
-          else if (scrollDirection === 'down' && currentScrollY > scrollThreshold) {
-            if (scrollVisible) setScrollVisible(false);
-          } 
-          else if (scrollDirection === 'up') {
-            if (!scrollVisible) setScrollVisible(true);
-          }
-
-          lastScrollYRef.current = currentScrollY;
-          lastScrollTime = now;
-        } catch (error) {
-          console.error('Navbar scroll error:', error);
-        }
-        ticking = false;
-      });
+  // Sync mobile sheet state with body locking
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.classList.add("is-locked");
+    } else {
+      document.body.classList.remove("is-locked");
     }
-  };
+  }, [isMobileOpen]);
 
-  lastScrollYRef.current = window.scrollY || document.documentElement.scrollTop;
+  const closeMobile = () => setIsMobileOpen(false);
 
-  window.addEventListener('scroll', handleScroll, { passive: true, capture: false });
-  
-  return () => {
-    window.removeEventListener('scroll', handleScroll, { capture: false });
-  };
-}, [mounted, scrollVisible]);
-
-const finalVisibility = scrollVisible && contextVisible;
-
-if (!mounted) return null;
-
-return (
-<>
-<nav
-  id="site-navbar"
-  className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-out ${finalVisibility ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-  style={{
-    paddingTop: hasScrolled ? '0' : '8px',
-    paddingLeft: hasScrolled ? '0' : '12px',
-    paddingRight: hasScrolled ? '0' : '12px',
-  }}
->
-  <div
-    className="transition-all duration-500"
-    style={{
-      background: hasScrolled ? 'rgba(10, 9, 8, 0.85)' : 'rgba(10, 9, 8, 0.5)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      borderRadius: hasScrolled ? '0' : '16px',
-      border: hasScrolled ? 'none' : '1px solid rgba(212, 165, 116, 0.06)',
-      borderBottom: hasScrolled ? '1px solid rgba(212, 165, 116, 0.06)' : 'none',
-      boxShadow: hasScrolled 
-        ? '0 4px 30px rgba(0, 0, 0, 0.3)' 
-        : '0 8px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(212, 165, 116, 0.03)',
-    }}
-  >
-    <div className="max-w-7xl mx-auto px-5 sm:px-6 tablet:px-12 h-14 sm:h-16 flex items-center justify-between">
-
-      {/* Logo */}
-      <Link
-        href="/"
-        className="flex items-center gap-2.5 group"
-      >
-        <span 
-          className="text-xl sm:text-2xl font-display font-light tracking-wide transition-all duration-300 group-hover:text-glow"
-          style={{ color: 'var(--kp-accent)' }}
-        >
-          Kelas Pekerja
-        </span>
-      </Link>
-
-      {/* Desktop Navigation */}
-      <div className="hidden tablet:flex items-center gap-8">
-        {navigation.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="relative font-ui text-sm font-normal transition-all duration-300 py-1 group"
-            style={{
-              color: pathname === item.href ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
-            }}
-            onMouseEnter={(e) => {
-              if (pathname !== item.href) {
-                e.currentTarget.style.color = 'var(--kp-text-primary)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (pathname !== item.href) {
-                e.currentTarget.style.color = 'var(--kp-text-muted)';
-              }
-            }}
-          >
-            {item.label}
-            {/* Animated underline */}
-            <span 
-              className="absolute bottom-0 left-0 h-px transition-all duration-300"
-              style={{
-                width: pathname === item.href ? '100%' : '0%',
-                background: 'linear-gradient(90deg, transparent, var(--kp-accent), transparent)',
-              }}
-            />
-            <span 
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-0 group-hover:w-full transition-all duration-300"
-              style={{
-                background: 'linear-gradient(90deg, transparent, var(--kp-accent), transparent)',
-                display: pathname === item.href ? 'none' : 'block',
-              }}
-            />
-          </Link>
-        ))}
-      </div>
-
-      {/* Mobile Navigation - Icon Only */}
-      <div className="tablet:hidden flex items-center gap-1 flex-1 mx-2 justify-center">
-        {navigation.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-label={item.label}
-              title={item.label}
-              className="relative flex flex-col items-center justify-center p-2.5 rounded-xl transition-all duration-200 group"
-              style={{
-                color: isActive ? 'var(--kp-accent)' : 'var(--kp-text-muted)',
-                background: isActive ? 'rgba(212, 165, 116, 0.1)' : 'transparent',
-              }}
-            >
-              <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
-              {/* Active dot indicator */}
-              <span
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full transition-all duration-200"
-                style={{
-                  width: isActive ? '4px' : '0px',
-                  height: isActive ? '4px' : '0px',
-                  background: 'var(--kp-accent)',
-                  boxShadow: isActive ? '0 0 6px var(--kp-accent)' : 'none',
-                }}
-              />
-            </Link>
-          );
-        })}
-      </div>
-
-
-      {/* Clock Widget - Desktop */}
-      <div className="hidden tablet:block">
-        <ClockWidget />
-      </div>
-
-      {/* Right Controls */}
-      <div className="flex items-center gap-3 shrink-0">
-        <LanguageSwitcher className="hidden tablet:inline-flex" />
-
-        {/* User Profile Display - Desktop */}
-        {session?.user ? (
-          <div className="hidden tablet:flex items-center gap-3">
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full"
-              style={{
-                background: 'rgba(212, 165, 116, 0.06)',
-                border: '1px solid rgba(212, 165, 116, 0.08)',
-              }}
-            >
-              {session.user.image && (
-                <Image
-                  src={session.user.image}
-                  alt={session.user.name || 'User'}
-                  width={24}
-                  height={24}
-                  className="w-6 h-6 rounded-full object-cover"
-                  style={{ boxShadow: '0 0 10px rgba(212, 165, 116, 0.2)' }}
-                />
-              )}
-              <span
-                className="text-sm truncate max-w-[120px] font-ui"
-                style={{ color: 'var(--kp-text-secondary)' }}
-              >
-                {session.user.name || 'User'}
-              </span>
-            </div>
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-ui transition-all duration-300"
-              style={{ color: 'var(--kp-text-muted)' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--kp-accent)';
-                e.currentTarget.style.background = 'rgba(212, 165, 116, 0.06)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--kp-text-muted)';
-                e.currentTarget.style.background = 'transparent';
-              }}
-              aria-label="Logout"
-            >
-              <LogOut size={16} />
-            </button>
-          </div>
-        ) : (
-          <Link
-            href="/auth/signin"
-            className="hidden tablet:flex items-center gap-2 px-5 py-2 rounded-full text-sm font-ui font-medium transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, var(--kp-accent), #b8834e)',
-              color: '#0a0908',
-              boxShadow: '0 0 20px rgba(212, 165, 116, 0.15)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(212, 165, 116, 0.3)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(212, 165, 116, 0.15)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Masuk
-          </Link>
-        )}
-
-        {/* User Profile Display - Mobile */}
-        {session?.user && (
-          <div
-            className="tablet:hidden flex items-center gap-2 px-2 py-1 rounded-full"
-            style={{
-              background: 'rgba(212, 165, 116, 0.06)',
-              border: '1px solid rgba(212, 165, 116, 0.08)',
-            }}
-          >
-            {session.user.image && (
-              <Image
-                src={session.user.image}
-                alt={session.user.name || 'User'}
-                width={20}
-                height={20}
-                className="w-5 h-5 rounded-full object-cover"
-              />
-            )}
-          </div>
-        )}
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="tablet:hidden p-2 rounded-full font-ui transition-all duration-300"
-          style={{ color: 'var(--kp-text-muted)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--kp-accent)';
-            e.currentTarget.style.background = 'rgba(212, 165, 116, 0.06)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'var(--kp-text-muted)';
-            e.currentTarget.style.background = 'transparent';
-          }}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-
-      </div>
-    </div>
-  </div>
-
-  {/* Mobile Menu Panel */}
-  <div
-    className={`tablet:hidden transition-all duration-400 ease-out overflow-hidden ${
-      isMenuOpen ? 'max-h-40 sm:max-h-48 opacity-100' : 'max-h-0 opacity-0'
-    }`}
-    style={{
-      background: 'rgba(10, 9, 8, 0.9)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      borderBottom: isMenuOpen ? '1px solid rgba(212, 165, 116, 0.06)' : 'none',
-      marginLeft: hasScrolled ? '0' : '12px',
-      marginRight: hasScrolled ? '0' : '12px',
-      borderRadius: hasScrolled ? '0' : '0 0 16px 16px',
-    }}
-  >
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col gap-2 sm:gap-3">
-
-      {/* Mobile User Profile Full Display */}
-      {session?.user && (
-        <div
-          className="flex items-center gap-2 sm:gap-3 px-3 py-2 rounded-full"
-          style={{
-            background: 'rgba(212, 165, 116, 0.06)',
-            border: '1px solid rgba(212, 165, 116, 0.08)',
-          }}
-        >
-          {session.user.image && (
-            <Image
-              src={session.user.image}
-              alt={session.user.name || 'User'}
-              width={24}
-              height={24}
-              className="w-5 h-5 sm:w-6 sm:h-6 rounded-full object-cover"
-            />
-          )}
-          <span
-            className="text-xs sm:text-sm truncate max-w-[100px] sm:max-w-[120px] font-ui"
-            style={{ color: 'var(--kp-text-secondary)' }}
-          >
-            {session.user.name || 'User'}
+  return (
+    <>
+      <header className={`nav ${isScrolled ? "stuck" : ""} ${isHidden ? "hide" : ""}`} id="nav">
+        <Link href="/" className="brand" data-cursor onClick={closeMobile}>
+          <svg viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <path d="M13 19h18l-2.6 12.4a2 2 0 0 1-2 1.6H17.6a2 2 0 0 1-2-1.6L13 19Z" stroke="#ece3d3" strokeWidth="1.5" />
+            <path d="M31 21c4 0 5.6 2 5.6 4.6S35 30 31 29.6" stroke="#c9903f" strokeWidth="1.5" />
+            <path d="M18 15c-1.6-1.6-1.6-3 0-4.6M23 15c-1.6-1.6-1.6-3 0-4.6" stroke="#d1602f" strokeWidth="1.3" strokeLinecap="round" />
+          </svg>
+          <span className="brand-tx">
+            <b>KELAS PEKERJA</b>
+            <i>ARSIP SUNYI YANG TETAP BEKERJA</i>
           </span>
-        </div>
-      )}
-
-      {/* Mobile Login/Logout Button */}
-      {session ? (
-        <button
-          onClick={() => {
-            signOut({ callbackUrl: '/' });
-            setIsMenuOpen(false);
-          }}
-          className="flex items-center gap-2 text-xs sm:text-sm font-ui transition-colors duration-200 px-2 py-2"
-          style={{ color: 'var(--kp-text-muted)' }}
-        >
-          <LogOut size={16} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span>Keluar</span>
-        </button>
-      ) : (
-        <Link
-          href="/auth/signin"
-          onClick={() => setIsMenuOpen(false)}
-          className="flex items-center gap-2 text-xs sm:text-sm font-ui transition-colors duration-200 px-2 py-2"
-          style={{ color: 'var(--kp-accent)' }}
-        >
-          <User size={16} className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span>Masuk</span>
         </Link>
-      )}
+        <nav className="nav-links">
+          <Link href="/" className="nav-link" data-cursor>Beranda</Link>
+          <div className="nav-item">
+            <Link href="/buku" className="nav-link" data-cursor>
+              Katalog
+              <svg className="care" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.2" />
+              </svg>
+            </Link>
+            <div className="drop">
+              <Link href="/buku" data-cursor>Semua Buku</Link>
+              <Link href="/buku?category=refleksi" data-cursor>Kategori Refleksi</Link>
+              <Link href="/buku?category=kehidupan" data-cursor>Kategori Kehidupan</Link>
+              <Link href="/buku?category=filosofi" data-cursor>Kategori Filosofi</Link>
+            </div>
+          </div>
+          <Link href="/quotes" className="nav-link" data-cursor>Quote Acak</Link>
+          <Link href="/bookmark" className="nav-link" data-cursor>Koleksi Tersimpan</Link>
+          <Link href="/tentang" className="nav-link" data-cursor>Tentang</Link>
+        </nav>
+        <Link href="/tulis" className="nav-cta" data-cursor>Tulis Sesuatu</Link>
+        <button
+          className={`nav-burger ${isMobileOpen ? "on" : ""}`}
+          id="burger"
+          aria-label="Menu"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          <i></i>
+          <i></i>
+          <i></i>
+        </button>
+      </header>
 
-      {/* Mobile Language Switcher */}
-      <div className="flex items-center justify-between pt-2 border-t border-white/10 mt-1 px-2">
-        <span className="text-xs text-kp-text-muted font-ui">Bahasa / Language</span>
-        <LanguageSwitcher />
+      {/* Mobile Sheet */}
+      <div className={`sheet ${isMobileOpen ? "open" : ""}`} id="sheet">
+        <div className="sheet-links">
+          <Link href="/" data-cursor onClick={closeMobile}>Beranda</Link>
+          <Link href="/buku" data-cursor onClick={closeMobile}>Katalog</Link>
+          <Link href="/quotes" data-cursor onClick={closeMobile}>Quote Acak</Link>
+          <Link href="/tentang" data-cursor onClick={closeMobile}>Tentang</Link>
+          <Link href="/tulis" data-cursor onClick={closeMobile}>Tulis Sesuatu</Link>
+        </div>
+        <div className="sheet-sub">
+          <b>Katalog</b>
+          <Link href="/buku?category=refleksi" data-cursor onClick={closeMobile}>Refleksi</Link>
+          <Link href="/buku?category=kehidupan" data-cursor onClick={closeMobile}>Kehidupan</Link>
+          <Link href="/buku?category=filosofi" data-cursor onClick={closeMobile}>Filosofi</Link>
+          <Link href="/bookmark" data-cursor style={{ marginTop: "8px" }} onClick={closeMobile}>Koleksi Tersimpan</Link>
+        </div>
+        <div className="sheet-social">
+          <a href="https://wa.me/6289636357091" target="_blank" rel="noopener noreferrer" data-cursor aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 20l1.4-4.1A8 8 0 1 1 9 18.4L4 20Z" stroke="#ece3d3" strokeWidth="1.3" />
+              <path d="M8.5 9.5c0 4 3 6.7 6.7 6.7.6 0 1-.5.9-1l-.2-1.1a.9.9 0 0 0-.7-.7l-1.6-.3a.9.9 0 0 0-.8.3l-.5.5a5.6 5.6 0 0 1-2.6-2.6l.5-.5a.9.9 0 0 0 .3-.8l-.3-1.6a.9.9 0 0 0-.7-.7L8.5 7.6c-.5 0-1 .4-1 .9" fill="#ece3d3" />
+            </svg>
+          </a>
+          <a href="https://instagram.com/_iamwildan_" target="_blank" rel="noopener noreferrer" data-cursor aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="16" rx="5" stroke="#ece3d3" strokeWidth="1.3" />
+              <circle cx="12" cy="12" r="3.6" stroke="#ece3d3" strokeWidth="1.3" />
+              <circle cx="16.6" cy="7.4" r="1" fill="#ece3d3" />
+            </svg>
+          </a>
+          <a href="https://github.com/wildanferdiansyah06-crypto" target="_blank" rel="noopener noreferrer" data-cursor aria-label="GitHub">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3.5a8.5 8.5 0 0 0-2.7 16.6c.4.1.6-.2.6-.4v-1.6c-2.4.5-2.9-1.1-2.9-1.1-.4-1-1-1.2-1-1.2-.8-.6.1-.6.1-.6.9.1 1.4.9 1.4.9.8 1.4 2.1 1 2.6.7.1-.6.3-1 .6-1.2-1.9-.2-3.9-1-3.9-4.3 0-1 .3-1.7.9-2.3-.1-.2-.4-1.1.1-2.3 0 0 .7-.2 2.4.9a8 8 0 0 1 4.4 0c1.7-1.1 2.4-.9 2.4-.9.5 1.2.2 2.1.1 2.3.6.6.9 1.4.9 2.3 0 3.3-2 4-3.9 4.3.3.3.6.8.6 1.7v2.5c0 .2.2.5.6.4A8.5 8.5 0 0 0 12 3.5Z" stroke="#ece3d3" strokeWidth="1.1" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </div>
       </div>
-
-    </div>
-  </div>
-
-</nav>
-
-{/* Ambient glow line under navbar */}
-<div 
-  className={`fixed top-14 sm:top-16 left-0 right-0 z-[99] h-px transition-opacity duration-500 pointer-events-none ${finalVisibility ? 'opacity-100' : 'opacity-0'}`}
-  style={{
-    background: 'linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.1), transparent)',
-  }}
-/>
-</>
-);
+    </>
+  );
 }
