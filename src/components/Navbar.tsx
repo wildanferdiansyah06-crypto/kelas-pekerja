@@ -2,38 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useNavScroll } from "../hooks/useNavScroll";
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
+  const { isScrolled, isHidden } = useNavScroll();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-
-  useEffect(() => {
-    let lastY = window.scrollY;
-    let ticking = false;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      setIsScrolled(y > 8);
-      if (y > lastY && y > 160) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
-      lastY = y;
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(onScroll);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Sync mobile sheet state with body locking
   useEffect(() => {

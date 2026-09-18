@@ -3,52 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import BookCover, { getCoverFallbackClass } from "../components/BookCover";
+import { FALLBACK_BOOKS } from "../lib/constants";
 
 interface HomePageClientProps {
   featuredBooks: any[];
   latestBooks: any[];
   allBooks?: any[];
-}
-
-/** Helper: ambil kelas gradien fallback berdasarkan kategori */
-function covClass(category: string) {
-  if (!category) return "cov-renungan";
-  const c = category.toLowerCase();
-  if (c.includes("refleksi")) return "cov-refleksi";
-  if (c.includes("filosofi")) return "cov-filosofi";
-  return "cov-renungan";
-}
-
-/** Komponen cover buku yang menampilkan gambar asli + fallback gradien */
-function BookCover({
-  cover,
-  category,
-  children,
-  className = "",
-}: {
-  cover?: string;
-  category?: string;
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  const fallback = covClass(category || "");
-  return (
-    <div className={`${className} ${fallback} book-cov-wrap`} data-tilt-cov>
-      {cover && (
-        <Image
-          src={cover}
-          alt=""
-          fill
-          sizes="(max-width:768px) 100vw, 400px"
-          className="book-cov-img"
-          style={{ objectFit: "cover", objectPosition: "center" }}
-        />
-      )}
-      {/* overlay gelap agar teks tetap terbaca */}
-      <div className="book-cov-overlay" />
-      {children}
-    </div>
-  );
 }
 
 export default function HomePageClient({
@@ -167,7 +128,7 @@ export default function HomePageClient({
           {/* Featured book */}
           <div className="featured" data-rv="up">
             <Link
-              className={`featured-cov ${covClass(featured?.category)}`}
+              className={`featured-cov ${getCoverFallbackClass(featured?.category)}`}
               data-tilt
               href={featured ? `/buku/${featured.slug}` : "/buku/sayap-sayap-patah-di-gedung-kaca"}
               data-cursor
@@ -221,14 +182,8 @@ export default function HomePageClient({
                 </article>
               ))
             ) : (
-              /* Fallback hardcoded dengan cover Unsplash sesungguhnya */
-              [
-                { slug: "arsip-sunyi", title: "Arsip Sunyi", category: "renungan", readTime: "15 menit", cover: "https://images.unsplash.com/photo-1646366393036-0d464e11eee7?q=80&w=800&auto=format&fit=crop", excerpt: "Sayap yang telah gugur di ambang kesunyian — tentang cerita yang berakhir tanpa luka menganga." },
-                { slug: "sunyi-yang-kutinggali", title: "Sunyi yang Kutinggali", category: "renungan", readTime: "18 menit", cover: "https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?q=80&w=800&auto=format&fit=crop", excerpt: "Tentang keadaan hati yang untuk sesaat berhenti menjadi ramai, dan bagaimana sunyi bisa menjadi rumah." },
-                { slug: "cahaya-itu", title: "Cahaya Itu", category: "refleksi", readTime: "35 menit", cover: "https://images.unsplash.com/photo-1507400492013-162706c8c05e?q=80&w=800&auto=format&fit=crop", excerpt: "Tentang mereka yang menjadi cahaya untuk orang lain hingga api mereka sendiri padam." },
-                { slug: "yang-tertinggal-di-lembah", title: "Yang Tertinggal Di Lembah", category: "filosofi", readTime: "45 menit", cover: "https://images.pexels.com/photos/236412/pexels-photo-236412.jpeg?auto=compress&cs=tinysrgb&w=800", excerpt: "Tentang mereka yang tetap berada di lembah bersamamu ketika semua orang sudah berlari menuju cahaya." },
-                { slug: "masa-yang-tak-pernah-bertanya-izin", title: "Masa yang Tak Pernah Bertanya Izin", category: "refleksi", readTime: "40 menit", cover: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop", excerpt: "Masa itu tidak pernah bertanya izin. Dia datang, lewat, dan pergi begitu saja." },
-              ].map((book) => (
+              /* Fallback dari konstanta jika data kosong */
+              FALLBACK_BOOKS.map((book) => (
                 <article key={book.slug} className="book" data-rv="up" data-tilt data-cursor>
                   <Link href={`/buku/${book.slug}`}>
                     <BookCover cover={book.cover} category={book.category} className="book-cov">

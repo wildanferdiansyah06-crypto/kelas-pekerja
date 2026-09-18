@@ -1,74 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useScrollReveal } from "../hooks/useScrollReveal";
+import { usePreloader } from "../hooks/usePreloader";
+import { useCustomCursor } from "../hooks/useCustomCursor";
 
 export default function AmbientBackground() {
-  const pathname = usePathname();
-  // Simpan observer aktif agar bisa di-disconnect saat navigasi
-  const revealIORef = useRef<IntersectionObserver | null>(null);
+  useScrollReveal();
+  usePreloader();
+  useCustomCursor();
 
   /* ═══════════════════════════════════════════════════════════════════
-     EFFECT 1: Jalankan SETIAP kali pathname berubah
-     Tugasnya: bersihkan lock body + setup ulang reveal observer
-     untuk elemen DOM yang baru di-render oleh halaman baru.
-  ═══════════════════════════════════════════════════════════════════ */
-  useEffect(() => {
-    // Pastikan body tidak pernah terkunci akibat preloader lama
-    document.body.classList.remove("is-locked");
-
-    // Disconnect observer lama supaya tidak memory leak
-    if (revealIORef.current) {
-      revealIORef.current.disconnect();
-      revealIORef.current = null;
-    }
-
-    // Beri waktu 120ms untuk React selesai commit DOM baru
-    // (penting: elemen [data-rv] di halaman baru belum ada sebelum ini)
-    const timer = setTimeout(() => {
-      const REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const els = Array.from(document.querySelectorAll("[data-rv]"));
-
-      if (!els.length) return;
-
-      // Jika motion reduced atau tidak ada IO support → langsung tampilkan semua
-      if (!("IntersectionObserver" in window) || REDUCE) {
-        els.forEach((el) => el.classList.add("rv-in"));
-        return;
-      }
-
-      // Reset ke state awal terlebih dulu
-      els.forEach((el) => el.classList.remove("rv-in"));
-
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((en) => {
-            if (en.isIntersecting) {
-              en.target.classList.add("rv-in");
-              io.unobserve(en.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -4% 0px" }
-      );
-
-      els.forEach((el) => io.observe(el));
-      revealIORef.current = io;
-    }, 120);
-
-    return () => {
-      clearTimeout(timer);
-      // Bersihkan observer saat unmount / navigasi berikutnya
-      if (revealIORef.current) {
-        revealIORef.current.disconnect();
-        revealIORef.current = null;
-      }
-    };
-  }, [pathname]);
-
-  /* ═══════════════════════════════════════════════════════════════════
-     EFFECT 2: Hanya berjalan SEKALI saat pertama mount
-     Tugasnya: preloader, custom cursor, Three.js 3D scene
+     Three.js 3D Scene (berjalan sekali)
   ═══════════════════════════════════════════════════════════════════ */
   useEffect(() => {
     const REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -86,61 +29,6 @@ export default function AmbientBackground() {
         t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       };
-    }
-
-    /* ── preloader (sekali saja) ─────────────────────────────────── */
-    if (!(window as any).__kp_pre_done) {
-      (window as any).__kp_pre_done = true;
-      document.body.classList.add("is-locked");
-      const fill = document.getElementById("pre-fill");
-      const pctEl = document.getElementById("pre-pct");
-      const pre = document.getElementById("pre");
-      let pct = 0;
-      const timer = setInterval(() => {
-        pct = Math.min(96, pct + (96 - pct) * 0.1 + 0.6);
-        if (fill) fill.style.right = 100 - pct + "%";
-        if (pctEl) pctEl.textContent = Math.floor(pct).toString();
-      }, 90);
-      const finish = () => {
-        clearInterval(timer);
-        if (fill) fill.style.right = "0%";
-        if (pctEl) pctEl.textContent = "100";
-        setTimeout(() => {
-          if (pre) pre.classList.add("done");
-          document.body.classList.remove("is-locked");
-        }, 340);
-      };
-      if (document.readyState === "complete") setTimeout(finish, 500);
-      else window.addEventListener("load", () => setTimeout(finish, 400));
-      setTimeout(finish, 2600);
-    } else {
-      // Navigasi berikutnya: sembunyikan preloader seketika
-      const pre = document.getElementById("pre");
-      if (pre) pre.classList.add("done");
-    }
-
-    /* ── custom cursor (sekali saja) ─────────────────────────────── */
-    if (!(window as any).__kp_cursor_init && FINE && !REDUCE) {
-      (window as any).__kp_cursor_init = true;
-      const cur = document.getElementById("cursor");
-      if (cur) {
-        cur.classList.add("on");
-        window.addEventListener(
-          "mousemove",
-          (e: MouseEvent) => {
-            cur.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
-          },
-          { passive: true }
-        );
-        // Cursor big state untuk elemen interaktif
-        document.addEventListener("mouseover", (e: MouseEvent) => {
-          if ((e.target as Element)?.closest("[data-cursor]")) {
-            cur.classList.add("big");
-          } else {
-            cur.classList.remove("big");
-          }
-        });
-      }
     }
 
     /* ── Three.js 3D Scene (sekali saja) ─────────────────────────── */
