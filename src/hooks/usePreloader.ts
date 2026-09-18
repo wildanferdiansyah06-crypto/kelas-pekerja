@@ -10,14 +10,12 @@ export function usePreloader() {
     }
     
     (window as any).__kp_pre_done = true;
-    document.body.classList.add("is-locked");
     
     const fill = document.getElementById("pre-fill");
     const pctEl = document.getElementById("pre-pct");
     const pre = document.getElementById("pre");
     
     if (!fill || !pctEl || !pre) {
-      document.body.classList.remove("is-locked");
       return;
     }
 
@@ -39,7 +37,6 @@ export function usePreloader() {
       pctEl.innerText = "100";
       setTimeout(() => {
         pre.classList.add("out");
-        document.body.classList.remove("is-locked");
         setTimeout(() => {
           pre.style.display = "none";
         }, 1200);
