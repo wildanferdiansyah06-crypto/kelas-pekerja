@@ -434,7 +434,7 @@ export default function AmbientBackground() {
   
   // Mulai inisialisasi WebGL
   initGL();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return null;
 }

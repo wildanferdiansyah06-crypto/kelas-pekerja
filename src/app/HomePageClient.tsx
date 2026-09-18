@@ -7,7 +7,6 @@ import React from "react";
 interface HomePageClientProps {
   featuredBooks: any[];
   latestBooks: any[];
-  mostRelatable: any[];
   allBooks?: any[];
 }
 
@@ -55,7 +54,6 @@ function BookCover({
 export default function HomePageClient({
   featuredBooks = [],
   latestBooks = [],
-  mostRelatable = [],
   allBooks = [],
 }: HomePageClientProps) {
   const featured = featuredBooks.length > 0 ? featuredBooks[0] : null;
