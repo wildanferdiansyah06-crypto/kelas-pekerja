@@ -1,17 +1,7 @@
 "use client";
 
-import dynamic from 'next/dynamic';
-
-// Dynamic imports to reduce initial bundle size
-const Navbar = dynamic(() => import("@/src/components/Navbar"), {
-  loading: () => <div className="h-16 w-full" style={{ backgroundColor: 'var(--kp-bg-base)' }} />,
-  ssr: true,
-});
-
-const Footer = dynamic(() => import("@/src/components/Footer"), {
-  loading: () => <div className="h-20 w-full" style={{ backgroundColor: 'var(--kp-bg-invert)' }} />,
-  ssr: true,
-});
+import Navbar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 
 export default function LayoutWrapper({
   children,
