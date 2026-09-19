@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useRef } from 'react';
 import MusicPlayer from '@/src/components/MusicPlayer';
 import { BookOpen, Flame, ChevronRight, X, Compass, Quote, Feather } from 'lucide-react';
@@ -75,7 +77,6 @@ export default function CahayaItuPage() {
     };
   }, [mounted]);
 
-  if (!mounted) return null;
 
   const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 

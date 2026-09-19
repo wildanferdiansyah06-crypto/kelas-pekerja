@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Mountain, ChevronRight, X, Compass, Check, Wind, Heart, Quote } from 'lucide-react';
@@ -62,7 +64,6 @@ export default function YangTertinggalDiLembahPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
 
-  if (!mounted) return null;
 
   const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 

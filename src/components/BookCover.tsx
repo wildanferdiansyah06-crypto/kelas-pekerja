@@ -15,6 +15,7 @@ interface BookCoverProps {
   category?: string;
   children?: React.ReactNode;
   className?: string;
+  priority?: boolean;
 }
 
 /** 
@@ -27,6 +28,7 @@ export default function BookCover({
   category,
   children,
   className = "",
+  priority = false,
 }: BookCoverProps) {
   const fallbackClass = getCoverFallbackClass(category);
   
@@ -37,9 +39,11 @@ export default function BookCover({
           src={cover}
           alt=""
           fill
-          sizes="(max-width:768px) 100vw, 400px"
+          sizes="(max-width:480px) 45vw, (max-width:768px) 42vw, 300px"
           className="book-cov-img"
           style={{ objectFit: "cover", objectPosition: "center" }}
+          loading={priority ? "eager" : "lazy"}
+          priority={priority}
         />
       )}
       {/* overlay gelap agar teks tetap terbaca */}

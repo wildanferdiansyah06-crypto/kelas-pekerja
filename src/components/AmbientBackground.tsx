@@ -34,6 +34,12 @@ export default function AmbientBackground() {
     /* ── Three.js 3D Scene (sekali saja) ─────────────────────────── */
     if ((window as any).__kp_gl_init) return;
     
+    // Skip WebGL entirely on mobile — canvas is hidden via CSS anyway
+    // and Three.js init is expensive on low-end mobile GPUs
+    const isMobile = window.matchMedia("(max-width: 767px)").matches || 
+                     window.matchMedia("(pointer: coarse)").matches;
+    if (isMobile) return;
+    
     let glInitRetries = 0;
     const initGL = () => {
       const canvas = document.getElementById("gl") as HTMLCanvasElement;

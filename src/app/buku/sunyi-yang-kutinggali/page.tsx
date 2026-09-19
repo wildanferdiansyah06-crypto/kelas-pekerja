@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Moon, X, ChevronRight, Check, Quote, Wind } from 'lucide-react';
@@ -50,7 +52,6 @@ export default function SunyiYangKutinggaliPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
 
-  if (!mounted) return null;
 
   const id = language === 'id';
   const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';

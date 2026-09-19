@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Coffee, ChevronRight, X, BookMarked, Compass, Check, ArrowRight, PenLine } from 'lucide-react';
@@ -69,7 +71,6 @@ export default function CoffeeBookPage() {
     };
   }, [mounted]);
 
-  if (!mounted) return null;
 
   const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';
 

@@ -139,7 +139,8 @@ export default function RootLayout({
         <SpeedInsights />
         
         {/* Scripts */}
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js" strategy="beforeInteractive" />
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js" strategy="afterInteractive" />
+
         <AmbientBackground />
       </body>
     </html>

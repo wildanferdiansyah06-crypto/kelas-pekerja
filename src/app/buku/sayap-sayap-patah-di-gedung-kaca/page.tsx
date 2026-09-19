@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, X, ChevronRight, Feather } from 'lucide-react';
@@ -116,7 +118,6 @@ export default function SayapPatahPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
 
-  if (!mounted) return null;
 
   const id = language === 'id';
   const darkMode = readerTheme === 'dark' || readerTheme === 'espresso';

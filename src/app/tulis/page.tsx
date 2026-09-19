@@ -4,7 +4,8 @@
 
 import Link from "next/link";
 import { ArrowLeft, Send, Coffee, CheckCircle, Loader2, FileUp, X, Star, Quote, Sparkles, Eye, Heart, TrendingUp, Shield } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
+
 import { useTheme } from "@/src/components/ThemeProvider";
 import { useLanguage } from "@/src/contexts/LanguageContext";
 
@@ -22,7 +23,7 @@ export default function TulisPage() {
 
   const [files, setFiles] = useState<File[]>([]);
 
-  const [mounted, setMounted] = useState(false);
+
 
   const [rating, setRating] = useState(0);
 
@@ -40,11 +41,6 @@ export default function TulisPage() {
 
 
 
-  useEffect(() => {
-
-    setMounted(true);
-
-  }, []);
 
 
 
@@ -324,7 +320,6 @@ export default function TulisPage() {
 
 
 
-  if (!mounted) return null;
 
 
 

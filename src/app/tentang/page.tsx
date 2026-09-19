@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+export const dynamic = 'force-dynamic';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail, MapPin, Coffee, ExternalLink, Github, Instagram, MessageCircle } from 'lucide-react';
@@ -8,15 +9,9 @@ import { useLanguage } from '@/src/contexts/LanguageContext';
 import BookCover from '@/src/components/BookCover';
 
 
-
-
 export default function TentangPage() {
   const { language } = useLanguage();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const books = [
     {
@@ -118,7 +113,6 @@ export default function TentangPage() {
           { time: 'Fajar', desc: 'Merelakan untuk dibaca' },
         ];
 
-  if (!mounted) return null;
 
   return (
     <div

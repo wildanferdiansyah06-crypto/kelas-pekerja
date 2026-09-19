@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import { Coffee, BookOpen, ChevronUp, Quote } from 'lucide-react';

@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -202,7 +204,6 @@ export default function KamiMenulisPelanPage() {
 
 
 
-  if (!mounted) return null;
 
 
 
@@ -268,6 +269,8 @@ export default function KamiMenulisPelanPage() {
 
 
   const scrollToSection = (id: string) => {
+
+    if (typeof document === 'undefined') return;
 
     const element = document.getElementById(id);
 
@@ -469,7 +472,7 @@ export default function KamiMenulisPelanPage() {
 
           style={{ 
 
-            width: `${Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100)}%`,
+            width: `${typeof window !== 'undefined' ? Math.min(100, (scrollY / ((document.documentElement.scrollHeight - window.innerHeight) || 1)) * 100) : 0}%`,
 
             boxShadow: darkMode ? '0 0 10px rgba(139, 115, 85, 0.5)' : 'none'
 

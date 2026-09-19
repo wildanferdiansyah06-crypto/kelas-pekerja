@@ -65,6 +65,12 @@
 }
 
 .bg-blob{position:absolute;border-radius:50%;filter:blur(110px);will-change:transform;mix-blend-mode:screen}
+/* On mobile: no animations, lighter blur for perf */
+@media (max-width:767px) {
+  .bg-blob{filter:blur(60px);will-change:auto;mix-blend-mode:screen}
+  .bg-blob-1,.bg-blob-2,.bg-blob-3,.bg-blob-4,.bg-blob-5{animation:none}
+}
+
 
 /* Blob 1 — warm amber kiri atas (cahaya lampu meja) */
 .bg-blob-1{
@@ -142,6 +148,12 @@
 #grain{position:fixed;inset:-1px;z-index:40;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size:160px 160px}
+/* Hide heavy WebGL canvas + grain on mobile to save GPU/CPU */
+@media (max-width:767px){
+  #gl{display:none}
+  #grain{display:none}
+}
+
 #vignette{position:fixed;inset:0;z-index:35;pointer-events:none;
   background:radial-gradient(120% 90% at 50% 38%, transparent 42%, rgba(3,2,1,.65) 100%)}
 .page{position:relative;z-index:1}
