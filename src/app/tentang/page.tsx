@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Coffee, ExternalLink, Github, Instagram, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, Github, Instagram, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/src/contexts/LanguageContext';
 import BookCover from '@/src/components/BookCover';
 
